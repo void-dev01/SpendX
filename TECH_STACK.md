@@ -64,13 +64,13 @@ This document provides comprehensive technical documentation for every technolog
 - **Interactions**: Wrapped by shadcn UI pattern components and styled via Tailwind v4 classes.
 
 #### Lucide React
-- **Exact Installed Version**: `0.475.0`
+- **Exact Installed Version**: `1.72.0`
 - **Why Selected**: Tree-shakeable, clean, modern vector iconography with consistent stroke weights.
 - **Responsibility**: Visual indicators for navigation, financial movement, security statuses, and AI interactions.
 - **Where Used**: `frontend/src/components/**/*.tsx`.
 
 #### Motion for React (`motion`)
-- **Exact Installed Version**: `12.43.0`
+- **Exact Installed Version**: `14.14.0`
 - **Why Selected**: High-performance hardware-accelerated animations for page transitions and card reveals.
 - **Responsibility**: Fluid micro-interactions, modal appearances, and numeric counter animations.
 - **Where Used**: Future dashboard widgets and animated chart transitions.
@@ -118,7 +118,7 @@ This document provides comprehensive technical documentation for every technolog
 - **Where Used**: In both `frontend/` and `backend/`.
 
 #### Recharts
-- **Exact Installed Version**: `2.15.4`
+- **Exact Installed Version**: `3.10.1`
 - **Why Selected**: Composable SVG chart components designed natively for React.
 - **Responsibility**: Rendering monthly spend distributions, category bar charts, and cash-flow area graphs.
 - **Where Used**: `frontend/src/features/analytics/AnalyticsPage.tsx`.
@@ -196,12 +196,12 @@ This document provides comprehensive technical documentation for every technolog
 - **Where Used**: `backend/src/app.ts`.
 
 #### express-rate-limit
-- **Exact Installed Version**: `7.5.1`
+- **Exact Installed Version**: `8.7.4`
 - **Why Selected**: In-memory and Redis-compatible request throttling engine.
 - **Responsibility**: Preventing brute-force attacks and rate-limiting high-cost AI operations (`backend/src/middleware/rateLimiter.ts`).
 
 #### dotenv
-- **Exact Installed Version**: `16.4.7`
+- **Exact Installed Version**: `18.0.10`
 - **Responsibility**: Loading environment variables into `process.env`.
 - **Where Used**: `backend/src/config/env.ts`.
 
@@ -221,7 +221,7 @@ This document provides comprehensive technical documentation for every technolog
 ### Logging & Diagnostics
 
 #### Pino & pino-http
-- **Exact Installed Versions**: `pino: 9.14.0`, `pino-http: 10.5.0`, `pino-pretty: 13.0.0`
+- **Exact Installed Versions**: `pino: 10.4.0`, `pino-http: 11.0.0`, `pino-pretty: 13.0.0`
 - **Why Selected**: High-speed, structured JSON logger with negligible CPU footprint.
 - **Responsibility**: Capturing HTTP request timings, operational warnings, and error diagnostics.
 - **Where Used**: `backend/src/utils/logger.ts`, `backend/src/app.ts`.
