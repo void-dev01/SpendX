@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #EAF5F0;
+    --foreground: #14251F;
+    --surface: #F7FBF9;
+    --primary: #059669;
+    --primary-foreground: #FFFFFF;
+    --secondary: #06B6D4;
+    --secondary-foreground: #FFFFFF;
+    --income: #059669;
+    --expense: #E45B70;
+    --warning: #D97706;
+    --muted: #E2ECE7;
+    --muted-foreground: #4B6358;
+    --border: #D1E2DB;
+    --input: #D1E2DB;
+    --ring: #059669;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: #101A19;
+    --foreground: #ECFDF5;
+    --surface: #172522;
+    --primary: #34D399;
+    --primary-foreground: #101A19;
+    --secondary: #22D3EE;
+    --secondary-foreground: #101A19;
+    --income: #34D399;
+    --expense: #FB7185;
+    --warning: #FBBF24;
+    --muted: #1E332F;
+    --muted-foreground: #94A3B8;
+    --border: #233B36;
+    --input: #233B36;
+    --ring: #34D399;
+  }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-income: var(--income);
+  --color-expense: var(--expense);
+  --color-warning: var(--warning);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+}
