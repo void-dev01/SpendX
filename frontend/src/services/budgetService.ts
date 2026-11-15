@@ -258,6 +258,17 @@ export const budgetService = {
   },
 
   /**
+   * Convenience helper to fetch budgets and calculate metrics using live transactions
+   */
+  async getBudgetsWithMetrics(): Promise<BudgetWithMetrics[]> {
+    const [budgets, transactions] = await Promise.all([
+      this.getBudgets(),
+      transactionService.getTransactions(),
+    ]);
+    return this.computeBudgetsWithMetrics(budgets, transactions, 'THIS_MONTH');
+  },
+
+  /**
    * Compute overall budget metrics across active budgets
    */
   computeOverallMetrics(budgetMetrics: BudgetWithMetrics[]): OverallBudgetMetrics {

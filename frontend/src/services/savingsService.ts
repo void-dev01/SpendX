@@ -227,6 +227,10 @@ export const savingsService = {
     return this.getStoredGoals();
   },
 
+  async getSavingsGoals(): Promise<SavingsGoalRecord[]> {
+    return this.getGoals();
+  },
+
   /**
    * Get single savings goal by ID
    */

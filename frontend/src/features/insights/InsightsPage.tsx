@@ -1,79 +1,159 @@
-import React from 'react';
-import { Lightbulb, AlertTriangle, TrendingDown, Sparkles, Check } from 'lucide-react';
-import { RoutePlaceholder } from '@/components/common/RoutePlaceholder';
+import React, { useState, useMemo } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Sparkles } from 'lucide-react';
+import {
+  insightsService,
+  InsightsOverviewSummary,
+} from '@/services/insightsService';
 
-const insightsData = [
-  {
-    type: 'WARNING',
-    icon: AlertTriangle,
-    title: 'Food & Dining Limit Velocity',
-    description: 'You have spent 88% of your monthly dining budget with 14 days remaining in the cycle.',
-    action: 'Reduce weekend restaurant dining to preserve reserve.',
-    color: 'text-amber-500 bg-amber-500/15',
-  },
-  {
-    type: 'SAVINGS',
-    icon: TrendingDown,
-    title: 'Subscription Audit Anomaly',
-    description: 'Cloud storage charge increased by ₹420 this month due to exceeded volume tier.',
-    action: 'Review storage retention policy or clean logs.',
-    color: 'text-primary bg-primary/15',
-  },
-  {
-    type: 'OPPORTUNITY',
-    icon: Sparkles,
-    title: 'High Liquid Surplus Detected',
-    description: 'You have ₹24,000 sitting in low-yield checking account above your safe emergency floor.',
-    action: 'Sweep ₹15,000 into High-Yield Liquid Vault (+4.2% p.a.).',
-    color: 'text-[#8066CC] bg-[#8066CC]/15',
-  },
-];
+import { InsightsOverviewCards } from '@/components/insights/InsightsOverviewCards';
+import { InsightsFilterToolbar } from '@/components/insights/InsightsFilterToolbar';
+import { InsightCard } from '@/components/insights/InsightCard';
+import { HealthScoreBreakdown } from '@/components/insights/HealthScoreBreakdown';
+import { InsightsEmptyState } from '@/components/insights/InsightsEmptyState';
 
 export const InsightsPage: React.FC = () => {
-  return (
-    <RoutePlaceholder
-      title="Financial Intelligence Insights"
-      description="Context-aware financial alerts, proactive spending nudges, and capital optimization."
-      routeId="/insights"
-      icon={Lightbulb}
-      badge="Intelligence"
-    >
-      <div className="space-y-4">
-        {insightsData.map((item) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={item.title}
-              className="glass-panel rounded-3xl p-5 sm:p-6 border border-white/80 dark:border-white/15 shadow-lg flex flex-col sm:flex-row sm:items-start justify-between gap-4"
-            >
-              <div className="flex items-start gap-4">
-                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${item.color}`}>
-                  <Icon className="w-5 h-5" />
-                </div>
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm sm:text-base font-bold text-foreground">{item.title}</h3>
-                    <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-white/60 dark:bg-white/10 text-muted-foreground">
-                      {item.type}
-                    </span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-                    {item.description}
-                  </p>
-                  <div className="pt-1 flex items-center gap-1.5 text-xs text-primary font-medium">
-                    <Check className="w-3.5 h-3.5" />
-                    <span>Actionable step: {item.action}</span>
-                  </div>
-                </div>
-              </div>
+  const queryClient = useQueryClient();
 
-              <button className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/70 dark:bg-white/10 hover:bg-white/90 text-foreground border border-white/80 dark:border-white/15 shadow-sm self-start sm:self-auto cursor-pointer">
-                Dismiss
-              </button>
-            </div>
-          );
-        })}
+  // Filter states
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedType, setSelectedType] = useState('ALL');
+  const [selectedImpact, setSelectedImpact] = useState('ALL');
+  const [showBookmarkedOnly, setShowBookmarkedOnly] = useState(false);
+
+  // 1. Fetch insights
+  const { data: insights = [] } = useQuery({
+    queryKey: ['financial-insights'],
+    queryFn: () => insightsService.generateInsights(),
+  });
+
+  // 2. Fetch summary & health score
+  const { data: summary } = useQuery<InsightsOverviewSummary>({
+    queryKey: ['financial-insights-summary'],
+    queryFn: () => insightsService.getOverviewSummary(),
+  });
+
+  // Filtering
+  const filteredInsights = useMemo(() => {
+    let result = [...insights];
+
+    // Search query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (i) =>
+          i.title.toLowerCase().includes(q) ||
+          i.description.toLowerCase().includes(q) ||
+          i.category?.toLowerCase().includes(q)
+      );
+    }
+
+    // Type filter
+    if (selectedType !== 'ALL') {
+      result = result.filter((i) => i.type === selectedType);
+    }
+
+    // Impact filter
+    if (selectedImpact !== 'ALL') {
+      result = result.filter((i) => i.impact === selectedImpact);
+    }
+
+    // Bookmarked only
+    if (showBookmarkedOnly) {
+      result = result.filter((i) => i.isBookmarked);
+    }
+
+    return result;
+  }, [insights, searchQuery, selectedType, selectedImpact, showBookmarkedOnly]);
+
+  // Actions
+  const handleBookmarkToggle = (id: string) => {
+    insightsService.toggleBookmark(id);
+    queryClient.invalidateQueries({ queryKey: ['financial-insights'] });
+  };
+
+  const handleDismiss = (id: string) => {
+    insightsService.dismissInsight(id);
+    queryClient.invalidateQueries({ queryKey: ['financial-insights'] });
+    queryClient.invalidateQueries({ queryKey: ['financial-insights-summary'] });
+  };
+
+  const handleResetDismissed = () => {
+    insightsService.resetDismissed();
+    queryClient.invalidateQueries({ queryKey: ['financial-insights'] });
+    queryClient.invalidateQueries({ queryKey: ['financial-insights-summary'] });
+  };
+
+  const isFiltering =
+    Boolean(searchQuery.trim()) ||
+    selectedType !== 'ALL' ||
+    selectedImpact !== 'ALL' ||
+    showBookmarkedOnly;
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setSelectedType('ALL');
+    setSelectedImpact('ALL');
+    setShowBookmarkedOnly(false);
+  };
+
+  return (
+    <div className="space-y-8 animate-fadeIn pb-12">
+      {/* 1. Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-spendx-purple-primary bg-spendx-purple-primary/10 px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" /> Intelligence Engine
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-spendx-text-primary dark:text-spendx-soft-purple tracking-tight mt-1">
+            Financial Insights & Advisory
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+            Proactive financial recommendations, spending pace warnings, subscription audits, and capital growth opportunities.
+          </p>
+        </div>
       </div>
-    </RoutePlaceholder>
+
+      {/* 2. Overview Cards */}
+      {summary && <InsightsOverviewCards summary={summary} />}
+
+      {/* 3. Health Score Breakdown */}
+      {summary?.healthScore && <HealthScoreBreakdown healthScore={summary.healthScore} />}
+
+      {/* 4. Filter Toolbar */}
+      <InsightsFilterToolbar
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        selectedType={selectedType}
+        onTypeChange={setSelectedType}
+        selectedImpact={selectedImpact}
+        onImpactChange={setSelectedImpact}
+        showBookmarkedOnly={showBookmarkedOnly}
+        onToggleBookmarkedOnly={() => setShowBookmarkedOnly(!showBookmarkedOnly)}
+        onResetDismissed={handleResetDismissed}
+      />
+
+      {/* 5. Insights Cards Grid */}
+      {filteredInsights.length === 0 ? (
+        <InsightsEmptyState
+          isFiltering={isFiltering}
+          onClearFilters={handleClearFilters}
+          onResetDismissed={handleResetDismissed}
+        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredInsights.map((insight) => (
+            <InsightCard
+              key={insight.id}
+              insight={insight}
+              onBookmarkToggle={handleBookmarkToggle}
+              onDismiss={handleDismiss}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
