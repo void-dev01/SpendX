@@ -1,0 +1,434 @@
+/**
+ * SPENDX Budget Service
+ * Reconciles category budget limits with live transaction telemetry,
+ * calculates deterministic utilization, alerts, and insights.
+ */
+
+import { authService } from './authService';
+import { supabase } from './supabase';
+import { transactionService, TransactionRecord } from './transactionService';
+
+export type BudgetPeriod = 'THIS_MONTH' | 'PREVIOUS_MONTH' | 'ALL_TIME';
+export type BudgetStatus = 'NORMAL' | 'APPROACHING' | 'NEAR_LIMIT' | 'EXCEEDED';
+
+export interface BudgetRecord {
+  id: string;
+  userId: string;
+  name: string;
+  category: string;
+  allocatedAmount: number;
+  period: 'MONTHLY' | 'YEARLY';
+  alertThreshold: number; // e.g. 80 (%)
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BudgetWithMetrics extends BudgetRecord {
+  spent: number;
+  remaining: number;
+  utilizationPercentage: number;
+  status: BudgetStatus;
+  matchingTransactionCount: number;
+}
+
+export interface OverallBudgetMetrics {
+  totalBudget: number;
+  totalSpent: number;
+  remainingBudget: number;
+  overallUtilization: number;
+  status: BudgetStatus;
+}
+
+export interface BudgetAlert {
+  id: string;
+  category: string;
+  severity: 'WARNING' | 'DANGER' | 'INFO';
+  title: string;
+  description: string;
+  budgetId: string;
+}
+
+export interface BudgetInsight {
+  id: string;
+  title: string;
+  description: string;
+  type: 'POSITIVE' | 'NEUTRAL' | 'WARNING';
+}
+
+export const INITIAL_DEMO_BUDGETS: BudgetRecord[] = [
+  {
+    id: 'bgt-food',
+    userId: 'demo-user-id',
+    name: 'Food & Dining Budget',
+    category: 'Food & Dining',
+    allocatedAmount: 8000,
+    period: 'MONTHLY',
+    alertThreshold: 80,
+    notes: 'Includes restaurants, dining out, and daily coffees',
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'bgt-shopping',
+    userId: 'demo-user-id',
+    name: 'Shopping & Apparel',
+    category: 'Shopping',
+    allocatedAmount: 6000,
+    period: 'MONTHLY',
+    alertThreshold: 80,
+    notes: 'Personal clothing, gadgets, and retail purchases',
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'bgt-transport',
+    userId: 'demo-user-id',
+    name: 'Transportation & Fuel',
+    category: 'Transport',
+    allocatedAmount: 4000,
+    period: 'MONTHLY',
+    alertThreshold: 85,
+    notes: 'Petrol, cab rides, and city transit',
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'bgt-utilities',
+    userId: 'demo-user-id',
+    name: 'Household Bills & Utilities',
+    category: 'Bills & Utilities',
+    allocatedAmount: 5000,
+    period: 'MONTHLY',
+    alertThreshold: 90,
+    notes: 'Electricity, fiber internet, water, and gas subscriptions',
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: 'bgt-entertainment',
+    userId: 'demo-user-id',
+    name: 'Entertainment & OTT',
+    category: 'Entertainment',
+    allocatedAmount: 2500,
+    period: 'MONTHLY',
+    alertThreshold: 75,
+    notes: 'Streaming services, movies, and events',
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+const LOCAL_STORAGE_BUDGETS_KEY = 'spendx_budgets_store_v1';
+
+export const budgetService = {
+  getStoredBudgets(): BudgetRecord[] {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_BUDGETS_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.warn('Failed to parse cached budgets', e);
+    }
+    this.saveStoredBudgets(INITIAL_DEMO_BUDGETS);
+    return INITIAL_DEMO_BUDGETS;
+  },
+
+  saveStoredBudgets(budgets: BudgetRecord[]): void {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_BUDGETS_KEY, JSON.stringify(budgets));
+    } catch (e) {
+      console.warn('Failed to cache budgets', e);
+    }
+  },
+
+  /**
+   * Retrieves all user budgets
+   */
+  async getBudgets(): Promise<BudgetRecord[]> {
+    const user = authService.getUser();
+
+    if (supabase && user && user.id !== 'demo-user-id') {
+      try {
+        const { data, error } = await supabase
+          .from('budgets')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: true });
+
+        if (!error && data && data.length > 0) {
+          return data.map((b) => ({
+            id: b.id,
+            userId: b.user_id,
+            name: b.name || `${b.category} Budget`,
+            category: b.category,
+            allocatedAmount: Number(b.allocated_amount || b.amount) || 0,
+            period: b.period || 'MONTHLY',
+            alertThreshold: b.alert_threshold || 80,
+            notes: b.notes,
+            createdAt: b.created_at || new Date().toISOString(),
+            updatedAt: b.updated_at || new Date().toISOString(),
+          }));
+        }
+      } catch (err) {
+        console.warn('Could not query Supabase budgets, using local store', err);
+      }
+    }
+
+    return this.getStoredBudgets();
+  },
+
+  /**
+   * Get single budget by ID
+   */
+  async getBudgetById(id: string): Promise<BudgetRecord | null> {
+    const all = await this.getBudgets();
+    return all.find((b) => b.id === id) || null;
+  },
+
+  /**
+   * Reconciles budget records with actual transactions in the selected period
+   */
+  computeBudgetsWithMetrics(
+    budgets: BudgetRecord[],
+    transactions: TransactionRecord[],
+    period: BudgetPeriod = 'THIS_MONTH'
+  ): BudgetWithMetrics[] {
+    // 1. Filter transactions by period
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const periodTransactions = transactions.filter((t) => {
+      // Exclude income and transfers from spending
+      if (t.type !== 'EXPENSE') return false;
+
+      const d = new Date(t.date);
+      if (period === 'THIS_MONTH') {
+        return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
+      }
+      if (period === 'PREVIOUS_MONTH') {
+        const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        return d.getMonth() === prevMonth && d.getFullYear() === prevYear;
+      }
+      // ALL_TIME
+      return true;
+    });
+
+    // 2. Aggregate spending per category
+    const categorySpendingMap: Record<string, { total: number; count: number }> = {};
+
+    periodTransactions.forEach((t) => {
+      const cat = t.category;
+      if (!categorySpendingMap[cat]) {
+        categorySpendingMap[cat] = { total: 0, count: 0 };
+      }
+      categorySpendingMap[cat].total += t.amount;
+      categorySpendingMap[cat].count += 1;
+    });
+
+    // 3. Map budgets with deterministic progress
+    return budgets.map((b) => {
+      const spendData = categorySpendingMap[b.category] || { total: 0, count: 0 };
+      const spent = spendData.total;
+      const remaining = Math.max(0, b.allocatedAmount - spent);
+      const utilization =
+        b.allocatedAmount > 0 ? (spent / b.allocatedAmount) * 100 : 0;
+
+      let status: BudgetStatus = 'NORMAL';
+      if (utilization >= 100) {
+        status = 'EXCEEDED';
+      } else if (utilization >= 90) {
+        status = 'NEAR_LIMIT';
+      } else if (utilization >= 70) {
+        status = 'APPROACHING';
+      }
+
+      return {
+        ...b,
+        spent,
+        remaining,
+        utilizationPercentage: Number(utilization.toFixed(1)),
+        status,
+        matchingTransactionCount: spendData.count,
+      };
+    });
+  },
+
+  /**
+   * Compute overall budget metrics across active budgets
+   */
+  computeOverallMetrics(budgetMetrics: BudgetWithMetrics[]): OverallBudgetMetrics {
+    let totalBudget = 0;
+    let totalSpent = 0;
+
+    budgetMetrics.forEach((b) => {
+      totalBudget += b.allocatedAmount;
+      totalSpent += b.spent;
+    });
+
+    const remainingBudget = Math.max(0, totalBudget - totalSpent);
+    const overallUtilization =
+      totalBudget > 0 ? (totalSpent / totalBudget) * 100 : 0;
+
+    let status: BudgetStatus = 'NORMAL';
+    if (overallUtilization >= 100) {
+      status = 'EXCEEDED';
+    } else if (overallUtilization >= 90) {
+      status = 'NEAR_LIMIT';
+    } else if (overallUtilization >= 70) {
+      status = 'APPROACHING';
+    }
+
+    return {
+      totalBudget,
+      totalSpent,
+      remainingBudget,
+      overallUtilization: Number(overallUtilization.toFixed(1)),
+      status,
+    };
+  },
+
+  /**
+   * Generate data-driven alerts for budgets exceeding or near limit
+   */
+  generateAlerts(budgetMetrics: BudgetWithMetrics[]): BudgetAlert[] {
+    const alerts: BudgetAlert[] = [];
+
+    budgetMetrics.forEach((b) => {
+      if (b.status === 'EXCEEDED') {
+        const overspent = b.spent - b.allocatedAmount;
+        alerts.push({
+          id: `alert-exceeded-${b.id}`,
+          category: b.category,
+          severity: 'DANGER',
+          title: `${b.category} Budget Exceeded`,
+          description: `You have spent ${transactionService.formatINR(b.spent)}, which is ${transactionService.formatINR(overspent)} over your allocated limit.`,
+          budgetId: b.id,
+        });
+      } else if (b.status === 'NEAR_LIMIT') {
+        alerts.push({
+          id: `alert-near-${b.id}`,
+          category: b.category,
+          severity: 'WARNING',
+          title: `${b.category} Near Limit (${b.utilizationPercentage}%)`,
+          description: `Only ${transactionService.formatINR(b.remaining)} remaining. Consider moderating daily discretionary spend.`,
+          budgetId: b.id,
+        });
+      }
+    });
+
+    return alerts;
+  },
+
+  /**
+   * Generate data-driven spending insights
+   */
+  generateInsights(budgetMetrics: BudgetWithMetrics[]): BudgetInsight[] {
+    if (budgetMetrics.length === 0) return [];
+
+    const insights: BudgetInsight[] = [];
+
+    // 1. Highest spending category
+    const sortedBySpent = [...budgetMetrics].sort((a, b) => b.spent - a.spent);
+    if (sortedBySpent[0] && sortedBySpent[0].spent > 0) {
+      insights.push({
+        id: 'insight-highest-spent',
+        title: `Top Outflow: ${sortedBySpent[0].category}`,
+        description: `${sortedBySpent[0].category} accounts for ${transactionService.formatINR(sortedBySpent[0].spent)} across ${sortedBySpent[0].matchingTransactionCount} transactions.`,
+        type: 'NEUTRAL',
+      });
+    }
+
+    // 2. Category closest to its limit
+    const sortedByUtil = [...budgetMetrics].sort(
+      (a, b) => b.utilizationPercentage - a.utilizationPercentage
+    );
+    if (sortedByUtil[0] && sortedByUtil[0].utilizationPercentage >= 70) {
+      insights.push({
+        id: 'insight-highest-util',
+        title: `Highest Utilization: ${sortedByUtil[0].category}`,
+        description: `Currently at ${sortedByUtil[0].utilizationPercentage}% of the ${transactionService.formatINR(sortedByUtil[0].allocatedAmount)} ceiling.`,
+        type: sortedByUtil[0].utilizationPercentage >= 90 ? 'WARNING' : 'NEUTRAL',
+      });
+    }
+
+    // 3. Category with highest remaining budget
+    const sortedByRemaining = [...budgetMetrics].sort((a, b) => b.remaining - a.remaining);
+    if (sortedByRemaining[0] && sortedByRemaining[0].remaining > 0) {
+      insights.push({
+        id: 'insight-highest-remaining',
+        title: `Healthy Reserve: ${sortedByRemaining[0].category}`,
+        description: `${transactionService.formatINR(sortedByRemaining[0].remaining)} remains available for this billing period.`,
+        type: 'POSITIVE',
+      });
+    }
+
+    return insights;
+  },
+
+  /**
+   * Create new budget
+   */
+  async createBudget(
+    data: Omit<BudgetRecord, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  ): Promise<BudgetRecord> {
+    const user = authService.getUser();
+    const userId = user?.id || 'demo-user-id';
+
+    const newRecord: BudgetRecord = {
+      ...data,
+      id: `bgt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      userId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const current = this.getStoredBudgets();
+    const updated = [...current, newRecord];
+    this.saveStoredBudgets(updated);
+
+    return newRecord;
+  },
+
+  /**
+   * Update existing budget
+   */
+  async updateBudget(
+    id: string,
+    updates: Partial<Omit<BudgetRecord, 'id' | 'userId' | 'createdAt'>>
+  ): Promise<BudgetRecord> {
+    const current = this.getStoredBudgets();
+    const index = current.findIndex((b) => b.id === id);
+
+    if (index === -1) {
+      throw new Error(`Budget with ID "${id}" not found.`);
+    }
+
+    const updatedRecord: BudgetRecord = {
+      ...current[index],
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+
+    current[index] = updatedRecord;
+    this.saveStoredBudgets(current);
+
+    return updatedRecord;
+  },
+
+  /**
+   * Delete budget safely
+   */
+  async deleteBudget(id: string): Promise<void> {
+    const current = this.getStoredBudgets();
+    const filtered = current.filter((b) => b.id !== id);
+    this.saveStoredBudgets(filtered);
+  },
+
+  formatINR(amount: number): string {
+    return transactionService.formatINR(amount);
+  },
+};

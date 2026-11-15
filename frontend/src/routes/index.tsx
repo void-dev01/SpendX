@@ -15,6 +15,7 @@ import { TransactionDetailPage } from '@/features/transactions/TransactionDetail
 import { AccountsPage } from '@/features/accounts/AccountsPage';
 import { AccountDetailPage } from '@/features/accounts/AccountDetailPage';
 import { BudgetsPage } from '@/features/budgets/BudgetsPage';
+import { BudgetDetailPage } from '@/features/budgets/BudgetDetailPage';
 import { SavingsPage } from '@/features/savings/SavingsPage';
 import { RecurringPage } from '@/features/recurring/RecurringPage';
 import { AnalyticsPage } from '@/features/analytics/AnalyticsPage';
@@ -46,6 +47,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/accounts/:id" element={<AccountDetailPage />} />
           <Route path="/budgets" element={<BudgetsPage />} />
+          <Route path="/budgets/:id" element={<BudgetDetailPage />} />
           <Route path="/savings" element={<SavingsPage />} />
           <Route path="/recurring" element={<RecurringPage />} />
 

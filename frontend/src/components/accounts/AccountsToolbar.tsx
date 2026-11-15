@@ -1,0 +1,93 @@
+import React from 'react';
+import { Search, Plus, X } from 'lucide-react';
+import { AccountType } from '@/services/accountService';
+
+export interface AccountFiltersState {
+  search: string;
+  type: 'ALL' | AccountType;
+  sortBy: 'NAME_ASC' | 'NAME_DESC' | 'BALANCE_DESC' | 'BALANCE_ASC';
+}
+
+interface AccountsToolbarProps {
+  filters: AccountFiltersState;
+  onChange: (filters: AccountFiltersState) => void;
+  onAddAccount: () => void;
+  accountCount: number;
+}
+
+export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
+  filters,
+  onChange,
+  onAddAccount,
+  accountCount,
+}) => {
+  return (
+    <div className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+      {/* Search Input */}
+      <div className="relative flex-1 max-w-md">
+        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+        <input
+          type="text"
+          value={filters.search}
+          onChange={(e) => onChange({ ...filters, search: e.target.value })}
+          placeholder="Search by account, bank, or card name..."
+          className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-slate-800 dark:text-slate-100 transition-all"
+        />
+        {filters.search && (
+          <button
+            type="button"
+            onClick={() => onChange({ ...filters, search: '' })}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+
+      {/* Filter, Sort & Add Account */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        {/* Type Filter */}
+        <select
+          value={filters.type}
+          onChange={(e) =>
+            onChange({ ...filters, type: e.target.value as AccountFiltersState['type'] })
+          }
+          aria-label="Filter accounts by type"
+          className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+        >
+          <option value="ALL">All Types ({accountCount})</option>
+          <option value="BANK">Checking / Bank</option>
+          <option value="SAVINGS">Savings Vaults</option>
+          <option value="CREDIT_CARD">Credit Cards</option>
+          <option value="CASH">Cash Wallets</option>
+          <option value="OTHER">Other Accounts</option>
+        </select>
+
+        {/* Sort Dropdown */}
+        <select
+          value={filters.sortBy}
+          onChange={(e) =>
+            onChange({ ...filters, sortBy: e.target.value as AccountFiltersState['sortBy'] })
+          }
+          aria-label="Sort accounts"
+          className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+        >
+          <option value="BALANCE_DESC">Balance: High to Low</option>
+          <option value="BALANCE_ASC">Balance: Low to High</option>
+          <option value="NAME_ASC">Name: A to Z</option>
+          <option value="NAME_DESC">Name: Z to A</option>
+        </select>
+
+        {/* Add Account CTA */}
+        <button
+          type="button"
+          onClick={onAddAccount}
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary hover:opacity-95 shadow-md transition-all cursor-pointer whitespace-nowrap"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add Account</span>
+        </button>
+      </div>
+    </div>
+  );
+};
