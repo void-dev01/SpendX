@@ -20,7 +20,7 @@ import { SavingsPage } from '@/features/savings/SavingsPage';
 import { SavingsDetailPage } from '@/features/savings/SavingsDetailPage';
 import { RecurringPage } from '@/features/recurring/RecurringPage';
 import { AnalyticsPage } from '@/features/analytics/AnalyticsPage';
-import { AiCoachPage } from '@/features/ai-coach/AiCoachPage';
+import { AiAssistantPage } from '@/features/ai-assistant/AiAssistantPage';
 import { InsightsPage } from '@/features/insights/InsightsPage';
 import { ReportsPage } from '@/features/reports/ReportsPage';
 import { NotificationsPage } from '@/features/notifications/NotificationsPage';
@@ -55,8 +55,8 @@ export const AppRoutes: React.FC = () => {
 
           {/* GROUP 3 — INTELLIGENCE */}
           <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/ai-assistant" element={<AiCoachPage />} />
-          <Route path="/ai-coach" element={<AiCoachPage />} />
+          <Route path="/ai-assistant" element={<AiAssistantPage />} />
+          <Route path="/ai-coach" element={<AiAssistantPage />} />
           <Route path="/insights" element={<InsightsPage />} />
 
           {/* GROUP 4 — REPORTING */}

@@ -4,8 +4,33 @@ import { AIService } from '../services/ai.service.js';
 import { z } from 'zod';
 
 const askCoachSchema = z.object({
-  query: z.string().min(2, { message: 'Query must be at least 2 characters long' }).max(500),
+  query: z.string().min(1, { message: 'Query cannot be empty' }).max(2000),
+  context: z.record(z.any()).optional(),
+  history: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant', 'model']),
+        content: z.string(),
+      })
+    )
+    .optional(),
 });
+
+export const getAIStatus = async (
+  _req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const status = AIService.getStatus();
+    res.status(200).json({
+      success: true,
+      data: status,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const getInsights = async (
   req: AuthenticatedRequest,
@@ -33,13 +58,13 @@ export const askCoach = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { query } = askCoachSchema.parse(req.body);
+    const { query, context, history } = askCoachSchema.parse(req.body);
     const userId = req.user?.id || 'demo-user-id';
-    const response = await AIService.askCoach(userId, query);
+    const result = await AIService.askCoach(userId, query, context, history);
 
     res.status(200).json({
       success: true,
-      data: { answer: response },
+      data: result,
     });
   } catch (err) {
     next(err);
