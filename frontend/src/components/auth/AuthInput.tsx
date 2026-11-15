@@ -1,0 +1,66 @@
+import React, { forwardRef } from 'react';
+import { LucideIcon, AlertCircle } from 'lucide-react';
+
+export interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id: string;
+  label: string;
+  icon?: LucideIcon;
+  error?: string;
+  helperText?: string;
+}
+
+export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
+  ({ id, label, icon: Icon, error, helperText, disabled, className = '', ...props }, ref) => {
+    return (
+      <div className="space-y-1.5 w-full text-left">
+        <label
+          htmlFor={id}
+          className="block text-xs font-semibold text-foreground tracking-wide uppercase"
+        >
+          {label}
+        </label>
+
+        <div className="relative">
+          {Icon && (
+            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+              <Icon className="w-4 h-4" />
+            </div>
+          )}
+
+          <input
+            id={id}
+            ref={ref}
+            disabled={disabled}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? `${id}-error` : helperText ? `${id}-helper` : undefined}
+            className={`w-full min-h-[48px] rounded-xl text-sm font-medium transition-all duration-200 outline-none ${
+              Icon ? 'pl-10 pr-4' : 'px-4'
+            } ${
+              error
+                ? 'border-red-500/80 dark:border-red-500/70 bg-red-500/5 focus:ring-2 focus:ring-red-500/30'
+                : 'border-white/80 dark:border-white/15 bg-white/60 dark:bg-white/5 focus:border-[#718FE8] focus:ring-2 focus:ring-[#718FE8]/25'
+            } border shadow-sm text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+            {...props}
+          />
+        </div>
+
+        {error ? (
+          <p
+            id={`${id}-error`}
+            role="alert"
+            className="flex items-center gap-1.5 text-xs text-red-500 dark:text-red-400 font-medium pt-0.5"
+          >
+            <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            <span>{error}</span>
+          </p>
+        ) : helperText ? (
+          <p id={`${id}-helper`} className="text-xs text-muted-foreground pt-0.5">
+            {helperText}
+          </p>
+        ) : null}
+      </div>
+    );
+  }
+);
+
+AuthInput.displayName = 'AuthInput';

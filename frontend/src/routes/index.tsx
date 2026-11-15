@@ -1,28 +1,72 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 import { AppLayout } from '@/components/layout/AppLayout';
+
+// Public Pages
+import { LandingPage } from '@/features/landing/LandingPage';
+import { LoginPage } from '@/features/auth/LoginPage';
+import { SignupPage } from '@/features/auth/SignupPage';
+
+// Authenticated Application Pages
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { TransactionsPage } from '@/features/transactions/TransactionsPage';
+import { TransactionDetailPage } from '@/features/transactions/TransactionDetailPage';
+import { AccountsPage } from '@/features/accounts/AccountsPage';
+import { AccountDetailPage } from '@/features/accounts/AccountDetailPage';
 import { BudgetsPage } from '@/features/budgets/BudgetsPage';
+import { SavingsPage } from '@/features/savings/SavingsPage';
+import { RecurringPage } from '@/features/recurring/RecurringPage';
 import { AnalyticsPage } from '@/features/analytics/AnalyticsPage';
 import { AiCoachPage } from '@/features/ai-coach/AiCoachPage';
-import { SavingsPage } from '@/features/savings/SavingsPage';
+import { InsightsPage } from '@/features/insights/InsightsPage';
+import { ReportsPage } from '@/features/reports/ReportsPage';
+import { NotificationsPage } from '@/features/notifications/NotificationsPage';
+import { ProfilePage } from '@/features/profile/ProfilePage';
 import { SettingsPage } from '@/features/settings/SettingsPage';
-import { AuthPage } from '@/features/auth/AuthPage';
 
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="transactions" element={<TransactionsPage />} />
-        <Route path="budgets" element={<BudgetsPage />} />
-        <Route path="analytics" element={<AnalyticsPage />} />
-        <Route path="ai-coach" element={<AiCoachPage />} />
-        <Route path="savings" element={<SavingsPage />} />
-        <Route path="settings" element={<SettingsPage />} />
+      {/* 1. Public Routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/auth" element={<Navigate to="/login" replace />} />
+
+      {/* 2. Authenticated Application Shell (Protected) */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          {/* GROUP 1 — OVERVIEW */}
+          <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* GROUP 2 — MONEY MANAGEMENT */}
+          <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/transactions/:id" element={<TransactionDetailPage />} />
+          <Route path="/accounts" element={<AccountsPage />} />
+          <Route path="/accounts/:id" element={<AccountDetailPage />} />
+          <Route path="/budgets" element={<BudgetsPage />} />
+          <Route path="/savings" element={<SavingsPage />} />
+          <Route path="/recurring" element={<RecurringPage />} />
+
+          {/* GROUP 3 — INTELLIGENCE */}
+          <Route path="/analytics" element={<AnalyticsPage />} />
+          <Route path="/ai-assistant" element={<AiCoachPage />} />
+          <Route path="/ai-coach" element={<AiCoachPage />} />
+          <Route path="/insights" element={<InsightsPage />} />
+
+          {/* GROUP 4 — REPORTING */}
+          <Route path="/reports" element={<ReportsPage />} />
+
+          {/* GROUP 5 — PERSONAL */}
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+        </Route>
       </Route>
+
+      {/* 3. Catch-all fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 };

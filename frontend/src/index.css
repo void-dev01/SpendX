@@ -2,40 +2,78 @@
 
 @layer base {
   :root {
-    --background: #EAF5F0;
-    --foreground: #14251F;
-    --surface: #F7FBF9;
-    --primary: #059669;
+    --background: #EBF3FC;
+    --foreground: #263653;
+    --surface: rgba(255, 255, 255, 0.72);
+    --primary: #718FE8;
     --primary-foreground: #FFFFFF;
-    --secondary: #06B6D4;
+    --secondary: #8B72D6;
     --secondary-foreground: #FFFFFF;
-    --income: #059669;
-    --expense: #E45B70;
-    --warning: #D97706;
-    --muted: #E2ECE7;
-    --muted-foreground: #4B6358;
-    --border: #D1E2DB;
-    --input: #D1E2DB;
-    --ring: #059669;
-    --radius: 0.5rem;
+    --income: #12866E;
+    --expense: #DC5579;
+    --warning: #C48620;
+    --info: #4779C9;
+    --muted: #EBF1F8;
+    --muted-foreground: #64748B;
+    --border: rgba(255, 255, 255, 0.80);
+    --input: rgba(255, 255, 255, 0.60);
+    --ring: #718FE8;
+    --radius: 1rem;
+
+    /* SPENDX Brand Tokens */
+    --brand-primary: #718FE8;
+    --brand-secondary: #8B72D6;
+    --brand-ai: #8066CC;
+    --brand-ice: #DDF5FF;
+    --brand-sky: #C9E5FF;
+    --brand-lavender: #DCD9FF;
+    --brand-soft-purple: #EDE4FF;
+    --brand-deep-indigo: #5368A2;
+
+    /* Glass Tokens */
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.85);
+    --glass-nav-bg: rgba(255, 255, 255, 0.72);
+    --glass-nav-border: rgba(255, 255, 255, 0.90);
+    --glass-modal-bg: rgba(255, 255, 255, 0.88);
+    --glass-modal-border: rgba(255, 255, 255, 1.00);
+
+    /* Shadow Tokens */
+    --shadow-glass: 0 10px 32px -4px rgba(83, 104, 162, 0.08), 0 4px 12px -2px rgba(83, 104, 162, 0.04);
+    --shadow-glass-elevated: 0 16px 40px -6px rgba(83, 104, 162, 0.14), 0 6px 16px -3px rgba(83, 104, 162, 0.08);
+    --shadow-nav: 0 12px 36px -4px rgba(83, 104, 162, 0.12), 0 2px 8px -1px rgba(83, 104, 162, 0.06);
   }
 
   .dark {
-    --background: #101A19;
-    --foreground: #ECFDF5;
-    --surface: #172522;
-    --primary: #34D399;
-    --primary-foreground: #101A19;
-    --secondary: #22D3EE;
-    --secondary-foreground: #101A19;
+    --background: #101827;
+    --foreground: #F1F5FF;
+    --surface: #17243C;
+    --primary: #A5BFFF;
+    --primary-foreground: #101827;
+    --secondary: #B9A4FF;
+    --secondary-foreground: #101827;
     --income: #34D399;
     --expense: #FB7185;
     --warning: #FBBF24;
-    --muted: #1E332F;
-    --muted-foreground: #94A3B8;
-    --border: #233B36;
-    --input: #233B36;
-    --ring: #34D399;
+    --info: #60A5FA;
+    --muted: #1E293B;
+    --muted-foreground: #A8B5CC;
+    --border: rgba(255, 255, 255, 0.14);
+    --input: rgba(255, 255, 255, 0.08);
+    --ring: #A5BFFF;
+
+    /* Dark Glass Tokens */
+    --glass-bg: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-nav-bg: rgba(23, 36, 60, 0.85);
+    --glass-nav-border: rgba(255, 255, 255, 0.16);
+    --glass-modal-bg: rgba(23, 36, 60, 0.94);
+    --glass-modal-border: rgba(255, 255, 255, 0.20);
+
+    /* Shadow Tokens Dark */
+    --shadow-glass: 0 10px 32px -4px rgba(0, 0, 0, 0.45), 0 4px 12px -2px rgba(0, 0, 0, 0.25);
+    --shadow-glass-elevated: 0 16px 40px -6px rgba(0, 0, 0, 0.65), 0 6px 16px -3px rgba(0, 0, 0, 0.35);
+    --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.50), 0 2px 8px -1px rgba(0, 0, 0, 0.30);
   }
 }
 
@@ -50,16 +88,124 @@
   --color-income: var(--income);
   --color-expense: var(--expense);
   --color-warning: var(--warning);
+  --color-info: var(--info);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Direct palette mapping */
+  --color-brand-primary: #718FE8;
+  --color-brand-secondary: #8B72D6;
+  --color-brand-ai: #8066CC;
+  --color-brand-ice: #DDF5FF;
+  --color-brand-sky: #C9E5FF;
+  --color-brand-lavender: #DCD9FF;
+  --color-brand-soft-purple: #EDE4FF;
+  --color-brand-deep-indigo: #5368A2;
+
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--background);
   color: var(--foreground);
+  overflow-x: hidden;
+}
+
+/* Atmospheric Background Gradient */
+.spendx-ambient-bg {
+  background: linear-gradient(
+    135deg,
+    #DDF5FF 0%,
+    #C9E5FF 38%,
+    #DCD9FF 72%,
+    #EDE4FF 100%
+  );
+  background-attachment: fixed;
+}
+
+.dark .spendx-ambient-bg {
+  background: linear-gradient(
+    145deg,
+    #101827 0%,
+    #131E33 45%,
+    #17243C 100%
+  );
+  background-attachment: fixed;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+}
+
+.glass-nav {
+  background: var(--glass-nav-bg);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--glass-nav-border);
+  box-shadow: var(--shadow-nav);
+}
+
+.glass-card-interactive {
+  background: var(--glass-bg);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-glass);
+  transition: all 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glass-elevated);
+  border-color: rgba(113, 143, 232, 0.45);
+}
+
+.dark .glass-card-interactive:hover {
+  border-color: rgba(165, 191, 255, 0.35);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "cv01" 1;
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(20px)) {
+  .glass-panel,
+  .glass-card-interactive {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+  }
+  .dark .glass-panel,
+  .dark .glass-card-interactive {
+    background-color: #17243C !important;
+  }
+  .glass-nav {
+    background-color: rgba(255, 255, 255, 0.98) !important;
+  }
+  .dark .glass-nav {
+    background-color: #17243C !important;
+  }
 }

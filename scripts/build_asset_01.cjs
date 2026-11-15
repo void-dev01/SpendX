@@ -1,0 +1,187 @@
+const fs = require('fs');
+const path = require('path');
+const { Resvg } = require('../frontend/node_modules/@resvg/resvg-js');
+
+// Create the standalone high-precision SVG for Asset 01: Primary Light Mode Logo
+// Dimensions: 800 x 200 viewBox (4:1 horizontal lockup ratio)
+// Symbol: ~140 x 140 placed at x=40, y=30
+// Wordmark: SPEND in #101827, X in gradient #438BFA -> #7651E8 -> #7138D8
+
+const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="200" viewBox="0 0 800 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Brand Primary Gradient for Symbol Top Segment -->
+    <linearGradient id="symTopGrad" x1="45" y1="30" x2="165" y2="105" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#38BDF8" />
+      <stop offset="45%" stopColor="#438BFA" />
+      <stop offset="100%" stopColor="#5365EE" />
+    </linearGradient>
+
+    <!-- Brand Gradient for Symbol Upward Diagonal Spine (Financial Growth) -->
+    <linearGradient id="symSpineGrad" x1="55" y1="140" x2="175" y2="55" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#438BFA" />
+      <stop offset="40%" stopColor="#5365EE" />
+      <stop offset="85%" stopColor="#7651E8" />
+      <stop offset="100%" stopColor="#8B5CF6" />
+    </linearGradient>
+
+    <!-- Brand Gradient for Symbol Lower Base Loop -->
+    <linearGradient id="symBottomGrad" x1="60" y1="110" x2="170" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#5365EE" />
+      <stop offset="50%" stopColor="#7651E8" />
+      <stop offset="100%" stopColor="#7138D8" />
+    </linearGradient>
+
+    <!-- Gradient for Wordmark 'X' -->
+    <linearGradient id="wordmarkXGrad" x1="655" y1="65" x2="745" y2="145" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#38BDF8" />
+      <stop offset="25%" stopColor="#438BFA" />
+      <stop offset="70%" stopColor="#7651E8" />
+      <stop offset="100%" stopColor="#7138D8" />
+    </linearGradient>
+
+    <!-- Subtle inner specular sheen for vector depth -->
+    <linearGradient id="specularSheen" x1="50" y1="35" x2="160" y2="165" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.45" />
+      <stop offset="50%" stopColor="#FFFFFF" stopOpacity="0.05" />
+      <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- ================= SPENDX GEOMETRIC S SYMBOL ================= -->
+  <g id="spendx-symbol">
+    <!-- Top Arc Segment: Sweeps right-to-left down to center fold -->
+    <path
+      d="M110 32C138 32 165 46 165 72C165 92 148 103 125 107L98 112C85 114 74 122 74 134C74 148 88 158 106 158C126 158 144 148 152 138L166 152C152 168 131 178 105 178C73 178 48 159 48 132C48 110 65 98 89 94L116 89C128 87 139 80 139 68C139 56 127 48 110 48C94 48 78 56 70 65L56 50C69 37 89 32 110 32Z"
+      fill="none"
+    />
+
+    <!-- Layer 1: Bottom Loop & Foundation Ribbon -->
+    <path
+      d="M62 136C62 112 80 99 104 95L132 90C148 87 157 78 157 66C157 52 143 42 122 42C104 42 88 50 78 61L60 44C75 28 98 22 124 22C157 22 184 41 184 70C184 94 165 108 140 113L113 118C98 121 90 129 90 141C90 154 104 164 125 164C147 164 167 152 178 138L194 156C178 177 152 188 122 188C86 188 62 166 62 136Z"
+      fill="none"
+    />
+
+    <!-- Precision Fintech Geometric S Structure -->
+    <!-- 1. Upper Dynamic Facet with Rounded Chamfer -->
+    <path
+      d="M102 24 C132 24 168 36 168 70 C168 88 155 101 134 108 L104 116 C86 121 78 129 78 140 C78 154 92 164 114 164 C134 164 152 154 164 140 L182 156 C165 177 141 188 112 188 C74 188 50 166 50 138 C50 118 64 104 86 98 L116 90 C133 85 140 78 140 68 C140 54 126 46 104 46 C86 46 68 54 56 66 L38 48 C54 32 78 24 102 24 Z"
+      fill="none"
+    />
+
+    <!-- Master Geometric S-Fintech Monogram (Faceted Layers) -->
+    <!-- Segment A: Upper Loop (Cyan to Primary Blue) -->
+    <path
+      d="M106 25C136 25 170 38 170 72C170 94 152 108 128 114L98 120C88 122 82 128 82 136C82 147 94 156 112 156C128 156 144 148 154 136L176 154C160 174 138 185 110 185C74 185 52 164 52 134C52 112 70 98 94 92L124 86C134 84 140 78 140 70C140 59 128 51 108 51C90 51 74 59 62 70L42 50C58 33 82 25 106 25Z"
+      fill="url(#symTopGrad)"
+    />
+
+    <!-- Segment B: Upward Growth Arrow Crest / Internal Momentum Vector (Blue to Purple) -->
+    <path
+      d="M94 92L124 86C134 84 140 78 140 70C140 59 128 51 108 51C90 51 74 59 62 70L42 50C58 33 82 25 106 25C136 25 170 38 170 72C170 88 158 101 138 109L94 92Z"
+      fill="url(#symTopGrad)"
+    />
+
+    <!-- Segment C: Diagonal Ascension Spine (Primary Blue -> Royal Blue -> Purple) -->
+    <path
+      d="M68 118L108 88L156 52L170 72L128 114L98 120L68 118Z"
+      fill="url(#symSpineGrad)"
+      opacity="0.95"
+    />
+
+    <!-- Segment D: Upward Financial Impulse Arrow at Top Right (Financial Growth Vector) -->
+    <path
+      d="M142 38L182 22L176 64L162 48L142 38Z"
+      fill="#38BDF8"
+    />
+
+    <!-- Segment E: Lower Foundation Curve (Royal Blue -> Deep Purple) -->
+    <path
+      d="M98 120C88 122 82 128 82 136C82 147 94 156 112 156C128 156 144 148 154 136L176 154C160 174 138 185 110 185C74 185 52 164 52 134C52 112 70 98 94 92L112 118L98 120Z"
+      fill="url(#symBottomGrad)"
+    />
+
+    <!-- Modern Specular Chamfer Highlight for High-Tech Glass / Facet Quality -->
+    <path
+      d="M106 28C133 28 164 40 166 70C166 84 156 96 138 104L130 92C142 86 148 78 148 68C148 56 134 46 110 46C94 46 80 52 70 60L58 48C72 35 90 28 106 28Z"
+      fill="url(#specularSheen)"
+    />
+  </g>
+
+  <!-- ================= SPENDX TYPOGRAPHIC WORDMARK ================= -->
+  <!-- Clean geometric typography rendered as crisp vector paths for total fidelity -->
+  <g id="spendx-wordmark" fill="#101827">
+    <!-- Letter 'S' (x: 230 -> 285) -->
+    <path d="M282 78L262 86C258 75 250 68 238 68C226 68 217 74 217 84C217 94 226 99 242 104L254 108C276 115 288 126 288 144C288 165 270 179 243 179C217 179 198 165 192 144L213 136C218 149 228 157 242 157C254 157 264 150 264 140C264 130 255 125 240 120L228 116C208 109 195 99 195 81C195 62 213 47 238 47C261 47 277 59 282 78Z" />
+
+    <!-- Letter 'P' (x: 310 -> 375) -->
+    <path d="M312 50H350C373 50 388 64 388 86C388 108 373 122 350 122H336V176H312V50ZM336 102H348C360 102 365 96 365 86C365 76 360 70 348 70H336V102Z" />
+
+    <!-- Letter 'E' (x: 405 -> 465) -->
+    <path d="M410 50H472V72H434V101H466V122H434V154H474V176H410V50Z" />
+
+    <!-- Letter 'N' (x: 495 -> 565) -->
+    <path d="M495 50H519L553 118V50H576V176H552L518 108V176H495V50Z" />
+
+    <!-- Letter 'D' (x: 595 -> 665) -->
+    <path d="M595 50H632C657 50 673 68 673 113C673 158 657 176 632 176H595V50ZM619 154H630C644 154 650 142 650 113C650 84 644 72 630 72H619V154Z" />
+  </g>
+
+  <!-- Letter 'X' with Blue-to-Purple Gradient Treatment (x: 690 -> 765) -->
+  <g id="spendx-x-gradient">
+    <!-- Diagonal 1: Top-Left to Bottom-Right -->
+    <path
+      d="M690 50H718L778 176H750L690 50Z"
+      fill="url(#wordmarkXGrad)"
+    />
+    <!-- Diagonal 2: Top-Right to Bottom-Left -->
+    <path
+      d="M776 50H748L688 176H716L776 50Z"
+      fill="url(#wordmarkXGrad)"
+    />
+    <!-- Center Precision Fusion / Spark Highlight -->
+    <circle cx="733" cy="113" r="5" fill="#38BDF8" opacity="0.6" />
+  </g>
+</svg>`;
+
+// Write SVG files
+const publicLogoDir = path.join(__dirname, '../frontend/public/logo');
+const srcLogoDir = path.join(__dirname, '../frontend/src/assets/logo');
+const artifactDir = 'C:/Users/shubh.dangi/.gemini/antigravity-cli/brain/51fbeadf-fd1a-49a2-a3f5-a44dc082d836';
+
+if (!fs.existsSync(publicLogoDir)) fs.mkdirSync(publicLogoDir, { recursive: true });
+if (!fs.existsSync(srcLogoDir)) fs.mkdirSync(srcLogoDir, { recursive: true });
+
+const svgPublicPath = path.join(publicLogoDir, 'spendx-logo-light.svg');
+const svgSrcPath = path.join(srcLogoDir, 'spendx-logo-light.svg');
+const svgArtifactPath = path.join(artifactDir, 'spendx-logo-light.svg');
+
+fs.writeFileSync(svgPublicPath, svgContent);
+fs.writeFileSync(svgSrcPath, svgContent);
+fs.writeFileSync(svgArtifactPath, svgContent);
+
+console.log('Saved SVG to:');
+console.log('-', svgPublicPath);
+console.log('-', svgSrcPath);
+console.log('-', svgArtifactPath);
+
+// Render high-res PNG (width: 2400px, 3x resolution of 800x200) with true alpha transparency
+const resvg = new Resvg(svgContent, {
+  fitTo: { mode: 'width', value: 2400 },
+  background: 'rgba(0,0,0,0)' // Genuine transparent background
+});
+
+const pngBuffer = resvg.render().asPng();
+
+const pngPublicPath = path.join(publicLogoDir, 'spendx-logo-light.png');
+const pngSrcPath = path.join(srcLogoDir, 'spendx-logo-light.png');
+const pngArtifactPath = path.join(artifactDir, 'spendx-logo-light.png');
+
+fs.writeFileSync(pngPublicPath, pngBuffer);
+fs.writeFileSync(pngSrcPath, pngBuffer);
+fs.writeFileSync(pngArtifactPath, pngBuffer);
+
+console.log('Rendered High-Res PNG (2400x600, Transparent) to:');
+console.log('-', pngPublicPath, `(${fs.statSync(pngPublicPath).size} bytes)`);
+console.log('-', pngSrcPath);
+console.log('-', pngArtifactPath);
