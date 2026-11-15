@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { createTransaction } from '../controllers/transaction.controller.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-// In production, requireAuth middleware verifies token
-router.post('/', createTransaction);
+router.post('/', requireAuth, createTransaction);
 
 export default router;

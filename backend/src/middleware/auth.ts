@@ -16,8 +16,31 @@ export const requireAuth = async (
 
   const token = authHeader.split(' ')[1];
 
+  // In test environment, handle mock tokens strictly
+  if (process.env.NODE_ENV === 'test') {
+    if (token.startsWith('test-token-')) {
+      const mockUserId = token.replace('test-token-', '') || 'test-user-id';
+      req.user = {
+        id: mockUserId,
+        email: `${mockUserId}@spendx.local`,
+        role: 'authenticated',
+      };
+      return next();
+    } else {
+      return next(new AppError('Invalid or expired authentication session', 401));
+    }
+  }
+
   if (!supabaseClient) {
-    // If Supabase is not yet configured with live credentials, handle safely
+    // In local development mode without live Supabase keys, allow explicit dev token
+    if (process.env.NODE_ENV !== 'production' && token === 'spendx-dev-token') {
+      req.user = {
+        id: '00000000-0000-0000-0000-000000000001',
+        email: 'developer@spendx.local',
+        role: 'authenticated',
+      };
+      return next();
+    }
     return next(new AppError('Authentication service currently unconfigured', 503));
   }
 
