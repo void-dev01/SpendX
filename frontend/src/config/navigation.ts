@@ -260,6 +260,13 @@ export const getRouteMetadata = (pathname: string): RouteMetadata => {
       breadcrumbs: ['SPENDX', 'Finance', 'Budgets', 'Detail'],
     };
   }
+  if (pathname.startsWith('/savings/')) {
+    return {
+      title: 'Savings Goal Details',
+      category: 'Money Management',
+      breadcrumbs: ['SPENDX', 'Finance', 'Savings Goals', 'Detail'],
+    };
+  }
 
   return {
     title: 'Dashboard',
