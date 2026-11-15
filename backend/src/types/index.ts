@@ -49,3 +49,21 @@ export interface FinancialInsight {
   actionableStep?: string;
   generatedAt: string;
 }
+
+export type NotificationType =
+  | 'BUDGET_THRESHOLD'
+  | 'RECURRING_DUE'
+  | 'SAVINGS_MILESTONE'
+  | 'SECURITY_ALERT'
+  | 'WEEKLY_DIGEST';
+
+export interface NotificationRecord {
+  id: string;
+  userId: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  actionRoute?: string;
+  isRead: boolean;
+  createdAt: string;
+}
