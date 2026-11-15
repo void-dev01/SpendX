@@ -267,6 +267,13 @@ export const getRouteMetadata = (pathname: string): RouteMetadata => {
       breadcrumbs: ['SPENDX', 'Finance', 'Savings Goals', 'Detail'],
     };
   }
+  if (pathname.startsWith('/recurring/')) {
+    return {
+      title: 'Recurring Payment Details',
+      category: 'Money Management',
+      breadcrumbs: ['SPENDX', 'Finance', 'Recurring', 'Detail'],
+    };
+  }
 
   return {
     title: 'Dashboard',

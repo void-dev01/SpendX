@@ -19,6 +19,7 @@ import { BudgetDetailPage } from '@/features/budgets/BudgetDetailPage';
 import { SavingsPage } from '@/features/savings/SavingsPage';
 import { SavingsDetailPage } from '@/features/savings/SavingsDetailPage';
 import { RecurringPage } from '@/features/recurring/RecurringPage';
+import { RecurringDetailPage } from '@/features/recurring/RecurringDetailPage';
 import { AnalyticsPage } from '@/features/analytics/AnalyticsPage';
 import { AiAssistantPage } from '@/features/ai-assistant/AiAssistantPage';
 import { InsightsPage } from '@/features/insights/InsightsPage';
@@ -52,6 +53,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="/savings" element={<SavingsPage />} />
           <Route path="/savings/:id" element={<SavingsDetailPage />} />
           <Route path="/recurring" element={<RecurringPage />} />
+          <Route path="/recurring/:id" element={<RecurringDetailPage />} />
 
           {/* GROUP 3 — INTELLIGENCE */}
           <Route path="/analytics" element={<AnalyticsPage />} />
