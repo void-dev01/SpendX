@@ -1,73 +1,158 @@
-import React from 'react';
-import { FileText, Download, Calendar } from 'lucide-react';
-import { RoutePlaceholder } from '@/components/common/RoutePlaceholder';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Plus } from 'lucide-react';
+import {
+  reportsService,
+  MonthlyStatementRecord,
+  CustomReportOptions,
+  GeneratedFinancialReport,
+} from '@/services/reportsService';
+import { accountService } from '@/services/accountService';
 
-const monthlyStatements = [
-  { month: 'October 2026', generated: 'Nov 01, 2026', size: '1.4 MB', transactionsCount: 68 },
-  { month: 'September 2026', generated: 'Oct 01, 2026', size: '1.2 MB', transactionsCount: 74 },
-  { month: 'August 2026', generated: 'Sep 01, 2026', size: '1.1 MB', transactionsCount: 59 },
-  { month: 'July 2026', generated: 'Aug 01, 2026', size: '1.3 MB', transactionsCount: 81 },
-];
+import { ReportsOverviewCards } from '@/components/reports/ReportsOverviewCards';
+import { ArchivedStatementsTable } from '@/components/reports/ArchivedStatementsTable';
+import { TaxSummarySection } from '@/components/reports/TaxSummarySection';
+import { ReportGeneratorModal } from '@/components/reports/ReportGeneratorModal';
+import { PrintableStatementModal } from '@/components/reports/PrintableStatementModal';
 
 export const ReportsPage: React.FC = () => {
+  const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
+  const [isPrintableOpen, setIsPrintableOpen] = useState(false);
+  const [activeReport, setActiveReport] = useState<GeneratedFinancialReport | null>(null);
+
+  // 1. Fetch overview metrics
+  const { data: metrics } = useQuery({
+    queryKey: ['reports-overview-metrics'],
+    queryFn: () => reportsService.getOverviewMetrics(),
+  });
+
+  // 2. Fetch monthly statements
+  const { data: statements = [] } = useQuery({
+    queryKey: ['archived-monthly-statements'],
+    queryFn: () => reportsService.getArchivedStatements(),
+  });
+
+  // 3. Fetch tax deductible summary
+  const { data: taxSummary } = useQuery({
+    queryKey: ['tax-deductible-summary'],
+    queryFn: () => reportsService.getTaxDeductibleSummary(),
+  });
+
+  // 4. Fetch accounts
+  const { data: accounts = [] } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: () => accountService.getAccounts(),
+  });
+
+  // Handlers
+  const handleGenerateCustomReport = async (options: CustomReportOptions) => {
+    const report = await reportsService.generateReport(options);
+
+    if (options.format === 'CSV') {
+      reportsService.exportToCSV(report);
+    } else if (options.format === 'JSON') {
+      reportsService.exportToJSON(report);
+    } else {
+      setActiveReport(report);
+      setIsPrintableOpen(true);
+    }
+  };
+
+  const handleDownloadCSV = async (statement: MonthlyStatementRecord) => {
+    const report = await reportsService.generateReport({
+      reportType: 'MONTHLY_STATEMENT',
+      startDate: statement.startDate,
+      endDate: statement.endDate,
+      format: 'CSV',
+    });
+    reportsService.exportToCSV(report);
+  };
+
+  const handlePreviewStatement = async (statement: MonthlyStatementRecord) => {
+    const report = await reportsService.generateReport({
+      reportType: 'MONTHLY_STATEMENT',
+      startDate: statement.startDate,
+      endDate: statement.endDate,
+      format: 'PRINTABLE',
+    });
+    setActiveReport(report);
+    setIsPrintableOpen(true);
+  };
+
+  const handleExportTaxReport = async () => {
+    const now = new Date();
+    const yearStart = new Date(now.getFullYear(), 0, 1).toISOString();
+    const yearEnd = new Date(now.getFullYear(), 11, 31, 23, 59, 59).toISOString();
+
+    const report = await reportsService.generateReport({
+      reportType: 'TAX_AUDIT',
+      startDate: yearStart,
+      endDate: yearEnd,
+      format: 'CSV',
+    });
+    reportsService.exportToCSV(report);
+  };
+
   return (
-    <RoutePlaceholder
-      title="Monthly Financial Reports"
-      description="Generated fiscal summaries, tax ledger exports, and periodic net worth telemetry."
-      routeId="/reports"
-      icon={FileText}
-      badge="Reporting"
-    >
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl glass-panel border border-white/80 dark:border-white/15">
-          <div className="space-y-1">
-            <h3 className="text-sm font-bold text-foreground">Custom Date Range Audit Export</h3>
-            <p className="text-xs text-muted-foreground">
-              Generate PDF statement or raw CSV transaction ledger for your tax records.
-            </p>
+    <div className="space-y-8 animate-fadeIn pb-12">
+      {/* 1. Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-spendx-blue-primary bg-spendx-blue-primary/10 px-2.5 py-1 rounded-lg">
+              Reporting & Audit
+            </span>
           </div>
-          <Button size="sm" className="rounded-xl shadow-sm self-start sm:self-auto cursor-pointer">
-            <Download className="w-4 h-4 mr-1.5" /> Export Ledger (CSV)
-          </Button>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-spendx-text-primary dark:text-spendx-soft-purple tracking-tight mt-1">
+            Financial Reports & Statements
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+            Generated monthly fiscal statements, tax audit schedules, and RFC 4180 verified financial ledger exports.
+          </p>
         </div>
 
-        {/* Statements Feed */}
-        <div className="glass-panel rounded-3xl p-5 border border-white/80 dark:border-white/15 shadow-xl space-y-3">
-          <span className="text-xs font-bold text-foreground uppercase tracking-wider block pb-2 border-b border-black/5 dark:border-white/10">
-            Archived Monthly Statements
-          </span>
-
-          <div className="space-y-2.5">
-            {monthlyStatements.map((doc) => (
-              <div
-                key={doc.month}
-                className="rounded-2xl bg-white/40 dark:bg-white/5 p-4 border border-white/60 dark:border-white/10 flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-bold text-foreground">{doc.month} Statement</h4>
-                    <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-                      <Calendar className="w-3 h-3" /> Generated {doc.generated} • {doc.transactionsCount} records ({doc.size})
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  <span>Download PDF</span>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => setIsGeneratorOpen(true)}
+          className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-2xl shadow-lg shadow-spendx-blue-primary/20 shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Custom Report</span>
+        </button>
       </div>
-    </RoutePlaceholder>
+
+      {/* 2. Overview Metrics Cards */}
+      {metrics && <ReportsOverviewCards metrics={metrics} />}
+
+      {/* 3. Tax Optimization & Deduction Section */}
+      {taxSummary && (
+        <TaxSummarySection
+          taxSummary={taxSummary}
+          onExportTaxReport={handleExportTaxReport}
+        />
+      )}
+
+      {/* 4. Archived Monthly Statements Table */}
+      <ArchivedStatementsTable
+        statements={statements}
+        onDownloadCSV={handleDownloadCSV}
+        onPreviewStatement={handlePreviewStatement}
+      />
+
+      {/* 5. Custom Report Generator Modal */}
+      <ReportGeneratorModal
+        isOpen={isGeneratorOpen}
+        onClose={() => setIsGeneratorOpen(false)}
+        accounts={accounts}
+        onGenerateReport={handleGenerateCustomReport}
+      />
+
+      {/* 6. Printable Financial Statement Preview Modal */}
+      <PrintableStatementModal
+        isOpen={isPrintableOpen}
+        onClose={() => setIsPrintableOpen(false)}
+        report={activeReport}
+      />
+    </div>
   );
 };
