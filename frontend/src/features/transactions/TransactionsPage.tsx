@@ -18,6 +18,8 @@ import { TransactionFormDialog } from '@/components/transactions/TransactionForm
 import { TransactionDetailsDrawer } from '@/components/transactions/TransactionDetailsDrawer';
 import { DeleteConfirmDialog } from '@/components/transactions/DeleteConfirmDialog';
 import { TransactionEmptyState } from '@/components/transactions/TransactionEmptyState';
+import { UniversalImportDialog } from '@/components/transactions/import/UniversalImportDialog';
+import { accountService } from '@/services/accountService';
 
 const INITIAL_FILTERS: TransactionFiltersState = {
   search: '',
@@ -48,6 +50,13 @@ export const TransactionsPage: React.FC = () => {
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<TransactionRecord | null>(null);
   const [isBulkDeleting, setIsBulkDeleting] = useState<boolean>(false);
+  const [importDialogOpen, setImportDialogOpen] = useState<boolean>(false);
+
+  // Fetch accounts for import reconciliation
+  const { data: accounts = [] } = useQuery({
+    queryKey: ['accounts'],
+    queryFn: () => accountService.getAccounts(),
+  });
 
   // Fetch transactions using TanStack Query
   const {
@@ -394,6 +403,7 @@ export const TransactionsPage: React.FC = () => {
         onDateRangeChange={handleDateRangeHeaderChange}
         onAddTransaction={handleOpenAddDialog}
         onExport={handleExportCSV}
+        onImport={() => setImportDialogOpen(true)}
         filteredCount={filteredTransactions.length}
       />
 
@@ -511,6 +521,19 @@ export const TransactionsPage: React.FC = () => {
           setIsBulkDeleting(false);
         }}
         isDeleting={deleteMutation.isPending || bulkDeleteMutation.isPending}
+      />
+
+      {/* Universal Automatic Import Dialog */}
+      <UniversalImportDialog
+        isOpen={importDialogOpen}
+        onClose={() => setImportDialogOpen(false)}
+        accounts={accounts}
+        existingTransactions={allTransactions}
+        onImportComplete={() => {
+          queryClient.invalidateQueries({ queryKey: ['transactions'] });
+          queryClient.invalidateQueries({ queryKey: ['accounts'] });
+          queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+        }}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Plus } from 'lucide-react';
+import { Download, Plus, UploadCloud } from 'lucide-react';
 import { TransactionFiltersState } from '@/services/transactionService';
 
 interface TransactionHeaderProps {
@@ -7,6 +7,7 @@ interface TransactionHeaderProps {
   onDateRangeChange: (range: TransactionFiltersState['dateRange']) => void;
   onAddTransaction: () => void;
   onExport: () => void;
+  onImport?: () => void;
   filteredCount: number;
 }
 
@@ -15,6 +16,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
   onDateRangeChange,
   onAddTransaction,
   onExport,
+  onImport,
   filteredCount,
 }) => {
   const rangeOptions: { label: string; value: TransactionFiltersState['dateRange'] }[] = [
@@ -64,6 +66,19 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
             );
           })}
         </div>
+
+        {/* Import Statement Button */}
+        {onImport && (
+          <button
+            type="button"
+            onClick={onImport}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-spendx-blue-primary bg-spendx-blue-primary/10 hover:bg-spendx-blue-primary/20 border border-spendx-blue-primary/20 shadow-sm transition-all cursor-pointer"
+            title="Import statement via CSV, Excel, PDF, or SMS"
+          >
+            <UploadCloud className="w-3.5 h-3.5" />
+            <span>Import</span>
+          </button>
+        )}
 
         {/* Export CSV Button */}
         <button
