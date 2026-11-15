@@ -1,0 +1,46 @@
+/**
+ * SPENDX Global Chart Styling System
+ * Ensures seamless, premium graph interaction across all Recharts visualizations.
+ * 
+ * Mandatory UX Rule:
+ * Clicking, dragging, or tapping any chart SVG, surface, sector, or container
+ * must NOT trigger browser rectangular focus rings or persistent selection borders,
+ * while preserving full keyboard accessibility on interactive buttons and controls.
+ */
+
+.recharts-wrapper,
+.recharts-surface,
+.recharts-responsive-container,
+.recharts-layer,
+.recharts-sector,
+.recharts-dot,
+.recharts-rectangle,
+.recharts-curve,
+.recharts-pie,
+.recharts-pie-sector,
+.recharts-area,
+.recharts-bar-rectangle {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  user-select: none;
+}
+
+.recharts-wrapper:focus,
+.recharts-wrapper:focus-visible,
+.recharts-surface:focus,
+.recharts-surface:focus-visible,
+svg.recharts-surface:focus,
+svg.recharts-surface:focus-visible,
+svg:focus {
+  outline: none !important;
+}
+
+/* Smooth transition for active data points */
+.recharts-active-dot circle {
+  transition: r 200ms cubic-bezier(0.16, 1, 0.3, 1), stroke-width 200ms ease;
+}
+
+/* Custom Tooltip Styling */
+.spendx-chart-tooltip {
+  pointer-events: none;
+}

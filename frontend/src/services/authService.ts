@@ -238,4 +238,11 @@ export const authService = {
     }
     useAuthStore.getState().logout();
   },
+
+  /**
+   * Get Current Authenticated User Profile
+   */
+  getUser(): UserProfile | null {
+    return useAuthStore.getState().user;
+  },
 };
