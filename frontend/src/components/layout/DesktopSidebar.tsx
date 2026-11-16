@@ -74,7 +74,7 @@ export const DesktopSidebar: React.FC = () => {
       </div>
 
       {/* 2. Scrollable Navigation Groups */}
-      <nav className="flex-1 overflow-y-auto py-3 space-y-5 pr-1 scrollbar-thin">
+      <nav className="flex-1 overflow-y-auto py-3 space-y-5 pr-1 no-scrollbar">
         {NAVIGATION_GROUPS.map((group) => {
           const groupItems = NAVIGATION_ITEMS.filter((item) => item.group === group);
           if (groupItems.length === 0) return null;
