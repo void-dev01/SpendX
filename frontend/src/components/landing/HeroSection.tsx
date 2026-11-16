@@ -19,9 +19,9 @@ export const HeroSection: React.FC = () => {
       className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden"
     >
       {/* Ambient Gradient Background Glows */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[400px] sm:h-[550px] bg-gradient-to-tr from-[#C9E5FF]/40 via-[#DCD9FF]/40 to-[#EDE4FF]/50 blur-3xl rounded-full -z-10 pointer-events-none" />
-      <div className="absolute top-48 -left-32 w-72 h-72 bg-[#718FE8]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-48 -right-32 w-72 h-72 bg-[#8B72D6]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[400px] sm:h-[550px] bg-gradient-to-tr from-[#6366F1]/20 via-[#06B6D4]/20 to-[#10B981]/20 blur-3xl rounded-full -z-10 pointer-events-none" />
+      <div className="absolute top-48 -left-32 w-72 h-72 bg-[#6366F1]/15 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-48 -right-32 w-72 h-72 bg-[#06B6D4]/15 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -38,7 +38,7 @@ export const HeroSection: React.FC = () => {
             {/* Hero Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.12]">
               Your Money.{' '}
-              <span className="bg-gradient-to-r from-[#718FE8] via-[#8B72D6] to-[#8066CC] bg-clip-text text-transparent block sm:inline">
+              <span className="text-gradient-brand block sm:inline">
                 Your Intelligence.
               </span>
             </h1>

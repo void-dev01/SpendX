@@ -5,49 +5,50 @@
 
 @layer base {
   :root {
-    --background: #E8F2FC;
-    --foreground: #1A2844;
-    --surface: rgba(255, 255, 255, 0.85);
-    --primary: #466EE8;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --surface: rgba(255, 255, 255, 0.78);
+    --primary: #4F46E5;
     --primary-foreground: #FFFFFF;
-    --secondary: #7C53D6;
+    --secondary: #06B6D4;
     --secondary-foreground: #FFFFFF;
-    --income: #0D9488;
-    --expense: #E11D48;
-    --warning: #D97706;
-    --info: #2563EB;
-    --muted: #E2ECF8;
-    --muted-foreground: #475569;
-    --border: rgba(255, 255, 255, 0.90);
-    --input: rgba(255, 255, 255, 0.75);
-    --ring: #466EE8;
+    --income: #10B981;
+    --expense: #F43F5E;
+    --warning: #F59E0B;
+    --info: #0EA5E9;
+    --muted: #F1F5F9;
+    --muted-foreground: #64748B;
+    --border: rgba(99, 102, 241, 0.14);
+    --input: rgba(255, 255, 255, 0.85);
+    --ring: #6366F1;
     --radius: 1rem;
 
-    /* SPENDX Brand Tokens */
-    --brand-primary: #466EE8;
-    --brand-secondary: #7C53D6;
-    --brand-ai: #8B5CF6;
-    --brand-ice: #D0EEFF;
-    --brand-sky: #BADBFF;
-    --brand-lavender: #D5CEFF;
-    --brand-soft-purple: #E8DCFF;
-    --brand-deep-indigo: #263653;
+    /* SPENDX Emerald-Cyan & Royal-Indigo Brand Tokens */
+    --brand-primary: #4F46E5;
+    --brand-secondary: #06B6D4;
+    --brand-emerald: #10B981;
+    --brand-ai: #7C3AED;
+    --brand-ice: #E0F2FE;
+    --brand-sky: #BAE6FD;
+    --brand-lavender: #E0E7FF;
+    --brand-soft-purple: #EDE9FE;
+    --brand-deep-indigo: #0F172A;
 
     /* SpendX Dynamic Text & Component Colors */
     --spendx-indigo: #1E293B;
     --spendx-deep-indigo: #0F172A;
     --spendx-soft-purple: #7C3AED;
-    --spendx-text-primary: #1A2844;
+    --spendx-text-primary: #0F172A;
 
-    /* High-Tint Frosted Glass Tokens (Industry Standard 92%-97% Opacity for Readability) */
-    --glass-bg: rgba(255, 255, 255, 0.92);
-    --glass-border: rgba(226, 232, 240, 0.85);
-    --glass-nav-bg: rgba(255, 255, 255, 0.94);
-    --glass-nav-border: rgba(226, 232, 240, 0.90);
-    --glass-modal-bg: rgba(255, 255, 255, 0.97);
-    --glass-modal-border: rgba(226, 232, 240, 0.95);
-    --glass-surface-bg: rgba(255, 255, 255, 0.95);
-    --glass-surface-border: rgba(226, 232, 240, 0.80);
+    /* High-Tint Frosted Glass Tokens */
+    --glass-bg: rgba(255, 255, 255, 0.78);
+    --glass-border: rgba(99, 102, 241, 0.14);
+    --glass-nav-bg: rgba(255, 255, 255, 0.85);
+    --glass-nav-border: rgba(99, 102, 241, 0.16);
+    --glass-modal-bg: rgba(255, 255, 255, 0.95);
+    --glass-modal-border: rgba(99, 102, 241, 0.20);
+    --glass-surface-bg: rgba(255, 255, 255, 0.82);
+    --glass-surface-border: rgba(99, 102, 241, 0.12);
 
     /* Shadow Tokens with Specular Edge Lighting */
     --shadow-glass: 0 10px 30px -4px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
@@ -56,53 +57,54 @@
   }
 
   .dark {
-    /* Luxury Obsidian Dark Theme (High Contrast & Crystal Clear Text) */
-    --background: #090D16;
-    --foreground: #F8FAFC;
-    --surface: #111827;
-    --primary: #5B82F6;
+    /* Deep Obsidian Navy Theme */
+    --background: #070B14;
+    --foreground: #F1F5F9;
+    --surface: #0E1526;
+    --primary: #6366F1;
     --primary-foreground: #FFFFFF;
-    --secondary: #A78BFA;
-    --secondary-foreground: #FFFFFF;
+    --secondary: #22D3EE;
+    --secondary-foreground: #070B14;
     --income: #34D399;
     --expense: #FB7185;
     --warning: #FBBF24;
     --info: #38BDF8;
-    --muted: #1E293B;
+    --muted: #131B2E;
     --muted-foreground: #94A3B8;
-    --border: rgba(255, 255, 255, 0.12);
-    --input: rgba(255, 255, 255, 0.08);
-    --ring: #5B82F6;
+    --border: rgba(56, 189, 248, 0.16);
+    --input: rgba(15, 23, 42, 0.65);
+    --ring: #38BDF8;
 
     /* Dark SPENDX Brand Tokens */
-    --brand-primary: #5B82F6;
-    --brand-secondary: #A78BFA;
-    --brand-ai: #A855F7;
-    --brand-ice: #1E293B;
-    --brand-sky: #1E293B;
-    --brand-lavender: #2E1065;
-    --brand-soft-purple: #3B0764;
-    --brand-deep-indigo: #E2E8F0;
+    --brand-primary: #6366F1;
+    --brand-secondary: #22D3EE;
+    --brand-emerald: #34D399;
+    --brand-ai: #A78BFA;
+    --brand-ice: #0F172A;
+    --brand-sky: #131B2E;
+    --brand-lavender: #1E1B4B;
+    --brand-soft-purple: #2E1065;
+    --brand-deep-indigo: #F1F5F9;
 
-    /* SpendX Dynamic Text & Component Colors (100% Readable in Dark Mode) */
-    --spendx-indigo: #F8FAFC;
+    /* SpendX Dynamic Text & Component Colors */
+    --spendx-indigo: #F1F5F9;
     --spendx-deep-indigo: #E2E8F0;
     --spendx-soft-purple: #C4B5FD;
-    --spendx-text-primary: #F8FAFC;
+    --spendx-text-primary: #F1F5F9;
 
-    /* Premium Obsidian Frosted Glass Tokens (High Density for Zero Background Clutter) */
-    --glass-bg: rgba(17, 24, 39, 0.92);
-    --glass-border: rgba(255, 255, 255, 0.12);
-    --glass-nav-bg: rgba(13, 19, 33, 0.94);
-    --glass-nav-border: rgba(255, 255, 255, 0.14);
-    --glass-modal-bg: rgba(13, 19, 33, 0.97);
-    --glass-modal-border: rgba(255, 255, 255, 0.16);
-    --glass-surface-bg: rgba(30, 41, 59, 0.85);
-    --glass-surface-border: rgba(255, 255, 255, 0.08);
+    /* Smoked Glass Tokens */
+    --glass-bg: rgba(15, 23, 42, 0.72);
+    --glass-border: rgba(56, 189, 248, 0.16);
+    --glass-nav-bg: rgba(7, 11, 20, 0.85);
+    --glass-nav-border: rgba(56, 189, 248, 0.18);
+    --glass-modal-bg: rgba(11, 17, 32, 0.96);
+    --glass-modal-border: rgba(56, 189, 248, 0.22);
+    --glass-surface-bg: rgba(15, 23, 42, 0.78);
+    --glass-surface-border: rgba(56, 189, 248, 0.14);
 
     /* Shadow Tokens Dark */
     --shadow-glass: 0 12px 36px -4px rgba(0, 0, 0, 0.70), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-    --shadow-glass-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 20px 0 rgba(91, 130, 246, 0.12);
+    --shadow-glass-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 20px 0 rgba(99, 102, 241, 0.14);
     --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.75);
   }
 }
@@ -199,24 +201,74 @@ body {
 
 /* Atmospheric Background Gradient */
 .spendx-ambient-bg {
-  background: linear-gradient(
-    135deg,
-    #D0EEFF 0%,
-    #BADBFF 35%,
-    #D5CEFF 70%,
-    #E8DCFF 100%
-  );
+  background: radial-gradient(circle at 50% -20%, #EEF2FF 0%, #E0F2FE 40%, #F8FAFC 80%);
   background-attachment: fixed;
 }
 
 .dark .spendx-ambient-bg {
-  background: radial-gradient(
-    circle at 50% -10%,
-    #131B2E 0%,
-    #0A0E18 50%,
-    #05070D 100%
-  );
+  background: radial-gradient(circle at 50% -10%, #0F172A 0%, #070B14 60%, #030712 100%);
   background-attachment: fixed;
+}
+
+/* ==========================================================================
+   Two-Color Gradient Typography System (High-Contrast & Anti-Clipping)
+   ========================================================================== */
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #4F46E5;
+  display: inline-block;
+  padding-bottom: 0.08em;
+  line-height: 1.15;
+}
+
+.dark .text-gradient-brand {
+  background: linear-gradient(135deg, #818CF8 0%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #818CF8;
+}
+
+.text-gradient-wealth {
+  background: linear-gradient(135deg, #059669 0%, #0EA5E9 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #059669;
+  display: inline-block;
+  padding-bottom: 0.08em;
+  line-height: 1.15;
+}
+
+.dark .text-gradient-wealth {
+  background: linear-gradient(135deg, #34D399 0%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #34D399;
+}
+
+.text-gradient-ai {
+  background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #7C3AED;
+  display: inline-block;
+  padding-bottom: 0.08em;
+  line-height: 1.15;
+}
+
+.dark .text-gradient-ai {
+  background: linear-gradient(135deg, #A78BFA 0%, #22D3EE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #A78BFA;
 }
 
 /* Glassmorphism Utilities (Apple macOS / Linear Production Standard) */

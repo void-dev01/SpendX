@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import healthRoutes from './health.routes.js';
 import transactionRoutes from './transaction.routes.js';
+import accountRoutes from './account.routes.js';
+import recurringRoutes from './recurring.routes.js';
+import reportRoutes from './report.routes.js';
 import budgetRoutes from './budget.routes.js';
 import savingsRoutes from './savings.routes.js';
 import analyticsRoutes from './analytics.routes.js';
@@ -13,6 +16,9 @@ const router = Router();
 
 router.use('/health', healthRoutes);
 router.use('/transactions', transactionRoutes);
+router.use('/accounts', accountRoutes);
+router.use('/recurring', recurringRoutes);
+router.use('/reports', reportRoutes);
 router.use('/budgets', budgetRoutes);
 router.use('/savings', savingsRoutes);
 router.use('/analytics', analyticsRoutes);

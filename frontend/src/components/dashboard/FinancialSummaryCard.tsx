@@ -37,7 +37,15 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
 
       {/* Center: Financial Value */}
       <div className="my-4">
-        <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground tabular-nums leading-none">
+        <div
+          className={`text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums leading-none ${
+            label.toLowerCase().includes('balance') ||
+            label.toLowerCase().includes('net worth') ||
+            label.toLowerCase().includes('savings')
+              ? 'text-gradient-wealth'
+              : 'text-foreground'
+          }`}
+        >
           {dashboardService.formatINR(value)}
         </div>
       </div>

@@ -35,13 +35,13 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
         >
           <defs>
             <linearGradient id="spendxGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#718FE8" />
-              <stop offset="50%" stopColor="#8B72D6" />
-              <stop offset="100%" stopColor="#8066CC" />
+              <stop offset="0%" stopColor="#4F46E5" />
+              <stop offset="50%" stopColor="#6366F1" />
+              <stop offset="100%" stopColor="#06B6D4" />
             </linearGradient>
             <linearGradient id="facetGrad" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.4" />
-              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.05" />
             </linearGradient>
           </defs>
 
@@ -88,10 +88,10 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
 
       <div className="flex flex-col">
         <div className="flex items-center gap-1">
-          <span className={`font-bold tracking-tight text-foreground ${textSizes[size]}`}>
+          <span className={`font-extrabold tracking-tight text-gradient-brand ${textSizes[size]}`}>
             SPENDX
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[#8066CC] animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
         </div>
         {showTagline && (
           <span className="text-[10px] tracking-wider text-muted-foreground uppercase font-medium">

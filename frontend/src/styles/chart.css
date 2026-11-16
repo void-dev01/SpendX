@@ -8,6 +8,28 @@
  * while preserving full keyboard accessibility on interactive buttons and controls.
  */
 
+:root {
+  --chart-primary: #4F46E5;
+  --chart-secondary: #06B6D4;
+  --chart-emerald: #10B981;
+  --chart-rose: #F43F5E;
+  --chart-amber: #F59E0B;
+  --chart-grid: rgba(99, 102, 241, 0.08);
+  --chart-tooltip-bg: rgba(255, 255, 255, 0.95);
+  --chart-tooltip-border: rgba(99, 102, 241, 0.16);
+}
+
+.dark {
+  --chart-primary: #818CF8;
+  --chart-secondary: #22D3EE;
+  --chart-emerald: #34D399;
+  --chart-rose: #FB7185;
+  --chart-amber: #FBBF24;
+  --chart-grid: rgba(56, 189, 248, 0.08);
+  --chart-tooltip-bg: rgba(15, 23, 42, 0.95);
+  --chart-tooltip-border: rgba(56, 189, 248, 0.20);
+}
+
 .recharts-wrapper,
 .recharts-surface,
 .recharts-responsive-container,

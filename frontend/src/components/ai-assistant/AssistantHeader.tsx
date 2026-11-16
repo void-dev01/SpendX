@@ -21,8 +21,8 @@ export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100">
-              Your AI Financial Assistant
+            <h1 className="text-base sm:text-lg font-bold">
+              <span className="text-gradient-ai">Your AI Financial Assistant</span>
             </h1>
             <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-spendx-ai-accent/10 text-spendx-ai-accent border border-spendx-ai-accent/20">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />

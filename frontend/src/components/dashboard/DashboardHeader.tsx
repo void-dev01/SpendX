@@ -42,7 +42,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       {/* Left: Greeting & Date */}
       <div>
         <div className="flex items-center gap-2.5 flex-wrap">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gradient-brand">
             {getGreeting()}, {userDisplayName}!
           </h1>
 

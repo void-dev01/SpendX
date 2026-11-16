@@ -67,3 +67,53 @@ export interface NotificationRecord {
   isRead: boolean;
   createdAt: string;
 }
+
+export type AccountType = 'BANK' | 'SAVINGS' | 'CASH' | 'CREDIT_CARD' | 'OTHER';
+export type AccountStatus = 'ACTIVE' | 'ARCHIVED';
+
+export interface AccountRecord {
+  id: string;
+  userId: string;
+  name: string;
+  institution: string;
+  type: AccountType;
+  balance: number;
+  currency: string;
+  lastFourDigits?: string;
+  notes?: string;
+  status: AccountStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type RecurringFrequency = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'YEARLY';
+export type RecurringCategory =
+  | 'Subscriptions'
+  | 'EMIs & Loans'
+  | 'Rent'
+  | 'Bills & Utilities'
+  | 'Insurance'
+  | 'Memberships'
+  | 'Education'
+  | 'Other';
+export type RecurringStatus = 'UPCOMING' | 'DUE_TODAY' | 'OVERDUE' | 'PAID' | 'PAUSED' | 'CANCELLED';
+
+export interface RecurringRecord {
+  id: string;
+  userId: string;
+  name: string;
+  merchant: string;
+  category: RecurringCategory;
+  amount: number;
+  frequency: RecurringFrequency;
+  startDate: string;
+  nextDueDate: string;
+  linkedAccountId?: string;
+  linkedAccountName?: string;
+  status: RecurringStatus;
+  notes?: string;
+  lastPaidDate?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+

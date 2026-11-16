@@ -32,10 +32,10 @@ export const requireAuth = async (
   }
 
   if (!supabaseClient) {
-    // In local development mode without live Supabase keys, allow explicit dev token
-    if (process.env.NODE_ENV !== 'production' && token === 'spendx-dev-token') {
+    // In local development mode without live Supabase keys, allow explicit dev tokens or frontend demo session tokens
+    if (process.env.NODE_ENV !== 'production' && (token === 'spendx-dev-token' || token.startsWith('spendx_session_'))) {
       req.user = {
-        id: '00000000-0000-0000-0000-000000000001',
+        id: 'usr_dev_local_spendx',
         email: 'developer@spendx.local',
         role: 'authenticated',
       };
