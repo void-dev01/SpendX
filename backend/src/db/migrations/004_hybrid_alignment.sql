@@ -1,11 +1,15 @@
 -- ============================================================================
--- SPENDX Database Architecture: Phase 4 Schema Alignment & Optimization
--- Version: 004_schema_alignment.sql
--- Description: Notification preferences table, recurring transactions alias view,
--- composite high-performance B-Tree indexes, and strict multi-tenant RLS policies.
+-- SPENDX Database Architecture: Phase 4 Hybrid Backend Alignment & Optimization
+-- Version: 004_hybrid_alignment.sql
+-- Description:
+-- 1. Notification preferences table for edge alert rules & multi-channel prefs
+-- 2. Performance indexes on transactions(user_id, date DESC), budgets, capture_events
+-- 3. Capture events support and audit indexing for edge SMS/UPI/CSV/PDF imports
+-- 4. Recurring transactions standard view for cross-compatibility
+-- 5. Strict multi-tenant Row Level Security (RLS) policies
 -- ============================================================================
 
--- 1. Notification Preferences Table
+-- 1. Notification Preferences Table for Edge and Core Alert Rules
 CREATE TABLE IF NOT EXISTS public.notification_preferences (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE UNIQUE,
@@ -39,9 +43,15 @@ CREATE POLICY "Users can delete own notification preferences"
     ON public.notification_preferences FOR DELETE
     USING (auth.uid() = user_id);
 
--- 3. Composite B-Tree Indexes for Instant Telemetry Queries
+-- 3. Composite B-Tree Indexes for Instant Ingestion & Telemetry Queries
+CREATE INDEX IF NOT EXISTS idx_transactions_user_date_desc
+    ON public.transactions (user_id, date DESC);
+
 CREATE INDEX IF NOT EXISTS idx_transactions_user_date_type
     ON public.transactions (user_id, date DESC, type);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_user_category
+    ON public.transactions (user_id, category);
 
 CREATE INDEX IF NOT EXISTS idx_budgets_user_category
     ON public.budgets (user_id, category);
@@ -54,6 +64,9 @@ CREATE INDEX IF NOT EXISTS idx_recurring_payments_user_due
 
 CREATE INDEX IF NOT EXISTS idx_notifications_user_unread
     ON public.notifications (user_id, is_read, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_capture_events_user_created
+    ON public.capture_events (user_id, created_at DESC);
 
 -- 4. Recurring Transactions View Alias
 CREATE OR REPLACE VIEW public.recurring_transactions AS

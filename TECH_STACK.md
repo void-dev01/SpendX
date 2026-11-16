@@ -15,6 +15,10 @@ This document provides comprehensive technical documentation for every technolog
 - **Decision**: Zero Next.js dependencies. Pure React 19 SPA bundled via Vite 6 + standalone Express 4 backend.
 - **Rationale**: Full stack meta-frameworks blur boundary lines between client and server code, increasing the risk of accidental secret exposure. A standalone REST API microservice guarantees deterministic request lifecycles, clear CORS enforcement, and uninhibited containerization on Docker, AWS ECS, or Kubernetes.
 
+### 1.3 Hybrid Backend: Express Core + Supabase Edge Functions
+- **Decision**: Hybrid architecture where Express.js handles compute-heavy microservice operations (deep financial health score algorithms, batch imports, monthly reporting, Gemini AI coach dialog), while Supabase Edge Functions handle latency-critical ingestion and event webhooks (SMS/UPI quick capture, instant merchant classification, event-driven budget threshold alerts).
+- **Rationale**: Edge functions run on Deno V8 isolates with sub-100ms cold starts deployed globally at edge locations, while the Express container maintains persistent background scheduler loops, file storage handlers, and comprehensive REST endpoints.
+
 ---
 
 ## 2. Frontend Technology Stack (Deep Dive)
@@ -156,6 +160,40 @@ This document provides comprehensive technical documentation for every technolog
 
 ---
 
+### Ingestion, Utilities & Observability
+
+#### PapaParse
+- **Exact Installed Version**: `5.5.3`
+- **Why Selected**: Battle-tested, RFC 4180 compliant CSV parser with robust streaming and auto-delimiter detection.
+- **Responsibility**: Client-side parsing of bank statements, credit card exports, and financial CSVs.
+- **Where Used**: `frontend/src/services/importService.ts`, `frontend/src/components/transactions/import/UniversalImportDialog.tsx`.
+
+#### PDF.js (pdfjs-dist)
+- **Exact Installed Version**: `4.10.38`
+- **Why Selected**: Mozilla's open-source standard for client-side PDF document parsing without transmitting sensitive financial documents to external servers.
+- **Responsibility**: Extracting textual financial statement data from uploaded PDF bank statements.
+- **Where Used**: `frontend/src/services/importService.ts`.
+
+#### date-fns
+- **Exact Installed Version**: `4.1.0`
+- **Why Selected**: Modular, immutable, tree-shakeable date utility library replacing legacy moment.js and raw Date object mutations.
+- **Responsibility**: Date formatting, parsing ISO strings, 24-hour deduplication calculations, and statement period calculations.
+- **Where Used**: `frontend/src/services/importService.ts`, transaction ledgers, analytics filters.
+
+#### Sentry (@sentry/react & @sentry/node)
+- **Exact Installed Version**: `9.3.0`
+- **Why Selected**: Industry-standard real-time application performance monitoring and exception tracking.
+- **Responsibility**: Capturing unhandled exceptions and performance bottlenecks in both React frontend and Express backend. Safely no-ops when DSN environment variables are unset.
+- **Where Used**: `frontend/src/lib/sentry.ts`, `backend/src/app.ts`.
+
+#### Playwright (@playwright/test)
+- **Exact Installed Version**: `1.51.0`
+- **Why Selected**: Cross-browser automated end-to-end testing with headless Chromium, Firefox, and WebKit execution.
+- **Responsibility**: End-to-end smoke tests for Auth guards, Dashboard hydration, and Ledger/Import modals.
+- **Where Used**: `frontend/playwright.config.ts`, `frontend/e2e/spendx.spec.ts`.
+
+---
+
 ## 3. Backend Technology Stack (Deep Dive)
 
 ### Core Runtime & HTTP Server
@@ -233,11 +271,33 @@ This document provides comprehensive technical documentation for every technolog
 #### Vitest & Supertest
 - **Exact Installed Versions**: `vitest: 3.2.7`, `supertest: 7.3.2`
 - **Why Selected**: Vitest shares Vite's transform pipeline for blazing fast ESM test execution. Supertest provides declarative HTTP assertion on Express apps without binding live ports.
-- **Where Used**: `backend/tests/health.test.ts`.
+- **Where Used**: `backend/tests/health.test.ts`, `backend/tests/extended_api.test.ts` (48 tests passed).
 
 #### ESLint & Prettier
 - **Exact Installed Versions**: `eslint: 9.21.0`, `prettier: 3.5.2`
 - **Responsibility**: Strict code formatting, syntax checking, and dead-code prevention.
+
+---
+
+### Edge Functions Architecture (Supabase / Deno Runtime)
+
+#### Deno Edge Runtime
+- **Technology**: Deno TypeScript engine running on Supabase Edge Functions.
+- **Capabilities**: Sub-100ms cold starts, native TypeScript execution without build steps, zero local server maintenance.
+- **Deployed Functions**:
+  1. **`quick-capture`** (`supabase/functions/quick-capture/index.ts`):
+     - Ingests raw SMS, UPI notifications, and quick text notes.
+     - Performs instant regex normalization (Amount, Merchant, Ref Number, Date).
+     - Queries 24-hour duplicate window before inserting.
+     - Logs ingest metadata to `capture_events` and inserts record into `transactions`.
+  2. **`smart-categorize`** (`supabase/functions/smart-categorize/index.ts`):
+     - Stateless merchant and category classification.
+     - Tier 1: Instant deterministic regex dictionary for Indian merchants (Swiggy, Zomato, Uber, Amazon, Netflix, etc.).
+     - Tier 2: Fallback to Google Gemini API via lightweight HTTP fetch returning validated JSON `{ category, merchant, confidence }`.
+  3. **`webhook-alerts`** (`supabase/functions/webhook-alerts/index.ts`):
+     - Event-driven webhook handler triggered by database events or scheduled webhooks.
+     - Inspects `notification_preferences` per user.
+     - Dispatches alerts for budget threshold warnings (>80%, 100%), upcoming recurring bills, and savings milestone achievements (50%, 100%).
 
 ---
 
@@ -324,19 +384,20 @@ flowchart TD
 
 | Component | Current Implementation | Future Scalability Plan |
 |---|---|---|
-| **API Architecture** | Monolithic Express Microservice | Domain-driven microservices (Auth, Ledger, AI-Engine) |
+| **API Architecture** | Hybrid Express Microservice + Supabase Edge Functions | Domain-driven microservices (Auth, Ledger, AI-Engine) |
 | **Caching Layer** | TanStack Query in-memory client cache | Redis / Valkey distributed cache for rate limiting & sessions |
-| **Database** | Supabase managed PostgreSQL | Read replicas, table partitioning by `date` (yearly chunks) |
-| **Ingestion Pipeline** | Synchronous REST endpoints | RabbitMQ / Apache Kafka queue for asynchronous webhook ingestion |
-| **AI Model** | Google Gemini `gemini-2.5-flash` | Hybrid pipeline: local ONNX models for instant categorization + Gemini for deep coaching |
+| **Database** | Supabase managed PostgreSQL (with RLS & composite B-Trees) | Read replicas, table partitioning by `date` (yearly chunks) |
+| **Ingestion Pipeline** | Client-side RFC 4180 / PDF.js + Edge quick-capture + Express batch API | Event queues for high-volume enterprise banking webhooks |
+| **AI Model** | 2-Tier Hybrid (Deterministic regex dictionary + Gemini 2.5 Flash Structured JSON) | Fine-tuned lightweight local model + Gemini for deep coaching |
 
 ---
 
 ## 6. Installed Dependencies vs. Planned Integrations
 
 ### Installed & Verified Production Dependencies
-- **Frontend**: React 19, Vite 6, Tailwind CSS v4, Lucide React, Radix UI Slot, React Router 7, Zustand, TanStack Query, React Hook Form, Zod, Recharts, Sonner, Axios, Supabase JS SDK, Date-fns, Clsx, Tailwind-Merge, Class-Variance-Authority.
-- **Backend**: Express 4, TypeScript 5.7, @google/genai 3.3.0, @supabase/supabase-js 2.49, Zod, Helmet, CORS, Express-Rate-Limit, Pino, Pino-HTTP, Dotenv, TSX, Vitest, Supertest.
+- **Frontend**: React 19, Vite 6, Tailwind CSS v4, Lucide React, Radix UI Slot, React Router 7, Zustand, TanStack Query, React Hook Form, Zod, Recharts, Sonner, Axios, Supabase JS SDK, Date-fns, PapaParse, PDF.js (`pdfjs-dist`), Sentry React, Playwright, Clsx, Tailwind-Merge, Class-Variance-Authority.
+- **Backend**: Express 4, TypeScript 5.7, @google/genai 3.3.0, @supabase/supabase-js 2.49, Zod, Helmet, CORS, Express-Rate-Limit, Pino, Pino-HTTP, Dotenv, Sentry Node, TSX, Vitest, Supertest.
+- **Edge Functions**: Deno TypeScript runtime, Supabase Edge runtime, Google Gemini REST API.
 
 ### Planned Integrations (Requires Customer Credentials)
 - **Plaid / Teller API**: For automatic bank balance and transaction synchronization.
