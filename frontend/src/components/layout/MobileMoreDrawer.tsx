@@ -89,7 +89,7 @@ export const MobileMoreDrawer: React.FC = () => {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300, mass: 0.8 }}
-            className="glass-panel rounded-t-[32px] border-t border-white/80 dark:border-white/15 p-6 max-h-[85vh] overflow-y-auto space-y-5 shadow-2xl backdrop-blur-2xl"
+            className="bg-[var(--glass-modal-bg)] backdrop-blur-3xl rounded-t-[32px] border-t border-slate-200/90 dark:border-white/15 p-6 max-h-[85vh] overflow-y-auto space-y-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
         {/* Grab Handle */}

@@ -208,7 +208,7 @@ export const TopNavbar: React.FC = () => {
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="region"
                   aria-label="Notifications panel"
-                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl glass-panel border border-white/80 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-2xl space-y-3"
+                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-3xl space-y-3"
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between pb-2.5 border-b border-black/5 dark:border-white/10">
@@ -344,7 +344,7 @@ export const TopNavbar: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95, y: -6 }}
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="menu"
-                  className="absolute right-0 top-full mt-2 w-56 rounded-2xl glass-panel border border-white/80 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-2xl"
+                  className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-3xl"
                 >
                   {/* User Info Header */}
                   <div className="px-3 py-2 border-b border-black/5 dark:border-white/10 space-y-0.5">

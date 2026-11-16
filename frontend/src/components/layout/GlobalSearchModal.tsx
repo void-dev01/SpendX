@@ -64,7 +64,7 @@ export const GlobalSearchModal: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -12 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="glass-panel rounded-3xl p-4 sm:p-5 border border-white/80 dark:border-white/20 shadow-2xl max-w-lg w-full space-y-3 backdrop-blur-2xl"
+            className="bg-[var(--glass-modal-bg)] backdrop-blur-3xl rounded-3xl p-4 sm:p-5 border border-slate-200/90 dark:border-white/20 shadow-2xl max-w-lg w-full space-y-3"
             onClick={(e) => e.stopPropagation()}
           >
         {/* Search Input Bar */}
