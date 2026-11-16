@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 
 interface DashboardEmptyStateProps {
   onAddTransactionClick?: () => void;
+  onLoadSampleData?: () => void;
 }
 
 export const DashboardEmptyState: React.FC<DashboardEmptyStateProps> = ({
   onAddTransactionClick,
+  onLoadSampleData,
 }) => {
   return (
     <div className="glass-panel p-8 sm:p-12 rounded-3xl text-center max-w-2xl mx-auto my-12 border border-white/80 dark:border-white/10 shadow-glass-elevated">
@@ -51,6 +53,18 @@ export const DashboardEmptyState: React.FC<DashboardEmptyStateProps> = ({
           <ArrowRight className="w-4 h-4 text-slate-400" />
         </Link>
       </div>
+
+      {onLoadSampleData && (
+        <div className="mt-6 pt-4 border-t border-black/5 dark:border-white/10">
+          <button
+            type="button"
+            onClick={onLoadSampleData}
+            className="text-xs font-semibold text-spendx-blue-primary hover:underline cursor-pointer transition-colors"
+          >
+            ← Load Benchmark Sample Data (Interactive Preview)
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -7,8 +7,9 @@ import {
   UpdateRecurringInput,
 } from '../validators/recurring.validator.js';
 import { TransactionService } from './transaction.service.js';
+import { localStore } from '../db/localStore.js';
 
-const inMemoryRecurring: RecurringRecord[] = [
+const INITIAL_SEED_RECURRING: RecurringRecord[] = [
   {
     id: 'rec-sub-netflix',
     userId: 'usr_dev_local_spendx',
@@ -48,7 +49,12 @@ const inMemoryRecurring: RecurringRecord[] = [
 export class RecurringService {
   public static async getRecurring(userId: string): Promise<RecurringRecord[]> {
     if (!supabaseClient) {
-      return inMemoryRecurring.filter((r) => r.userId === userId || userId === 'usr_dev_local_spendx');
+      let rec = localStore.getRecurring();
+      if (rec.length === 0) {
+        rec = INITIAL_SEED_RECURRING;
+        localStore.saveRecurring(rec);
+      }
+      return rec.filter((r) => r.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
     }
 
     try {
@@ -60,7 +66,7 @@ export class RecurringService {
 
       if (error) {
         logger.error({ error }, 'Failed to fetch recurring payments from Supabase');
-        return inMemoryRecurring.filter((r) => r.userId === userId || userId === 'usr_dev_local_spendx');
+        return localStore.getRecurring().filter((r) => r.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       }
 
       return (data || []).map((row) => ({
@@ -82,7 +88,7 @@ export class RecurringService {
         updatedAt: row.updated_at,
       }));
     } catch {
-      return inMemoryRecurring.filter((r) => r.userId === userId || userId === 'usr_dev_local_spendx');
+      return localStore.getRecurring().filter((r) => r.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
     }
   }
 
@@ -115,7 +121,9 @@ export class RecurringService {
     };
 
     if (!supabaseClient) {
-      inMemoryRecurring.unshift(newRecord);
+      const rec = localStore.getRecurring();
+      rec.unshift(newRecord);
+      localStore.saveRecurring(rec);
       return newRecord;
     }
 
@@ -143,8 +151,10 @@ export class RecurringService {
         .single();
 
       if (error) {
-        logger.warn({ error }, 'Supabase insert recurring failed, falling back to in-memory');
-        inMemoryRecurring.unshift(newRecord);
+        logger.warn({ error }, 'Supabase insert recurring failed, falling back to localStore');
+        const rec = localStore.getRecurring();
+        rec.unshift(newRecord);
+        localStore.saveRecurring(rec);
         return newRecord;
       }
 
@@ -167,7 +177,9 @@ export class RecurringService {
         updatedAt: inserted.updated_at,
       };
     } catch {
-      inMemoryRecurring.unshift(newRecord);
+      const rec = localStore.getRecurring();
+      rec.unshift(newRecord);
+      localStore.saveRecurring(rec);
       return newRecord;
     }
   }
@@ -185,9 +197,11 @@ export class RecurringService {
       updatedAt: new Date().toISOString(),
     };
 
-    const inMemIdx = inMemoryRecurring.findIndex((r) => r.id === id);
+    const rec = localStore.getRecurring();
+    const inMemIdx = rec.findIndex((r) => r.id === id);
     if (inMemIdx !== -1) {
-      inMemoryRecurring[inMemIdx] = updated;
+      rec[inMemIdx] = updated;
+      localStore.saveRecurring(rec);
     }
 
     if (supabaseClient) {
@@ -222,10 +236,9 @@ export class RecurringService {
   public static async deleteRecurring(userId: string, id: string): Promise<boolean> {
     await this.getRecurringById(userId, id);
 
-    const inMemIdx = inMemoryRecurring.findIndex((r) => r.id === id);
-    if (inMemIdx !== -1) {
-      inMemoryRecurring.splice(inMemIdx, 1);
-    }
+    const rec = localStore.getRecurring();
+    const filtered = rec.filter((r) => r.id !== id);
+    localStore.saveRecurring(filtered);
 
     if (supabaseClient) {
       try {

@@ -1,6 +1,7 @@
 import { supabaseClient } from '../config/supabase.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { NotificationService } from './notification.service.js';
+import { localStore, RawBudget } from '../db/localStore.js';
 
 export interface BudgetRecord {
   id: string;
@@ -16,14 +17,12 @@ export interface BudgetRecord {
   updatedAt: string;
 }
 
-const inMemoryBudgets: Array<Omit<BudgetRecord, 'spentAmount' | 'remainingAmount' | 'utilizationPercentage' | 'status'>> = [];
-
 export class BudgetService {
   public static async getBudgets(userId: string): Promise<BudgetRecord[]> {
-    let rawList: Array<Omit<BudgetRecord, 'spentAmount' | 'remainingAmount' | 'utilizationPercentage' | 'status'>> = [];
+    let rawList: RawBudget[] = [];
 
     if (!supabaseClient) {
-      rawList = inMemoryBudgets.filter((b) => b.userId === userId);
+      rawList = localStore.getBudgets().filter((b) => b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       if (rawList.length === 0) {
         // Initial defaults for testing and demo
         rawList = [
@@ -46,6 +45,7 @@ export class BudgetService {
             updatedAt: new Date().toISOString(),
           },
         ];
+        localStore.saveBudgets(rawList);
       }
     } else {
       const { data, error } = await supabaseClient
@@ -101,7 +101,9 @@ export class BudgetService {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      inMemoryBudgets.push(item);
+      const budgets = localStore.getBudgets();
+      budgets.push(item);
+      localStore.saveBudgets(budgets);
       return {
         ...item,
         spentAmount: 0,
@@ -145,14 +147,16 @@ export class BudgetService {
     updates: { category?: string; allocatedAmount?: number; period?: 'MONTHLY' | 'WEEKLY' | 'YEARLY' }
   ): Promise<BudgetRecord> {
     if (!supabaseClient) {
-      const idx = inMemoryBudgets.findIndex((b) => b.id === id && b.userId === userId);
+      const budgets = localStore.getBudgets();
+      const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Budget not found', 404);
-      inMemoryBudgets[idx] = {
-        ...inMemoryBudgets[idx],
+      budgets[idx] = {
+        ...budgets[idx],
         ...updates,
         updatedAt: new Date().toISOString(),
       };
-      const b = inMemoryBudgets[idx];
+      localStore.saveBudgets(budgets);
+      const b = budgets[idx];
       return {
         ...b,
         spentAmount: Math.round(b.allocatedAmount * 0.5),
@@ -194,9 +198,11 @@ export class BudgetService {
 
   public static async deleteBudget(userId: string, id: string): Promise<void> {
     if (!supabaseClient) {
-      const idx = inMemoryBudgets.findIndex((b) => b.id === id && b.userId === userId);
+      const budgets = localStore.getBudgets();
+      const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Budget not found', 404);
-      inMemoryBudgets.splice(idx, 1);
+      budgets.splice(idx, 1);
+      localStore.saveBudgets(budgets);
       return;
     }
 

@@ -4,8 +4,9 @@ import { logger } from '../utils/logger.js';
 import { AccountRecord } from '../types/index.js';
 import { CreateAccountInput, UpdateAccountInput, TransferFundsInput } from '../validators/account.validator.js';
 import { TransactionService } from './transaction.service.js';
+import { localStore } from '../db/localStore.js';
 
-const inMemoryAccounts: AccountRecord[] = [
+const INITIAL_SEED_ACCOUNTS: AccountRecord[] = [
   {
     id: 'acc-hdfc-01',
     userId: 'usr_dev_local_spendx',
@@ -53,7 +54,12 @@ const inMemoryAccounts: AccountRecord[] = [
 export class AccountService {
   public static async getAccounts(userId: string): Promise<AccountRecord[]> {
     if (!supabaseClient) {
-      return inMemoryAccounts.filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
+      let accounts = localStore.getAccounts();
+      if (accounts.length === 0) {
+        accounts = INITIAL_SEED_ACCOUNTS;
+        localStore.saveAccounts(accounts);
+      }
+      return accounts.filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
     }
 
     try {
@@ -65,7 +71,7 @@ export class AccountService {
 
       if (error) {
         logger.error({ error }, 'Failed to fetch accounts from Supabase');
-        return inMemoryAccounts.filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
+        return localStore.getAccounts().filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       }
 
       return (data || []).map((row) => ({
@@ -83,7 +89,7 @@ export class AccountService {
         updatedAt: row.updated_at,
       }));
     } catch {
-      return inMemoryAccounts.filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
+      return localStore.getAccounts().filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
     }
   }
 
@@ -113,7 +119,9 @@ export class AccountService {
     };
 
     if (!supabaseClient) {
-      inMemoryAccounts.unshift(newAccount);
+      const accounts = localStore.getAccounts();
+      accounts.unshift(newAccount);
+      localStore.saveAccounts(accounts);
       return newAccount;
     }
 
@@ -138,8 +146,10 @@ export class AccountService {
         .single();
 
       if (error) {
-        logger.warn({ error }, 'Supabase insert account failed, falling back to in-memory');
-        inMemoryAccounts.unshift(newAccount);
+        logger.warn({ error }, 'Supabase insert account failed, falling back to localStore');
+        const accounts = localStore.getAccounts();
+        accounts.unshift(newAccount);
+        localStore.saveAccounts(accounts);
         return newAccount;
       }
 
@@ -158,7 +168,9 @@ export class AccountService {
         updatedAt: inserted.updated_at,
       };
     } catch {
-      inMemoryAccounts.unshift(newAccount);
+      const accounts = localStore.getAccounts();
+      accounts.unshift(newAccount);
+      localStore.saveAccounts(accounts);
       return newAccount;
     }
   }
@@ -176,9 +188,11 @@ export class AccountService {
       updatedAt: new Date().toISOString(),
     };
 
-    const inMemIdx = inMemoryAccounts.findIndex((a) => a.id === accountId);
+    const accounts = localStore.getAccounts();
+    const inMemIdx = accounts.findIndex((a) => a.id === accountId);
     if (inMemIdx !== -1) {
-      inMemoryAccounts[inMemIdx] = updated;
+      accounts[inMemIdx] = updated;
+      localStore.saveAccounts(accounts);
     }
 
     if (supabaseClient) {
@@ -209,10 +223,9 @@ export class AccountService {
   public static async deleteAccount(userId: string, accountId: string): Promise<boolean> {
     await this.getAccountById(userId, accountId);
 
-    const inMemIdx = inMemoryAccounts.findIndex((a) => a.id === accountId);
-    if (inMemIdx !== -1) {
-      inMemoryAccounts.splice(inMemIdx, 1);
-    }
+    const accounts = localStore.getAccounts();
+    const filtered = accounts.filter((a) => a.id !== accountId);
+    localStore.saveAccounts(filtered);
 
     if (supabaseClient) {
       try {

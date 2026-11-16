@@ -7,6 +7,7 @@ interface DashboardHeaderProps {
   isDemo: boolean;
   selectedPeriod: DateRangePeriod;
   onPeriodChange: (period: DateRangePeriod) => void;
+  onClearSampleData?: () => void;
 }
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
@@ -14,6 +15,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   isDemo,
   selectedPeriod,
   onPeriodChange,
+  onClearSampleData,
 }) => {
   // Determine appropriate time of day greeting
   const getGreeting = () => {
@@ -47,13 +49,25 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           </h1>
 
           {isDemo && (
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20"
-              title="Currently showing illustrative benchmark data. Connect your accounts to enable live synchronization."
-            >
-              <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-              Demo Data
-            </span>
+            <div className="inline-flex items-center gap-2">
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20"
+                title="Currently showing illustrative benchmark data. Connect your accounts to enable live synchronization."
+              >
+                <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                Demo Data
+              </span>
+              {onClearSampleData && (
+                <button
+                  type="button"
+                  onClick={onClearSampleData}
+                  className="text-[11px] font-semibold underline text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors cursor-pointer"
+                  title="Clear benchmark sample data and start with an empty real portfolio"
+                >
+                  Clear Sample Data & Start Fresh
+                </button>
+              )}
+            </div>
           )}
         </div>
 
@@ -77,7 +91,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               className={`px-3 py-1.5 text-xs font-medium rounded-xl transition-all duration-200 cursor-pointer ${
                 isActive
                   ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm font-semibold'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-white/5'
+                  : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/10'
               }`}
             >
               {opt.label}

@@ -81,14 +81,14 @@ export const TopNavbar: React.FC = () => {
     navigate('/login');
   };
 
-  const displayName = user?.fullName || 'SPENDX Member';
-  const displayEmail = user?.email || 'member@spendx.app';
+  const displayName = user?.fullName || (user?.email ? user.email.split('@')[0] : 'Private Client');
+  const displayEmail = user?.email || 'client@spendx.local';
   const initials = displayName
     .split(' ')
     .map((n) => n[0])
     .join('')
     .substring(0, 2)
-    .toUpperCase() || 'SX';
+    .toUpperCase() || 'PC';
 
   return (
     <header className="sticky top-4 z-20 mb-4 sm:mb-6">
@@ -301,7 +301,7 @@ export const TopNavbar: React.FC = () => {
               </div>
               <div className="hidden xl:block text-left text-xs">
                 <p className="font-bold text-foreground leading-none">{displayName}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">SPENDX Pro</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">Private Wealth</p>
               </div>
             </button>
 

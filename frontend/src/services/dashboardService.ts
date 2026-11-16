@@ -710,7 +710,51 @@ export const dashboardService = {
    */
   async getDashboardData(period: DateRangePeriod = 'this_month'): Promise<DashboardData> {
     const user = authService.getUser();
-    const userDisplayName = user?.fullName || user?.email?.split('@')[0] || 'Shubham';
+    const userDisplayName = user?.fullName || (user?.email ? user.email.split('@')[0] : 'Client');
+
+    // Check if user has explicitly cleared demo data to start fresh with real finances
+    const isDemoCleared = typeof window !== 'undefined' && localStorage.getItem('spendx_demo_mode') === 'cleared';
+    if (isDemoCleared) {
+      return {
+        isDemo: false,
+        userDisplayName,
+        period,
+        overview: {
+          totalBalance: {
+            value: 0,
+            label: 'Total Balance',
+            description: 'No real accounts connected',
+            trendPercentage: 0,
+            trendIsPositive: true,
+          },
+          totalIncome: {
+            value: 0,
+            label: 'Total Income',
+            description: 'Zero income recorded this period',
+          },
+          totalExpenses: {
+            value: 0,
+            label: 'Total Expenses',
+            description: 'Zero expenses recorded this period',
+          },
+          availableBalance: {
+            value: 0,
+            label: 'Available Balance',
+            description: 'Ready for initial deposit',
+          },
+        },
+        incomeVsExpense: [],
+        spendingAnalytics: {
+          totalSpent: 0,
+          categories: [],
+        },
+        budgets: [],
+        recentTransactions: [],
+        savingsGoals: [],
+        aiInsights: [],
+        upcomingPayments: [],
+      };
+    }
 
     // If Supabase is connected and user is logged in with real data, query tables:
     if (supabase && user && user.id !== 'demo-user-id') {
@@ -822,5 +866,30 @@ export const dashboardService = {
       currency: 'INR',
       maximumFractionDigits: 2,
     }).format(value);
+  },
+
+  /**
+   * Clears sample benchmark demo data and switches to real-use zero state
+   */
+  clearDemoData(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('spendx_demo_mode', 'cleared');
+    }
+  },
+
+  /**
+   * Restores sample benchmark demo data for previewing features
+   */
+  loadDemoData(): void {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('spendx_demo_mode');
+    }
+  },
+
+  /**
+   * Checks whether demo data has been cleared
+   */
+  isDemoCleared(): boolean {
+    return typeof window !== 'undefined' && localStorage.getItem('spendx_demo_mode') === 'cleared';
   },
 };

@@ -3,9 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   ChevronLeft,
   ChevronRight,
-  LogOut,
-  Sparkles,
 } from 'lucide-react';
+import { Plus, SignOut } from '@phosphor-icons/react';
 import { SpendxLogo } from '../landing/SpendxLogo';
 import {
   NAVIGATION_GROUPS,
@@ -27,14 +26,15 @@ export const DesktopSidebar: React.FC = () => {
     navigate('/login');
   };
 
-  const displayName = user?.fullName || 'SPENDX Member';
-  const displayEmail = user?.email || 'member@spendx.app';
+  const displayName = user?.fullName || 'Private Client';
+  const displayEmail = user?.email || 'client@spendx.local';
   const initials = displayName
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .substring(0, 2)
-    .toUpperCase() || 'SX';
+    .toUpperCase() || 'PC';
 
   return (
     <aside
@@ -120,6 +120,7 @@ export const DesktopSidebar: React.FC = () => {
                         {({ isActive }) => (
                           <>
                             <Icon
+                              weight={isActive ? 'fill' : 'duotone'}
                               className={`shrink-0 transition-transform duration-200 ${
                                 isSidebarCollapsed ? 'w-5 h-5' : 'w-4 h-4'
                               } ${isActive ? 'scale-110' : ''}`}
@@ -170,18 +171,22 @@ export const DesktopSidebar: React.FC = () => {
         })}
       </nav>
 
-      {/* 3. Sidebar Footer (User Profile & Logout) */}
-      <div className="pt-3 border-t border-black/5 dark:border-white/10 space-y-2">
-        {/* Intelligence Pro Banner (Expanded Mode Only) */}
+      {/* 3. Sidebar Footer (Quick Action, Data Sync & Profile) */}
+      <div className="pt-3 border-t border-black/5 dark:border-white/10 space-y-2.5">
+        {/* Quick Add Action & Local Sync Status */}
         {!isSidebarCollapsed && (
-          <div className="rounded-2xl p-3 bg-gradient-to-r from-primary/10 via-[#8B72D6]/10 to-[#8066CC]/10 border border-primary/20 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
-              <Sparkles className="w-3.5 h-3.5 text-[#8066CC]" />
-              <span>SPENDX Pro Active</span>
+          <div className="space-y-2">
+            <button
+              onClick={() => navigate('/transactions')}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary text-primary-foreground font-semibold text-xs shadow-sm hover:opacity-95 transition-all cursor-pointer"
+            >
+              <Plus weight="bold" className="w-3.5 h-3.5" />
+              <span>Record Transaction</span>
+            </button>
+            <div className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] text-muted-foreground">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="font-medium">Local Storage Active</span>
             </div>
-            <p className="text-[10px] text-muted-foreground leading-snug">
-              Continuous neural telemetry & predictive tracking enabled.
-            </p>
           </div>
         )}
 
@@ -192,7 +197,7 @@ export const DesktopSidebar: React.FC = () => {
           }`}
         >
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
               {initials}
             </div>
 
@@ -209,9 +214,9 @@ export const DesktopSidebar: React.FC = () => {
               onClick={handleLogout}
               aria-label="Sign out"
               title="Sign Out"
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
             >
-              <LogOut className="w-4 h-4" />
+              <SignOut className="w-4 h-4" />
             </button>
           )}
         </div>

@@ -1,111 +1,114 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @source "../index.html";
 @source "./**/*.{js,ts,jsx,tsx}";
 @import "./styles/chart.css";
 
 @layer base {
   :root {
-    --background: #F8FAFC;
+    --background: #F3F5F9;
     --foreground: #0F172A;
-    --surface: rgba(255, 255, 255, 0.78);
-    --primary: #4F46E5;
+    --surface: #FFFFFF;
+    --primary: #1E40AF;
     --primary-foreground: #FFFFFF;
-    --secondary: #06B6D4;
+    --secondary: #0F766E;
     --secondary-foreground: #FFFFFF;
-    --income: #10B981;
-    --expense: #F43F5E;
-    --warning: #F59E0B;
-    --info: #0EA5E9;
-    --muted: #F1F5F9;
-    --muted-foreground: #64748B;
-    --border: rgba(99, 102, 241, 0.14);
-    --input: rgba(255, 255, 255, 0.85);
-    --ring: #6366F1;
-    --radius: 1rem;
+    --income: #047857;
+    --expense: #E11D48;
+    --warning: #B45309;
+    --info: #0284C7;
+    --muted: #E2E8F0;
+    --muted-foreground: #475569;
+    --border: #E2E8F0;
+    --input: #FFFFFF;
+    --ring: #3B82F6;
+    --radius: 0.875rem;
 
-    /* SPENDX Emerald-Cyan & Royal-Indigo Brand Tokens */
-    --brand-primary: #4F46E5;
-    --brand-secondary: #06B6D4;
-    --brand-emerald: #10B981;
-    --brand-ai: #7C3AED;
-    --brand-ice: #E0F2FE;
-    --brand-sky: #BAE6FD;
-    --brand-lavender: #E0E7FF;
-    --brand-soft-purple: #EDE9FE;
+    /* Executive Wealth Private-Banking Tokens */
+    --brand-primary: #1E40AF;
+    --brand-secondary: #0F766E;
+    --brand-emerald: #047857;
+    --brand-gold: #B45309;
+    --brand-ai: #6D28D9;
+    --brand-ice: #F8FAFC;
+    --brand-sky: #E0F2FE;
+    --brand-lavender: #EEF2FF;
+    --brand-soft-purple: #F5F3FF;
     --brand-deep-indigo: #0F172A;
 
     /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #1E293B;
-    --spendx-deep-indigo: #0F172A;
-    --spendx-soft-purple: #7C3AED;
+    --spendx-indigo: #0F172A;
+    --spendx-deep-indigo: #020617;
+    --spendx-soft-purple: #4338CA;
     --spendx-text-primary: #0F172A;
 
-    /* High-Tint Frosted Glass Tokens */
-    --glass-bg: rgba(255, 255, 255, 0.78);
-    --glass-border: rgba(99, 102, 241, 0.14);
-    --glass-nav-bg: rgba(255, 255, 255, 0.85);
-    --glass-nav-border: rgba(99, 102, 241, 0.16);
-    --glass-modal-bg: rgba(255, 255, 255, 0.95);
-    --glass-modal-border: rgba(99, 102, 241, 0.20);
-    --glass-surface-bg: rgba(255, 255, 255, 0.82);
-    --glass-surface-border: rgba(99, 102, 241, 0.12);
+    /* Crisp Executive Elevation Surfaces (Fixes Washed-Out Light Mode) */
+    --glass-bg: rgba(255, 255, 255, 0.94);
+    --glass-border: #E2E8F0;
+    --glass-nav-bg: rgba(255, 255, 255, 0.95);
+    --glass-nav-border: #CBD5E1;
+    --glass-modal-bg: #FFFFFF;
+    --glass-modal-border: #CBD5E1;
+    --glass-surface-bg: #FFFFFF;
+    --glass-surface-border: #E2E8F0;
 
-    /* Shadow Tokens with Specular Edge Lighting */
-    --shadow-glass: 0 10px 30px -4px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03);
-    --shadow-glass-elevated: 0 18px 40px -6px rgba(15, 23, 42, 0.12), 0 8px 16px -3px rgba(15, 23, 42, 0.06);
-    --shadow-nav: 0 12px 32px -4px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    /* Crisp Precision Shadows */
+    --shadow-glass: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
+    --shadow-glass-elevated: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 16px 32px -4px rgba(15, 23, 42, 0.06);
+    --shadow-nav: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 12px 28px -4px rgba(15, 23, 42, 0.05);
   }
 
   .dark {
-    /* Deep Obsidian Navy Theme */
-    --background: #070B14;
-    --foreground: #F1F5F9;
-    --surface: #0E1526;
-    --primary: #6366F1;
-    --primary-foreground: #FFFFFF;
-    --secondary: #22D3EE;
-    --secondary-foreground: #070B14;
+    /* Obsidian Executive Theme */
+    --background: #090D16;
+    --foreground: #F8FAFC;
+    --surface: #111827;
+    --primary: #60A5FA;
+    --primary-foreground: #090D16;
+    --secondary: #2DD4BF;
+    --secondary-foreground: #090D16;
     --income: #34D399;
     --expense: #FB7185;
     --warning: #FBBF24;
     --info: #38BDF8;
-    --muted: #131B2E;
+    --muted: #1E293B;
     --muted-foreground: #94A3B8;
-    --border: rgba(56, 189, 248, 0.16);
-    --input: rgba(15, 23, 42, 0.65);
+    --border: rgba(255, 255, 255, 0.08);
+    --input: rgba(17, 24, 39, 0.85);
     --ring: #38BDF8;
 
-    /* Dark SPENDX Brand Tokens */
-    --brand-primary: #6366F1;
-    --brand-secondary: #22D3EE;
+    /* Dark Executive Brand Tokens */
+    --brand-primary: #818CF8;
+    --brand-secondary: #2DD4BF;
     --brand-emerald: #34D399;
-    --brand-ai: #A78BFA;
+    --brand-gold: #FDE68A;
+    --brand-ai: #C4B5FD;
     --brand-ice: #0F172A;
     --brand-sky: #131B2E;
     --brand-lavender: #1E1B4B;
     --brand-soft-purple: #2E1065;
-    --brand-deep-indigo: #F1F5F9;
+    --brand-deep-indigo: #F8FAFC;
 
     /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #F1F5F9;
-    --spendx-deep-indigo: #E2E8F0;
-    --spendx-soft-purple: #C4B5FD;
-    --spendx-text-primary: #F1F5F9;
+    --spendx-indigo: #F8FAFC;
+    --spendx-deep-indigo: #F1F5F9;
+    --spendx-soft-purple: #C7D2FE;
+    --spendx-text-primary: #F8FAFC;
 
-    /* Smoked Glass Tokens */
-    --glass-bg: rgba(15, 23, 42, 0.72);
-    --glass-border: rgba(56, 189, 248, 0.16);
-    --glass-nav-bg: rgba(7, 11, 20, 0.85);
-    --glass-nav-border: rgba(56, 189, 248, 0.18);
-    --glass-modal-bg: rgba(11, 17, 32, 0.96);
-    --glass-modal-border: rgba(56, 189, 248, 0.22);
-    --glass-surface-bg: rgba(15, 23, 42, 0.78);
-    --glass-surface-border: rgba(56, 189, 248, 0.14);
+    /* Architectural Slate Surfaces */
+    --glass-bg: rgba(17, 24, 39, 0.88);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-nav-bg: rgba(11, 17, 30, 0.92);
+    --glass-nav-border: rgba(255, 255, 255, 0.10);
+    --glass-modal-bg: #111827;
+    --glass-modal-border: rgba(255, 255, 255, 0.12);
+    --glass-surface-bg: rgba(24, 34, 53, 0.80);
+    --glass-surface-border: rgba(255, 255, 255, 0.06);
 
     /* Shadow Tokens Dark */
-    --shadow-glass: 0 12px 36px -4px rgba(0, 0, 0, 0.70), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-    --shadow-glass-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 20px 0 rgba(99, 102, 241, 0.14);
-    --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.75);
+    --shadow-glass: 0 8px 32px -4px rgba(0, 0, 0, 0.80), 0 0 1px 1px rgba(255, 255, 255, 0.06);
+    --shadow-glass-elevated: 0 16px 48px -6px rgba(0, 0, 0, 0.90), 0 0 20px 0 rgba(99, 102, 241, 0.12);
+    --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.85);
   }
 }
 
@@ -131,13 +134,14 @@
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-ai: var(--brand-ai);
+  --color-brand-gold: var(--brand-gold);
   --color-brand-ice: var(--brand-ice);
   --color-brand-sky: var(--brand-sky);
   --color-brand-lavender: var(--brand-lavender);
   --color-brand-soft-purple: var(--brand-soft-purple);
   --color-brand-deep-indigo: var(--brand-deep-indigo);
 
-  /* SPENDX semantic classes support (Fixes 530+ undefined usages) */
+  /* SPENDX semantic classes support */
   --color-spendx-indigo: var(--spendx-indigo);
   --color-spendx-deep-indigo: var(--spendx-deep-indigo);
   --color-spendx-soft-purple: var(--spendx-soft-purple);
@@ -150,7 +154,9 @@
   --color-spendx-primary: var(--primary);
   --color-spendx-text-primary: var(--spendx-text-primary);
 
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  /* Font Families */
+  --font-serif: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 html {
@@ -185,6 +191,37 @@ body {
   -ms-overflow-style: none !important;
 }
 
+/* Bell MT Master Typography & Lining Financial Numerals */
+h1, h2, h3, .font-serif, .font-display, .font-editorial {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+}
+
+.tabular-nums, .font-numeric, table, [data-numeric="true"], .kpi-value, .currency-num {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+/* Precision Squircle Icon Containers (38x38 with 1px inner hairline) */
+.squircle-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+  flex-shrink: 0;
+}
+
+.dark .squircle-icon {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
 /* Helper utilities for explicit scrollbar hiding */
 .no-scrollbar,
 .scrollbar-none {
@@ -201,12 +238,12 @@ body {
 
 /* Atmospheric Background Gradient */
 .spendx-ambient-bg {
-  background: radial-gradient(circle at 50% -20%, #EEF2FF 0%, #E0F2FE 40%, #F8FAFC 80%);
+  background: radial-gradient(circle at 50% -10%, #FFFFFF 0%, #F8FAFC 45%, #F3F5F9 100%);
   background-attachment: fixed;
 }
 
 .dark .spendx-ambient-bg {
-  background: radial-gradient(circle at 50% -10%, #0F172A 0%, #070B14 60%, #030712 100%);
+  background: radial-gradient(circle at 50% -10%, #111827 0%, #090D16 65%, #05070B 100%);
   background-attachment: fixed;
 }
 
@@ -215,60 +252,62 @@ body {
    ========================================================================== */
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #1E40AF 0%, #4F46E5 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #4F46E5;
+  color: #1E40AF;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;
 }
 
 .dark .text-gradient-brand {
-  background: linear-gradient(135deg, #818CF8 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #93C5FD 0%, #C7D2FE 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #818CF8;
+  color: #93C5FD;
 }
 
 .text-gradient-wealth {
-  background: linear-gradient(135deg, #059669 0%, #0EA5E9 100%);
+  background: linear-gradient(135deg, #047857 0%, #0F766E 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #059669;
+  color: #047857;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;
 }
 
 .dark .text-gradient-wealth {
-  background: linear-gradient(135deg, #34D399 0%, #38BDF8 100%);
+  background: linear-gradient(135deg, #34D399 0%, #2DD4BF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #34D399;
 }
 
+.text-gradient-gold,
 .text-gradient-ai {
-  background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #92400E 0%, #B45309 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #7C3AED;
+  color: #92400E;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;
 }
 
+.dark .text-gradient-gold,
 .dark .text-gradient-ai {
-  background: linear-gradient(135deg, #A78BFA 0%, #22D3EE 100%);
+  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #A78BFA;
+  color: #FDE68A;
 }
 
 /* Glassmorphism Utilities (Apple macOS / Linear Production Standard) */
