@@ -79,28 +79,28 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
   };
 
   return (
-    <div className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group transition-all duration-200">
+    <div className="glass-card-interactive p-5 sm:p-6 rounded-3xl flex flex-col justify-between group transition-all duration-200">
       {/* Top Header */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl glass-surface border border-white/80 dark:border-white/10 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-11 h-11 rounded-2xl glass-surface border border-white/80 dark:border-white/10 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
               {getCategoryIcon(goal.category)}
             </div>
             <div>
-              <h3 className="font-semibold text-sm text-slate-800 dark:text-slate-100 line-clamp-1">
+              <h3 className="font-bold text-base text-foreground line-clamp-1 leading-tight">
                 {goal.name}
               </h3>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-medium text-muted-foreground">
                   {goal.category}
                 </span>
-                <span className="inline-block w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600" />
+                <span className="inline-block w-1 h-1 rounded-full bg-black/20 dark:bg-white/20" />
                 <span
-                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                     isCompleted
                       ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                      : 'bg-spendx-blue-primary/10 text-spendx-blue-primary dark:text-spendx-blue-primary border border-spendx-blue-primary/20'
+                      : 'bg-primary/10 text-primary border border-primary/20'
                   }`}
                 >
                   {isCompleted ? 'Completed' : 'Active'}
@@ -165,14 +165,14 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
         {/* Amount Metrics */}
         <div className="mt-4 flex items-baseline justify-between">
           <div>
-            <span className="text-xs text-slate-400 block font-medium">Saved</span>
-            <span className="text-xl font-bold tracking-tight text-slate-800 dark:text-slate-100 tabular-nums">
+            <span className="text-[11px] text-muted-foreground block font-bold uppercase tracking-wider">Saved</span>
+            <span className="text-2xl font-extrabold tracking-tight text-foreground tabular-nums">
               {savingsService.formatINR(goal.currentAmount)}
             </span>
           </div>
           <div className="text-right">
-            <span className="text-xs text-slate-400 block font-medium">Target</span>
-            <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 tabular-nums">
+            <span className="text-[11px] text-muted-foreground block font-bold uppercase tracking-wider">Target</span>
+            <span className="text-sm font-bold text-muted-foreground tabular-nums">
               {savingsService.formatINR(goal.targetAmount)}
             </span>
           </div>

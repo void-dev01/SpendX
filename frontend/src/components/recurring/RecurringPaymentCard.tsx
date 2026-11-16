@@ -88,24 +88,24 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
   return (
     <div
       onClick={() => navigate(`/recurring/${payment.id}`)}
-      className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group cursor-pointer transition-all duration-300 relative border border-slate-200/60 dark:border-white/10 hover:border-spendx-blue-primary/40"
+      className="glass-card-interactive p-5 sm:p-6 rounded-3xl flex flex-col justify-between group cursor-pointer transition-all duration-300 relative border border-slate-200/60 dark:border-white/10 hover:border-primary/40"
     >
       {/* Top Header: Merchant, Title, and Action Menu */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-spendx-blue-primary/90 bg-spendx-blue-primary/10 px-2 py-0.5 rounded-md">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md">
                 {payment.category}
               </span>
-              <span className="text-[11px] text-slate-400 font-medium">
+              <span className="text-[11px] text-muted-foreground font-medium">
                 • {payment.frequency.toLowerCase()}
               </span>
             </div>
-            <h3 className="text-base font-bold text-spendx-text-primary dark:text-spendx-soft-purple truncate group-hover:text-spendx-blue-primary transition-colors">
+            <h3 className="text-base font-bold text-foreground truncate group-hover:text-primary transition-colors leading-tight">
               {payment.name}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+            <p className="text-xs text-muted-foreground truncate mt-0.5 font-medium">
               {payment.merchant}
             </p>
           </div>
@@ -130,7 +130,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
               {showMenu && (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-1 w-44 rounded-xl glass-card py-1.5 shadow-xl border border-slate-200 dark:border-white/10 z-20 text-xs"
+                  className="absolute right-0 top-full mt-1 w-44 rounded-2xl glass-panel py-1.5 shadow-xl border border-slate-200/80 dark:border-white/10 z-20 text-xs"
                 >
                   <button
                     type="button"
@@ -193,18 +193,18 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
         </div>
 
         {/* Amount & Due Date row */}
-        <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-baseline justify-between">
+        <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/10 flex items-baseline justify-between">
           <div>
-            <span className="text-xl sm:text-2xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground tabular-nums">
               {recurringService.formatINR(payment.amount)}
             </span>
-            <span className="text-xs text-slate-400 ml-1">
+            <span className="text-xs text-muted-foreground ml-1 font-medium">
               /{payment.frequency === 'MONTHLY' ? 'mo' : payment.frequency.toLowerCase()}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-            <Calendar className="w-3.5 h-3.5 text-slate-400" />
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+            <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
             <span>
               {new Date(payment.nextDueDate).toLocaleDateString('en-IN', {
                 day: 'numeric',

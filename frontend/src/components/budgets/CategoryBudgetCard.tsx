@@ -95,7 +95,7 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
   };
 
   return (
-    <div className="glass-panel p-5 rounded-3xl border border-white/80 dark:border-white/10 shadow-glass flex flex-col justify-between relative group hover:border-spendx-blue-primary/40 transition-all">
+    <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-glass flex flex-col justify-between relative group hover:border-primary/50 transition-all">
       {/* Top Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
@@ -103,12 +103,12 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
             {getCategoryIcon(budget.category)}
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
               {budget.category}
             </span>
             <h3
               onClick={() => navigate(`/budgets/${budget.id}`)}
-              className="text-base font-bold text-spendx-indigo dark:text-spendx-soft-purple hover:text-spendx-blue-primary transition-colors cursor-pointer truncate max-w-[170px]"
+              className="text-base font-bold text-foreground hover:text-primary transition-colors cursor-pointer truncate max-w-[170px] leading-tight"
             >
               {budget.name}
             </h3>
@@ -171,17 +171,17 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
       </div>
 
       {/* Progress Bar & Status */}
-      <div className="my-4 space-y-2">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
+      <div className="my-4 space-y-2.5">
+        <div className="flex items-baseline justify-between">
+          <span className="text-sm font-extrabold text-foreground tabular-nums tracking-tight">
             {budgetService.formatINR(budget.spent)}
           </span>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-muted-foreground font-medium">
             of {budgetService.formatINR(budget.allocatedAmount)}
           </span>
         </div>
 
-        <div className="w-full h-2.5 rounded-full bg-slate-200/60 dark:bg-slate-700/50 overflow-hidden">
+        <div className="w-full h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ${getProgressBarColor()}`}
             style={{ width: `${Math.min(100, budget.utilizationPercentage)}%` }}
@@ -190,19 +190,19 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
 
         <div className="flex items-center justify-between text-xs pt-1">
           <div>{getStatusBadge()}</div>
-          <span className="text-slate-400 text-[11px]">
+          <span className="text-muted-foreground text-[11px] font-medium">
             {budget.matchingTransactionCount} txns
           </span>
         </div>
       </div>
 
       {/* Bottom Footer: Remaining & Deep link */}
-      <div className="pt-3 border-t border-slate-100/60 dark:border-white/5 flex items-center justify-between text-xs">
-        <span className="text-slate-500 dark:text-slate-400">
+      <div className="pt-3 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-xs">
+        <span className="text-muted-foreground font-medium">
           Remaining:{' '}
           <strong
-            className={`tabular-nums ${
-              budget.status === 'EXCEEDED' ? 'text-rose-600' : 'text-emerald-600 dark:text-emerald-400'
+            className={`tabular-nums font-bold ${
+              budget.status === 'EXCEEDED' ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'
             }`}
           >
             {budgetService.formatINR(budget.remaining)}
@@ -212,7 +212,7 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
         <button
           type="button"
           onClick={() => navigate(`/budgets/${budget.id}`)}
-          className="inline-flex items-center gap-1 font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 font-bold text-primary hover:underline transition-colors cursor-pointer"
         >
           <span>Audit</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
