@@ -26,7 +26,7 @@ export const TransactionCaptureSection: React.FC = () => {
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight">
               Your Transactions.{' '}
-              <span className="bg-gradient-to-r from-amber-500 via-[#718FE8] to-[#8066CC] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-500 via-[#D4AF37] to-emerald-500 bg-clip-text text-transparent">
                 Captured Intelligently.
               </span>
             </h2>
@@ -67,7 +67,7 @@ export const TransactionCaptureSection: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-8 h-8 rounded-xl bg-[#8066CC]/15 text-[#8066CC] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center shrink-0 mt-0.5">
                   <Layers className="w-4 h-4" />
                 </div>
                 <div>
@@ -107,7 +107,7 @@ export const TransactionCaptureSection: React.FC = () => {
               {/* Vertical Workflow Steps */}
               <div className="space-y-4 relative">
                 {/* Connecting Line */}
-                <div className="absolute left-5 top-5 bottom-5 w-0.5 bg-gradient-to-b from-amber-500 via-[#718FE8] to-emerald-500 opacity-40 -z-0" />
+                <div className="absolute left-5 top-5 bottom-5 w-0.5 bg-gradient-to-b from-amber-500 via-[#D4AF37] to-emerald-500 opacity-40 -z-0" />
 
                 {/* Node 1 */}
                 <div className="flex items-center gap-3.5 relative z-10">
@@ -137,14 +137,14 @@ export const TransactionCaptureSection: React.FC = () => {
 
                 {/* Node 3 */}
                 <div className="flex items-center gap-3.5 relative z-10">
-                  <div className="w-10 h-10 rounded-xl bg-[#8066CC]/15 text-[#8066CC] flex items-center justify-center shrink-0 border border-[#8066CC]/30">
+                  <div className="w-10 h-10 rounded-xl bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center shrink-0 border border-[#D4AF37]/30">
                     <Layers className="w-4 h-4" />
                   </div>
                   <div className="flex-1 glass-panel rounded-xl px-3.5 py-2 border border-white/60 dark:border-white/10 flex items-center justify-between">
                     <span className="text-xs font-medium text-foreground">
                       Transaction Categorization
                     </span>
-                    <span className="text-[10px] text-[#8066CC] font-mono">Auto-Tagged</span>
+                    <span className="text-[10px] text-[#D4AF37] font-mono">Auto-Tagged</span>
                   </div>
                 </div>
 
@@ -170,7 +170,7 @@ export const TransactionCaptureSection: React.FC = () => {
                 </div>
                 <div className="rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10 p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#10B981] text-[#0A0A0C] flex items-center justify-center">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>

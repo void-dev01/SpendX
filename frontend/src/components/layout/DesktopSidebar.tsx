@@ -74,7 +74,7 @@ export const DesktopSidebar: React.FC = () => {
       </div>
 
       {/* 2. Scrollable Navigation Groups */}
-      <nav className="flex-1 overflow-y-auto py-2 space-y-3.5 pr-1">
+      <nav className="flex-1 overflow-y-auto py-1 space-y-2 pr-1 pb-6 scrollbar-thin scrollbar-thumb-amber-500/20">
         {NAVIGATION_GROUPS.map((group) => {
           const groupItems = NAVIGATION_ITEMS.filter((item) => item.group === group);
           if (groupItems.length === 0) return null;
@@ -83,7 +83,7 @@ export const DesktopSidebar: React.FC = () => {
             <div key={group} className="space-y-0.5">
               {/* Group Title (Hidden when collapsed) */}
               {!isSidebarCollapsed && (
-                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 pb-0.5 block">
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider px-3 pb-0.5 pt-0.5 block">
                   {group}
                 </span>
               )}
@@ -107,7 +107,7 @@ export const DesktopSidebar: React.FC = () => {
                           `flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                             isSidebarCollapsed
                               ? 'justify-center w-10 h-10 mx-auto'
-                              : 'px-3 py-2 w-full'
+                              : 'px-3 py-1.5 w-full'
                           } ${
                             isActive
                               ? 'bg-gradient-to-r from-amber-500/15 to-yellow-600/10 text-amber-600 dark:text-amber-400 shadow-sm border border-amber-500/30 font-bold'
@@ -188,31 +188,38 @@ export const DesktopSidebar: React.FC = () => {
           </div>
         )}
 
-        {/* User Capsule */}
+        {/* User Capsule — Navigates directly to Settings on click */}
         <div
-          className={`flex items-center rounded-2xl p-1 ${
+          className={`flex items-center rounded-2xl p-1 transition-colors hover:bg-black/5 dark:hover:bg-white/5 ${
             isSidebarCollapsed ? 'justify-center' : 'justify-between'
           }`}
         >
-          <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+          <button
+            onClick={() => navigate('/settings')}
+            className="flex items-center gap-2.5 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] rounded-xl cursor-pointer flex-1 group"
+            title="Account Settings — Click to update name & email"
+            aria-label="Open Account Settings to update name and email"
+          >
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-sm group-hover:scale-105 transition-transform">
               {initials}
             </div>
 
             {!isSidebarCollapsed && (
               <div className="truncate">
-                <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
+                <p className="text-xs font-bold text-foreground group-hover:text-amber-500 transition-colors truncate">
+                  {displayName}
+                </p>
                 <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
               </div>
             )}
-          </div>
+          </button>
 
           {!isSidebarCollapsed && (
             <button
               onClick={handleLogout}
               aria-label="Sign out"
               title="Sign Out"
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0 ml-1"
             >
               <SignOut className="w-4 h-4" />
             </button>

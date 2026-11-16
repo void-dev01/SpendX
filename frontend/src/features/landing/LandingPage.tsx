@@ -28,8 +28,8 @@ export const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen spendx-ambient-bg text-foreground selection:bg-primary/20 selection:text-primary relative selection:rounded">
       {/* Ambient background decoration shapes */}
-      <div className="fixed top-0 left-1/4 w-96 h-96 bg-[#DDF5FF]/40 dark:bg-[#718FE8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-[#EDE4FF]/50 dark:bg-[#8066CC]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed top-0 left-1/4 w-96 h-96 bg-[#DDF5FF]/40 dark:bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-[#E6F4EA]/50 dark:bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* 1. Navigation Bar */}
       <LandingNavbar />

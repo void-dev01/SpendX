@@ -33,7 +33,7 @@ export const HeroDashboard: React.FC = () => {
   return (
     <div className="relative w-full max-w-2xl mx-auto select-none">
       {/* Decorative Ambient Radial Glow underneath */}
-      <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-[#718FE8]/25 via-[#8B72D6]/20 to-[#8066CC]/25 rounded-[36px] blur-2xl -z-10" />
+      <div className="absolute -inset-4 sm:-inset-6 bg-gradient-to-r from-[#D4AF37]/25 via-[#10B981]/20 to-[#D4AF37]/25 rounded-[36px] blur-2xl -z-10" />
 
       {/* Main Floating Glass Dashboard Container */}
       <div className="glass-panel rounded-3xl p-4 sm:p-6 border border-white/80 dark:border-white/15 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
@@ -57,7 +57,7 @@ export const HeroDashboard: React.FC = () => {
               <Bell className="w-3.5 h-3.5" />
               <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#DC5579] rounded-full" />
             </div>
-            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center text-xs font-bold">
+            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#D4AF37] to-[#10B981] text-[#0A0A0C] flex items-center justify-center text-xs font-bold">
               SX
             </div>
           </div>
@@ -136,8 +136,8 @@ export const HeroDashboard: React.FC = () => {
                 <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#718FE8" stopOpacity={0.45} />
-                      <stop offset="100%" stopColor="#8B72D6" stopOpacity={0.0} />
+                      <stop offset="0%" stopColor="#D4AF37" stopOpacity={0.45} />
+                      <stop offset="100%" stopColor="#10B981" stopOpacity={0.0} />
                     </linearGradient>
                   </defs>
                   <XAxis
@@ -163,7 +163,7 @@ export const HeroDashboard: React.FC = () => {
                   <Area
                     type="monotone"
                     dataKey="spend"
-                    stroke="#718FE8"
+                    stroke="#D4AF37"
                     strokeWidth={2}
                     fillOpacity={1}
                     fill="url(#spendGrad)"
@@ -233,13 +233,13 @@ export const HeroDashboard: React.FC = () => {
       {/* Floating Card 1: AI Insight Pill (Top-Right Desktop / Relative On Mobile) */}
       <div className="mt-3 sm:mt-0 sm:absolute sm:-top-5 sm:-right-4 glass-panel rounded-2xl p-3 border border-white/80 dark:border-white/20 shadow-xl backdrop-blur-xl sm:max-w-xs transition-transform hover:-translate-y-1 duration-200">
         <div className="flex items-start gap-2.5">
-          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#8B72D6] to-[#8066CC] text-white flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#10B981] text-[#0A0A0C] flex items-center justify-center shrink-0 shadow-sm">
             <Sparkles className="w-3.5 h-3.5" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[11px] font-bold text-primary">AI Insight</span>
-              <span className="text-[9px] text-muted-foreground font-mono">LIVE</span>
+              <span className="text-[11px] font-bold text-[#D4AF37]">AI Insight</span>
+              <span className="text-[9px] text-emerald-500 font-mono font-semibold bg-emerald-500/10 px-1 rounded">LIVE</span>
             </div>
             <p className="text-xs text-foreground mt-0.5 leading-snug">
               Your dining expenses are 12% higher this month.
@@ -260,7 +260,7 @@ export const HeroDashboard: React.FC = () => {
               <span className="font-bold text-primary">64%</span>
             </div>
             <div className="w-full h-1.5 rounded-full bg-black/5 dark:bg-white/10 mt-1.5 overflow-hidden">
-              <div className="h-full rounded-full bg-gradient-to-r from-[#718FE8] to-[#8B72D6] w-[64%]" />
+              <div className="h-full rounded-full bg-gradient-to-r from-[#D4AF37] to-[#10B981] w-[64%]" />
             </div>
             <div className="flex justify-between text-[10px] text-muted-foreground mt-1 tabular-nums">
               <span>₹32,000</span>
