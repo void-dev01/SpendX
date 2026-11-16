@@ -12,6 +12,10 @@ import {
   LogOut,
   ChevronRight,
   ShieldCheck,
+  CheckCircle2,
+  AlertCircle,
+  Info,
+  CheckCheck,
 } from 'lucide-react';
 import { getRouteMetadata } from '@/config/navigation';
 import { useLayoutStore } from '@/stores/layoutStore';
@@ -29,23 +33,67 @@ export const TopNavbar: React.FC = () => {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+
+  const [notifications, setNotifications] = useState([
+    {
+      id: '1',
+      title: 'Salary Deposit Reconciled',
+      time: '2h ago',
+      description: 'Direct deposit of ₹45,000 from Employer reconciled with checking account.',
+      type: 'success' as const,
+      unread: true,
+    },
+    {
+      id: '2',
+      title: 'Dining Budget Warning (88%)',
+      time: 'Yesterday',
+      description: 'Food & Dining outlays have approached your safety threshold.',
+      type: 'warning' as const,
+      unread: true,
+    },
+    {
+      id: '3',
+      title: 'Monthly Statement Available',
+      time: '3d ago',
+      description: 'October 2026 financial report is ready for download.',
+      type: 'info' as const,
+      unread: false,
+    },
+  ]);
+
+  const unreadCount = notifications.filter((n) => n.unread).length;
+
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+  };
+
+  const markAsRead = (id: string) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, unread: false } : n))
+    );
+  };
+
   // Dynamic route metadata (title, category, breadcrumbs)
   const metadata = getRouteMetadata(location.pathname);
 
-  // Close profile menu when clicking outside or pressing Escape
+  // Close menus when clicking outside or pressing Escape
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        profileMenuRef.current &&
-        !profileMenuRef.current.contains(event.target as Node)
-      ) {
+      const target = event.target as Node;
+      if (profileMenuRef.current && !profileMenuRef.current.contains(target)) {
         setIsProfileMenuOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(target)) {
+        setIsNotificationsOpen(false);
       }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsProfileMenuOpen(false);
+        setIsNotificationsOpen(false);
       }
     };
 
@@ -134,15 +182,128 @@ export const TopNavbar: React.FC = () => {
 
         {/* Right: Actions, Theme Toggle, Profile Menu */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Notifications Button */}
-          <Link
-            to="/notifications"
-            aria-label="View notifications"
-            className="relative w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-          >
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DC5579] animate-pulse" />
-          </Link>
+          {/* Notifications Flyout Popup */}
+          <div className="relative" ref={notificationsRef}>
+            <button
+              onClick={() => {
+                setIsNotificationsOpen(!isNotificationsOpen);
+                setIsProfileMenuOpen(false);
+              }}
+              aria-label="View notifications"
+              aria-expanded={isNotificationsOpen}
+              className="relative w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
+            >
+              <Bell className="w-4 h-4" />
+              {unreadCount > 0 && (
+                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DC5579] animate-pulse" />
+              )}
+            </button>
+
+            <AnimatePresence>
+              {isNotificationsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                  transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                  role="region"
+                  aria-label="Notifications panel"
+                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl glass-panel border border-white/80 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-2xl space-y-3"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between pb-2.5 border-b border-black/5 dark:border-white/10">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xs font-bold text-foreground">Notifications</h3>
+                      {unreadCount > 0 && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/15 text-primary font-bold">
+                          {unreadCount} new
+                        </span>
+                      )}
+                    </div>
+                    {unreadCount > 0 && (
+                      <button
+                        onClick={markAllAsRead}
+                        className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
+                      >
+                        Mark all as read
+                      </button>
+                    )}
+                  </div>
+
+                  {/* List */}
+                  <div className="max-h-72 overflow-y-auto no-scrollbar space-y-2">
+                    {notifications.length === 0 ? (
+                      <div className="py-8 text-center text-xs text-muted-foreground space-y-1">
+                        <CheckCheck className="w-7 h-7 mx-auto text-emerald-500/70" />
+                        <p className="font-semibold text-foreground">All caught up!</p>
+                        <p className="text-[11px]">No active notifications</p>
+                      </div>
+                    ) : (
+                      notifications.map((item) => (
+                        <div
+                          key={item.id}
+                          onClick={() => markAsRead(item.id)}
+                          className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start gap-2.5 ${
+                            item.unread
+                              ? 'bg-primary/10 dark:bg-primary/15 border-primary/25 hover:border-primary/40'
+                              : 'bg-white/40 dark:bg-white/5 border-transparent hover:border-white/30 opacity-75'
+                          }`}
+                        >
+                          <div
+                            className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                              item.type === 'success'
+                                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                                : item.type === 'warning'
+                                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                                : 'bg-primary/15 text-primary'
+                            }`}
+                          >
+                            {item.type === 'success' ? (
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                            ) : item.type === 'warning' ? (
+                              <AlertCircle className="w-3.5 h-3.5" />
+                            ) : (
+                              <Info className="w-3.5 h-3.5" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1">
+                              <p className={`text-xs truncate ${item.unread ? 'font-bold text-foreground' : 'font-medium text-muted-foreground'}`}>
+                                {item.title}
+                              </p>
+                              <span className="text-[10px] text-muted-foreground font-mono shrink-0">
+                                {item.time}
+                              </span>
+                            </div>
+                            <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-snug">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="pt-2 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-[11px]">
+                    <Link
+                      to="/notifications"
+                      onClick={() => setIsNotificationsOpen(false)}
+                      className="text-primary hover:underline font-medium"
+                    >
+                      View all in ledger →
+                    </Link>
+                    <button
+                      onClick={() => setNotifications([])}
+                      className="text-muted-foreground hover:text-foreground cursor-pointer text-[10px]"
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Theme Toggle Button */}
           <button
