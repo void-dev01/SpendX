@@ -21,6 +21,7 @@ import { getRouteMetadata } from '@/config/navigation';
 import { useLayoutStore } from '@/stores/layoutStore';
 import { useThemeStore } from '@/stores/themeStore';
 import { useAuthStore } from '@/stores/authStore';
+import { useNotificationStore } from '@/stores/notificationStore';
 import { authService } from '@/services/authService';
 
 export const TopNavbar: React.FC = () => {
@@ -36,44 +37,13 @@ export const TopNavbar: React.FC = () => {
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const notificationsRef = useRef<HTMLDivElement>(null);
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: '1',
-      title: 'Salary Deposit Reconciled',
-      time: '2h ago',
-      description: 'Direct deposit of ₹45,000 from Employer reconciled with checking account.',
-      type: 'success' as const,
-      unread: true,
-    },
-    {
-      id: '2',
-      title: 'Dining Budget Warning (88%)',
-      time: 'Yesterday',
-      description: 'Food & Dining outlays have approached your safety threshold.',
-      type: 'warning' as const,
-      unread: true,
-    },
-    {
-      id: '3',
-      title: 'Monthly Statement Available',
-      time: '3d ago',
-      description: 'October 2026 financial report is ready for download.',
-      type: 'info' as const,
-      unread: false,
-    },
-  ]);
-
-  const unreadCount = notifications.filter((n) => n.unread).length;
-
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
-  };
-
-  const markAsRead = (id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: false } : n))
-    );
-  };
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    clearAll: clearAllNotifications,
+  } = useNotificationStore();
 
   // Dynamic route metadata (title, category, breadcrumbs)
   const metadata = getRouteMetadata(location.pathname);
@@ -294,7 +264,7 @@ export const TopNavbar: React.FC = () => {
                       View all in ledger →
                     </Link>
                     <button
-                      onClick={() => setNotifications([])}
+                      onClick={clearAllNotifications}
                       className="text-muted-foreground hover:text-foreground cursor-pointer text-[10px]"
                     >
                       Clear all

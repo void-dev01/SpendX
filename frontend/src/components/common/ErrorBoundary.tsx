@@ -1,0 +1,66 @@
+import { Component, ErrorInfo, ReactNode } from 'react';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallbackTitle?: string;
+  fallbackMessage?: string;
+  onReset?: () => void;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = {
+    hasError: false,
+    error: null,
+  };
+
+  public static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.error('Unhandled UI exception in ErrorBoundary:', error, errorInfo);
+  }
+
+  public handleReset = (): void => {
+    this.setState({ hasError: false, error: null });
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
+  };
+
+  public render(): ReactNode {
+    if (this.state.hasError) {
+      return (
+        <div className="glass-card rounded-3xl p-6 border border-rose-500/20 bg-rose-500/5 text-center flex flex-col items-center justify-center min-h-[220px] space-y-3">
+          <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+            <AlertTriangle className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <h4 className="text-sm font-bold text-foreground">
+              {this.props.fallbackTitle || 'Visualization Temporarily Unavailable'}
+            </h4>
+            <p className="text-xs text-muted-foreground max-w-sm">
+              {this.props.fallbackMessage ||
+                'An error occurred while calculating and rendering this financial widget.'}
+            </p>
+          </div>
+          <button
+            onClick={this.handleReset}
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Retry Widget
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}

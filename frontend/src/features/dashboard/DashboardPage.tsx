@@ -13,6 +13,7 @@ import { AIInsightsWidget } from '@/components/dashboard/AIInsightsWidget';
 import { UpcomingPayments } from '@/components/dashboard/UpcomingPayments';
 import { DashboardSkeleton } from '@/components/dashboard/DashboardSkeleton';
 import { DashboardEmptyState } from '@/components/dashboard/DashboardEmptyState';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 export const DashboardPage: React.FC = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<DateRangePeriod>('this_month');
@@ -93,13 +94,17 @@ export const DashboardPage: React.FC = () => {
       {/* 3 & 4. Income vs Expense Chart (2 cols) & Spending Analytics (1 col) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <IncomeExpenseChart data={data.incomeVsExpense} />
+          <ErrorBoundary fallbackTitle="Income vs Expense Chart Unavailable">
+            <IncomeExpenseChart data={data.incomeVsExpense} />
+          </ErrorBoundary>
         </div>
         <div className="lg:col-span-1">
-          <SpendingAnalytics
-            totalSpent={data.spendingAnalytics.totalSpent}
-            categories={data.spendingAnalytics.categories}
-          />
+          <ErrorBoundary fallbackTitle="Spending Analytics Unavailable">
+            <SpendingAnalytics
+              totalSpent={data.spendingAnalytics.totalSpent}
+              categories={data.spendingAnalytics.categories}
+            />
+          </ErrorBoundary>
         </div>
       </div>
 

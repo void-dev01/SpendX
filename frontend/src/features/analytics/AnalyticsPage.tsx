@@ -24,6 +24,7 @@ import { PeriodComparison } from '@/components/analytics/PeriodComparison';
 import { AnalyticsInsights } from '@/components/analytics/AnalyticsInsights';
 import { AnalyticsDataTable } from '@/components/analytics/AnalyticsDataTable';
 import { AnalyticsEmptyState } from '@/components/analytics/AnalyticsEmptyState';
+import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 
 export const AnalyticsPage: React.FC = () => {
   // Global Filters State
@@ -210,20 +211,28 @@ export const AnalyticsPage: React.FC = () => {
           />
 
           {/* Income vs Expenses Main Visualization */}
-          <IncomeExpenseChart data={timelineData} />
+          <ErrorBoundary fallbackTitle="Income vs Expenses Chart Unavailable">
+            <IncomeExpenseChart data={timelineData} />
+          </ErrorBoundary>
 
           {/* Category Distributions (2 columns) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <CategoryBreakdown
-              items={expenseBreakdown}
-              selectedCategory={filters.category}
-              onSelectCategory={(cat) => setFilters({ ...filters, category: cat })}
-            />
-            <IncomeBreakdown items={incomeBreakdown} />
+            <ErrorBoundary fallbackTitle="Category Breakdown Unavailable">
+              <CategoryBreakdown
+                items={expenseBreakdown}
+                selectedCategory={filters.category}
+                onSelectCategory={(cat) => setFilters({ ...filters, category: cat })}
+              />
+            </ErrorBoundary>
+            <ErrorBoundary fallbackTitle="Income Breakdown Unavailable">
+              <IncomeBreakdown items={incomeBreakdown} />
+            </ErrorBoundary>
           </div>
 
           {/* Spending Trends Area Chart */}
-          <SpendingTrends timelineData={timelineData} />
+          <ErrorBoundary fallbackTitle="Spending Trends Chart Unavailable">
+            <SpendingTrends timelineData={timelineData} />
+          </ErrorBoundary>
 
           {/* Budget & Savings Performance (2 columns) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

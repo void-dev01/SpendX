@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { env } from '@/config/env';
 
 export const SettingsPage: React.FC = () => {
   return (
@@ -21,8 +22,8 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between py-2 border-b border-border">
             <div>
               <p className="text-sm font-medium">Backend API Endpoint</p>
-              <p className="text-xs text-muted-foreground">
-                {import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1 (Default)'}
+              <p className="text-xs text-muted-foreground font-mono">
+                {env.apiBaseUrl}
               </p>
             </div>
             <Badge variant="outline">Configured</Badge>
@@ -32,11 +33,11 @@ export const SettingsPage: React.FC = () => {
             <div>
               <p className="text-sm font-medium">Supabase Client Connection</p>
               <p className="text-xs text-muted-foreground">
-                {import.meta.env.VITE_SUPABASE_URL ? 'Endpoint set' : 'Awaiting credentials in .env'}
+                {env.supabaseUrl ? 'Endpoint set' : 'Awaiting credentials in .env'}
               </p>
             </div>
-            <Badge variant={import.meta.env.VITE_SUPABASE_URL ? 'default' : 'warning'}>
-              {import.meta.env.VITE_SUPABASE_URL ? 'Ready' : 'Pending Credentials'}
+            <Badge variant={env.supabaseUrl ? 'default' : 'warning'}>
+              {env.supabaseUrl ? 'Ready' : 'Pending Credentials'}
             </Badge>
           </div>
 
