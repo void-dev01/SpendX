@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   Menu,
   Search,
@@ -174,55 +175,61 @@ export const TopNavbar: React.FC = () => {
             </button>
 
             {/* Profile Flyout Dropdown */}
-            {isProfileMenuOpen && (
-              <div
-                role="menu"
-                className="absolute right-0 top-full mt-2 w-56 rounded-2xl glass-panel border border-white/80 dark:border-white/15 shadow-2xl p-2 space-y-1 animate-in fade-in zoom-in-95 duration-150 z-50 backdrop-blur-2xl"
-              >
-                {/* User Info Header */}
-                <div className="px-3 py-2 border-b border-black/5 dark:border-white/10 space-y-0.5">
-                  <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
-                  <div className="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 pt-1">
-                    <ShieldCheck className="w-3 h-3" />
-                    <span>Verified Session</span>
+            <AnimatePresence>
+              {isProfileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                  transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                  role="menu"
+                  className="absolute right-0 top-full mt-2 w-56 rounded-2xl glass-panel border border-white/80 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-2xl"
+                >
+                  {/* User Info Header */}
+                  <div className="px-3 py-2 border-b border-black/5 dark:border-white/10 space-y-0.5">
+                    <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
+                    <div className="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 pt-1">
+                      <ShieldCheck className="w-3 h-3" />
+                      <span>Verified Session</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="py-1 space-y-0.5">
-                  <Link
-                    to="/profile"
-                    onClick={() => setIsProfileMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
-                    role="menuitem"
-                  >
-                    <User className="w-4 h-4 text-primary" />
-                    <span>User Profile</span>
-                  </Link>
+                  <div className="py-1 space-y-0.5">
+                    <Link
+                      to="/profile"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                      role="menuitem"
+                    >
+                      <User className="w-4 h-4 text-primary" />
+                      <span>User Profile</span>
+                    </Link>
 
-                  <Link
-                    to="/settings"
-                    onClick={() => setIsProfileMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
-                    role="menuitem"
-                  >
-                    <SettingsIcon className="w-4 h-4 text-muted-foreground" />
-                    <span>Settings & Security</span>
-                  </Link>
-                </div>
+                    <Link
+                      to="/settings"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                      role="menuitem"
+                    >
+                      <SettingsIcon className="w-4 h-4 text-muted-foreground" />
+                      <span>Settings & Security</span>
+                    </Link>
+                  </div>
 
-                <div className="pt-1 border-t border-black/5 dark:border-white/10">
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
-                    role="menuitem"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              </div>
-            )}
+                  <div className="pt-1 border-t border-black/5 dark:border-white/10">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                      role="menuitem"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </nav>

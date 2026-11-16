@@ -34,7 +34,7 @@ export const MobileBottomNav: React.FC = () => {
       <NavLink
         to="/dashboard"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-200 ${
+          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
               ? 'text-primary font-bold'
               : 'text-muted-foreground hover:text-foreground'
@@ -59,7 +59,7 @@ export const MobileBottomNav: React.FC = () => {
       <NavLink
         to="/transactions"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-200 ${
+          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
               ? 'text-primary font-bold'
               : 'text-muted-foreground hover:text-foreground'
@@ -84,7 +84,7 @@ export const MobileBottomNav: React.FC = () => {
       <NavLink
         to="/ai-assistant"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-200 ${
+          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
               ? 'text-[#8066CC] dark:text-[#B9A4FF] font-bold'
               : 'text-muted-foreground hover:text-foreground'
@@ -111,7 +111,7 @@ export const MobileBottomNav: React.FC = () => {
       <NavLink
         to="/accounts"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-200 ${
+          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
               ? 'text-primary font-bold'
               : 'text-muted-foreground hover:text-foreground'
@@ -137,7 +137,7 @@ export const MobileBottomNav: React.FC = () => {
         type="button"
         onClick={toggleMobileDrawer}
         aria-label="More navigation destinations"
-        className={`flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-200 cursor-pointer ${
+        className={`flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 cursor-pointer ${
           isMoreActive
             ? 'text-primary font-bold'
             : 'text-muted-foreground hover:text-foreground'

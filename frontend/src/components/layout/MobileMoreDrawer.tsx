@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
   PieChart,
@@ -54,8 +55,6 @@ export const MobileMoreDrawer: React.FC = () => {
     }
   }, [isMobileDrawerOpen, closeMobileDrawer]);
 
-  if (!isMobileDrawerOpen) return null;
-
   const displayName = user?.fullName || 'SPENDX Member';
   const displayEmail = user?.email || 'member@spendx.app';
   const initials = displayName
@@ -72,17 +71,27 @@ export const MobileMoreDrawer: React.FC = () => {
   };
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Navigation drawer"
-      className="fixed inset-0 z-50 flex flex-col justify-end md:hidden bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
-      onClick={closeMobileDrawer}
-    >
-      <div
-        className="glass-panel rounded-t-[32px] border-t border-white/80 dark:border-white/15 p-6 max-h-[85vh] overflow-y-auto space-y-5 shadow-2xl backdrop-blur-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isMobileDrawerOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation drawer"
+          className="fixed inset-0 z-50 flex flex-col justify-end md:hidden bg-slate-900/60 backdrop-blur-sm"
+          onClick={closeMobileDrawer}
+        >
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 28, stiffness: 300, mass: 0.8 }}
+            className="glass-panel rounded-t-[32px] border-t border-white/80 dark:border-white/15 p-6 max-h-[85vh] overflow-y-auto space-y-5 shadow-2xl backdrop-blur-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
         {/* Grab Handle */}
         <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 mx-auto -mt-1 mb-2" />
 
@@ -154,7 +163,9 @@ export const MobileMoreDrawer: React.FC = () => {
             <span>Sign Out</span>
           </button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
   );
 };

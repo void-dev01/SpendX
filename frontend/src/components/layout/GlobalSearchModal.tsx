@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
 import { Search, X, ArrowRight, CornerDownLeft } from 'lucide-react';
 import { NAVIGATION_ITEMS } from '@/config/navigation';
 import { useLayoutStore } from '@/stores/layoutStore';
@@ -34,8 +35,6 @@ export const GlobalSearchModal: React.FC = () => {
     }
   }, [isGlobalSearchOpen]);
 
-  if (!isGlobalSearchOpen) return null;
-
   const filteredItems = NAVIGATION_ITEMS.filter((item) =>
     item.name.toLowerCase().includes(query.toLowerCase()) ||
     item.group.toLowerCase().includes(query.toLowerCase())
@@ -47,17 +46,27 @@ export const GlobalSearchModal: React.FC = () => {
   };
 
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Global search command palette"
-      className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150"
-      onClick={() => setGlobalSearchOpen(false)}
-    >
-      <div
-        className="glass-panel rounded-3xl p-4 sm:p-5 border border-white/80 dark:border-white/20 shadow-2xl max-w-lg w-full space-y-3 backdrop-blur-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <AnimatePresence>
+      {isGlobalSearchOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.16 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Global search command palette"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-slate-900/60 backdrop-blur-sm"
+          onClick={() => setGlobalSearchOpen(false)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: -12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: -12 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-panel rounded-3xl p-4 sm:p-5 border border-white/80 dark:border-white/20 shadow-2xl max-w-lg w-full space-y-3 backdrop-blur-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
         {/* Search Input Bar */}
         <div className="flex items-center gap-2.5 px-3 py-2 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10">
           <Search className="w-5 h-5 text-primary shrink-0" />
@@ -123,7 +132,9 @@ export const GlobalSearchModal: React.FC = () => {
             SPENDX Command Center <ArrowRight className="w-3 h-3 text-primary" />
           </span>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
   );
 };
