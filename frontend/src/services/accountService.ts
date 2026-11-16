@@ -102,8 +102,7 @@ export const accountService = {
     } catch (e) {
       console.warn('Failed to parse cached accounts', e);
     }
-    this.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
-    return INITIAL_DEMO_ACCOUNTS;
+    return [];
   },
 
   saveStoredAccounts(accounts: AccountRecord[]): void {

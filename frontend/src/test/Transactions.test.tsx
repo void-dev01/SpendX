@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { TransactionsPage } from '../features/transactions/TransactionsPage';
 import { useAuthStore } from '../stores/authStore';
-import { transactionService } from '../services/transactionService';
+import { transactionService, INITIAL_DEMO_TRANSACTIONS } from '../services/transactionService';
 
 describe('SPENDX Transactions Page & Ledger Telemetry', () => {
   let queryClient: QueryClient;
@@ -29,6 +29,7 @@ describe('SPENDX Transactions Page & Ledger Telemetry', () => {
 
     // Reset local cache to initial demo transactions
     localStorage.clear();
+    transactionService.saveStoredTransactions(INITIAL_DEMO_TRANSACTIONS);
   });
 
   const renderTransactions = () =>

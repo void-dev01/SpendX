@@ -278,9 +278,8 @@ export const transactionService = {
     } catch (e) {
       console.warn('Failed to parse cached transactions', e);
     }
-    // Initialize default set
-    this.saveStoredTransactions(INITIAL_DEMO_TRANSACTIONS);
-    return INITIAL_DEMO_TRANSACTIONS;
+    // Default to clean empty state for real personal finances
+    return [];
   },
 
   /**

@@ -6,51 +6,51 @@
 
 @layer base {
   :root {
-    --background: #F6F3EC;
+    --background: #FBFBFD;
     --foreground: #0F172A;
     --surface: #FFFFFF;
-    --primary: #1D4ED8;
-    --primary-foreground: #FFFFFF;
-    --secondary: #0D9488;
+    --primary: #D4AF37;
+    --primary-foreground: #0A0A0C;
+    --secondary: #10B981;
     --secondary-foreground: #FFFFFF;
     --income: #065F46;
     --expense: #BE123C;
     --warning: #B45309;
-    --info: #0284C7;
-    --muted: #EFECE6;
-    --muted-foreground: #475569;
-    --border: rgba(15, 23, 42, 0.10);
+    --info: #0D9488;
+    --muted: #F4F4F6;
+    --muted-foreground: #52525B;
+    --border: rgba(24, 24, 27, 0.08);
     --input: #FFFFFF;
-    --ring: #1D4ED8;
+    --ring: #D4AF37;
     --radius: 0.875rem;
 
     /* Executive Wealth Private-Banking Tokens */
-    --brand-primary: #1D4ED8;
-    --brand-secondary: #0D9488;
+    --brand-primary: #D4AF37;
+    --brand-secondary: #10B981;
     --brand-emerald: #065F46;
-    --brand-gold: #B45309;
-    --brand-ai: #4338CA;
-    --brand-ice: #FAF8F5;
-    --brand-sky: #E0F2FE;
-    --brand-lavender: #EEF2FF;
-    --brand-soft-purple: #F5F3FF;
+    --brand-gold: #D4AF37;
+    --brand-ai: #D4AF37;
+    --brand-ice: #FFFFFF;
+    --brand-sky: #F4F4F6;
+    --brand-lavender: #FAF9F5;
+    --brand-soft-purple: #F5F3EC;
     --brand-deep-indigo: #0F172A;
 
     /* SpendX Dynamic Text & Component Colors */
     --spendx-indigo: #0F172A;
     --spendx-deep-indigo: #020617;
-    --spendx-soft-purple: #4338CA;
+    --spendx-soft-purple: #0F172A;
     --spendx-text-primary: #0F172A;
 
     /* Porcelain-Silk Glass Surfaces */
-    --glass-bg: rgba(255, 255, 255, 0.92);
-    --glass-border: rgba(15, 23, 42, 0.10);
-    --glass-nav-bg: rgba(255, 255, 255, 0.94);
-    --glass-nav-border: rgba(15, 23, 42, 0.12);
+    --glass-bg: rgba(255, 255, 255, 0.94);
+    --glass-border: rgba(24, 24, 27, 0.08);
+    --glass-nav-bg: rgba(255, 255, 255, 0.96);
+    --glass-nav-border: rgba(24, 24, 27, 0.10);
     --glass-modal-bg: #FFFFFF;
-    --glass-modal-border: rgba(15, 23, 42, 0.14);
+    --glass-modal-border: rgba(24, 24, 27, 0.12);
     --glass-surface-bg: rgba(255, 255, 255, 0.92);
-    --glass-surface-border: rgba(15, 23, 42, 0.09);
+    --glass-surface-border: rgba(24, 24, 27, 0.08);
 
     /* Soft Warm Architectural Shadows */
     --shadow-glass: 0 12px 32px -8px rgba(28, 25, 23, 0.07), 0 2px 6px rgba(28, 25, 23, 0.04);
@@ -59,55 +59,55 @@
   }
 
   .dark {
-    /* Royal Midnight Velvet & Champagne Obsidian */
-    --background: #060913;
-    --foreground: #FAF8F5;
-    --surface: #0E1626;
-    --primary: #818CF8;
-    --primary-foreground: #060913;
-    --secondary: #2DD4BF;
-    --secondary-foreground: #060913;
-    --income: #34D399;
+    /* Pure Neutral Warm Obsidian & Matte Onyx (ZERO Blue/Purple) */
+    --background: #0A0A0C;
+    --foreground: #F8FAFC;
+    --surface: #141417;
+    --primary: #D4AF37;
+    --primary-foreground: #0A0A0C;
+    --secondary: #10B981;
+    --secondary-foreground: #0A0A0C;
+    --income: #10B981;
     --expense: #FB7185;
     --warning: #FBBF24;
-    --info: #38BDF8;
-    --muted: #111A2E;
-    --muted-foreground: #94A3B8;
-    --border: rgba(255, 255, 255, 0.10);
-    --input: rgba(15, 23, 42, 0.84);
-    --ring: #38BDF8;
+    --info: #2DD4BF;
+    --muted: #18181C;
+    --muted-foreground: #A1A1AA;
+    --border: rgba(212, 175, 55, 0.16);
+    --input: #18181C;
+    --ring: #D4AF37;
 
     /* Dark Executive Brand Tokens */
-    --brand-primary: #818CF8;
-    --brand-secondary: #2DD4BF;
-    --brand-emerald: #34D399;
-    --brand-gold: #FDE68A;
-    --brand-ai: #C4B5FD;
-    --brand-ice: #0B1120;
-    --brand-sky: #131B2E;
-    --brand-lavender: #1E1B4B;
-    --brand-soft-purple: #2E1065;
-    --brand-deep-indigo: #FAF8F5;
+    --brand-primary: #D4AF37;
+    --brand-secondary: #10B981;
+    --brand-emerald: #10B981;
+    --brand-gold: #D4AF37;
+    --brand-ai: #D4AF37;
+    --brand-ice: #141417;
+    --brand-sky: #18181C;
+    --brand-lavender: #18181C;
+    --brand-soft-purple: #18181C;
+    --brand-deep-indigo: #F8FAFC;
 
     /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #FAF8F5;
+    --spendx-indigo: #F8FAFC;
     --spendx-deep-indigo: #F1F5F9;
-    --spendx-soft-purple: #C7D2FE;
-    --spendx-text-primary: #FAF8F5;
+    --spendx-soft-purple: #D4AF37;
+    --spendx-text-primary: #F8FAFC;
 
-    /* Smoked Obsidian Glass Surfaces */
-    --glass-bg: rgba(15, 23, 42, 0.84);
-    --glass-border: rgba(255, 255, 255, 0.10);
-    --glass-nav-bg: rgba(11, 17, 31, 0.90);
-    --glass-nav-border: rgba(255, 255, 255, 0.12);
-    --glass-modal-bg: #0F172A;
-    --glass-modal-border: rgba(255, 255, 255, 0.14);
-    --glass-surface-bg: rgba(17, 25, 44, 0.80);
+    /* Rich Matte Onyx Glass Surfaces */
+    --glass-bg: rgba(20, 20, 23, 0.88);
+    --glass-border: rgba(212, 175, 55, 0.14);
+    --glass-nav-bg: rgba(20, 20, 23, 0.92);
+    --glass-nav-border: rgba(212, 175, 55, 0.16);
+    --glass-modal-bg: #141417;
+    --glass-modal-border: rgba(212, 175, 55, 0.20);
+    --glass-surface-bg: rgba(24, 24, 28, 0.85);
     --glass-surface-border: rgba(255, 255, 255, 0.08);
 
-    /* Deep Velvet Shadows */
-    --shadow-glass: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.06);
-    --shadow-glass-elevated: 0 24px 56px -12px rgba(0, 0, 0, 0.80), 0 0 20px 0 rgba(99, 102, 241, 0.15);
+    /* Deep Warm Obsidian Shadows */
+    --shadow-glass: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(212, 175, 55, 0.08);
+    --shadow-glass-elevated: 0 24px 56px -12px rgba(0, 0, 0, 0.80), 0 0 20px 0 rgba(212, 175, 55, 0.12);
     --shadow-nav: 0 16px 44px -8px rgba(0, 0, 0, 0.75);
   }
 }
@@ -241,12 +241,11 @@ body::-webkit-scrollbar {
 html,
 body,
 .spendx-ambient-bg {
-  background-color: #F6F3EC;
+  background-color: #FBFBFD;
   background-image:
-    radial-gradient(at 0% 0%, rgba(217, 119, 6, 0.06) 0px, transparent 48%),
-    radial-gradient(at 100% 0%, rgba(30, 64, 175, 0.07) 0px, transparent 48%),
-    radial-gradient(at 50% 100%, rgba(5, 150, 105, 0.05) 0px, transparent 50%),
-    linear-gradient(180deg, #FAF8F5 0%, #EFECE6 100%);
+    radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.06) 0px, transparent 48%),
+    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.04) 0px, transparent 48%),
+    linear-gradient(180deg, #FFFFFF 0%, #F7F7FA 100%);
   background-attachment: fixed;
   color: var(--foreground);
   overflow-x: hidden;
@@ -254,16 +253,15 @@ body,
   -ms-overflow-style: none !important;
 }
 
-/* Multi-layered Ambient Architectural Mesh Canvas (Dark Mode: Royal Midnight Velvet & Champagne Obsidian) */
+/* Multi-layered Ambient Architectural Mesh Canvas (Dark Mode: Pure Neutral Warm Obsidian & Matte Onyx) */
 .dark html,
 .dark body,
 .dark .spendx-ambient-bg {
-  background-color: #060913;
+  background-color: #0A0A0C;
   background-image:
-    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.26) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.13) 0px, transparent 45%),
-    radial-gradient(at 50% 100%, rgba(88, 28, 135, 0.14) 0px, transparent 55%),
-    linear-gradient(180deg, #060913 0%, #0B1120 100%);
+    radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 45%),
+    linear-gradient(180deg, #0A0A0C 0%, #111114 100%);
   background-attachment: fixed;
   color: var(--foreground);
 }
@@ -290,7 +288,7 @@ h1, h2, h3, .font-serif, .font-display, .font-editorial {
 
 .dark .squircle-icon {
   background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.16);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
@@ -313,7 +311,7 @@ h1, h2, h3, .font-serif, .font-display, .font-editorial {
    ========================================================================== */
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #0F172A 0%, #1D4ED8 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #B45309 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -324,11 +322,11 @@ h1, h2, h3, .font-serif, .font-display, .font-editorial {
 }
 
 .dark .text-gradient-brand {
-  background: linear-gradient(135deg, #BAE6FD 0%, #818CF8 100%);
+  background: linear-gradient(135deg, #FDE68A 0%, #D4AF37 50%, #AA8220 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #BAE6FD;
+  color: #FDE68A;
 }
 
 .text-gradient-wealth {
@@ -436,13 +434,30 @@ h1, h2, h3, .font-serif, .font-display, .font-editorial {
 .glass-card-interactive:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-glass-elevated), inset 0 1px 0 0 rgba(255, 255, 255, 0.80);
-  border-color: rgba(70, 110, 232, 0.50);
+  border-color: rgba(212, 175, 55, 0.40);
 }
 
 .dark .glass-card-interactive:hover {
   transform: translateY(-3px);
-  box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 24px 0 rgba(91, 130, 246, 0.18), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
-  border-color: rgba(91, 130, 246, 0.50);
+  box-shadow: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 24px 0 rgba(212, 175, 55, 0.15), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+  border-color: rgba(212, 175, 55, 0.35);
+}
+
+/* Primary SpendX CTA Button (Burnished Champagne Gold / Deep Emerald) */
+.btn-spendx-primary {
+  background: linear-gradient(135deg, #D4AF37 0%, #AA8220 100%) !important;
+  color: #0A0A0C !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  transition: all 180ms ease !important;
+  cursor: pointer !important;
+}
+
+.btn-spendx-primary:hover {
+  opacity: 0.95 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35) !important;
 }
 
 /* ==========================================================================

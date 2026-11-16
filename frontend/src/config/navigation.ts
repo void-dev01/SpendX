@@ -123,7 +123,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   // GROUP 4 — REPORTING
   {
     id: 'reports',
-    name: 'Reports',
+    name: 'Reports & Tax',
     path: '/reports',
     icon: FileText,
     group: 'Reporting',

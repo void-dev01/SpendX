@@ -32,10 +32,10 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
       {/* Title & Description */}
       <div>
         <div className="flex items-center gap-2.5">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Transactions
           </h1>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-spendx-blue-primary/10 text-spendx-blue-primary">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
             {filteredCount} {filteredCount === 1 ? 'record' : 'records'}
           </span>
         </div>
@@ -55,10 +55,10 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
                 key={opt.value}
                 type="button"
                 onClick={() => onDateRangeChange(opt.value)}
-                className={`px-3 py-1.5 text-xs font-medium rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm font-semibold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-white/5'
+                    ? 'bg-gradient-to-r from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] shadow-sm font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-white/5 font-medium'
                 }`}
               >
                 {opt.label}
@@ -72,7 +72,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
           <button
             type="button"
             onClick={onImport}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-spendx-blue-primary bg-spendx-blue-primary/10 hover:bg-spendx-blue-primary/20 border border-spendx-blue-primary/20 shadow-sm transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 shadow-sm transition-all cursor-pointer"
             title="Import statement via CSV, Excel, PDF, or SMS"
           >
             <UploadCloud className="w-3.5 h-3.5" />
@@ -95,9 +95,9 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
         <button
           type="button"
           onClick={onAddTransaction}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary hover:opacity-95 shadow-md transition-all cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#0A0A0C] bg-gradient-to-r from-[#D4AF37] to-[#AA8220] hover:opacity-95 shadow-md transition-all cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 text-[#0A0A0C]" />
           <span>Add Transaction</span>
         </button>
       </div>

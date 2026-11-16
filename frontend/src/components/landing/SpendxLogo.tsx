@@ -31,17 +31,17 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
           viewBox="0 0 36 36"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow-[0_4px_12px_rgba(113,143,232,0.35)]"
+          className="w-full h-full drop-shadow-[0_4px_12px_rgba(212,175,55,0.30)]"
         >
           <defs>
             <linearGradient id="spendxGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#4F46E5" />
-              <stop offset="50%" stopColor="#6366F1" />
-              <stop offset="100%" stopColor="#06B6D4" />
+              <stop offset="0%" stopColor="#FDE68A" />
+              <stop offset="50%" stopColor="#D4AF37" />
+              <stop offset="100%" stopColor="#AA8220" />
             </linearGradient>
             <linearGradient id="facetGrad" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.05" />
+              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.1" />
             </linearGradient>
           </defs>
 
@@ -68,21 +68,21 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
           {/* Intersecting Financial Growth Vector & Intelligence Spark */}
           <path
             d="M10 24L16 17.5L20 21L26 12"
-            stroke="#FFFFFF"
+            stroke="#0A0A0C"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M21.5 12H26V16.5"
-            stroke="#FFFFFF"
+            stroke="#0A0A0C"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           {/* Small Intelligence Spark Node */}
-          <circle cx="16" cy="17.5" r="1.5" fill="#DDF5FF" />
-          <circle cx="20" cy="21" r="1.5" fill="#DDF5FF" />
+          <circle cx="16" cy="17.5" r="1.5" fill="#0A0A0C" />
+          <circle cx="20" cy="21" r="1.5" fill="#0A0A0C" />
         </svg>
       </div>
 

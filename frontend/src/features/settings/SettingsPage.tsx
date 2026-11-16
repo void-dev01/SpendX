@@ -5,7 +5,7 @@ import { env } from '@/config/env';
 import { useAuthStore } from '@/stores/authStore';
 import { accountService } from '@/services/accountService';
 import { transactionService } from '@/services/transactionService';
-import { Download, Upload, Check, User, Shield, Wallet } from 'lucide-react';
+import { Download, Upload, Check, User, Shield, Wallet, Trash2 } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { user, setUser } = useAuthStore();
@@ -52,7 +52,7 @@ export const SettingsPage: React.FC = () => {
       URL.revokeObjectURL(url);
       setBackupMessage('JSON Backup downloaded successfully!');
       setTimeout(() => setBackupMessage(null), 4000);
-    } catch (err) {
+    } catch {
       setBackupMessage('Failed to create backup.');
     }
   };
@@ -76,11 +76,20 @@ export const SettingsPage: React.FC = () => {
         }
         setBackupMessage('Financial data restored successfully! Reloading...');
         setTimeout(() => window.location.reload(), 1500);
-      } catch (err) {
+      } catch {
         setBackupMessage('Invalid backup JSON file.');
       }
     };
     reader.readAsText(file);
+  };
+
+  const handleResetAllData = () => {
+    if (window.confirm('Are you sure you want to completely reset all local data? This will clear all transactions, accounts, and schedules.')) {
+      localStorage.clear();
+      localStorage.setItem('spendx_demo_mode', 'cleared');
+      localStorage.setItem('spendx_real_mode_v1', 'true');
+      window.location.reload();
+    }
   };
 
   return (
@@ -159,7 +168,7 @@ export const SettingsPage: React.FC = () => {
             <div className="flex items-center gap-3 pt-3">
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-primary hover:opacity-95 shadow-sm transition-all cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold text-[#0A0A0C] bg-gradient-to-r from-[#D4AF37] to-[#AA8220] hover:opacity-95 shadow-md transition-all cursor-pointer flex items-center gap-1.5"
               >
                 {savedSuccess ? <Check className="w-3.5 h-3.5" /> : null}
                 <span>{savedSuccess ? 'Profile Updated!' : 'Save Identity Preferences'}</span>
@@ -226,7 +235,7 @@ export const SettingsPage: React.FC = () => {
       <Card className="glass-panel border border-white/80 dark:border-white/10 shadow-glass">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-spendx-purple-primary/10 text-spendx-purple-primary flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
               <Wallet className="w-4 h-4" />
             </div>
             <div>
@@ -261,6 +270,34 @@ export const SettingsPage: React.FC = () => {
             </div>
             <Badge variant="secondary">Active</Badge>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* 4. Danger Zone: Reset All Local Data (Start Fresh) */}
+      <Card className="glass-panel border border-rose-500/20 shadow-glass">
+        <CardHeader>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+              <Trash2 className="w-4 h-4" />
+            </div>
+            <div>
+              <CardTitle className="text-lg text-rose-600 dark:text-rose-400">Danger Zone</CardTitle>
+              <CardDescription>Reset local databases and cache back to day-zero empty state.</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Wipe all locally stored accounts, transactions, recurring obligations, and categories to start with a 100% clean slate.
+          </p>
+          <button
+            type="button"
+            onClick={handleResetAllData}
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span>Reset All Local Data (Start Fresh)</span>
+          </button>
         </CardContent>
       </Card>
     </div>

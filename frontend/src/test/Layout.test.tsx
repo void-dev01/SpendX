@@ -30,6 +30,7 @@ describe('SPENDX App Shell & Navigation Layout', () => {
     expect(within(sidebar).getByText('Budgets')).toBeInTheDocument();
     expect(within(sidebar).getByText('Savings Goals')).toBeInTheDocument();
     expect(within(sidebar).getByText('AI Assistant')).toBeInTheDocument();
+    expect(within(sidebar).getByText('Reports & Tax')).toBeInTheDocument();
     expect(within(sidebar).getByText('Settings')).toBeInTheDocument();
   });
 

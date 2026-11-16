@@ -43,15 +43,7 @@ export interface LocalDbSchema {
 }
 
 const DEFAULT_DB: LocalDbSchema = {
-  users: [
-    {
-      id: 'usr_dev_local_spendx',
-      email: 'member@spendx.local',
-      fullName: 'Private Client',
-      currency: 'INR',
-      updatedAt: new Date().toISOString(),
-    },
-  ],
+  users: [],
   accounts: [],
   transactions: [],
   budgets: [],
@@ -112,7 +104,10 @@ class LocalStore {
     } catch {
       try {
         fs.writeFileSync(this.dbPath, JSON.stringify(data, null, 2), 'utf-8');
-      } catch (_) {}
+      } catch (writeErr) {
+        // Fallback write failure ignored for local store resilience
+        void writeErr;
+      }
     }
   }
 
@@ -174,7 +169,7 @@ class LocalStore {
     const defaultUser: UserProfileRecord = {
       id: userId,
       email: `${userId}@spendx.local`,
-      fullName: 'Private Client',
+      fullName: 'SpendX User',
       currency: 'INR',
       updatedAt: new Date().toISOString(),
     };

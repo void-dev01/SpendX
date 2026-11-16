@@ -6,6 +6,8 @@
 
 import { authService } from './authService';
 import { supabase } from './supabase';
+import { transactionService } from './transactionService';
+import { accountService } from './accountService';
 
 export type DateRangePeriod = 'this_month' | 'last_month' | 'last_3_months' | 'this_year';
 
@@ -715,41 +717,67 @@ export const dashboardService = {
     // Check if user has explicitly cleared demo data to start fresh with real finances
     const isDemoCleared = typeof window !== 'undefined' && localStorage.getItem('spendx_demo_mode') === 'cleared';
     if (isDemoCleared) {
+      const localTx = transactionService.getStoredTransactions();
+      const localAccounts = accountService.getStoredAccounts();
+
+      let income = 0;
+      let expenses = 0;
+      localTx.forEach((t) => {
+        if (t.type === 'INCOME') {
+          income += t.amount;
+        } else if (t.type === 'EXPENSE') {
+          expenses += t.amount;
+        }
+      });
+
+      const totalBalance = localAccounts.length > 0
+        ? localAccounts.reduce((acc, a) => acc + (a.balance || 0), 0)
+        : income - expenses;
+
       return {
         isDemo: false,
         userDisplayName,
         period,
         overview: {
           totalBalance: {
-            value: 0,
+            value: totalBalance,
             label: 'Total Balance',
-            description: 'No real accounts connected',
+            description: localAccounts.length > 0 ? `${localAccounts.length} accounts connected` : 'Net balance recorded',
             trendPercentage: 0,
             trendIsPositive: true,
           },
           totalIncome: {
-            value: 0,
+            value: income,
             label: 'Total Income',
-            description: 'Zero income recorded this period',
+            description: income > 0 ? 'Total credited inflows' : 'Zero income recorded this period',
           },
           totalExpenses: {
-            value: 0,
+            value: expenses,
             label: 'Total Expenses',
-            description: 'Zero expenses recorded this period',
+            description: expenses > 0 ? 'Total debited outflows' : 'Zero expenses recorded this period',
           },
           availableBalance: {
-            value: 0,
+            value: Math.max(0, totalBalance),
             label: 'Available Balance',
-            description: 'Ready for initial deposit',
+            description: 'Ready for allocation',
           },
         },
-        incomeVsExpense: [],
+        incomeVsExpense: income > 0 || expenses > 0 ? [{ period: 'Current', income, expenses }] : [],
         spendingAnalytics: {
-          totalSpent: 0,
+          totalSpent: expenses,
           categories: [],
         },
         budgets: [],
-        recentTransactions: [],
+        recentTransactions: localTx.slice(0, 6).map((t) => ({
+          id: t.id,
+          title: t.description || 'Transaction',
+          merchant: t.merchantName || t.description || 'Merchant',
+          category: t.category || 'General',
+          date: t.date || new Date().toISOString().split('T')[0],
+          amount: t.amount,
+          type: (t.type === 'INCOME' ? 'income' : 'expense') as 'income' | 'expense',
+          iconName: 'Receipt',
+        })),
         savingsGoals: [],
         aiInsights: [],
         upcomingPayments: [],
@@ -819,7 +847,7 @@ export const dashboardService = {
             recentTransactions: transactions.map((t) => ({
               id: t.id,
               title: t.description || 'Transaction',
-              merchant: t.merchant || t.description || 'Merchant',
+              merchant: t.merchantName || t.description || 'Merchant',
               category: t.category || 'General',
               date: new Date(t.date).toLocaleDateString(),
               amount: Math.abs(t.amount),

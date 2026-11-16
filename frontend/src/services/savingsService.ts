@@ -159,8 +159,7 @@ export const savingsService = {
     } catch (e) {
       console.warn('Failed to parse cached savings goals', e);
     }
-    this.saveStoredGoals(INITIAL_DEMO_SAVINGS_GOALS);
-    return INITIAL_DEMO_SAVINGS_GOALS;
+    return [];
   },
 
   saveStoredGoals(goals: SavingsGoalRecord[]): void {
@@ -178,8 +177,7 @@ export const savingsService = {
     } catch (e) {
       console.warn('Failed to parse cached contributions', e);
     }
-    this.saveStoredContributions(INITIAL_DEMO_CONTRIBUTIONS);
-    return INITIAL_DEMO_CONTRIBUTIONS;
+    return [];
   },
 
   saveStoredContributions(contribs: SavingsContributionRecord[]): void {
