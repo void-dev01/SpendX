@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReportsPage } from '../features/reports/ReportsPage';
 import { reportsService } from '../services/reportsService';
 import { useAuthStore } from '../stores/authStore';
+import { transactionService, INITIAL_DEMO_TRANSACTIONS } from '../services/transactionService';
+import { accountService, INITIAL_DEMO_ACCOUNTS } from '../services/accountService';
 
 describe('SPENDX Financial Reports & Statements Page', () => {
   let queryClient: QueryClient;
@@ -28,6 +30,8 @@ describe('SPENDX Financial Reports & Statements Page', () => {
     });
 
     localStorage.clear();
+    transactionService.saveStoredTransactions(INITIAL_DEMO_TRANSACTIONS);
+    accountService.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
   });
 
   const renderReports = () =>

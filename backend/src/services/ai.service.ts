@@ -461,6 +461,9 @@ Return strictly valid JSON matching this schema.`;
         const response = await geminiClient.models.generateContent({
           model: 'gemini-2.5-flash',
           contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+          },
         });
 
         const raw = response.text || '';

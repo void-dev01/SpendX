@@ -6,6 +6,10 @@ dist/
 build/
 *.tsbuildinfo
 
+# Local Database Storage
+.data/
+*.local-db.json
+
 # Environment files
 .env
 .env.local

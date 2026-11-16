@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { importService } from '../services/importService';
 import { TransactionsPage } from '../features/transactions/TransactionsPage';
 import { useAuthStore } from '../stores/authStore';
+import { transactionService, INITIAL_DEMO_TRANSACTIONS } from '../services/transactionService';
+import { accountService, INITIAL_DEMO_ACCOUNTS } from '../services/accountService';
 
 describe('SPENDX Automatic Financial Data Capture & Import Engine', () => {
   let queryClient: QueryClient;
@@ -28,6 +30,8 @@ describe('SPENDX Automatic Financial Data Capture & Import Engine', () => {
     });
 
     localStorage.clear();
+    transactionService.saveStoredTransactions(INITIAL_DEMO_TRANSACTIONS);
+    accountService.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
   });
 
   const renderTransactions = () =>

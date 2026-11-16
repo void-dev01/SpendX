@@ -1,20 +1,20 @@
 import React from 'react';
 import {
-  LayoutDashboard,
-  ArrowLeftRight,
+  SquaresFour,
+  ArrowsLeftRight,
   Wallet,
-  PieChart,
+  ChartPie,
   Target,
-  Repeat,
-  ChartNoAxesCombined,
-  Bot,
+  ArrowsClockwise,
+  TrendUp,
+  Sparkle,
   Lightbulb,
   FileText,
   Bell,
-  UserRound,
-  Settings,
+  User,
+  Gear,
   House,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 export type NavigationGroup =
   | 'Overview'
@@ -49,7 +49,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'dashboard',
     name: 'Dashboard',
     path: '/dashboard',
-    icon: LayoutDashboard,
+    icon: SquaresFour,
     group: 'Overview',
     mobileBottomNav: true,
     mobileBottomIcon: House,
@@ -60,7 +60,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'transactions',
     name: 'Transactions',
     path: '/transactions',
-    icon: ArrowLeftRight,
+    icon: ArrowsLeftRight,
     group: 'Money Management',
     mobileBottomNav: true,
   },
@@ -76,7 +76,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'budgets',
     name: 'Budgets',
     path: '/budgets',
-    icon: PieChart,
+    icon: ChartPie,
     group: 'Money Management',
   },
   {
@@ -90,7 +90,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'recurring',
     name: 'Recurring',
     path: '/recurring',
-    icon: Repeat,
+    icon: ArrowsClockwise,
     group: 'Money Management',
   },
 
@@ -99,14 +99,14 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'analytics',
     name: 'Analytics',
     path: '/analytics',
-    icon: ChartNoAxesCombined,
+    icon: TrendUp,
     group: 'Intelligence',
   },
   {
     id: 'ai-assistant',
     name: 'AI Assistant',
     path: '/ai-assistant',
-    icon: Bot,
+    icon: Sparkle,
     group: 'Intelligence',
     badge: 'Pro',
     isAiAccent: true,
@@ -123,7 +123,7 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   // GROUP 4 — REPORTING
   {
     id: 'reports',
-    name: 'Reports',
+    name: 'Reports & Tax',
     path: '/reports',
     icon: FileText,
     group: 'Reporting',
@@ -141,14 +141,14 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     id: 'profile',
     name: 'Profile',
     path: '/profile',
-    icon: UserRound,
+    icon: User,
     group: 'Personal',
   },
   {
     id: 'settings',
     name: 'Settings',
     path: '/settings',
-    icon: Settings,
+    icon: Gear,
     group: 'Personal',
   },
 ];

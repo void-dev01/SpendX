@@ -4,6 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecurringPage } from '../features/recurring/RecurringPage';
 import { useAuthStore } from '../stores/authStore';
+import { recurringService, INITIAL_DEMO_RECURRING } from '../services/recurringService';
+import { accountService, INITIAL_DEMO_ACCOUNTS } from '../services/accountService';
 
 describe('SPENDX Recurring Payments & Subscriptions Page', () => {
   let queryClient: QueryClient;
@@ -27,6 +29,8 @@ describe('SPENDX Recurring Payments & Subscriptions Page', () => {
     });
 
     localStorage.clear();
+    recurringService.saveStoredPayments(INITIAL_DEMO_RECURRING);
+    accountService.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
   });
 
   const renderRecurring = () =>

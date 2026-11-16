@@ -187,8 +187,7 @@ export const recurringService = {
     } catch (e) {
       console.warn('Failed to parse cached recurring payments', e);
     }
-    this.saveStoredPayments(INITIAL_DEMO_RECURRING);
-    return INITIAL_DEMO_RECURRING;
+    return [];
   },
 
   saveStoredPayments(records: RecurringRecord[]): void {

@@ -206,11 +206,11 @@ export const RecurringPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-spendx-blue-primary bg-spendx-blue-primary/10 px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">
               Money Management
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-spendx-text-primary dark:text-spendx-soft-purple tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mt-1">
             Recurring Payments & Subscriptions
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -221,9 +221,9 @@ export const RecurringPage: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-2xl shadow-lg shadow-spendx-blue-primary/20 shrink-0"
+          className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold rounded-2xl shadow-lg shrink-0"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 text-[#0A0A0C]" />
           <span>New Schedule</span>
         </button>
       </div>

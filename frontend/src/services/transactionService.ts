@@ -7,6 +7,7 @@
 import { authService } from './authService';
 import { supabase } from './supabase';
 import { apiClient } from './api';
+import { accountService } from './accountService';
 
 export type TransactionType = 'INCOME' | 'EXPENSE' | 'TRANSFER';
 export type TransactionStatus = 'COMPLETED' | 'PENDING' | 'FAILED';
@@ -277,9 +278,8 @@ export const transactionService = {
     } catch (e) {
       console.warn('Failed to parse cached transactions', e);
     }
-    // Initialize default set
-    this.saveStoredTransactions(INITIAL_DEMO_TRANSACTIONS);
-    return INITIAL_DEMO_TRANSACTIONS;
+    // Default to clean empty state for real personal finances
+    return [];
   },
 
   /**
@@ -382,6 +382,23 @@ export const transactionService = {
     const updated = [newRecord, ...current];
     this.saveStoredTransactions(updated);
 
+    // Reconcile linked account balance automatically
+    try {
+      const accounts = accountService.getStoredAccounts();
+      const linked = accounts.find((a) => a.id === data.accountId);
+      if (linked) {
+        if (data.type === 'EXPENSE') {
+          linked.balance -= Math.abs(data.amount);
+        } else if (data.type === 'INCOME') {
+          linked.balance += Math.abs(data.amount);
+        }
+        linked.updatedAt = new Date().toISOString();
+        accountService.saveStoredAccounts(accounts);
+      }
+    } catch (e) {
+      console.warn('Could not auto-reconcile account balance', e);
+    }
+
     return newRecord;
   },
 
@@ -399,14 +416,31 @@ export const transactionService = {
       throw new Error(`Transaction with ID "${id}" not found.`);
     }
 
+    const oldRecord = current[index];
     const updatedRecord: TransactionRecord = {
-      ...current[index],
+      ...oldRecord,
       ...updates,
       updatedAt: new Date().toISOString(),
     };
 
     current[index] = updatedRecord;
     this.saveStoredTransactions(current);
+
+    // Reconcile balance adjustment delta on linked account
+    try {
+      const accounts = accountService.getStoredAccounts();
+      const linked = accounts.find((a) => a.id === updatedRecord.accountId);
+      if (linked) {
+        if (oldRecord.type === 'EXPENSE') linked.balance += Math.abs(oldRecord.amount);
+        if (oldRecord.type === 'INCOME') linked.balance -= Math.abs(oldRecord.amount);
+        if (updatedRecord.type === 'EXPENSE') linked.balance -= Math.abs(updatedRecord.amount);
+        if (updatedRecord.type === 'INCOME') linked.balance += Math.abs(updatedRecord.amount);
+        linked.updatedAt = new Date().toISOString();
+        accountService.saveStoredAccounts(accounts);
+      }
+    } catch (e) {
+      console.warn('Could not reconcile updated account balance', e);
+    }
 
     return updatedRecord;
   },
@@ -416,8 +450,28 @@ export const transactionService = {
    */
   async deleteTransaction(id: string): Promise<void> {
     const current = this.getStoredTransactions();
+    const target = current.find((t) => t.id === id);
     const filtered = current.filter((t) => t.id !== id);
     this.saveStoredTransactions(filtered);
+
+    // Reverse balance adjustment on linked account
+    if (target) {
+      try {
+        const accounts = accountService.getStoredAccounts();
+        const linked = accounts.find((a) => a.id === target.accountId);
+        if (linked) {
+          if (target.type === 'EXPENSE') {
+            linked.balance += Math.abs(target.amount);
+          } else if (target.type === 'INCOME') {
+            linked.balance -= Math.abs(target.amount);
+          }
+          linked.updatedAt = new Date().toISOString();
+          accountService.saveStoredAccounts(accounts);
+        }
+      } catch (e) {
+        console.warn('Could not reverse account balance', e);
+      }
+    }
   },
 
   /**
@@ -426,8 +480,27 @@ export const transactionService = {
   async bulkDeleteTransactions(ids: string[]): Promise<void> {
     const idSet = new Set(ids);
     const current = this.getStoredTransactions();
+    const toDelete = current.filter((t) => idSet.has(t.id));
     const filtered = current.filter((t) => !idSet.has(t.id));
     this.saveStoredTransactions(filtered);
+
+    try {
+      const accounts = accountService.getStoredAccounts();
+      toDelete.forEach((target) => {
+        const linked = accounts.find((a) => a.id === target.accountId);
+        if (linked) {
+          if (target.type === 'EXPENSE') {
+            linked.balance += Math.abs(target.amount);
+          } else if (target.type === 'INCOME') {
+            linked.balance -= Math.abs(target.amount);
+          }
+          linked.updatedAt = new Date().toISOString();
+        }
+      });
+      accountService.saveStoredAccounts(accounts);
+    } catch (e) {
+      console.warn('Could not bulk reverse account balances', e);
+    }
   },
 
   /**

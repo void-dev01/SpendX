@@ -6,14 +6,15 @@ import { useAuthStore } from '@/stores/authStore';
 export const ProfilePage: React.FC = () => {
   const { user } = useAuthStore();
 
-  const displayName = user?.fullName || 'SPENDX Member';
-  const displayEmail = user?.email || 'member@spendx.app';
+  const displayName = user?.fullName || (user?.email ? user.email.split('@')[0] : 'User Profile');
+  const displayEmail = user?.email || 'user@spendx.local';
   const initials = displayName
     .split(' ')
+    .filter(Boolean)
     .map((n) => n[0])
     .join('')
     .substring(0, 2)
-    .toUpperCase() || 'SX';
+    .toUpperCase() || 'UP';
 
   return (
     <RoutePlaceholder
@@ -40,7 +41,7 @@ export const ProfilePage: React.FC = () => {
 
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
             <Sparkles className="w-3.5 h-3.5 text-[#8066CC]" />
-            <span>Plan: SPENDX Pro (Neural Engine Active)</span>
+            <span>Plan: Private Banking Tier (Neural Engine Active)</span>
           </div>
 
           <div className="pt-4 border-t border-black/5 dark:border-white/10 text-xs text-muted-foreground text-left space-y-2">

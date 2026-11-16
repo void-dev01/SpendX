@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BudgetsPage } from '../features/budgets/BudgetsPage';
 import { useAuthStore } from '../stores/authStore';
+import { budgetService, INITIAL_DEMO_BUDGETS } from '../services/budgetService';
 
 // Mock Recharts ResponsiveContainer for jsdom
 vi.mock('recharts', async () => {
@@ -40,6 +41,7 @@ describe('SPENDX Budgets Page & Telemetry', () => {
     });
 
     localStorage.clear();
+    budgetService.saveStoredBudgets(INITIAL_DEMO_BUDGETS);
   });
 
   const renderBudgets = () =>

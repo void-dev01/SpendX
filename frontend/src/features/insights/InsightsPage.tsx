@@ -107,8 +107,8 @@ export const InsightsPage: React.FC = () => {
               <Sparkles className="w-3.5 h-3.5" /> Intelligence Engine
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-spendx-text-primary dark:text-spendx-soft-purple tracking-tight mt-1">
-            Financial Insights & Advisory
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
+            <span className="text-gradient-ai">Financial Insights & Advisory</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
             Proactive financial recommendations, spending pace warnings, subscription audits, and capital growth opportunities.

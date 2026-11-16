@@ -131,8 +131,7 @@ export const budgetService = {
     } catch (e) {
       console.warn('Failed to parse cached budgets', e);
     }
-    this.saveStoredBudgets(INITIAL_DEMO_BUDGETS);
-    return INITIAL_DEMO_BUDGETS;
+    return [];
   },
 
   saveStoredBudgets(budgets: BudgetRecord[]): void {
