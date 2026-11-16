@@ -1,12 +1,22 @@
 import express, { Express } from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
+import * as Sentry from '@sentry/node';
 import { pinoHttp } from 'pino-http';
 import { env } from './config/env.js';
 import { logger } from './utils/logger.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { globalRateLimiter } from './middleware/rateLimiter.js';
 import routes from './routes/index.js';
+
+// Initialize Sentry error tracking if DSN is provided
+if (env.SENTRY_DSN && env.SENTRY_DSN.trim().length > 0) {
+  Sentry.init({
+    dsn: env.SENTRY_DSN.trim(),
+    environment: env.NODE_ENV,
+    tracesSampleRate: 0.1,
+  });
+}
 
 export const createApp = (): Express => {
   const app = express();

@@ -64,7 +64,7 @@ export const AiAssistantPage: React.FC = () => {
 
     // 1. Append user message
     const convId = activeConversation ? activeConversation.id : activeId;
-    let currentMessages = activeConversation ? [...activeConversation.messages, userMessage] : [userMessage];
+    const currentMessages = activeConversation ? [...activeConversation.messages, userMessage] : [userMessage];
 
     // Auto-title conversation from first user query
     const shouldRename =

@@ -5,6 +5,8 @@
  * deterministic and AI categorization, and import history ledger.
  */
 
+import Papa from 'papaparse';
+import { isValid, parseISO, subDays } from 'date-fns';
 import { transactionService, TransactionRecord, PaymentMethod, TransactionType } from './transactionService';
 import { accountService, AccountRecord } from './accountService';
 import { authService } from './authService';
@@ -120,40 +122,43 @@ export const importService = {
   },
 
   /**
-   * Cleanly parses a CSV string into raw rows and columns
+   * Robust RFC 4180 CSV parsing using PapaParse with automatic delimiter detection
    */
   parseCSVText(csvContent: string): string[][] {
-    const lines = csvContent.split(/\r?\n/).filter((l) => l.trim().length > 0);
-    if (lines.length === 0) return [];
-
-    // Detect delimiter: comma, semicolon, tab
-    const firstLine = lines[0];
-    let delimiter = ',';
-    if ((firstLine.match(/;/g) || []).length > (firstLine.match(/,/g) || []).length) {
-      delimiter = ';';
-    } else if ((firstLine.match(/\t/g) || []).length > (firstLine.match(/,/g) || []).length) {
-      delimiter = '\t';
-    }
-
-    return lines.map((line) => {
-      const row: string[] = [];
-      let inQuotes = false;
-      let currentVal = '';
-
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          inQuotes = !inQuotes;
-        } else if (char === delimiter && !inQuotes) {
-          row.push(currentVal.trim().replace(/^"|"$/g, ''));
-          currentVal = '';
-        } else {
-          currentVal += char;
-        }
-      }
-      row.push(currentVal.trim().replace(/^"|"$/g, ''));
-      return row;
+    if (!csvContent || csvContent.trim().length === 0) return [];
+    const parsed = Papa.parse<string[]>(csvContent.trim(), {
+      skipEmptyLines: true,
+      dynamicTyping: false,
     });
+    if (parsed.data && parsed.data.length > 0) {
+      return parsed.data.map((row) => row.map((cell) => (cell !== null && cell !== undefined ? String(cell).trim() : '')));
+    }
+    return [];
+  },
+
+  /**
+   * Client-side PDF bank statement text extraction using PDF.js (pdfjs-dist)
+   */
+  async extractTextFromPDF(data: ArrayBuffer): Promise<string> {
+    try {
+      const pdfjs = await import('pdfjs-dist');
+      const loadingTask = pdfjs.getDocument({ data });
+      const doc = await loadingTask.promise;
+      let extractedText = '';
+
+      for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
+        const page = await doc.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageLines = textContent.items
+          .map((item: unknown) => (item && typeof item === 'object' && 'str' in item ? String((item as { str: string }).str) : ''))
+          .join(' ');
+        extractedText += pageLines + '\n';
+      }
+      return extractedText;
+    } catch (err) {
+      console.warn('[SPENDX Ingestion] PDF text extraction fallback:', err);
+      return '';
+    }
   },
 
   /**
@@ -169,9 +174,9 @@ export const importService = {
     let amountCol = lower.findIndex(
       (h) => h.includes('amount') || h.includes('debit') || h.includes('withdrawal') || h.includes('inr')
     );
-    let typeCol = lower.findIndex((h) => h.includes('type') || h.includes('cr/dr') || h.includes('d/c'));
-    let categoryCol = lower.findIndex((h) => h.includes('category') || h.includes('tag'));
-    let refCol = lower.findIndex(
+    const typeCol = lower.findIndex((h) => h.includes('type') || h.includes('cr/dr') || h.includes('d/c'));
+    const categoryCol = lower.findIndex((h) => h.includes('category') || h.includes('tag'));
+    const refCol = lower.findIndex(
       (h) => h.includes('ref') || h.includes('utr') || h.includes('cheque') || h.includes('txn id')
     );
 
@@ -330,9 +335,9 @@ export const importService = {
     return rawRows.map((raw) => {
       const validationErrors: string[] = [];
 
-      // 1. Parse Date
-      let parsedDate = new Date(raw.rawDate);
-      if (isNaN(parsedDate.getTime())) {
+      // 1. Parse Date using date-fns
+      let parsedDate = raw.rawDate.includes('T') ? parseISO(raw.rawDate) : new Date(raw.rawDate);
+      if (!isValid(parsedDate)) {
         // Try parsing DD-MM-YYYY or DD/MM/YYYY
         const parts = raw.rawDate.split(/[-/.]/);
         if (parts.length === 3) {
@@ -343,7 +348,7 @@ export const importService = {
         }
       }
 
-      if (isNaN(parsedDate.getTime())) {
+      if (!isValid(parsedDate)) {
         validationErrors.push('Invalid date format');
         parsedDate = new Date();
       }
@@ -373,7 +378,8 @@ export const importService = {
       let duplicateReason: string | undefined;
 
       const dateMs = parsedDate.getTime();
-      const oneDayMs = 24 * 60 * 60 * 1000;
+      const oneDayAgoMs = subDays(parsedDate, 1).getTime();
+      const oneDayMs = Math.abs(dateMs - oneDayAgoMs);
 
       for (const existing of existingTransactions) {
         // Exact reference number match
