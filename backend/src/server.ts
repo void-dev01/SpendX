@@ -6,8 +6,8 @@ import { SchedulerService } from './services/scheduler.service.js';
 const app = createApp();
 
 const server = app.listen(env.PORT, () => {
-  logger.info(`🚀 SPENDX Backend API operational on port ${env.PORT} in ${env.NODE_ENV} mode`);
-  logger.info(`🔗 CORS configured to accept requests from: ${env.FRONTEND_URL}`);
+  logger.info(`[SPENDX] Backend API operational on port ${env.PORT} in ${env.NODE_ENV} mode`);
+  logger.info(`[SPENDX] CORS configured to accept requests from: ${env.FRONTEND_URL}`);
 
   // Start background jobs scheduler in non-test environments
   if (process.env.NODE_ENV !== 'test') {
