@@ -122,6 +122,20 @@ export class TransactionService {
       const txns = localStore.getTransactions();
       txns.unshift(newTxn);
       localStore.saveTransactions(txns);
+
+      // Automatically reconcile linked account balance with double-checked accounting
+      const accounts = localStore.getAccounts();
+      const linkedAcc = accounts.find((a) => a.id === data.accountId);
+      if (linkedAcc) {
+        if (data.type === 'EXPENSE') {
+          linkedAcc.balance -= Math.abs(data.amount);
+        } else if (data.type === 'INCOME') {
+          linkedAcc.balance += Math.abs(data.amount);
+        }
+        linkedAcc.updatedAt = new Date().toISOString();
+        localStore.saveAccounts(accounts);
+      }
+
       return newTxn;
     }
 
@@ -274,13 +288,30 @@ export class TransactionService {
       const txns = localStore.getTransactions();
       const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Transaction not found', 404);
+      const oldTxn = txns[idx];
       txns[idx] = {
         ...txns[idx],
         ...updates,
         updatedAt: new Date().toISOString(),
       };
+      const updatedTxn = txns[idx];
       localStore.saveTransactions(txns);
-      return txns[idx];
+
+      // Reconcile balance adjustment on linked account
+      const accounts = localStore.getAccounts();
+      const linkedAcc = accounts.find((a) => a.id === updatedTxn.accountId);
+      if (linkedAcc) {
+        // Revert old impact
+        if (oldTxn.type === 'EXPENSE') linkedAcc.balance += Math.abs(oldTxn.amount);
+        if (oldTxn.type === 'INCOME') linkedAcc.balance -= Math.abs(oldTxn.amount);
+        // Apply updated impact
+        if (updatedTxn.type === 'EXPENSE') linkedAcc.balance -= Math.abs(updatedTxn.amount);
+        if (updatedTxn.type === 'INCOME') linkedAcc.balance += Math.abs(updatedTxn.amount);
+        linkedAcc.updatedAt = new Date().toISOString();
+        localStore.saveAccounts(accounts);
+      }
+
+      return updatedTxn;
     }
 
     const payload: Record<string, unknown> = {};
@@ -324,8 +355,23 @@ export class TransactionService {
       const txns = localStore.getTransactions();
       const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Transaction not found', 404);
+      const deletedTxn = txns[idx];
       txns.splice(idx, 1);
       localStore.saveTransactions(txns);
+
+      // Reconcile and reverse balance on linked account
+      const accounts = localStore.getAccounts();
+      const linkedAcc = accounts.find((a) => a.id === deletedTxn.accountId);
+      if (linkedAcc) {
+        if (deletedTxn.type === 'EXPENSE') {
+          linkedAcc.balance += Math.abs(deletedTxn.amount);
+        } else if (deletedTxn.type === 'INCOME') {
+          linkedAcc.balance -= Math.abs(deletedTxn.amount);
+        }
+        linkedAcc.updatedAt = new Date().toISOString();
+        localStore.saveAccounts(accounts);
+      }
+
       return;
     }
 

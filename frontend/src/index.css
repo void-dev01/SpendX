@@ -6,31 +6,31 @@
 
 @layer base {
   :root {
-    --background: #F3F5F9;
+    --background: #F6F3EC;
     --foreground: #0F172A;
     --surface: #FFFFFF;
-    --primary: #1E40AF;
+    --primary: #1D4ED8;
     --primary-foreground: #FFFFFF;
-    --secondary: #0F766E;
+    --secondary: #0D9488;
     --secondary-foreground: #FFFFFF;
-    --income: #047857;
-    --expense: #E11D48;
+    --income: #065F46;
+    --expense: #BE123C;
     --warning: #B45309;
     --info: #0284C7;
-    --muted: #E2E8F0;
+    --muted: #EFECE6;
     --muted-foreground: #475569;
-    --border: #E2E8F0;
+    --border: rgba(15, 23, 42, 0.10);
     --input: #FFFFFF;
-    --ring: #3B82F6;
+    --ring: #1D4ED8;
     --radius: 0.875rem;
 
     /* Executive Wealth Private-Banking Tokens */
-    --brand-primary: #1E40AF;
-    --brand-secondary: #0F766E;
-    --brand-emerald: #047857;
+    --brand-primary: #1D4ED8;
+    --brand-secondary: #0D9488;
+    --brand-emerald: #065F46;
     --brand-gold: #B45309;
-    --brand-ai: #6D28D9;
-    --brand-ice: #F8FAFC;
+    --brand-ai: #4338CA;
+    --brand-ice: #FAF8F5;
     --brand-sky: #E0F2FE;
     --brand-lavender: #EEF2FF;
     --brand-soft-purple: #F5F3FF;
@@ -42,39 +42,39 @@
     --spendx-soft-purple: #4338CA;
     --spendx-text-primary: #0F172A;
 
-    /* Crisp Executive Elevation Surfaces (Fixes Washed-Out Light Mode) */
-    --glass-bg: rgba(255, 255, 255, 0.94);
-    --glass-border: #E2E8F0;
-    --glass-nav-bg: rgba(255, 255, 255, 0.95);
-    --glass-nav-border: #CBD5E1;
+    /* Porcelain-Silk Glass Surfaces */
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(15, 23, 42, 0.10);
+    --glass-nav-bg: rgba(255, 255, 255, 0.94);
+    --glass-nav-border: rgba(15, 23, 42, 0.12);
     --glass-modal-bg: #FFFFFF;
-    --glass-modal-border: #CBD5E1;
-    --glass-surface-bg: #FFFFFF;
-    --glass-surface-border: #E2E8F0;
+    --glass-modal-border: rgba(15, 23, 42, 0.14);
+    --glass-surface-bg: rgba(255, 255, 255, 0.92);
+    --glass-surface-border: rgba(15, 23, 42, 0.09);
 
-    /* Crisp Precision Shadows */
-    --shadow-glass: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
-    --shadow-glass-elevated: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 16px 32px -4px rgba(15, 23, 42, 0.06);
-    --shadow-nav: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 12px 28px -4px rgba(15, 23, 42, 0.05);
+    /* Soft Warm Architectural Shadows */
+    --shadow-glass: 0 12px 32px -8px rgba(28, 25, 23, 0.07), 0 2px 6px rgba(28, 25, 23, 0.04);
+    --shadow-glass-elevated: 0 20px 44px -10px rgba(28, 25, 23, 0.10), 0 4px 12px rgba(28, 25, 23, 0.05);
+    --shadow-nav: 0 12px 32px -8px rgba(28, 25, 23, 0.08);
   }
 
   .dark {
-    /* Obsidian Executive Theme */
-    --background: #090D16;
-    --foreground: #F8FAFC;
-    --surface: #111827;
-    --primary: #60A5FA;
-    --primary-foreground: #090D16;
+    /* Royal Midnight Velvet & Champagne Obsidian */
+    --background: #060913;
+    --foreground: #FAF8F5;
+    --surface: #0E1626;
+    --primary: #818CF8;
+    --primary-foreground: #060913;
     --secondary: #2DD4BF;
-    --secondary-foreground: #090D16;
+    --secondary-foreground: #060913;
     --income: #34D399;
     --expense: #FB7185;
     --warning: #FBBF24;
     --info: #38BDF8;
-    --muted: #1E293B;
+    --muted: #111A2E;
     --muted-foreground: #94A3B8;
-    --border: rgba(255, 255, 255, 0.08);
-    --input: rgba(17, 24, 39, 0.85);
+    --border: rgba(255, 255, 255, 0.10);
+    --input: rgba(15, 23, 42, 0.84);
     --ring: #38BDF8;
 
     /* Dark Executive Brand Tokens */
@@ -83,32 +83,32 @@
     --brand-emerald: #34D399;
     --brand-gold: #FDE68A;
     --brand-ai: #C4B5FD;
-    --brand-ice: #0F172A;
+    --brand-ice: #0B1120;
     --brand-sky: #131B2E;
     --brand-lavender: #1E1B4B;
     --brand-soft-purple: #2E1065;
-    --brand-deep-indigo: #F8FAFC;
+    --brand-deep-indigo: #FAF8F5;
 
     /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #F8FAFC;
+    --spendx-indigo: #FAF8F5;
     --spendx-deep-indigo: #F1F5F9;
     --spendx-soft-purple: #C7D2FE;
-    --spendx-text-primary: #F8FAFC;
+    --spendx-text-primary: #FAF8F5;
 
-    /* Architectural Slate Surfaces */
-    --glass-bg: rgba(17, 24, 39, 0.88);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-nav-bg: rgba(11, 17, 30, 0.92);
-    --glass-nav-border: rgba(255, 255, 255, 0.10);
-    --glass-modal-bg: #111827;
-    --glass-modal-border: rgba(255, 255, 255, 0.12);
-    --glass-surface-bg: rgba(24, 34, 53, 0.80);
-    --glass-surface-border: rgba(255, 255, 255, 0.06);
+    /* Smoked Obsidian Glass Surfaces */
+    --glass-bg: rgba(15, 23, 42, 0.84);
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-nav-bg: rgba(11, 17, 31, 0.90);
+    --glass-nav-border: rgba(255, 255, 255, 0.12);
+    --glass-modal-bg: #0F172A;
+    --glass-modal-border: rgba(255, 255, 255, 0.14);
+    --glass-surface-bg: rgba(17, 25, 44, 0.80);
+    --glass-surface-border: rgba(255, 255, 255, 0.08);
 
-    /* Shadow Tokens Dark */
-    --shadow-glass: 0 8px 32px -4px rgba(0, 0, 0, 0.80), 0 0 1px 1px rgba(255, 255, 255, 0.06);
-    --shadow-glass-elevated: 0 16px 48px -6px rgba(0, 0, 0, 0.90), 0 0 20px 0 rgba(99, 102, 241, 0.12);
-    --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.85);
+    /* Deep Velvet Shadows */
+    --shadow-glass: 0 16px 40px -12px rgba(0, 0, 0, 0.65), 0 0 1px 1px rgba(255, 255, 255, 0.06);
+    --shadow-glass-elevated: 0 24px 56px -12px rgba(0, 0, 0, 0.80), 0 0 20px 0 rgba(99, 102, 241, 0.15);
+    --shadow-nav: 0 16px 44px -8px rgba(0, 0, 0, 0.75);
   }
 }
 
@@ -154,9 +154,64 @@
   --color-spendx-primary: var(--primary);
   --color-spendx-text-primary: var(--spendx-text-primary);
 
-  /* Font Families */
+  /* 100% Bell MT Master Typography across ALL Font Slots */
   --font-serif: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif;
-  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif;
+  --font-display: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif;
+  --font-mono: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif;
+}
+
+/* 100% Global Bell MT Universal Typography Enforcement */
+*,
+*::before,
+*::after,
+html,
+body,
+button,
+input,
+select,
+textarea,
+table,
+th,
+td,
+label,
+span,
+p,
+a,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif !important;
+}
+
+/* Bank-statement lining and tabular numerals */
+*,
+.tabular-nums,
+.font-numeric,
+table,
+[data-numeric="true"],
+.kpi-value,
+.currency-num {
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+/* Recharts SVG Text and Legend inheritance */
+.recharts-wrapper,
+.recharts-surface,
+.recharts-responsive-container,
+.recharts-text,
+.recharts-cartesian-axis-tick text,
+.recharts-legend-item-text,
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip,
+svg text {
+  font-family: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif !important;
+  font-variant-numeric: lining-nums tabular-nums !important;
 }
 
 html {
@@ -182,24 +237,41 @@ body::-webkit-scrollbar {
   height: 0 !important;
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--background);
+/* Multi-layered Ambient Architectural Mesh Canvas (Light Mode default) */
+html,
+body,
+.spendx-ambient-bg {
+  background-color: #F6F3EC;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(217, 119, 6, 0.06) 0px, transparent 48%),
+    radial-gradient(at 100% 0%, rgba(30, 64, 175, 0.07) 0px, transparent 48%),
+    radial-gradient(at 50% 100%, rgba(5, 150, 105, 0.05) 0px, transparent 50%),
+    linear-gradient(180deg, #FAF8F5 0%, #EFECE6 100%);
+  background-attachment: fixed;
   color: var(--foreground);
   overflow-x: hidden;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
 
-/* Bell MT Master Typography & Lining Financial Numerals */
-h1, h2, h3, .font-serif, .font-display, .font-editorial {
-  font-family: var(--font-serif);
-  letter-spacing: -0.02em;
+/* Multi-layered Ambient Architectural Mesh Canvas (Dark Mode: Royal Midnight Velvet & Champagne Obsidian) */
+.dark html,
+.dark body,
+.dark .spendx-ambient-bg {
+  background-color: #060913;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.26) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.13) 0px, transparent 45%),
+    radial-gradient(at 50% 100%, rgba(88, 28, 135, 0.14) 0px, transparent 55%),
+    linear-gradient(180deg, #060913 0%, #0B1120 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
 }
 
-.tabular-nums, .font-numeric, table, [data-numeric="true"], .kpi-value, .currency-num {
-  font-variant-numeric: lining-nums tabular-nums;
-  font-feature-settings: "lnum" 1, "tnum" 1;
+/* Bell MT Master Typography & Lining Financial Numerals */
+h1, h2, h3, .font-serif, .font-display, .font-editorial {
+  font-family: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif !important;
+  letter-spacing: -0.02em;
 }
 
 /* Precision Squircle Icon Containers (38x38 with 1px inner hairline) */
@@ -236,66 +308,55 @@ h1, h2, h3, .font-serif, .font-display, .font-editorial {
   height: 0 !important;
 }
 
-/* Atmospheric Background Gradient */
-.spendx-ambient-bg {
-  background: radial-gradient(circle at 50% -10%, #FFFFFF 0%, #F8FAFC 45%, #F3F5F9 100%);
-  background-attachment: fixed;
-}
-
-.dark .spendx-ambient-bg {
-  background: radial-gradient(circle at 50% -10%, #111827 0%, #090D16 65%, #05070B 100%);
-  background-attachment: fixed;
-}
-
 /* ==========================================================================
    Two-Color Gradient Typography System (High-Contrast & Anti-Clipping)
    ========================================================================== */
 
 .text-gradient-brand {
-  background: linear-gradient(135deg, #1E40AF 0%, #4F46E5 100%);
+  background: linear-gradient(135deg, #0F172A 0%, #1D4ED8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #1E40AF;
+  color: #0F172A;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;
 }
 
 .dark .text-gradient-brand {
-  background: linear-gradient(135deg, #93C5FD 0%, #C7D2FE 100%);
+  background: linear-gradient(135deg, #BAE6FD 0%, #818CF8 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #93C5FD;
+  color: #BAE6FD;
 }
 
 .text-gradient-wealth {
-  background: linear-gradient(135deg, #047857 0%, #0F766E 100%);
+  background: linear-gradient(135deg, #065F46 0%, #0D9488 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #047857;
+  color: #065F46;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;
 }
 
 .dark .text-gradient-wealth {
-  background: linear-gradient(135deg, #34D399 0%, #2DD4BF 100%);
+  background: linear-gradient(135deg, #6EE7B7 0%, #2DD4BF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #34D399;
+  color: #6EE7B7;
 }
 
 .text-gradient-gold,
 .text-gradient-ai {
-  background: linear-gradient(135deg, #92400E 0%, #B45309 100%);
+  background: linear-gradient(135deg, #78350F 0%, #B45309 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: #92400E;
+  color: #78350F;
   display: inline-block;
   padding-bottom: 0.08em;
   line-height: 1.15;

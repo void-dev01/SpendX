@@ -1,62 +1,57 @@
 ================================================================================
-SPENDX ARCHITECTURAL EXECUTION SUMMARY — EXECUTIVE WEALTH DESIGN & REAL-USE UPGRADE
+SPENDX MASTER EXECUTION SUMMARY — 100% GLOBAL BELL MT & REAL-USE ENGINE
 ================================================================================
 Workspace: D:\SpendX
 Branch: feat/runtime-fixes-and-theme-upgrade
 Date: Monday, 16 November 2026
 
-1. EXECUTIVE CONTRAST & DUAL-MODE THEME UPGRADE
+1. CLEANUP & JUNK PREVENTION
 --------------------------------------------------------------------------------
-- Diagnosed root cause of washed-out Light Mode text in Tailwind CSS v4:
-  Added `@custom-variant dark (&:where(.dark, .dark *));` to frontend/src/index.css.
-  This prevents system-level prefers-color-scheme from forcing dark palette classes
-  when the application is toggled to Light Mode.
-- Canvas & Card Contrast:
-  - Light Mode: Crisp Executive Alabaster canvas (#F3F5F9) with pure white elevated
-    cards (#FFFFFF), 1px solid #E2E8F0 borders, and multi-tier elevation shadows.
-  - Dark Mode: Obsidian Executive canvas (#090D16) with Architectural Slate cards (#111827).
-- High-Contrast Text Tokens:
-  - Tabular & Lining numbers (font-variant-numeric: lining-nums tabular-nums) applied
-    across all currency figures, KPI totals, percentages, and data tables.
-  - Inactive period filter tabs now use WCAG AA compliant deep slate (#334155 / slate-700)
-    instead of pale low-contrast gray.
+- Zero junk files: All changes executed strictly in-place inside existing source files.
+- .gitignore confirmed protecting backend/.data/, *.local-db.json, and .env.
 
-2. "BELL MT" MASTER TYPOGRAPHY & PHOSPHOR DUOTONE ICONS
+2. 100% GLOBAL "BELL MT" TYPOGRAPHY
 --------------------------------------------------------------------------------
-- Loaded Google Fonts fallback fonts ('Libre Baskerville' & 'Plus Jakarta Sans') in index.html.
-- Configured font-serif: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif
-  across headings, titles, KPI values, and brand wordmark.
-- Integrated @phosphor-icons/react across:
-  - DesktopSidebar (SquaresFour, ArrowsLeftRight, Wallet, ChartPie, Target, ArrowsClockwise,
-    TrendUp, Sparkle, Lightbulb, FileText, Bell, User, Gear) with duotone/fill states.
-  - FinancialSummaryGrid & FinancialSummaryCard (Wallet, TrendUp, TrendDown, CurrencyInr)
-    with precision 38x38 squircle container (.squircle-icon) with 1px inner border.
-  - Navigation menu cleanly exposes /reports and /settings.
+- Removed Plus Jakarta Sans and Inter from frontend/index.html and frontend/src/index.css.
+- Enforced font-family: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif !important
+  across all font slots (--font-sans, --font-serif, --font-display, --font-mono),
+  universal elements (*, html, body, button, input, select, textarea, table, th, td, label, p, h1-h6),
+  and Recharts SVG elements (.recharts-text, .recharts-tooltip-wrapper, svg text).
+- Enforced font-variant-numeric: lining-nums tabular-nums globally.
 
-3. REAL-USE PERSISTENCE & ZERO-STATE CONTROLS
+3. BESPOKE PRIVATE-BANKING LUXURY DUAL THEME
 --------------------------------------------------------------------------------
-- Purged all hardcoded demo references:
-  - Removed "Shubham", "SPENDX Member", "member@spendx.app", and fake "SPENDX Pro" telemetry.
-  - User identity now dynamically reflects real session credentials (defaults gracefully
-    to "Private Client" / "client@spendx.local" in unauthenticated fallback).
-- Local Disk Database Store (backend/src/db/localStore.ts):
-  - Thread-safe JSON database in backend/.data/spendx-local-db.json persisting accounts,
-    transactions, budgets, savings goals, and recurring schedules across server restarts.
-  - Test isolation: NODE_ENV === 'test' keeps mutations strictly in-memory to prevent
-    stale duplicate detection collisions during test runs.
-- 1-Click Interactive Demo Data Toggle & Zero-State:
-  - Added "Clear Sample Data & Start Fresh" button in DashboardHeader.
-  - Added clean DashboardEmptyState with "Record Transaction", "Connect Bank Account",
-    and "← Load Benchmark Sample Data (Interactive Preview)" for instantaneous round-trips.
+- Luxury Dark Mode ("Royal Midnight Velvet & Champagne Obsidian"):
+  Multi-layered ambient architectural mesh background (#060913 with radial glows of
+  Sapphire, Emerald, and Violet fixed to viewport) + Smoked Obsidian Glass cards
+  (rgba(15, 23, 42, 0.84) with blur(20px)) + Ivory Pearl headings (#FAF8F5).
+- Luxury Light Mode ("Warm Cashmere Ivory & Royal Ink"):
+  Rich Warm Cashmere-Champagne Pearl ambient mesh (#F6F3EC -> #EFECE6) +
+  Porcelain-Silk Glass cards (rgba(255, 255, 255, 0.92) with blur(16px)) +
+  Deep Royal Ink headings (#0F172A) and crisp Architectural Slate subtitles (#475569).
+- Anti-clipping Two-Color Gradients:
+  Imperial Navy-Indigo & Sapphire Ice for brand headings, Botanical Emerald & Emerald Mint
+  for wealth metrics, and Bronze-Gold / Champagne Gold for signatures.
 
-4. TEST & BUILD HEALTH VERIFICATION
+4. 100% REAL-WORLD DAILY-USE ENGINE & ACCOUNTING LEDGER
 --------------------------------------------------------------------------------
-- Backend Tests: 62/62 passed (6 test suites, 0 failures).
+- Real Identity & Onboarding:
+  useAuthStore now persists user profile and target to localStorage, removing fake fallbacks
+  and reflecting real user identity in Topbar, Sidebar, and Dashboard.
+- Real Accounting Ledger Reconciliations:
+  Recording an EXPENSE automatically deducts from the linked account balance;
+  recording an INCOME automatically adds to the linked account balance;
+  updating or deleting transactions automatically reconciles/reverses account balances.
+  Verified with live end-to-end test (₹50,000 opening - ₹1,200 UPI expense = ₹48,800.00).
+- Local Data Backup & Portability:
+  SettingsPage updated with 1-click JSON full backup export/import and CSV transactions export.
+
+5. HEALTH & TEST SUITE VERIFICATION
+--------------------------------------------------------------------------------
+- Backend Tests: 62/62 passed (100% pass rate).
 - Backend TypeScript: npx tsc --noEmit -> Code 0 (0 errors).
-- Frontend Tests: 89/89 passed (14 test suites, 0 failures).
+- Frontend Tests: 89/89 passed (100% pass rate).
 - Frontend TypeScript: npx tsc --noEmit -> Code 0 (0 errors).
-- Total Project Tests: 151/151 passed (100% pass rate, 0 regressions).
-- Production Build: vite build -> 100% successful bundle generated in dist/.
-- Live Dev Server Verification: Inspected via Chrome DevTools MCP on localhost:5173
-  (Light Mode & Dark Mode verified with 0 console errors).
+- Production Build: vite build -> 100% successful bundle.
+- Total Tests: 151/151 passed with 0 regressions.
 ================================================================================

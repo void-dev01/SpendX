@@ -66,3 +66,14 @@ svg:focus {
 .spendx-chart-tooltip {
   pointer-events: none;
 }
+
+/* 100% Bell MT Font on Recharts Text & Axis Ticks */
+.recharts-text,
+.recharts-cartesian-axis-tick text,
+.recharts-legend-item-text,
+.recharts-tooltip-wrapper,
+.recharts-default-tooltip,
+svg.recharts-surface text {
+  font-family: 'Bell MT', 'Bell MT Std', 'Libre Baskerville', Georgia, serif !important;
+  font-variant-numeric: lining-nums tabular-nums !important;
+}
