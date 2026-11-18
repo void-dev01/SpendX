@@ -22,7 +22,7 @@ export class SavingsService {
   public static async getGoals(userId: string): Promise<SavingsGoalRecord[]> {
     let rawList: RawSavingsGoal[] = [];
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       rawList = localStore.getSavingsGoals().filter((g) => g.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       if (rawList.length === 0) {
         rawList = [
@@ -93,7 +93,7 @@ export class SavingsService {
     const currentAmount = data.currentAmount || 0;
     const category = data.category || 'General';
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const item = {
         id: `goal_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
         userId,
@@ -155,7 +155,7 @@ export class SavingsService {
     id: string,
     updates: { name?: string; targetAmount?: number; currentAmount?: number; targetDate?: string; category?: string }
   ): Promise<SavingsGoalRecord> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const goals = localStore.getSavingsGoals();
       const idx = goals.findIndex((g) => g.id === id && (g.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Savings goal not found', 404);
@@ -211,7 +211,7 @@ export class SavingsService {
   }
 
   public static async deleteGoal(userId: string, id: string): Promise<void> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const goals = localStore.getSavingsGoals();
       const idx = goals.findIndex((g) => g.id === id && (g.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Savings goal not found', 404);

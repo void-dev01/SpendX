@@ -29,7 +29,9 @@ export class AIInsightsEngine {
 
     // Finding A: Budget Overrun Warnings
     budgets.forEach((b) => {
-      if (b.status === 'danger') {
+      const isCritical = b.status === 'CRITICAL' || (b.status as string) === 'danger';
+      const isWarning = b.status === 'WARNING' || (b.status as string) === 'warning';
+      if (isCritical) {
         findings.push({
           type: 'CRITICAL_ALERT',
           impact: 'HIGH',
@@ -39,7 +41,7 @@ export class AIInsightsEngine {
           actionLabel: 'Adjust Budget',
           actionRoute: '/budgets',
         });
-      } else if (b.status === 'warning') {
+      } else if (isWarning) {
         findings.push({
           type: 'BUDGET_ADVICE',
           impact: 'MEDIUM',
@@ -82,13 +84,13 @@ export class AIInsightsEngine {
 
     // Finding D: Upcoming Recurring Bill Reminders
     const now = new Date();
-    const upcomingBills = recurring.filter((r) => {
+    const upcomingBills = recurring.filter((r: any) => {
       const due = new Date(r.nextDueDate);
       const diffDays = Math.ceil((due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
       return diffDays >= 0 && diffDays <= 5 && r.status !== 'PAID' && r.status !== 'CANCELLED';
     });
 
-    upcomingBills.slice(0, 1).forEach((b) => {
+    upcomingBills.slice(0, 1).forEach((b: any) => {
       findings.push({
         type: 'CASH_FLOW_INTELLIGENCE',
         impact: 'MEDIUM',

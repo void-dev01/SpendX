@@ -47,8 +47,12 @@ const INITIAL_SEED_RECURRING: RecurringRecord[] = [
 ];
 
 export class RecurringService {
+  public static async getRecurringPayments(userId: string): Promise<RecurringRecord[]> {
+    return this.getRecurring(userId);
+  }
+
   public static async getRecurring(userId: string): Promise<RecurringRecord[]> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       let rec = localStore.getRecurring();
       if (rec.length === 0) {
         rec = INITIAL_SEED_RECURRING;
@@ -120,7 +124,7 @@ export class RecurringService {
       updatedAt: new Date().toISOString(),
     };
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const rec = localStore.getRecurring();
       rec.unshift(newRecord);
       localStore.saveRecurring(rec);

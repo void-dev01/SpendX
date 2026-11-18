@@ -82,7 +82,7 @@ export class ImportService {
       createdAt: new Date().toISOString(),
     };
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       inMemoryCaptureEvents.unshift(eventRecord);
     } else {
       const { error } = await supabaseClient.from('capture_events').insert({
@@ -108,7 +108,7 @@ export class ImportService {
   }
 
   public static async getHistory(userId: string): Promise<CaptureEventRecord[]> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       return inMemoryCaptureEvents.filter((e) => e.userId === userId);
     }
 

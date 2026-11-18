@@ -7,7 +7,6 @@
 import { authService } from './authService';
 import { supabase } from './supabase';
 import { apiClient } from './api';
-import { transactionService } from './transactionService';
 
 export type AccountType = 'BANK' | 'SAVINGS' | 'CASH' | 'CREDIT_CARD' | 'OTHER';
 export type AccountStatus = 'ACTIVE' | 'ARCHIVED';

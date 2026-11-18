@@ -9,25 +9,25 @@
  */
 
 :root {
-  --chart-primary: #4F46E5;
-  --chart-secondary: #06B6D4;
-  --chart-emerald: #10B981;
-  --chart-rose: #F43F5E;
-  --chart-amber: #F59E0B;
-  --chart-grid: rgba(99, 102, 241, 0.08);
-  --chart-tooltip-bg: rgba(255, 255, 255, 0.95);
-  --chart-tooltip-border: rgba(99, 102, 241, 0.16);
+  --chart-primary: #718FE8;
+  --chart-secondary: #8B72D6;
+  --chart-emerald: #12866E;
+  --chart-rose: #DC5579;
+  --chart-amber: #C48620;
+  --chart-grid: rgba(83, 104, 162, 0.08);
+  --chart-tooltip-bg: rgba(255, 255, 255, 0.88);
+  --chart-tooltip-border: rgba(255, 255, 255, 0.95);
 }
 
 .dark {
-  --chart-primary: #818CF8;
-  --chart-secondary: #22D3EE;
+  --chart-primary: #A5BFFF;
+  --chart-secondary: #B9A4FF;
   --chart-emerald: #34D399;
   --chart-rose: #FB7185;
   --chart-amber: #FBBF24;
-  --chart-grid: rgba(56, 189, 248, 0.08);
-  --chart-tooltip-bg: rgba(15, 23, 42, 0.95);
-  --chart-tooltip-border: rgba(56, 189, 248, 0.20);
+  --chart-grid: rgba(255, 255, 255, 0.08);
+  --chart-tooltip-bg: rgba(23, 36, 60, 0.94);
+  --chart-tooltip-border: rgba(255, 255, 255, 0.20);
 }
 
 .recharts-wrapper,

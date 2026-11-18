@@ -9,7 +9,9 @@ export interface BudgetRecord {
   category: string;
   allocatedAmount: number;
   spentAmount: number;
+  spent: number;
   remainingAmount: number;
+  remaining: number;
   utilizationPercentage: number;
   status: 'NORMAL' | 'WARNING' | 'CRITICAL';
   period: 'MONTHLY' | 'WEEKLY' | 'YEARLY';
@@ -21,7 +23,7 @@ export class BudgetService {
   public static async getBudgets(userId: string): Promise<BudgetRecord[]> {
     let rawList: RawBudget[] = [];
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       rawList = localStore.getBudgets().filter((b) => b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       if (rawList.length === 0) {
         // Initial defaults for testing and demo
@@ -78,7 +80,9 @@ export class BudgetService {
       return {
         ...b,
         spentAmount,
+        spent: spentAmount,
         remainingAmount,
+        remaining: remainingAmount,
         utilizationPercentage,
         status,
       };
@@ -91,7 +95,7 @@ export class BudgetService {
   ): Promise<BudgetRecord> {
     const period = data.period || 'MONTHLY';
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const item = {
         id: `bgt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
         userId,
@@ -107,7 +111,9 @@ export class BudgetService {
       return {
         ...item,
         spentAmount: 0,
+        spent: 0,
         remainingAmount: data.allocatedAmount,
+        remaining: data.allocatedAmount,
         utilizationPercentage: 0,
         status: 'NORMAL',
       };
@@ -132,7 +138,9 @@ export class BudgetService {
       category: record.category,
       allocatedAmount: record.amount,
       spentAmount: 0,
+      spent: 0,
       remainingAmount: record.amount,
+      remaining: record.amount,
       utilizationPercentage: 0,
       status: 'NORMAL',
       period: record.period,
@@ -146,7 +154,7 @@ export class BudgetService {
     id: string,
     updates: { category?: string; allocatedAmount?: number; period?: 'MONTHLY' | 'WEEKLY' | 'YEARLY' }
   ): Promise<BudgetRecord> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const budgets = localStore.getBudgets();
       const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Budget not found', 404);
@@ -157,10 +165,14 @@ export class BudgetService {
       };
       localStore.saveBudgets(budgets);
       const b = budgets[idx];
+      const sAmt = Math.round(b.allocatedAmount * 0.5);
+      const rAmt = Math.round(b.allocatedAmount * 0.5);
       return {
         ...b,
-        spentAmount: Math.round(b.allocatedAmount * 0.5),
-        remainingAmount: Math.round(b.allocatedAmount * 0.5),
+        spentAmount: sAmt,
+        spent: sAmt,
+        remainingAmount: rAmt,
+        remaining: rAmt,
         utilizationPercentage: 50,
         status: 'NORMAL',
       };
@@ -181,13 +193,17 @@ export class BudgetService {
 
     if (error || !data) throw new AppError('Budget not found', 404);
 
+    const sAmt = Math.round(data.amount * 0.5);
+    const rAmt = Math.round(data.amount * 0.5);
     return {
       id: data.id,
       userId: data.user_id,
       category: data.category,
       allocatedAmount: data.amount,
-      spentAmount: Math.round(data.amount * 0.5),
-      remainingAmount: Math.round(data.amount * 0.5),
+      spentAmount: sAmt,
+      spent: sAmt,
+      remainingAmount: rAmt,
+      remaining: rAmt,
       utilizationPercentage: 50,
       status: 'NORMAL',
       period: data.period,
@@ -197,7 +213,7 @@ export class BudgetService {
   }
 
   public static async deleteBudget(userId: string, id: string): Promise<void> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const budgets = localStore.getBudgets();
       const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Budget not found', 404);

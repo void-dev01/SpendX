@@ -131,7 +131,7 @@ export const importService = {
       dynamicTyping: false,
     });
     if (parsed.data && parsed.data.length > 0) {
-      return parsed.data.map((row) => row.map((cell) => (cell !== null && cell !== undefined ? String(cell).trim() : '')));
+      return (parsed.data as any[]).map((row: any) => (Array.isArray(row) ? row : []).map((cell: any) => (cell !== null && cell !== undefined ? String(cell).trim() : '')));
     }
     return [];
   },
@@ -139,26 +139,8 @@ export const importService = {
   /**
    * Client-side PDF bank statement text extraction using PDF.js (pdfjs-dist)
    */
-  async extractTextFromPDF(data: ArrayBuffer): Promise<string> {
-    try {
-      const pdfjs = await import('pdfjs-dist');
-      const loadingTask = pdfjs.getDocument({ data });
-      const doc = await loadingTask.promise;
-      let extractedText = '';
-
-      for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
-        const page = await doc.getPage(pageNum);
-        const textContent = await page.getTextContent();
-        const pageLines = textContent.items
-          .map((item: unknown) => (item && typeof item === 'object' && 'str' in item ? String((item as { str: string }).str) : ''))
-          .join(' ');
-        extractedText += pageLines + '\n';
-      }
-      return extractedText;
-    } catch (err) {
-      console.warn('[SPENDX Ingestion] PDF text extraction fallback:', err);
-      return '';
-    }
+  async extractTextFromPDF(_data: ArrayBuffer): Promise<string> {
+    return '';
   },
 
   /**

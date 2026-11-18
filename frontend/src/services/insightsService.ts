@@ -75,7 +75,9 @@ export const insightsService = {
     }
     try {
       apiClient.patch(`/ai/insights/${id}/dismiss`).catch(() => {});
-    } catch {}
+    } catch {
+      /* ignore network errors during offline / client-mode dismissal */
+    }
   },
 
   getBookmarkedIds(): string[] {
@@ -101,7 +103,9 @@ export const insightsService = {
     localStorage.setItem(STORAGE_KEY_BOOKMARKED, JSON.stringify(list));
     try {
       apiClient.patch(`/ai/insights/${id}/bookmark`, { isBookmarked: bookmarked }).catch(() => {});
-    } catch {}
+    } catch {
+      /* ignore network errors during offline / client-mode bookmarking */
+    }
     return bookmarked;
   },
 

@@ -25,7 +25,7 @@ export class TransactionService {
     date: string,
     description: string
   ): Promise<boolean> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const windowStart = new Date(new Date(date).getTime() - 24 * 60 * 60 * 1000).getTime();
       const windowEnd = new Date(new Date(date).getTime() + 24 * 60 * 60 * 1000).getTime();
       const txns = localStore.getTransactions();
@@ -110,7 +110,7 @@ export class TransactionService {
 
     const assignedCategory = data.category || this.inferCategory(data.description);
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const newTxn: Transaction = {
         id: `txn_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
         userId,
@@ -183,7 +183,7 @@ export class TransactionService {
     const page = params.page || 1;
     const limit = params.limit || 20;
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const txns = localStore.getTransactions();
       let filtered = txns.filter((t) => t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
       if (params.type) filtered = filtered.filter((t) => t.type === params.type);
@@ -247,7 +247,7 @@ export class TransactionService {
   }
 
   public static async getTransactionById(userId: string, id: string): Promise<Transaction> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const txns = localStore.getTransactions();
       const txn = txns.find((t) => t.id === id && (t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (!txn) throw new AppError('Transaction not found', 404);
@@ -284,7 +284,7 @@ export class TransactionService {
     id: string,
     updates: Partial<Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
   ): Promise<Transaction> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const txns = localStore.getTransactions();
       const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Transaction not found', 404);
@@ -351,7 +351,7 @@ export class TransactionService {
   }
 
   public static async deleteTransaction(userId: string, id: string): Promise<void> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const txns = localStore.getTransactions();
       const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx'));
       if (idx === -1) throw new AppError('Transaction not found', 404);

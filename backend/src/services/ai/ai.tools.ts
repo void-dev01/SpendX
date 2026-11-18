@@ -53,7 +53,8 @@ export class FinancialToolsService {
             category: args.category,
             search: args.search,
           });
-          return res.items.map((t) => ({
+          const txns = Array.isArray(res) ? res : (res.transactions || (res as any).items || []);
+          return txns.map((t: any) => ({
             description: t.description,
             amount: t.amount,
             type: t.type,
@@ -116,7 +117,7 @@ export class FinancialToolsService {
         description: 'Lists upcoming recurring subscriptions and bills with due dates',
         execute: async (userId) => {
           const rec = await RecurringService.getRecurringPayments(userId);
-          return rec.map((r) => ({
+          return rec.map((r: any) => ({
             name: r.name,
             merchant: r.merchant,
             amount: r.amount,

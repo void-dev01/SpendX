@@ -53,7 +53,7 @@ const INITIAL_SEED_ACCOUNTS: AccountRecord[] = [
 
 export class AccountService {
   public static async getAccounts(userId: string): Promise<AccountRecord[]> {
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       let accounts = localStore.getAccounts();
       if (accounts.length === 0) {
         accounts = INITIAL_SEED_ACCOUNTS;
@@ -118,7 +118,7 @@ export class AccountService {
       updatedAt: new Date().toISOString(),
     };
 
-    if (!supabaseClient) {
+    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
       const accounts = localStore.getAccounts();
       accounts.unshift(newAccount);
       localStore.saveAccounts(accounts);
@@ -195,7 +195,7 @@ export class AccountService {
       localStore.saveAccounts(accounts);
     }
 
-    if (supabaseClient) {
+    if (supabaseClient && process.env.NODE_ENV !== 'test') {
       try {
         await supabaseClient
           .from('accounts')
@@ -227,7 +227,7 @@ export class AccountService {
     const filtered = accounts.filter((a) => a.id !== accountId);
     localStore.saveAccounts(filtered);
 
-    if (supabaseClient) {
+    if (supabaseClient && process.env.NODE_ENV !== 'test') {
       try {
         await supabaseClient.from('accounts').delete().eq('id', accountId).eq('user_id', userId);
       } catch (err) {

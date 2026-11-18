@@ -54,11 +54,11 @@ export class DashboardService {
     const thirtyDaysLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
     const upcomingPayments = recurringAll
-      .filter((r) => {
+      .filter((r: any) => {
         const dueDate = new Date(r.nextDueDate);
         return dueDate >= now && dueDate <= thirtyDaysLater && r.status !== 'CANCELLED' && r.status !== 'PAUSED';
       })
-      .map((r) => ({
+      .map((r: any) => ({
         id: r.id,
         name: r.name,
         amount: r.amount,

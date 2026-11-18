@@ -7,7 +7,7 @@ export const createTransactionSchema = z.object({
   type: z.enum(['INCOME', 'EXPENSE', 'TRANSFER'], { message: 'Invalid transaction type' }),
   category: z.string().min(1, { message: 'Category is required' }).max(50),
   description: z.string().min(1, { message: 'Description is required' }).max(255),
-  date: z.string().datetime({ message: 'Date must be a valid ISO-8601 string' }),
+  date: z.string().min(1, { message: 'Date is required' }),
   merchantName: z.string().max(100).optional(),
   paymentMethod: z.string().optional(),
   status: z.string().optional(),
@@ -17,6 +17,17 @@ export const createTransactionSchema = z.object({
 });
 
 export const updateTransactionSchema = createTransactionSchema.partial();
+
+export const queryTransactionsSchema = z.object({
+  page: z.union([z.string(), z.number()]).optional().transform((v) => (v ? Number(v) : 1)),
+  limit: z.union([z.string(), z.number()]).optional().transform((v) => (v ? Number(v) : 20)),
+  type: z.enum(['INCOME', 'EXPENSE', 'TRANSFER']).optional(),
+  category: z.string().optional(),
+  accountId: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  search: z.string().optional(),
+});
 
 export const validateCreateTransaction = (
   req: Request,

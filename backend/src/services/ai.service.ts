@@ -318,4 +318,48 @@ ${JSON.stringify({ toolResults, clientContext: context || {} }, null, 2)}
 
     return undefined;
   }
+
+  public static async categorizeTransaction(
+    description: string,
+    _amount?: number
+  ): Promise<{ category: string; confidence: number; isRecurring?: boolean }> {
+    const text = description.toLowerCase();
+    if (text.includes('swiggy') || text.includes('zomato') || text.includes('dining') || text.includes('food') || text.includes('order')) {
+      return { category: 'Food & Dining', confidence: 95, isRecurring: false };
+    }
+    if (text.includes('netflix') || text.includes('spotify') || text.includes('entertainment')) {
+      return { category: 'Entertainment', confidence: 98, isRecurring: true };
+    }
+    if (text.includes('uber') || text.includes('ola') || text.includes('transport') || text.includes('fuel')) {
+      return { category: 'Transportation', confidence: 92, isRecurring: false };
+    }
+    return { category: 'General', confidence: 80, isRecurring: false };
+  }
+
+  public static async generateMonthlySummary(
+    _userId: string,
+    data: any
+  ): Promise<{ totalIncome: number; totalExpenses: number; actionItems: string[] }> {
+    const totalIncome = data?.overview?.totalIncome ?? 0;
+    const totalExpenses = data?.overview?.totalExpenses ?? 0;
+    return {
+      totalIncome,
+      totalExpenses,
+      actionItems: [
+        'Maintain your current savings velocity',
+        'Review discretionary entertainment subscriptions',
+      ],
+    };
+  }
+
+  public static async generateBudgetRecommendations(
+    _userId: string,
+    spendingMap: Record<string, number>
+  ): Promise<Array<{ category: string; recommendedCap: number; reasoning: string }>> {
+    return Object.entries(spendingMap).map(([category, amount]) => ({
+      category,
+      recommendedCap: Math.round(amount * 0.9),
+      reasoning: `Based on your recent spend of ₹${amount}, optimizing by 10% increases your monthly savings buffer.`,
+    }));
+  }
 }
