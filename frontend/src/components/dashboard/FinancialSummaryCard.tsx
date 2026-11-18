@@ -22,29 +22,30 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   trendIsPositive,
 }) => {
   return (
-    <div className="glass-card-interactive p-5 sm:p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+    <div className="glass-card-interactive p-4 sm:p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
       {/* Top row: Label & Squircle Icon */}
       <div className="flex items-center justify-between gap-3">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground truncate">
           {label}
         </span>
         <div
-          className={`squircle-icon transition-transform duration-200 group-hover:scale-105 shadow-sm ${iconColorClass}`}
+          className={`squircle-icon transition-transform duration-200 group-hover:scale-105 shadow-sm shrink-0 ${iconColorClass}`}
         >
           <Icon weight="duotone" className="w-5 h-5" />
         </div>
       </div>
 
       {/* Center: Financial Value (Lining & Tabular Numerals) */}
-      <div className="my-4">
+      <div className="my-3 sm:my-4 min-w-0">
         <div
-          className={`text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums kpi-value leading-none ${
+          className={`text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums kpi-value leading-tight truncate ${
             label.toLowerCase().includes('balance') ||
             label.toLowerCase().includes('net worth') ||
             label.toLowerCase().includes('savings')
               ? 'text-gradient-wealth'
               : 'text-foreground'
           }`}
+          title={dashboardService.formatINR(value)}
         >
           {dashboardService.formatINR(value)}
         </div>

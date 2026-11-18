@@ -22,22 +22,22 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
   accountCount,
 }) => {
   return (
-    <div className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div className="glass-panel p-3.5 sm:p-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3">
       {/* Search Input */}
-      <div className="relative flex-1 max-w-md">
+      <div className="relative w-full md:max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
         <input
           type="text"
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
           placeholder="Search by account, bank, or card name..."
-          className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-slate-800 dark:text-slate-100 transition-all"
+          className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-slate-800 dark:text-slate-100 transition-all min-h-[44px]"
         />
         {filters.search && (
           <button
             type="button"
             onClick={() => onChange({ ...filters, search: '' })}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"
           >
             <X className="w-3.5 h-3.5" />
           </button>
@@ -45,7 +45,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
       </div>
 
       {/* Filter, Sort & Add Account */}
-      <div className="flex flex-wrap items-center gap-2.5">
+      <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 w-full md:w-auto">
         {/* Type Filter */}
         <select
           value={filters.type}
@@ -53,7 +53,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
             onChange({ ...filters, type: e.target.value as AccountFiltersState['type'] })
           }
           aria-label="Filter accounts by type"
-          className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium min-h-[44px]"
         >
           <option value="ALL">All Types ({accountCount})</option>
           <option value="BANK">Checking / Bank</option>
@@ -70,7 +70,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
             onChange({ ...filters, sortBy: e.target.value as AccountFiltersState['sortBy'] })
           }
           aria-label="Sort accounts"
-          className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium min-h-[44px]"
         >
           <option value="BALANCE_DESC">Balance: High to Low</option>
           <option value="BALANCE_ASC">Balance: Low to High</option>
@@ -82,7 +82,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
         <button
           type="button"
           onClick={onAddAccount}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary hover:opacity-95 shadow-md transition-all cursor-pointer whitespace-nowrap"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary hover:opacity-95 shadow-md transition-all cursor-pointer whitespace-nowrap min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           <span>Add Account</span>

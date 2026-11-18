@@ -109,12 +109,12 @@ export const CreateGoalDialog: React.FC<CreateGoalDialogProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
       aria-labelledby="goal-dialog-title"
     >
-      <div className="w-full max-w-lg glass-panel p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <div className="w-full max-w-lg glass-panel p-4 sm:p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-2xl relative max-h-[90dvh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-100/60 dark:border-white/10">
           <div className="flex items-center gap-2.5">
@@ -297,19 +297,19 @@ export const CreateGoalDialog: React.FC<CreateGoalDialogProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-slate-100/60 dark:border-white/10">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 pt-4 border-t border-slate-100/60 dark:border-white/10">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/10 transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-4 py-2.5 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/10 transition-colors cursor-pointer text-center min-h-[44px]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-1.5 px-5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-md hover:shadow hover:opacity-95 transition-all disabled:opacity-50 cursor-pointer"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-semibold rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-md hover:shadow hover:opacity-95 transition-all disabled:opacity-50 cursor-pointer min-h-[44px]"
             >
               {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               <span>{isEdit ? 'Update Goal' : 'Create Goal'}</span>

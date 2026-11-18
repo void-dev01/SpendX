@@ -17,7 +17,7 @@ export const AnalyticsDataTable: React.FC<AnalyticsDataTableProps> = ({ rows }) 
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="glass-panel p-4 sm:p-6 rounded-3xl space-y-4 min-w-0 overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -32,15 +32,15 @@ export const AnalyticsDataTable: React.FC<AnalyticsDataTableProps> = ({ rows }) 
         <button
           type="button"
           onClick={handleDownloadCSV}
-          className="self-start sm:self-auto flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-white/40 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-white/40 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer min-h-[40px]"
         >
           <Download className="w-3.5 h-3.5" />
           <span>Export CSV</span>
         </button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
+      <div className="overflow-x-auto touch-scroll -mx-4 sm:mx-0 px-4 sm:px-0">
+        <table className="w-full min-w-[540px] text-left text-xs">
           <thead>
             <tr className="border-b border-slate-100/80 dark:border-white/10 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
               <th className="py-2.5 px-3">Period</th>

@@ -121,7 +121,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
 
       {/* Sidebar Panel */}
       <aside
-        className="fixed md:static inset-y-0 left-0 z-50 w-72 md:w-64 glass-panel p-4 flex flex-col justify-between shrink-0 rounded-3xl border border-white/80 dark:border-white/10 shadow-xl md:shadow-none animate-in slide-in-from-left duration-200"
+        className="fixed md:static inset-y-0 left-0 z-50 w-[min(288px,85vw)] md:w-64 glass-panel p-4 flex flex-col justify-between shrink-0 rounded-3xl border border-white/80 dark:border-white/10 shadow-xl md:shadow-none animate-in slide-in-from-left duration-200"
         aria-label="Conversation history"
       >
         <div>

@@ -101,8 +101,8 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="glass-card w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 dark:border-white/10 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
+      <div className="glass-card w-full max-w-lg rounded-3xl p-4 sm:p-8 shadow-2xl border border-white/60 dark:border-white/10 relative max-h-[90dvh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-white/10">
           <div>
@@ -272,19 +272,19 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-4 border-t border-slate-200/60 dark:border-white/10 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-slate-200/60 dark:border-white/10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+              className="w-full sm:w-auto px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-center min-h-[44px]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-spendx-primary px-5 py-2 text-sm font-semibold rounded-xl flex items-center gap-2"
+              className="btn-spendx-primary w-full sm:w-auto px-5 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>{editingPayment ? 'Save Changes' : 'Create Schedule'}</span>
             </button>

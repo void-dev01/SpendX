@@ -15,7 +15,7 @@ export const ArchivedStatementsTable: React.FC<ArchivedStatementsTableProps> = (
   onPreviewStatement,
 }) => {
   return (
-    <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-4">
+    <div className="glass-card p-4 sm:p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-4 min-w-0 overflow-hidden">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-base font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
@@ -27,8 +27,8 @@ export const ArchivedStatementsTable: React.FC<ArchivedStatementsTableProps> = (
         </div>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto touch-scroll -mx-4 sm:mx-0 px-4 sm:px-0">
+        <table className="w-full min-w-[580px] text-left text-sm">
           <thead>
             <tr className="border-b border-slate-200/60 dark:border-white/10 text-xs font-semibold text-slate-400 uppercase tracking-wider">
               <th className="py-3 px-3">Statement Cycle</th>

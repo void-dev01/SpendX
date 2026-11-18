@@ -28,13 +28,13 @@ export const MobileBottomNav: React.FC = () => {
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-3 inset-x-3 z-40 mx-auto max-w-md h-16 rounded-full glass-nav border border-white/80 dark:border-white/15 shadow-[0_12px_36px_-4px_rgba(83,104,162,0.18)] dark:shadow-[0_12px_36px_-4px_rgba(0,0,0,0.6)] px-2 flex items-center justify-around pb-[env(safe-area-inset-bottom)]"
+      className="md:hidden fixed bottom-2.5 xs:bottom-3 inset-x-2 xs:inset-x-3 z-40 mx-auto max-w-md h-16 rounded-full glass-nav border border-white/80 dark:border-white/15 shadow-[0_12px_36px_-4px_rgba(83,104,162,0.18)] dark:shadow-[0_12px_36px_-4px_rgba(0,0,0,0.6)] px-1 xs:px-2 flex items-center justify-around pb-[max(0.25rem,env(safe-area-inset-bottom,0px))]"
     >
       {/* 1. Home */}
       <NavLink
         to="/dashboard"
         className={({ isActive }) =>
-          `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
+          `flex flex-col items-center justify-center min-w-[48px] xs:min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
               ? 'text-primary font-bold'
               : 'text-muted-foreground hover:text-foreground'

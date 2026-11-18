@@ -94,10 +94,10 @@ export const TopNavbar: React.FC = () => {
     <header className="sticky top-4 z-20 mb-4 sm:mb-6">
       <nav
         aria-label="Top Navigation"
-        className="glass-panel rounded-2xl border border-white/80 dark:border-white/15 shadow-xl backdrop-blur-2xl px-4 sm:px-6 h-[68px] sm:h-[72px] flex items-center justify-between gap-4"
+        className="glass-panel rounded-2xl border border-white/80 dark:border-white/15 shadow-xl backdrop-blur-2xl px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4"
       >
         {/* Left: Mobile Menu Trigger + Dynamic Page Title & Breadcrumbs */}
-        <div className="flex items-center gap-3 min-w-0">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
           {/* Mobile Menu Button */}
           <button
             onClick={openMobileDrawer}
@@ -107,7 +107,7 @@ export const TopNavbar: React.FC = () => {
             <Menu className="w-5 h-5" />
           </button>
 
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-[140px] xs:max-w-[220px] sm:max-w-none">
             {/* Breadcrumb Trail */}
             <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground">
               {metadata.breadcrumbs.map((crumb, idx) => (
@@ -127,7 +127,7 @@ export const TopNavbar: React.FC = () => {
             </div>
 
             {/* Dynamic Page Title */}
-            <h1 className="text-base sm:text-lg font-bold tracking-tight text-foreground truncate">
+            <h1 className="text-sm xs:text-base sm:text-lg font-bold tracking-tight text-foreground truncate">
               {metadata.title}
             </h1>
           </div>
@@ -151,7 +151,17 @@ export const TopNavbar: React.FC = () => {
         </div>
 
         {/* Right: Actions, Theme Toggle, Profile Menu */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {/* Mobile Search Button (< lg) */}
+          <button
+            type="button"
+            onClick={() => setGlobalSearchOpen(true)}
+            aria-label="Open search command palette"
+            className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
+          >
+            <Search className="w-4 h-4" />
+          </button>
+
           {/* Notifications Flyout Popup */}
           <div className="relative" ref={notificationsRef}>
             <button
@@ -161,11 +171,11 @@ export const TopNavbar: React.FC = () => {
               }}
               aria-label="View notifications"
               aria-expanded={isNotificationsOpen}
-              className="relative w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
             >
               <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
-                <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-[#DC5579] animate-pulse" />
+                <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-[#DC5579] animate-pulse" />
               )}
             </button>
 
@@ -178,7 +188,7 @@ export const TopNavbar: React.FC = () => {
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="region"
                   aria-label="Notifications panel"
-                  className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-3xl space-y-3"
+                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-3xl space-y-3"
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between pb-2.5 border-b border-black/5 dark:border-white/10">
@@ -314,7 +324,7 @@ export const TopNavbar: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95, y: -6 }}
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="menu"
-                  className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-3xl"
+                  className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-3xl"
                 >
                   {/* User Info Header */}
                   <div className="px-3 py-2 border-b border-black/5 dark:border-white/10 space-y-0.5">

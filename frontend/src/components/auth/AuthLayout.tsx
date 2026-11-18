@@ -56,15 +56,15 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({
       </header>
 
       {/* Main Split-Screen Container */}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
-        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 glass-panel rounded-3xl sm:rounded-[36px] border border-white/80 dark:border-white/15 shadow-2xl backdrop-blur-2xl overflow-hidden min-h-[640px]">
+      <main className="flex-1 flex items-center justify-center px-3.5 sm:px-6 py-4 sm:py-12">
+        <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-12 glass-panel rounded-3xl sm:rounded-[36px] border border-white/80 dark:border-white/15 shadow-2xl backdrop-blur-2xl overflow-hidden min-h-0 lg:min-h-[640px]">
           {/* Left Panel: Brand Experience (Desktop only) */}
           <div className="hidden lg:block lg:col-span-5 bg-gradient-to-br from-white/40 to-white/10 dark:from-white/5 dark:to-transparent border-r border-white/60 dark:border-white/10">
             <AuthBrandPanel />
           </div>
 
           {/* Right Panel: Authentication Form Area */}
-          <div className="lg:col-span-7 flex flex-col justify-center px-6 sm:px-12 py-8 sm:py-12">
+          <div className="lg:col-span-7 flex flex-col justify-center px-4 xs:px-6 sm:px-12 py-6 sm:py-12">
             <div className="w-full max-w-md mx-auto space-y-6">
               {/* Form Heading Header */}
               <div className="space-y-2 text-center lg:text-left">

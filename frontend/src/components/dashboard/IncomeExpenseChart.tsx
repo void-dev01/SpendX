@@ -60,12 +60,12 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
   };
 
   return (
-    <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between h-full">
+    <div className="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+            <h2 className="text-base sm:text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
               Income vs Expenses
             </h2>
           </div>
@@ -88,7 +88,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
       </div>
 
       {/* Recharts Area Container */}
-      <div className="w-full h-[280px] sm:h-[320px]">
+      <div className="w-full min-w-0 h-[240px] xs:h-[280px] sm:h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}

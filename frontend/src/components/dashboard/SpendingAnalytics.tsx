@@ -55,11 +55,11 @@ export const SpendingAnalytics: React.FC<SpendingAnalyticsProps> = ({
   };
 
   return (
-    <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between h-full">
+    <div className="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
-          <h2 className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+          <h2 className="text-base sm:text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
             Where Your Money Goes
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -69,15 +69,15 @@ export const SpendingAnalytics: React.FC<SpendingAnalyticsProps> = ({
 
         <Link
           to="/analytics"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer group shrink-0"
         >
-          View Analytics
+          <span>View Analytics</span>
           <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
       </div>
 
       {/* Donut Chart with Centered Total */}
-      <div className="relative w-full h-[180px] sm:h-[200px] my-auto">
+      <div className="relative w-full min-w-0 h-[180px] sm:h-[200px] my-auto">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip content={renderCustomTooltip} />

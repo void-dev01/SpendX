@@ -152,7 +152,7 @@ export const AiAssistantPage: React.FC = () => {
       />
 
       {/* 2. Workspace: Sidebar + Chat Panel */}
-      <div className="flex gap-4 items-start min-h-[calc(100vh-200px)]">
+      <div className="flex gap-4 items-start min-h-[420px] sm:min-h-[540px]">
         {/* Conversation History Sidebar */}
         <ConversationSidebar
           conversations={conversations}
@@ -165,7 +165,7 @@ export const AiAssistantPage: React.FC = () => {
         />
 
         {/* Main Chat Panel */}
-        <div className="flex-1 glass-panel rounded-3xl p-4 sm:p-6 flex flex-col justify-between min-h-[580px] h-[calc(100vh-210px)] relative overflow-hidden">
+        <div className="flex-1 glass-panel rounded-3xl p-3 sm:p-6 flex flex-col justify-between min-h-[420px] sm:min-h-[540px] h-[calc(100dvh-13rem)] relative overflow-hidden">
           {/* Scrollable Messages Stream */}
           <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
             {isWelcomeScreen ? (

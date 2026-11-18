@@ -44,11 +44,11 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
   };
 
   return (
-    <div className="glass-panel p-6 rounded-2xl flex flex-col justify-between h-full">
+    <div className="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
-          <h2 className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+          <h2 className="text-base sm:text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
             Recent Transactions
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -58,9 +58,9 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
 
         <Link
           to="/transactions"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer group shrink-0"
         >
-          View All Transactions
+          <span>View All Transactions</span>
           <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </Link>
       </div>

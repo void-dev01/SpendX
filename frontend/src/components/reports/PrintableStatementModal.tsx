@@ -25,10 +25,10 @@ export const PrintableStatementModal: React.FC<PrintableStatementModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fadeIn">
-      <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 flex flex-col max-h-[92vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-3xl shadow-2xl border border-slate-200 dark:border-white/10 flex flex-col max-h-[92dvh] overflow-hidden">
         {/* Top Control Bar (Non-Printable) */}
-        <div className="p-4 px-6 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 print:hidden">
+        <div className="p-3 sm:p-4 sm:px-6 border-b border-slate-200 dark:border-white/10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 bg-slate-50 dark:bg-slate-800/50 print:hidden">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-spendx-blue-primary bg-spendx-blue-primary/10 px-2 py-0.5 rounded-md">
               Statement Preview
@@ -158,8 +158,8 @@ export const PrintableStatementModal: React.FC<PrintableStatementModalProps> = (
               Itemized Transaction Journal ({report.transactions.length})
             </h4>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full min-w-[500px] text-left text-xs">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-white/10 text-slate-400 uppercase font-semibold">
                     <th className="py-2 px-2">Date</th>

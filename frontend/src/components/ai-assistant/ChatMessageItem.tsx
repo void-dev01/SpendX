@@ -38,7 +38,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
     const lines = content.split('\n');
 
     return (
-      <div className="space-y-1.5 leading-relaxed text-xs sm:text-[13px]">
+      <div className="space-y-1.5 leading-relaxed text-xs sm:text-[13px] break-words [overflow-wrap:anywhere]">
         {lines.map((line, idx) => {
           if (!line.trim()) return <div key={idx} className="h-1.5" />;
 
@@ -199,7 +199,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
 
       {/* Bubble */}
       <div
-        className={`max-w-[85%] sm:max-w-[75%] rounded-3xl p-4 sm:p-5 shadow-xs transition-all ${
+        className={`max-w-[90%] xs:max-w-[85%] sm:max-w-[75%] rounded-3xl p-3.5 sm:p-5 shadow-xs transition-all break-words [overflow-wrap:anywhere] min-w-0 ${
           isUser
             ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white rounded-tr-xs'
             : message.isError
