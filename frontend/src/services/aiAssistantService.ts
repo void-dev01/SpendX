@@ -256,10 +256,12 @@ export const aiAssistantService = {
     history: Array<{ role: 'user' | 'assistant'; content: string }>
   ): Promise<{ answer: string; card?: AnswerCardData; modelUsed?: string }> {
     const context = await this.buildFinancialContext();
+    const activeSessionId = this.getActiveConversationId();
 
     try {
       const res = await apiClient.post('/ai/coach', {
         query,
+        sessionId: activeSessionId.startsWith('conv-') ? undefined : activeSessionId,
         context,
         history: history.map((h) => ({
           role: h.role,
@@ -268,6 +270,10 @@ export const aiAssistantService = {
       });
 
       const data = res.data?.data;
+      if (data?.sessionId && data.sessionId !== activeSessionId) {
+        this.setActiveConversationId(data.sessionId);
+      }
+
       return {
         answer: data?.answer || 'Response received from SPENDX AI Core.',
         card: data?.card,

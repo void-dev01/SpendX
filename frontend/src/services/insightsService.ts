@@ -9,6 +9,7 @@ import { budgetService } from './budgetService';
 import { savingsService } from './savingsService';
 import { accountService } from './accountService';
 import { recurringService } from './recurringService';
+import { apiClient } from './api';
 
 export type InsightType =
   | 'CRITICAL_ALERT'
@@ -72,6 +73,9 @@ export const insightsService = {
       list.push(id);
       localStorage.setItem(STORAGE_KEY_DISMISSED, JSON.stringify(list));
     }
+    try {
+      apiClient.patch(`/ai/insights/${id}/dismiss`).catch(() => {});
+    } catch {}
   },
 
   getBookmarkedIds(): string[] {
@@ -95,6 +99,9 @@ export const insightsService = {
       bookmarked = true;
     }
     localStorage.setItem(STORAGE_KEY_BOOKMARKED, JSON.stringify(list));
+    try {
+      apiClient.patch(`/ai/insights/${id}/bookmark`, { isBookmarked: bookmarked }).catch(() => {});
+    } catch {}
     return bookmarked;
   },
 
