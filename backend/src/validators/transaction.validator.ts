@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Request, Response, NextFunction } from 'express';
 
 export const createTransactionSchema = z.object({
   accountId: z.string().uuid({ message: 'Invalid account ID format' }),
@@ -8,16 +9,24 @@ export const createTransactionSchema = z.object({
   description: z.string().min(1, { message: 'Description is required' }).max(255),
   date: z.string().datetime({ message: 'Date must be a valid ISO-8601 string' }),
   merchantName: z.string().max(100).optional(),
+  paymentMethod: z.string().optional(),
+  status: z.string().optional(),
+  notes: z.string().optional(),
+  referenceNumber: z.string().optional(),
   isRecurring: z.boolean().default(false),
 });
 
 export const updateTransactionSchema = createTransactionSchema.partial();
 
-export const queryTransactionsSchema = z.object({
-  page: z.string().optional().transform((v) => (v ? parseInt(v, 10) : 1)),
-  limit: z.string().optional().transform((v) => (v ? parseInt(v, 10) : 20)),
-  type: z.enum(['INCOME', 'EXPENSE', 'TRANSFER']).optional(),
-  category: z.string().optional(),
-  startDate: z.string().datetime().optional(),
-  endDate: z.string().datetime().optional(),
-});
+export const validateCreateTransaction = (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): void => {
+  try {
+    createTransactionSchema.parse(req.body);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};

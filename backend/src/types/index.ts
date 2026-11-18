@@ -36,6 +36,10 @@ export interface Transaction {
   date: string;
   isRecurring: boolean;
   merchantName?: string;
+  paymentMethod?: string;
+  status?: string;
+  notes?: string;
+  referenceNumber?: string;
   createdAt: string;
   updatedAt: string;
 }

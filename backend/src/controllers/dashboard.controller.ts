@@ -1,0 +1,27 @@
+import { Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../types/index.js';
+import { DashboardService } from '../services/dashboard.service.js';
+import { AppError } from '../middleware/errorHandler.js';
+
+export const getDashboardMetrics = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(new AppError('Unauthorized', 401));
+    }
+
+    const period = (req.query.period as any) || 'this_month';
+    const data = await DashboardService.getDashboardMetrics(userId, period);
+
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

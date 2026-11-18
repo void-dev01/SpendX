@@ -11,6 +11,8 @@ const envSchema = z.object({
   SUPABASE_ANON_KEY: z.string().optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().optional(),
+  OPENROUTER_API_KEY: z.string().optional(),
+  OPENROUTER_MODEL: z.string().default('nvidia/nemotron-3.5-lightning:free'),
 });
 
 const parsed = envSchema.safeParse(process.env);
@@ -25,4 +27,6 @@ export const env = parsed.data;
 export const isConfigured = {
   supabase: Boolean(env.SUPABASE_URL && (env.SUPABASE_ANON_KEY || env.SUPABASE_SERVICE_ROLE_KEY)),
   gemini: Boolean(env.GEMINI_API_KEY),
+  openrouter: Boolean(env.OPENROUTER_API_KEY),
+  ai: Boolean(env.OPENROUTER_API_KEY || env.GEMINI_API_KEY),
 };

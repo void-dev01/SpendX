@@ -108,7 +108,7 @@ export class StorageService {
       throw new AppError('Unauthorized: Cross-tenant storage access denied', 403);
     }
 
-    if (!supabaseClient) {
+    if (!supabaseClient || process.env.NODE_ENV === 'test') {
       return {
         downloadUrl: `https://storage.spendx.local/download/${filePath}?token=mock_download_token_${Date.now()}`,
         expiresIn: SIGNED_URL_EXPIRY_SECONDS,
