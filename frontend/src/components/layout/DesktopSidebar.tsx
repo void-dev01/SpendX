@@ -131,8 +131,8 @@ export const DesktopSidebar: React.FC = () => {
                                   <span
                                     className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                                       item.isAiAccent
-                                        ? 'bg-gradient-to-r from-[#D4AF37] to-[#AA8220] text-[#0A0A0C]'
-                                        : 'bg-gradient-to-r from-[#D4AF37] to-[#AA8220] text-[#0A0A0C]'
+                                        ? 'bg-gradient-to-r from-[#8066CC] to-[#8B72D6] text-white'
+                                        : 'bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white'
                                     }`}
                                   >
                                     {item.badge}
@@ -153,7 +153,7 @@ export const DesktopSidebar: React.FC = () => {
                           <div className="flex items-center gap-1.5">
                             <span>{item.name}</span>
                             {item.badge && (
-                              <span className="text-[9px] px-1 rounded bg-[#D4AF37] text-[#0A0A0C] font-bold">
+                              <span className="text-[9px] px-1 rounded bg-[#718FE8] text-white font-bold">
                                 {item.badge}
                               </span>
                             )}
@@ -176,13 +176,13 @@ export const DesktopSidebar: React.FC = () => {
           <div className="space-y-1.5">
             <button
               onClick={() => navigate('/transactions')}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] font-bold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white font-semibold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer"
             >
-              <Plus weight="bold" className="w-3.5 h-3.5 text-[#0A0A0C]" />
+              <Plus weight="bold" className="w-3.5 h-3.5 text-white" />
               <span>Record Transaction</span>
             </button>
             <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-[#12866E] animate-pulse" />
               <span className="font-medium">Local Storage Active</span>
             </div>
           </div>
@@ -196,17 +196,17 @@ export const DesktopSidebar: React.FC = () => {
         >
           <button
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-2.5 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] rounded-xl cursor-pointer flex-1 group"
+            className="flex items-center gap-2.5 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#718FE8] rounded-xl cursor-pointer flex-1 group"
             title="Account Settings — Click to update name & email"
             aria-label="Open Account Settings to update name and email"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] flex items-center justify-center font-bold text-xs shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm group-hover:scale-105 transition-transform">
               {initials}
             </div>
 
             {!isSidebarCollapsed && (
               <div className="truncate">
-                <p className="text-xs font-bold text-foreground group-hover:text-amber-500 transition-colors truncate">
+                <p className="text-xs font-bold text-foreground group-hover:text-[#718FE8] transition-colors truncate">
                   {displayName}
                 </p>
                 <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>

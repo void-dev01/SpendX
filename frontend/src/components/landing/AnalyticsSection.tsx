@@ -23,11 +23,11 @@ const monthlyComparisonData = [
 ];
 
 const categoryBreakdown = [
-  { name: 'Food & Dining', amount: 6200, percentage: 34, color: '#D4AF37' },
-  { name: 'Housing & Rent', amount: 4800, percentage: 26, color: '#10B981' },
-  { name: 'Shopping & Gear', amount: 3100, percentage: 17, color: '#60B5D8' },
+  { name: 'Food & Dining', amount: 6200, percentage: 34, color: '#718FE8' },
+  { name: 'Housing & Rent', amount: 4800, percentage: 26, color: '#8B72D6' },
+  { name: 'Shopping & Gear', amount: 3100, percentage: 17, color: '#8066CC' },
   { name: 'Utilities & Bills', amount: 2500, percentage: 13, color: '#12866E' },
-  { name: 'Transportation', amount: 1850, percentage: 10, color: '#C48620' },
+  { name: 'Transportation', amount: 1850, percentage: 10, color: '#5368A2' },
 ];
 
 export const AnalyticsSection: React.FC = () => {
@@ -36,7 +36,7 @@ export const AnalyticsSection: React.FC = () => {
   return (
     <section id="analytics" className="py-20 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
       {/* Background Sheen */}
-      <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl -z-10 pointer-events-none" />
+      <div className="absolute left-1/3 top-1/2 -translate-y-1/2 w-96 h-96 bg-[#718FE8]/10 rounded-full blur-3xl -z-10 pointer-events-none" />
 
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header */}
@@ -48,7 +48,7 @@ export const AnalyticsSection: React.FC = () => {
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             See the Bigger Picture{' '}
-            <span className="bg-gradient-to-r from-[#D4AF37] via-[#E2C766] to-[#10B981] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#718FE8] via-[#8066CC] to-[#8B72D6] bg-clip-text text-transparent">
               Behind Every Transaction.
             </span>
           </h2>
@@ -250,7 +250,7 @@ export const AnalyticsSection: React.FC = () => {
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Recurring Subscriptions
                   </span>
-                  <span className="w-6 h-6 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center">
+                  <span className="w-6 h-6 rounded-full bg-[#8066CC]/15 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center">
                     <Layers className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -263,7 +263,7 @@ export const AnalyticsSection: React.FC = () => {
               </div>
 
               {/* Monthly Trend Indicator */}
-              <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-[#D4AF37]/10 to-[#10B981]/10 p-4 border border-[#D4AF37]/20 space-y-1.5">
+              <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-[#8066CC]/10 to-[#8B72D6]/10 p-4 border border-[#8066CC]/20 space-y-1.5">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span>3-Month Projected Runway</span>

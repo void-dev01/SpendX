@@ -175,7 +175,7 @@ export const LandingFooter: React.FC = () => {
 
           <div className="flex items-center gap-1.5">
             <span>Built with precision for intelligent financial clarity</span>
-            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
+            <Sparkles className="w-3.5 h-3.5 text-[#8066CC] dark:text-[#A78BFA]" />
           </div>
         </div>
       </div>

@@ -31,13 +31,13 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
           viewBox="0 0 36 36"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow-[0_4px_12px_rgba(212,175,55,0.30)]"
+          className="w-full h-full drop-shadow-[0_4px_12px_rgba(113,143,232,0.30)]"
         >
           <defs>
             <linearGradient id="spendxGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FDE68A" />
-              <stop offset="50%" stopColor="#D4AF37" />
-              <stop offset="100%" stopColor="#AA8220" />
+              <stop offset="0%" stopColor="#718FE8" />
+              <stop offset="50%" stopColor="#8066CC" />
+              <stop offset="100%" stopColor="#8B72D6" />
             </linearGradient>
             <linearGradient id="facetGrad" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.6" />
@@ -68,21 +68,21 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
           {/* Intersecting Financial Growth Vector & Intelligence Spark */}
           <path
             d="M10 24L16 17.5L20 21L26 12"
-            stroke="#0A0A0C"
+            stroke="#FFFFFF"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M21.5 12H26V16.5"
-            stroke="#0A0A0C"
+            stroke="#FFFFFF"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           {/* Small Intelligence Spark Node */}
-          <circle cx="16" cy="17.5" r="1.5" fill="#0A0A0C" />
-          <circle cx="20" cy="21" r="1.5" fill="#0A0A0C" />
+          <circle cx="16" cy="17.5" r="1.5" fill="#FFFFFF" />
+          <circle cx="20" cy="21" r="1.5" fill="#FFFFFF" />
         </svg>
       </div>
 

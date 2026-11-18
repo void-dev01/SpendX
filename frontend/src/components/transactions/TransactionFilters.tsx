@@ -61,7 +61,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.search}
             onChange={handleSearchChange}
             placeholder="Search transactions, merchants, or categories..."
-            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40 text-slate-800 dark:text-slate-100 transition-all"
+            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#718FE8]/40 text-slate-800 dark:text-slate-100 transition-all"
           />
           {filters.search && (
             <button
@@ -83,7 +83,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
           <SlidersHorizontal className="w-3.5 h-3.5" />
           <span>Filters</span>
           {activeFilterCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-[#D4AF37] text-[#0A0A0C] text-[10px] flex items-center justify-center font-bold">
+            <span className="w-5 h-5 rounded-full bg-[#718FE8] text-white text-[10px] flex items-center justify-center font-bold">
               {activeFilterCount}
             </span>
           )}
@@ -111,7 +111,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.type}
             onChange={handleTypeChange}
             aria-label="Filter by transaction type"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
           >
             <option value="ALL">All Types</option>
             <option value="INCOME">Income (+)</option>
@@ -126,7 +126,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.category}
             onChange={handleCategoryChange}
             aria-label="Filter by category"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
           >
             <option value="ALL">All Categories</option>
             {allCategories.map((c) => (
@@ -143,7 +143,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.accountId}
             onChange={handleAccountChange}
             aria-label="Filter by account"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
           >
             <option value="ALL">All Accounts</option>
             {DEFAULT_USER_ACCOUNTS.map((acc) => (
@@ -160,7 +160,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.status}
             onChange={handleStatusChange}
             aria-label="Filter by status"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#D4AF37]"
+            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
           >
             <option value="ALL">All Statuses</option>
             <option value="COMPLETED">Completed</option>
@@ -175,7 +175,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.sortBy}
             onChange={handleSortChange}
             aria-label="Sort transactions"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#D4AF37] font-medium"
+            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8] font-medium"
           >
             <option value="NEWEST">Newest First</option>
             <option value="OLDEST">Oldest First</option>
@@ -293,7 +293,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
               <button
                 type="button"
                 onClick={() => setMobileDrawerOpen(false)}
-                className="flex-1 py-2.5 rounded-xl text-xs font-bold text-[#0A0A0C] bg-gradient-to-r from-[#D4AF37] to-[#AA8220] shadow-md"
+                className="flex-1 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-md"
               >
                 Apply Filters
               </button>

@@ -168,7 +168,7 @@ export const SettingsPage: React.FC = () => {
             <div className="flex items-center gap-3 pt-3">
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl text-xs font-bold text-[#0A0A0C] bg-gradient-to-r from-[#D4AF37] to-[#AA8220] hover:opacity-95 shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] hover:opacity-95 shadow-md transition-all cursor-pointer flex items-center gap-1.5"
               >
                 {savedSuccess ? <Check className="w-3.5 h-3.5" /> : null}
                 <span>{savedSuccess ? 'Profile Updated!' : 'Save Identity Preferences'}</span>
@@ -266,7 +266,7 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-xs sm:text-sm font-medium">Design & Typography Engine</p>
-              <p className="text-[11px] text-muted-foreground">100% Bell MT + Phosphor Duotone Suite</p>
+              <p className="text-[11px] text-muted-foreground">THEME.md Inter Design System + Phosphor Duotone Suite</p>
             </div>
             <Badge variant="secondary">Active</Badge>
           </div>

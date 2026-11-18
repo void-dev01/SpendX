@@ -18,7 +18,7 @@ const valueProps = [
     icon: Sparkles,
     title: 'AI Financial Guidance',
     description: 'Context-aware answers and proactive spending nudges.',
-    color: 'text-[#D4AF37] bg-[#D4AF37]/10',
+    color: 'text-[#8066CC] dark:text-[#A78BFA] bg-[#8066CC]/10',
   },
   {
     icon: LineChart,

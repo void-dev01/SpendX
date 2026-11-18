@@ -223,7 +223,7 @@ export const RecurringPage: React.FC = () => {
           onClick={handleOpenCreate}
           className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold rounded-2xl shadow-lg shrink-0"
         >
-          <Plus className="w-4 h-4 text-[#0A0A0C]" />
+          <Plus className="w-4 h-4 text-white" />
           <span>New Schedule</span>
         </button>
       </div>

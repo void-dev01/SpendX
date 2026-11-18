@@ -115,7 +115,7 @@ export const LandingNavbar: React.FC = () => {
 
           <button
             onClick={() => navigate('/signup')}
-            className="relative group px-5 py-2.5 text-sm font-bold text-[#0A0A0C] rounded-full bg-gradient-to-r from-[#D4AF37] via-[#C5A028] to-[#AA8220] shadow-[0_4px_16px_rgba(212,175,55,0.35)] hover:shadow-[0_6px_20px_rgba(212,175,55,0.5)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] flex items-center gap-1.5 cursor-pointer"
+            className="relative group px-5 py-2.5 text-sm font-semibold text-white rounded-full bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-[0_4px_16px_rgba(113,143,232,0.35)] hover:shadow-[0_6px_20px_rgba(113,143,232,0.5)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center gap-1.5 cursor-pointer"
           >
             <span>Get Started</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -190,7 +190,7 @@ export const LandingNavbar: React.FC = () => {
                   setMobileMenuOpen(false);
                   navigate('/signup');
                 }}
-                className="w-full py-3.5 text-sm font-bold text-[#0A0A0C] rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#C5A028] to-[#AA8220] shadow-[0_4px_16px_rgba(212,175,55,0.35)] flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-[0_4px_16px_rgba(113,143,232,0.35)] flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4" />

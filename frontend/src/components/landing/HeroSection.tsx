@@ -19,9 +19,9 @@ export const HeroSection: React.FC = () => {
       className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden"
     >
       {/* Ambient Gradient Background Glows */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[400px] sm:h-[550px] bg-gradient-to-tr from-[#D4AF37]/20 via-[#10B981]/15 to-[#D4AF37]/15 blur-3xl rounded-full -z-10 pointer-events-none" />
-      <div className="absolute top-48 -left-32 w-72 h-72 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-48 -right-32 w-72 h-72 bg-[#10B981]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[400px] sm:h-[550px] bg-gradient-to-tr from-[#718FE8]/20 via-[#8066CC]/15 to-[#8B72D6]/15 blur-3xl rounded-full -z-10 pointer-events-none" />
+      <div className="absolute top-48 -left-32 w-72 h-72 bg-[#718FE8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-48 -right-32 w-72 h-72 bg-[#8B72D6]/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -53,7 +53,7 @@ export const HeroSection: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto pt-2">
               <button
                 onClick={() => navigate('/signup')}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-full text-base font-bold text-[#0A0A0C] bg-gradient-to-r from-[#D4AF37] via-[#C5A028] to-[#AA8220] shadow-[0_8px_24px_rgba(212,175,55,0.4)] hover:shadow-[0_12px_28px_rgba(212,175,55,0.55)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full text-base font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-[0_8px_24px_rgba(113,143,232,0.4)] hover:shadow-[0_12px_28px_rgba(113,143,232,0.55)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -78,7 +78,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-medium text-muted-foreground">
-                <div className="w-5 h-5 rounded-full bg-[#D4AF37]/15 text-[#D4AF37] flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-[#8066CC]/15 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center shrink-0">
                   <Sparkles className="w-3 h-3" />
                 </div>
                 <span>AI-Powered Insights</span>

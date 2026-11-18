@@ -296,12 +296,12 @@ export const TopNavbar: React.FC = () => {
               aria-expanded={isProfileMenuOpen}
               className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#AA8220] text-[#0A0A0C] flex items-center justify-center font-bold text-xs shadow-sm">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-xs shadow-sm">
                 {initials}
               </div>
               <div className="hidden xl:block text-left text-xs">
                 <p className="font-bold text-foreground leading-none">{displayName}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">Private Wealth</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">SPENDX Pro</p>
               </div>
             </button>
 
