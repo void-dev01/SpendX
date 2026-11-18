@@ -1,13 +1,32 @@
 import { Router } from 'express';
-import { getInsights, askCoach, getAIStatus } from '../controllers/ai.controller.js';
-import { aiRateLimiter } from '../middleware/rateLimiter.js';
 import { requireAuth } from '../middleware/auth.js';
+import {
+  getAIStatus,
+  getEligibleModels,
+  getInsights,
+  bookmarkInsight,
+  dismissInsight,
+  askCoach,
+  getSessions,
+  getSessionMessages,
+  deleteSession,
+} from '../controllers/ai.controller.js';
 
 const router = Router();
 
-router.use(aiRateLimiter);
+// Public telemetry
 router.get('/status', getAIStatus);
+router.get('/models', getEligibleModels);
+
+// Authenticated AI capabilities
 router.get('/insights', requireAuth, getInsights);
+router.patch('/insights/:id/bookmark', requireAuth, bookmarkInsight);
+router.patch('/insights/:id/dismiss', requireAuth, dismissInsight);
 router.post('/coach', requireAuth, askCoach);
+
+// Persistent Chat Sessions
+router.get('/sessions', requireAuth, getSessions);
+router.get('/sessions/:id/messages', requireAuth, getSessionMessages);
+router.delete('/sessions/:id', requireAuth, deleteSession);
 
 export default router;

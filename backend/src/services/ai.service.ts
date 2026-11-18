@@ -1,4 +1,9 @@
-import { geminiClient } from '../config/gemini.js';
+import { AIRouter } from './ai/ai.router.js';
+import { AIModelRegistry } from './ai/ai.registry.js';
+import { AICircuitBreaker } from './ai/ai.circuit-breaker.js';
+import { FinancialToolsService } from './ai/ai.tools.js';
+import { AIInsightsEngine } from './ai/ai.insights-engine.js';
+import { supabaseAdminClient } from '../config/supabase.js';
 import { logger } from '../utils/logger.js';
 import { FinancialInsight } from '../types/index.js';
 
@@ -43,341 +48,272 @@ export interface FinancialContextPayload {
 
 export interface AskCoachResponse {
   answer: string;
+  sessionId?: string;
   card?: {
     type: 'SPENDING' | 'BUDGET' | 'SAVINGS' | 'CATEGORY';
     title: string;
     data: Record<string, any>;
   };
   modelUsed: string;
+  providerUsed?: string;
+  fallbackUsed?: boolean;
   isAiGrounded: boolean;
 }
 
 export class AIService {
   /**
-   * Check whether Gemini is configured
+   * Health and model telemetry for the AI Orchestration Engine
    */
-  public static getStatus(): { isConfigured: boolean; model: string } {
+  public static getStatus() {
+    const eligibleModels = AIModelRegistry.getEligibleModels();
+    const primary = eligibleModels[0];
+    const circuitStates = AICircuitBreaker.getAllStates();
+
     return {
-      isConfigured: Boolean(geminiClient),
-      model: 'gemini-2.5-flash',
+      isConfigured: eligibleModels.length > 0,
+      model: primary?.modelId || 'nvidia/nemotron-3.5-lightning:free',
+      provider: primary?.provider || 'openrouter',
+      totalEligibleModels: eligibleModels.length,
+      models: eligibleModels,
+      circuitBreaker: circuitStates,
     };
   }
 
   /**
-   * Generates financial insights using Google Gemini SDK or rule-based heuristics if API key is not configured.
+   * Generates evidence-backed financial insights persisted into Supabase DB
    */
   public static async generateInsights(
     userId: string,
-    spendingSummary: Record<string, number>
+    _spendingSummary?: Record<string, number>
   ): Promise<FinancialInsight[]> {
-    if (!geminiClient) {
-      logger.info('Gemini client not configured. Returning deterministic financial heuristics.');
-      return [
-        {
-          id: `ins_${Date.now()}_1`,
-          userId,
-          type: 'TIP',
-          title: 'Budget Allocation Target',
-          description:
-            'Aim for the 50/30/20 budget framework: 50% needs, 30% wants, and 20% savings.',
-          actionableStep:
-            'Review recurring subscriptions and utility contracts to optimize monthly fixed costs.',
-          generatedAt: new Date().toISOString(),
-        },
-        {
-          id: `ins_${Date.now()}_2`,
-          userId,
-          type: 'MILESTONE',
-          title: 'Emergency Fund Foundation',
-          description:
-            'Building a 3 to 6 month emergency buffer safeguards your financial trajectory against sudden events.',
-          actionableStep: 'Automate a weekly deposit of ₹1,000 toward your primary savings vault.',
-          generatedAt: new Date().toISOString(),
-        },
-      ];
-    }
+    const findings = await AIInsightsEngine.generateEvidenceBasedInsights(userId);
 
-    try {
-      const prompt = `You are the SPENDX AI Financial Advisor. Analyze this category spending summary:
-${JSON.stringify(spendingSummary, null, 2)}
-
-Provide two concise, actionable, high-impact financial insights formatted in JSON with the fields:
-- title (string)
-- description (string)
-- type ("WARNING" | "TIP" | "MILESTONE" | "ANOMALY")
-- actionableStep (string)`;
-
-      const response = await geminiClient.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: prompt,
-      });
-
-      const text = response.text || '';
-      logger.debug({ text }, 'Received response from Gemini model');
-
-      return [
-        {
-          id: `ins_${Date.now()}`,
-          userId,
-          type: 'TIP',
-          title: 'AI Spend Optimization',
-          description: text.slice(0, 200),
-          actionableStep: 'Check your budget breakdown in the SPENDX dashboard.',
-          generatedAt: new Date().toISOString(),
-        },
-      ];
-    } catch (err) {
-      logger.error({ err }, 'Error generating AI insights with Gemini');
-      throw err;
-    }
+    return findings.map((f, idx) => ({
+      id: `ins_${Date.now()}_${idx}`,
+      userId,
+      type: f.type === 'CRITICAL_ALERT' ? 'WARNING' : f.type === 'SAVINGS_OPPORTUNITY' ? 'TIP' : 'MILESTONE',
+      title: f.title,
+      description: f.description,
+      actionableStep: f.actionLabel || 'Review financial metrics in SPENDX.',
+      generatedAt: new Date().toISOString(),
+    }));
   }
 
   /**
-   * Natural language financial query processing with verified personal context
+   * Natural language financial query processing with verified personal context and multi-model failover
    */
   public static async askCoach(
-    _userId: string,
+    userId: string,
     query: string,
     context?: FinancialContextPayload,
-    history?: Array<{ role: 'user' | 'assistant' | 'model'; content: string }>
+    history?: Array<{ role: 'user' | 'assistant' | 'model'; content: string }>,
+    clientSessionId?: string
   ): Promise<AskCoachResponse> {
-
-    // 1. If Gemini Client is configured, call official Google GenAI SDK
-    if (geminiClient) {
+    // 1. Resolve or initialize persistent chat session in Supabase
+    let sessionId = clientSessionId;
+    if (supabaseAdminClient && userId && userId !== 'demo-user-id') {
       try {
-        const systemPrompt = `You are the SPENDX AI Personal Financial Assistant. You help users manage, analyze, and optimize their money with high financial precision, empathy, and clarity.
+        if (!sessionId) {
+          const { data: session } = await supabaseAdminClient
+            .from('chat_sessions')
+            .insert({
+              user_id: userId,
+              title: query.slice(0, 35) + '...',
+            })
+            .select()
+            .single();
+          sessionId = session?.id;
+        }
+
+        // Persist User message
+        if (sessionId) {
+          await supabaseAdminClient.from('chat_messages').insert({
+            session_id: sessionId,
+            user_id: userId,
+            role: 'USER',
+            content: query,
+          });
+        }
+      } catch (sessErr) {
+        logger.warn({ sessErr }, 'Failed persisting user message to Supabase chat');
+      }
+    }
+
+    // 2. Identify and execute relevant financial tools
+    const detectedTools = FinancialToolsService.detectRequiredTools(query);
+    const toolResults: Record<string, any> = {};
+
+    for (const tName of detectedTools) {
+      const res = await FinancialToolsService.executeTool(tName, userId);
+      if (res) {
+        toolResults[tName] = res;
+      }
+    }
+
+    // 3. Prepare grounded system prompt with authoritative database context
+    const systemPrompt = `You are the SPENDX AI Personal Financial Assistant. You help users manage, analyze, and optimize their money with high financial precision, empathy, and clarity.
 
 RULES & BOUNDARIES:
-1. Always cite exact numbers from the user's verified financial context provided below.
+1. Always cite exact numbers from the user's verified financial context and tool results provided below.
 2. Format all money figures in Indian Rupees (₹) with appropriate commas (e.g., ₹84,200).
 3. Do not invent transactions, account balances, or financial records not in the context.
 4. If asked about something not in the context, politely state that you only have access to their recorded SPENDX finances.
 5. Offer realistic, actionable next steps (e.g. creating a budget, prioritizing an emergency fund, pacing monthly savings).
 6. Never give licensed legal, tax, or speculative crypto investment advice.
 7. Format responses with clean Markdown: bold highlights, bullet points, and brief paragraphs.
+8. Understand both English and Hinglish naturally.
 
-USER'S VERIFIED FINANCIAL CONTEXT:
-${JSON.stringify(context || {}, null, 2)}
+USER'S VERIFIED FINANCIAL TOOL RESULTS & CONTEXT:
+${JSON.stringify({ toolResults, clientContext: context || {} }, null, 2)}
 `;
 
-        const contents: any[] = [{ role: 'user', parts: [{ text: systemPrompt }] }];
+    const mappedHistory: Array<{ role: 'user' | 'assistant'; content: string }> = (history || [])
+      .map((h) => ({
+        role: h.role === 'model' || h.role === 'assistant' ? 'assistant' : 'user',
+        content: h.content,
+      }));
 
-        if (history && history.length > 0) {
-          // Append recent turns
-          history.slice(-6).forEach((h) => {
-            contents.push({
-              role: h.role === 'assistant' ? 'model' : 'user',
-              parts: [{ text: h.content }],
-            });
-          });
-        }
+    // 4. Route request through Multi-Model Orchestration Router with Automatic Failover
+    const routeRes = await AIRouter.executeWithFailover({
+      systemPrompt,
+      userPrompt: query,
+      history: mappedHistory,
+      taskType: 'ASSISTANT_QUERY',
+      userId,
+    });
 
-        contents.push({
-          role: 'user',
-          parts: [{ text: query }],
+    const card = this.detectAnswerCard(query, context, toolResults);
+
+    // 5. Persist Assistant message to Supabase
+    if (supabaseAdminClient && sessionId && userId && userId !== 'demo-user-id') {
+      try {
+        await supabaseAdminClient.from('chat_messages').insert({
+          session_id: sessionId,
+          user_id: userId,
+          role: 'ASSISTANT',
+          content: routeRes.content,
         });
-
-        const response = await geminiClient.models.generateContent({
-          model: 'gemini-2.5-flash',
-          contents,
-        });
-
-        const answer = response.text || 'I analyzed your records, but could not generate a response. Please try rephrasing.';
-
-        // Detect if structured card should be attached
-        const card = this.detectAnswerCard(query, context);
-
-        return {
-          answer,
-          card,
-          modelUsed: 'gemini-2.5-flash',
-          isAiGrounded: true,
-        };
-      } catch (err) {
-        logger.error({ err }, 'Gemini model query failed, falling back to deterministic intelligence');
+      } catch (sessErr) {
+        logger.warn({ sessErr }, 'Failed persisting assistant response to Supabase chat');
       }
     }
-
-    // 2. Deterministic Financial Intelligence Engine (Fallback when Gemini is not configured or fails)
-    return this.generateDeterministicResponse(query, context);
-  }
-
-  /**
-   * Deterministic financial response generator grounded in user's real data
-   */
-  private static generateDeterministicResponse(
-    query: string,
-    context?: FinancialContextPayload
-  ): AskCoachResponse {
-    const q = query.toLowerCase();
-    const ov = context?.overview;
-    const topCat = context?.topSpendingCategories?.[0];
-    const card = this.detectAnswerCard(query, context);
-
-    // 1. Spending queries
-    if (q.includes('spend') || q.includes('expense') || q.includes('cost') || q.includes('outflow')) {
-      const expenseAmt = ov?.totalExpenses !== undefined ? `₹${ov.totalExpenses.toLocaleString('en-IN')}` : '₹42,300';
-      const incomeAmt = ov?.totalIncome !== undefined ? `₹${ov.totalIncome.toLocaleString('en-IN')}` : '₹1,25,000';
-      const topCatStr = topCat ? `**${topCat.category}** (accounting for **${topCat.percentage}%** of total expenses)` : '**Food & Dining**';
-
-      const answer = `Based on your verified financial ledger for this period:
-
-- **Total Expenditures**: You have spent **${expenseAmt}** against total income of **${incomeAmt}**.
-- **Primary Category**: Your highest outflow is ${topCatStr}.
-- **Net Cash Position**: You retained **₹${(ov?.netCashFlow || 82700).toLocaleString('en-IN')}** in surplus cash flow.
-
-💡 **Recommendation**: Track your daily discretionary purchases in ${topCat?.category || 'your primary category'} to prevent end-of-month budget leakage.`;
-
-      return {
-        answer,
-        card: card || {
-          type: 'SPENDING',
-          title: 'Spending Breakdown',
-          data: {
-            income: ov?.totalIncome || 125000,
-            expenses: ov?.totalExpenses || 42300,
-            net: ov?.netCashFlow || 82700,
-          },
-        },
-        modelUsed: 'SPENDX Deterministic Engine',
-        isAiGrounded: true,
-      };
-    }
-
-    // 2. Budget queries
-    if (q.includes('budget') || q.includes('limit')) {
-      const budgets = context?.budgets || [];
-      const overBudget = budgets.filter((b) => b.utilizationPercentage >= 100);
-      const nearLimit = budgets.filter((b) => b.utilizationPercentage >= 80 && b.utilizationPercentage < 100);
-
-      let answer = `Here is your current budget adherence analysis:\n\n`;
-
-      if (overBudget.length > 0) {
-        answer += `⚠️ **Attention Needed**: You have exceeded the limit on **${overBudget.map((b) => b.name).join(', ')}**.\n\n`;
-      } else if (nearLimit.length > 0) {
-        answer += `⚡ **Pacing Warning**: **${nearLimit.map((b) => b.name).join(', ')}** is nearing its threshold (${nearLimit[0].utilizationPercentage}% used).\n\n`;
-      } else {
-        answer += `✅ **On Track**: All active category budgets are operating within healthy limits.\n\n`;
-      }
-
-      answer += `You have **${budgets.length || 3}** active category limits configured. Keep discretionary spending steady over the remaining days of the cycle.`;
-
-      return {
-        answer,
-        card: card || {
-          type: 'BUDGET',
-          title: 'Budget Utilization',
-          data: {
-            activeCount: budgets.length || 3,
-            exceededCount: overBudget.length,
-            nearLimitCount: nearLimit.length,
-          },
-        },
-        modelUsed: 'SPENDX Deterministic Engine',
-        isAiGrounded: true,
-      };
-    }
-
-    // 3. Savings queries
-    if (q.includes('sav') || q.includes('goal') || q.includes('invest') || q.includes('target')) {
-      const goals = context?.savingsGoals || [];
-      const totalSaved = goals.reduce((s, g) => s + g.currentAmount, 0);
-      const totalTarget = goals.reduce((s, g) => s + g.targetAmount, 0);
-      const rate = ov?.savingsRate !== undefined ? `${ov.savingsRate}%` : '66.2%';
-
-      const answer = `Here is your verified savings performance:
-
-- **Net Savings Rate**: **${rate}** of your gross inflows have been retained.
-- **Active Milestones**: You have **${goals.length || 3}** savings goals established.
-- **Accumulated Balance**: **₹${totalSaved.toLocaleString('en-IN')}** saved towards a combined milestone target of **₹${totalTarget.toLocaleString('en-IN')}**.
-
-🎯 **Recommended Strategy**: Allocate fixed automated deposits directly on salary credit day to lock in compounding growth before discretionary spending starts.`;
-
-      return {
-        answer,
-        card: card || {
-          type: 'SAVINGS',
-          title: 'Savings Overview',
-          data: {
-            totalSaved,
-            totalTarget,
-            goalsCount: goals.length,
-          },
-        },
-        modelUsed: 'SPENDX Deterministic Engine',
-        isAiGrounded: true,
-      };
-    }
-
-    // 4. General / Fallback queries
-    const answer = `Hello! I'm your SPENDX AI Financial Assistant.
-
-I have full, real-time access to your personal financial records:
-- **Income & Outflow Balances**: Net cash flow of **₹${(ov?.netCashFlow || 82700).toLocaleString('en-IN')}**.
-- **Active Budgets & Thresholds**: Monitored across all active categories.
-- **Savings Goals**: Pacing projections toward your milestone targets.
-
-Feel free to ask questions like:
-- *"Analyze my spending this month"*
-- *"Where is most of my money going?"*
-- *"Am I within my monthly budget?"*
-- *"How can I optimize my savings rate?"*`;
 
     return {
-      answer,
+      answer: routeRes.content,
+      sessionId,
       card,
-      modelUsed: 'SPENDX Deterministic Engine',
+      modelUsed: routeRes.modelUsed,
+      providerUsed: routeRes.providerUsed,
+      fallbackUsed: routeRes.fallbackUsed,
       isAiGrounded: true,
     };
   }
 
   /**
-   * Helper to detect if an answer card should be embedded
+   * Retrieve all chat sessions for the user
+   */
+  public static async getChatSessions(userId: string) {
+    if (!supabaseAdminClient) return [];
+    const { data, error } = await supabaseAdminClient
+      .from('chat_sessions')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      logger.error({ error, userId }, 'Failed fetching chat sessions');
+      return [];
+    }
+    return data || [];
+  }
+
+  /**
+   * Retrieve messages for a specific session
+   */
+  public static async getSessionMessages(userId: string, sessionId: string) {
+    if (!supabaseAdminClient) return [];
+    const { data, error } = await supabaseAdminClient
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', sessionId)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      logger.error({ error, sessionId }, 'Failed fetching session messages');
+      return [];
+    }
+    return data || [];
+  }
+
+  /**
+   * Delete chat session
+   */
+  public static async deleteChatSession(userId: string, sessionId: string) {
+    if (!supabaseAdminClient) return { success: false };
+    const { error } = await supabaseAdminClient
+      .from('chat_sessions')
+      .delete()
+      .eq('id', sessionId)
+      .eq('user_id', userId);
+
+    return { success: !error };
+  }
+
+  /**
+   * Structured UI card detection
    */
   private static detectAnswerCard(
     query: string,
-    context?: FinancialContextPayload
-  ): AskCoachResponse['card'] {
+    context?: FinancialContextPayload,
+    toolResults?: Record<string, any>
+  ): AskCoachResponse['card'] | undefined {
     const q = query.toLowerCase();
 
-    if (q.includes('spend') || q.includes('expense') || q.includes('outflow')) {
+    if (q.includes('spend') || q.includes('expense') || q.includes('burn')) {
+      const ov = toolResults?.get_financial_overview || context?.overview;
       return {
         type: 'SPENDING',
-        title: 'Spending Overview',
+        title: 'Spending Breakdown',
         data: {
-          income: context?.overview?.totalIncome || 125000,
-          expenses: context?.overview?.totalExpenses || 42300,
-          net: context?.overview?.netCashFlow || 82700,
+          income: ov?.totalIncome || 0,
+          expenses: ov?.totalExpenses || 0,
+          net: ov?.netCashFlow || 0,
         },
       };
     }
 
     if (q.includes('budget') || q.includes('limit')) {
-      const b = context?.budgets?.[0];
-      return {
-        type: 'BUDGET',
-        title: 'Active Budget Status',
-        data: {
-          name: b?.name || 'Category Budgets',
-          spent: b?.spent || 12450,
-          allocated: b?.allocatedAmount || 18000,
-          utilization: b?.utilizationPercentage || 69,
-        },
-      };
+      const bg = toolResults?.get_budget_status || context?.budgets;
+      if (bg && bg.length > 0) {
+        return {
+          type: 'BUDGET',
+          title: 'Active Budgets Status',
+          data: { budgets: bg },
+        };
+      }
     }
 
-    if (q.includes('sav') || q.includes('goal')) {
-      const g = context?.savingsGoals?.[0];
-      return {
-        type: 'SAVINGS',
-        title: 'Primary Savings Milestone',
-        data: {
-          name: g?.name || 'Emergency Fund',
-          saved: g?.currentAmount || 32000,
-          target: g?.targetAmount || 50000,
-          progress: g ? Math.round((g.currentAmount / g.targetAmount) * 100) : 64,
-        },
-      };
+    if (q.includes('saving') || q.includes('goal')) {
+      const sv = toolResults?.get_savings_progress || context?.savingsGoals;
+      if (sv && sv.length > 0) {
+        return {
+          type: 'SAVINGS',
+          title: 'Savings Milestones',
+          data: { goals: sv },
+        };
+      }
+    }
+
+    if (q.includes('category') || q.includes('kaha')) {
+      const cats = toolResults?.get_category_spending || context?.topSpendingCategories;
+      if (cats && cats.length > 0) {
+        return {
+          type: 'CATEGORY',
+          title: 'Top Categories',
+          data: { categories: cats },
+        };
+      }
     }
 
     return undefined;
