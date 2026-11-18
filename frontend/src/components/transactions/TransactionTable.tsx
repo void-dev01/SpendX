@@ -76,19 +76,19 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
     switch (status) {
       case 'COMPLETED':
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-income/10 text-income">
             Completed
           </span>
         );
       case 'PENDING':
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-warning/10 text-warning">
             Pending
           </span>
         );
       case 'FAILED':
         return (
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-expense/10 text-expense">
             Failed
           </span>
         );
@@ -96,18 +96,18 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
   };
 
   return (
-    <div className="glass-panel rounded-2xl overflow-hidden border border-white/80 dark:border-white/10 shadow-glass">
+    <div className="bg-surface rounded-2xl overflow-hidden border border-border shadow-card">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-slate-100/80 dark:border-white/5 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider bg-white/30 dark:bg-white/[0.02]">
+            <tr className="border-b border-border text-[11px] font-bold text-muted-foreground uppercase tracking-wider bg-surface-elevated">
               <th className="py-3.5 pl-4 pr-2 w-10">
                 <input
                   type="checkbox"
                   checked={isAllSelected}
                   onChange={onSelectAll}
                   aria-label="Select all transactions"
-                  className="rounded border-slate-300 dark:border-slate-600 text-spendx-blue-primary focus:ring-spendx-blue-primary cursor-pointer w-4 h-4"
+                  className="rounded border-border text-primary focus:ring-primary cursor-pointer w-4 h-4"
                 />
               </th>
               <th className="py-3.5 px-3">Transaction</th>
@@ -119,7 +119,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
               <th className="py-3.5 pl-2 pr-4 w-12 text-center">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100/50 dark:divide-white/5 text-xs">
+          <tbody className="divide-y divide-border-subtle text-xs">
             {transactions.map((t) => {
               const isSelected = selectedIds.includes(t.id);
               const isIncome = t.type === 'INCOME';
@@ -130,8 +130,8 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                   key={t.id}
                   className={`group transition-colors ${
                     isSelected
-                      ? 'bg-spendx-blue-primary/10 dark:bg-spendx-blue-primary/20'
-                      : 'hover:bg-white/50 dark:hover:bg-white/5'
+                      ? 'bg-primary/10'
+                      : 'hover:bg-surface-elevated'
                   }`}
                 >
                   {/* Checkbox */}
@@ -141,7 +141,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                       checked={isSelected}
                       onChange={() => onSelectToggle(t.id)}
                       aria-label={`Select transaction ${t.description}`}
-                      className="rounded border-slate-300 dark:border-slate-600 text-spendx-blue-primary focus:ring-spendx-blue-primary cursor-pointer w-4 h-4"
+                      className="rounded border-border text-primary focus:ring-primary cursor-pointer w-4 h-4"
                     />
                   </td>
 
@@ -154,27 +154,27 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                       <div
                         className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                           isIncome
-                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                            ? 'bg-income/10 text-income'
                             : isTransfer
-                            ? 'bg-spendx-blue-primary/10 text-spendx-blue-primary'
-                            : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300'
+                            ? 'bg-primary/10 text-primary'
+                            : 'bg-surface-elevated text-secondary-text border border-border-subtle'
                         }`}
                       >
                         {getCategoryIcon(t.category)}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-1.5">
-                          <p className="font-semibold text-slate-800 dark:text-slate-100 truncate group-hover:text-spendx-blue-primary transition-colors">
+                          <p className="font-semibold text-foreground truncate group-hover:text-primary transition-colors">
                             {t.description}
                           </p>
                           {t.isRecurring && (
                             <span title="Recurring automated transaction">
-                              <Repeat className="w-3 h-3 text-spendx-purple-primary shrink-0" />
+                              <Repeat className="w-3 h-3 text-secondary shrink-0" />
                             </span>
                           )}
                         </div>
                         {t.merchantName && (
-                          <p className="text-[11px] text-slate-400 dark:text-slate-500 truncate">
+                          <p className="text-[11px] text-secondary-text truncate">
                             {t.merchantName}
                           </p>
                         )}
@@ -184,21 +184,21 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
 
                   {/* Category */}
                   <td className="py-3 px-3">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-surface-elevated border border-border-subtle text-secondary-text whitespace-nowrap">
                       {t.category}
                     </span>
                   </td>
 
                   {/* Account */}
-                  <td className="py-3 px-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">
-                    <span className="font-medium">{t.accountName}</span>
-                    <span className="block text-[10px] text-slate-400">{t.paymentMethod}</span>
+                  <td className="py-3 px-3 text-secondary-text whitespace-nowrap">
+                    <span className="font-medium text-foreground">{t.accountName}</span>
+                    <span className="block text-[10px] text-muted-foreground">{t.paymentMethod}</span>
                   </td>
 
                   {/* Date */}
-                  <td className="py-3 px-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">
+                  <td className="py-3 px-3 text-secondary-text whitespace-nowrap">
                     <span>{new Date(t.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                    <span className="block text-[10px] text-slate-400">
+                    <span className="block text-[10px] text-muted-foreground">
                       {new Date(t.date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </td>
@@ -209,18 +209,18 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                       <span
                         className={`inline-flex items-center gap-1 text-[11px] font-semibold ${
                           isIncome
-                            ? 'text-emerald-600 dark:text-emerald-400'
+                            ? 'text-income'
                             : isTransfer
-                            ? 'text-spendx-blue-primary'
-                            : 'text-slate-600 dark:text-slate-300'
+                            ? 'text-primary'
+                            : 'text-secondary-text'
                         }`}
                       >
                         {isIncome ? (
-                          <ArrowUpRight className="w-3 h-3 text-emerald-500" />
+                          <ArrowUpRight className="w-3 h-3 text-income" />
                         ) : isTransfer ? (
-                          <ArrowLeftRight className="w-3 h-3 text-spendx-blue-primary" />
+                          <ArrowLeftRight className="w-3 h-3 text-primary" />
                         ) : (
-                          <ArrowDownRight className="w-3 h-3 text-rose-500" />
+                          <ArrowDownRight className="w-3 h-3 text-expense" />
                         )}
                         {t.type}
                       </span>
@@ -233,10 +233,10 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                     <span
                       className={`font-bold text-sm tabular-nums whitespace-nowrap ${
                         isIncome
-                          ? 'text-emerald-600 dark:text-emerald-400'
+                          ? 'text-income'
                           : isTransfer
-                          ? 'text-spendx-blue-primary'
-                          : 'text-slate-900 dark:text-slate-100'
+                          ? 'text-primary'
+                          : 'text-foreground'
                       }`}
                     >
                       {isIncome ? '+' : isTransfer ? '' : '-'}
@@ -249,7 +249,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                     <button
                       type="button"
                       onClick={() => setActiveMenuId(activeMenuId === t.id ? null : t.id)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
+                      className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition-colors"
                       aria-label="Transaction actions"
                     >
                       <MoreVertical className="w-4 h-4" />
@@ -262,14 +262,14 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                           className="fixed inset-0 z-20"
                           onClick={() => setActiveMenuId(null)}
                         />
-                        <div className="absolute right-4 top-10 z-30 w-40 rounded-xl glass-panel border border-white/80 dark:border-white/15 p-1.5 shadow-xl text-left animate-in fade-in zoom-in-95 duration-150">
+                        <div className="absolute right-4 top-10 z-30 w-40 rounded-xl bg-surface border border-border p-1.5 shadow-elevated text-left animate-in fade-in zoom-in-95 duration-150">
                           <button
                             type="button"
                             onClick={() => {
                               setActiveMenuId(null);
                               onViewDetails(t);
                             }}
-                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10 hover:text-spendx-blue-primary transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated hover:text-primary transition-colors cursor-pointer"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>View Details</span>
@@ -280,19 +280,19 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                               setActiveMenuId(null);
                               onEdit(t);
                             }}
-                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10 hover:text-spendx-blue-primary transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated hover:text-primary transition-colors cursor-pointer"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                             <span>Edit</span>
                           </button>
-                          <div className="my-1 border-t border-slate-100/60 dark:border-white/5" />
+                          <div className="my-1 border-t border-border" />
                           <button
                             type="button"
                             onClick={() => {
                               setActiveMenuId(null);
                               onDelete(t);
                             }}
-                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-colors cursor-pointer"
+                            className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-expense hover:bg-expense/10 transition-colors cursor-pointer"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                             <span>Delete</span>

@@ -37,19 +37,19 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
   onOpenCreateDialog,
 }) => {
   return (
-    <div className="glass-card p-4 rounded-2xl flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+    <div className="bg-surface p-4 rounded-2xl border border-border shadow-card flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
       {/* Left side: Search & filters */}
       <div className="flex flex-1 flex-col sm:flex-row gap-3 items-stretch sm:items-center">
         {/* Search */}
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search subscriptions, rent, bills..."
             value={searchQuery}
             aria-label="Search recurring payments"
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 focus:border-spendx-blue-primary transition-all"
+            className="w-full pl-10 pr-4 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs transition-all"
           />
         </div>
 
@@ -59,7 +59,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             value={selectedCategory}
             onChange={(e) => onCategoryChange(e.target.value)}
             aria-label="Filter by category"
-            className="w-full appearance-none pl-3.5 pr-8 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 transition-all cursor-pointer"
+            className="w-full appearance-none pl-3.5 pr-8 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs transition-all cursor-pointer"
           >
             <option value="ALL">All Categories</option>
             {RECURRING_CATEGORIES.map((cat) => (
@@ -68,7 +68,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
               </option>
             ))}
           </select>
-          <ListFilter className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <ListFilter className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
         {/* Status dropdown */}
@@ -77,7 +77,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             value={selectedStatus}
             onChange={(e) => onStatusChange(e.target.value)}
             aria-label="Filter by status"
-            className="w-full appearance-none pl-3.5 pr-8 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 transition-all cursor-pointer"
+            className="w-full appearance-none pl-3.5 pr-8 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs transition-all cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
             <option value="UPCOMING">Upcoming</option>
@@ -86,7 +86,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             <option value="PAID">Paid</option>
             <option value="PAUSED">Paused</option>
           </select>
-          <SlidersHorizontal className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <SlidersHorizontal className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
         {/* Sort dropdown */}
@@ -95,7 +95,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value as RecurringSortOption)}
             aria-label="Sort recurring payments"
-            className="w-full appearance-none pl-3.5 pr-8 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 transition-all cursor-pointer"
+            className="w-full appearance-none pl-3.5 pr-8 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs transition-all cursor-pointer"
           >
             <option value="dueDateAsc">Due: Soonest First</option>
             <option value="dueDateDesc">Due: Furthest First</option>
@@ -103,22 +103,22 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             <option value="amountAsc">Amount: Low to High</option>
             <option value="nameAsc">Name: A to Z</option>
           </select>
-          <SlidersHorizontal className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <SlidersHorizontal className="w-4 h-4 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
 
       {/* Right side: View mode toggle & CTA */}
       <div className="flex items-center gap-3 justify-end">
         {/* List / Calendar View toggle */}
-        <div className="inline-flex p-1 rounded-xl bg-slate-100/70 dark:bg-slate-900/60 border border-slate-200/70 dark:border-white/10">
+        <div className="inline-flex p-1 rounded-xl bg-surface-elevated border border-border shadow-xs">
           <button
             type="button"
             onClick={() => onViewModeChange('list')}
             aria-label="List view"
-            className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               viewMode === 'list'
-                ? 'bg-white dark:bg-slate-800 text-spendx-blue-primary shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                ? 'bg-primary text-white shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
           >
             <LayoutGrid className="w-4 h-4" />
@@ -127,10 +127,10 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             type="button"
             onClick={() => onViewModeChange('calendar')}
             aria-label="Calendar view"
-            className={`p-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               viewMode === 'calendar'
-                ? 'bg-white dark:bg-slate-800 text-spendx-blue-primary shadow-sm'
-                : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                ? 'bg-primary text-white shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
           >
             <Calendar className="w-4 h-4" />
@@ -141,7 +141,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
         <button
           type="button"
           onClick={onOpenCreateDialog}
-          className="btn-spendx-primary flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl shrink-0"
+          className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all shrink-0 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add Payment</span>

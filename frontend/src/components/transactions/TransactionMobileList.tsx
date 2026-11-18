@@ -74,10 +74,10 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
         return (
           <div
             key={t.id}
-            className={`glass-panel p-4 rounded-2xl border transition-all ${
+            className={`bg-surface p-4 rounded-2xl border transition-all ${
               isSelected
-                ? 'border-spendx-blue-primary bg-spendx-blue-primary/10 dark:bg-spendx-blue-primary/20 shadow-md'
-                : 'border-white/80 dark:border-white/10'
+                ? 'border-primary bg-primary/10 shadow-elevated'
+                : 'border-border shadow-card'
             }`}
           >
             {/* Top Row: Checkbox, Title, Amount & Menu */}
@@ -88,16 +88,16 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                   checked={isSelected}
                   onChange={() => onSelectToggle(t.id)}
                   aria-label={`Select ${t.description}`}
-                  className="rounded border-slate-300 dark:border-slate-600 text-spendx-blue-primary focus:ring-spendx-blue-primary cursor-pointer w-4 h-4 mt-1"
+                  className="rounded border-border text-primary focus:ring-primary cursor-pointer w-4 h-4 mt-1"
                 />
 
                 <div
                   className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
                     isIncome
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                      ? 'bg-income/10 text-income'
                       : isTransfer
-                      ? 'bg-spendx-blue-primary/10 text-spendx-blue-primary'
-                      : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-300'
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-surface-elevated text-secondary-text border border-border-subtle'
                   }`}
                 >
                   {getCategoryIcon(t.category)}
@@ -105,14 +105,14 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
 
                 <div className="min-w-0" onClick={() => onViewDetails(t)}>
                   <div className="flex items-center gap-1.5">
-                    <h3 className="font-semibold text-sm text-slate-800 dark:text-slate-100 truncate">
+                    <h3 className="font-semibold text-sm text-foreground truncate">
                       {t.description}
                     </h3>
                     {t.isRecurring && (
-                      <Repeat className="w-3 h-3 text-spendx-purple-primary shrink-0" />
+                      <Repeat className="w-3 h-3 text-secondary shrink-0" />
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 dark:text-slate-500 truncate mt-0.5">
+                  <p className="text-xs text-secondary-text truncate mt-0.5">
                     {t.merchantName || t.accountName}
                   </p>
                 </div>
@@ -123,10 +123,10 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                 <span
                   className={`font-bold text-sm tabular-nums ${
                     isIncome
-                      ? 'text-emerald-600 dark:text-emerald-400'
+                      ? 'text-income'
                       : isTransfer
-                      ? 'text-spendx-blue-primary'
-                      : 'text-slate-900 dark:text-slate-100'
+                      ? 'text-primary'
+                      : 'text-foreground'
                   }`}
                 >
                   {isIncome ? '+' : isTransfer ? '' : '-'}
@@ -137,7 +137,7 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveMenuId(activeMenuId === t.id ? null : t.id)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600"
+                    className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground"
                     aria-label="Actions"
                   >
                     <MoreVertical className="w-4 h-4" />
@@ -149,14 +149,14 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                         className="fixed inset-0 z-20"
                         onClick={() => setActiveMenuId(null)}
                       />
-                      <div className="absolute right-0 top-8 z-30 w-36 rounded-xl glass-panel border border-white/80 dark:border-white/15 p-1.5 shadow-xl text-left">
+                      <div className="absolute right-0 top-8 z-30 w-36 rounded-xl bg-surface border border-border p-1.5 shadow-elevated text-left">
                         <button
                           type="button"
                           onClick={() => {
                             setActiveMenuId(null);
                             onViewDetails(t);
                           }}
-                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View Details</span>
@@ -167,7 +167,7 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                             setActiveMenuId(null);
                             onEdit(t);
                           }}
-                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                           <span>Edit</span>
@@ -178,7 +178,7 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                             setActiveMenuId(null);
                             onDelete(t);
                           }}
-                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-rose-600 hover:bg-rose-500/10"
+                          className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-expense hover:bg-expense/10 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                           <span>Delete</span>
@@ -191,9 +191,9 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
             </div>
 
             {/* Bottom Meta Row */}
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-3 mt-3 border-t border-slate-100/60 dark:border-white/5">
+            <div className="flex items-center justify-between text-xs text-secondary-text pt-3 mt-3 border-t border-border">
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-white/5 text-[11px] font-medium text-slate-600 dark:text-slate-300">
+                <span className="px-2 py-0.5 rounded-md bg-surface-elevated border border-border-subtle text-[11px] font-medium text-secondary-text">
                   {t.category}
                 </span>
                 <span>•</span>

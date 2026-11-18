@@ -55,8 +55,8 @@ export const LandingNavbar: React.FC = () => {
         aria-label="Main Navigation"
         className={`pointer-events-auto w-full max-w-6xl transition-all duration-300 rounded-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between ${
           isScrolled
-            ? 'bg-surface/95 backdrop-blur-md shadow-card border border-border dark:bg-surface/95 dark:border-border'
-            : 'bg-surface border border-border/80 shadow-xs dark:bg-surface dark:border-border'
+            ? 'bg-surface shadow-elevated border border-border'
+            : 'bg-surface border border-border shadow-card'
         }`}
       >
         {/* Brand Logo */}

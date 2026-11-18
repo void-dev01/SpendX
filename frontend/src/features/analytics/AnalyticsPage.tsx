@@ -162,10 +162,10 @@ export const AnalyticsPage: React.FC = () => {
       {/* 1. Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
-            <span className="text-gradient-brand">Financial Analytics</span>
+          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground">
+            Financial Analytics
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-secondary-text mt-1">
             Understand your money. Discover patterns. Make smarter decisions.
           </p>
         </div>
@@ -173,9 +173,9 @@ export const AnalyticsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => refetchTxns()}
-          className="self-start sm:self-auto flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-white/40 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl bg-surface-elevated border border-border text-foreground hover:bg-surface transition-colors cursor-pointer shadow-xs min-h-[38px]"
         >
-          <RefreshCw className="w-3.5 h-3.5" />
+          <RefreshCw className="w-3.5 h-3.5 text-secondary-text" />
           <span>Refresh Data</span>
         </button>
       </div>
@@ -190,14 +190,14 @@ export const AnalyticsPage: React.FC = () => {
 
       {/* 3. Main Analytics Content */}
       {isTxnsLoading ? (
-        <div className="glass-panel p-16 rounded-3xl flex flex-col items-center justify-center text-center">
-          <Loader2 className="w-8 h-8 text-spendx-blue-primary animate-spin mb-3" />
-          <p className="text-xs text-slate-500 font-medium">
+        <div className="rounded-2xl bg-surface border border-border p-16 flex flex-col items-center justify-center text-center shadow-card">
+          <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
+          <p className="text-xs text-secondary-text font-medium">
             Aggregating financial telemetry & telemetry trends...
           </p>
         </div>
       ) : isTxnsError ? (
-        <div className="glass-panel p-10 rounded-2xl text-center text-rose-500 text-xs">
+        <div className="rounded-2xl bg-surface border border-destructive/20 p-10 text-center text-destructive text-xs shadow-card">
           Failed to load financial records. Please refresh or try again later.
         </div>
       ) : transactions.length === 0 ? (

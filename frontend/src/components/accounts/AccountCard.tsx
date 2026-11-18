@@ -31,15 +31,15 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   const getAccountIcon = (type: AccountRecord['type']) => {
     switch (type) {
       case 'BANK':
-        return <Building2 className="w-5 h-5 text-spendx-blue-primary" />;
+        return <Building2 className="w-5 h-5 text-primary" />;
       case 'SAVINGS':
-        return <Landmark className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+        return <Landmark className="w-5 h-5 text-income" />;
       case 'CREDIT_CARD':
-        return <CreditCard className="w-5 h-5 text-amber-500" />;
+        return <CreditCard className="w-5 h-5 text-warning" />;
       case 'CASH':
-        return <Banknote className="w-5 h-5 text-spendx-purple-primary" />;
+        return <Banknote className="w-5 h-5 text-secondary" />;
       default:
-        return <Wallet className="w-5 h-5 text-spendx-blue-primary" />;
+        return <Wallet className="w-5 h-5 text-primary" />;
     }
   };
 
@@ -59,11 +59,11 @@ export const AccountCard: React.FC<AccountCardProps> = ({
   };
 
   return (
-    <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-glass flex flex-col justify-between relative group hover:border-primary/50 transition-all">
+    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between relative group hover:border-primary/40 hover:shadow-elevated transition-all">
       {/* Top Header: Icon, Type & Actions */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10 flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-surface-elevated border border-border-subtle flex items-center justify-center shrink-0 shadow-xs">
             {getAccountIcon(account.type)}
           </div>
           <div>
@@ -72,7 +72,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
             </span>
             <h3
               onClick={() => navigate(`/accounts/${account.id}`)}
-              className="text-base font-bold text-foreground hover:text-primary transition-colors cursor-pointer truncate max-w-[180px] leading-tight"
+              className="text-base font-display font-bold text-foreground hover:text-primary transition-colors cursor-pointer truncate max-w-[180px] leading-tight"
             >
               {account.name}
             </h3>
@@ -84,7 +84,7 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-white/40 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
             aria-label="Account actions"
           >
             <MoreVertical className="w-4 h-4" />
@@ -93,14 +93,14 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           {menuOpen && (
             <>
               <div className="fixed inset-0 z-20" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl glass-panel border border-white/80 dark:border-white/15 p-1.5 shadow-xl text-left">
+              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl bg-surface border border-border p-1.5 shadow-elevated text-left">
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     navigate(`/accounts/${account.id}`);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" />
                   <span>View Details</span>
@@ -111,19 +111,19 @@ export const AccountCard: React.FC<AccountCardProps> = ({
                     setMenuOpen(false);
                     onEdit(account);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                   <span>Edit</span>
                 </button>
-                <div className="my-1 border-t border-slate-100/60 dark:border-white/5" />
+                <div className="my-1 border-t border-border" />
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     onDelete(account);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-rose-600 hover:bg-rose-500/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-expense hover:bg-expense/10 transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete</span>
@@ -140,9 +140,9 @@ export const AccountCard: React.FC<AccountCardProps> = ({
           {account.type === 'CREDIT_CARD' ? 'Outstanding Amount' : 'Current Balance'}
         </span>
         <div
-          className={`text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums mt-1 leading-none ${
+          className={`text-2xl sm:text-3xl font-display font-extrabold tracking-tight tabular-nums mt-1 leading-none ${
             account.type === 'CREDIT_CARD'
-              ? 'text-amber-600 dark:text-amber-400'
+              ? 'text-warning'
               : 'text-foreground'
           }`}
         >
@@ -151,10 +151,10 @@ export const AccountCard: React.FC<AccountCardProps> = ({
       </div>
 
       {/* Bottom Footer: Masked Number & Status */}
-      <div className="pt-3 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5 font-medium">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-          <span className="font-mono text-[11px]">
+          <ShieldCheck className="w-3.5 h-3.5 text-income" />
+          <span className="font-mono text-[11px] text-secondary-text">
             {account.lastFourDigits ? `•••• ${account.lastFourDigits}` : account.institution}
           </span>
         </div>

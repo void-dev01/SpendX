@@ -50,24 +50,24 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
   };
 
   return (
-    <div className="glass-panel p-4 rounded-2xl space-y-3">
+    <div className="bg-surface p-4 rounded-2xl border border-border shadow-card space-y-3">
       {/* Top Search Bar & Mobile Trigger */}
       <div className="flex items-center gap-3">
         {/* Search Input */}
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           <input
             type="text"
             value={filters.search}
             onChange={handleSearchChange}
             placeholder="Search transactions, merchants, or categories..."
-            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm glass-surface border border-white/80 dark:border-white/10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#718FE8]/40 text-slate-800 dark:text-slate-100 transition-all"
+            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm bg-surface-elevated border border-border placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground transition-all"
           />
           {filters.search && (
             <button
               type="button"
               onClick={() => onChange({ ...filters, search: '' })}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -78,12 +78,12 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
         <button
           type="button"
           onClick={() => setMobileDrawerOpen(true)}
-          className="md:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:bg-white/60 dark:hover:bg-white/10 shadow-sm"
+          className="md:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-surface-elevated border border-border text-foreground hover:bg-surface shadow-xs"
         >
-          <SlidersHorizontal className="w-3.5 h-3.5" />
+          <SlidersHorizontal className="w-3.5 h-3.5 text-primary" />
           <span>Filters</span>
           {activeFilterCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-[#718FE8] text-white text-[10px] flex items-center justify-center font-bold">
+            <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] flex items-center justify-center font-bold">
               {activeFilterCount}
             </span>
           )}
@@ -94,7 +94,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
           <button
             type="button"
             onClick={onReset}
-            className="hidden md:inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 hover:text-rose-600 hover:bg-rose-500/10 transition-colors"
+            className="hidden md:inline-flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium text-secondary-text hover:text-expense hover:bg-expense/10 transition-colors"
             title="Reset all active filters"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -111,7 +111,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.type}
             onChange={handleTypeChange}
             aria-label="Filter by transaction type"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
+            className="w-full px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="ALL">All Types</option>
             <option value="INCOME">Income (+)</option>
@@ -126,7 +126,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.category}
             onChange={handleCategoryChange}
             aria-label="Filter by category"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
+            className="w-full px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="ALL">All Categories</option>
             {allCategories.map((c) => (
@@ -143,7 +143,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.accountId}
             onChange={handleAccountChange}
             aria-label="Filter by account"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
+            className="w-full px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="ALL">All Accounts</option>
             {DEFAULT_USER_ACCOUNTS.map((acc) => (
@@ -160,7 +160,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.status}
             onChange={handleStatusChange}
             aria-label="Filter by status"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8]"
+            className="w-full px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
           >
             <option value="ALL">All Statuses</option>
             <option value="COMPLETED">Completed</option>
@@ -175,7 +175,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.sortBy}
             onChange={handleSortChange}
             aria-label="Sort transactions"
-            className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-[#718FE8] font-medium"
+            className="w-full px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
           >
             <option value="NEWEST">Newest First</option>
             <option value="OLDEST">Oldest First</option>

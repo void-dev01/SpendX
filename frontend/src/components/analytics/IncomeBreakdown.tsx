@@ -19,11 +19,11 @@ interface IncomeBreakdownProps {
 export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
   if (items.length === 0) {
     return (
-      <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between h-full">
-        <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+      <div className="rounded-2xl bg-surface border border-border p-6 flex flex-col justify-between h-full shadow-card">
+        <h3 className="text-base font-bold font-display text-foreground">
           Income Sources
         </h3>
-        <div className="py-12 text-center text-xs text-slate-400">
+        <div className="py-12 text-center text-xs text-muted-foreground">
           No eligible income sources detected for this timeframe.
         </div>
       </div>
@@ -34,13 +34,13 @@ export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload as CategoryBreakdownItem;
       return (
-        <div className="glass-surface p-2.5 rounded-xl border border-white/90 dark:border-white/15 shadow-md text-xs min-w-[140px] space-y-1">
-          <p className="font-bold text-slate-800 dark:text-slate-100">{data.category}</p>
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-semibold">
+        <div className="bg-surface p-2.5 rounded-xl border border-border shadow-elevated text-xs min-w-[140px] space-y-1">
+          <p className="font-bold font-display text-foreground">{data.category}</p>
+          <div className="flex items-center justify-between text-income font-semibold">
             <span>Inflow:</span>
             <span className="tabular-nums">{analyticsService.formatINR(data.amount)}</span>
           </div>
-          <div className="flex items-center justify-between text-slate-500 text-[11px]">
+          <div className="flex items-center justify-between text-secondary-text text-[11px]">
             <span>Share:</span>
             <span>{data.percentage}%</span>
           </div>
@@ -51,12 +51,12 @@ export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl flex flex-col justify-between h-full space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 flex flex-col justify-between h-full space-y-4 shadow-card">
       <div>
-        <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+        <h2 className="text-base font-bold font-display text-foreground">
           Income Sources
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <p className="text-xs text-secondary-text mt-0.5">
           Breakdown of verified salary, dividends, and business inflows
         </p>
       </div>
@@ -86,25 +86,25 @@ export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
         {items.map((item) => (
           <div
             key={item.category}
-            className="p-2.5 rounded-xl glass-surface border border-white/60 dark:border-white/5 flex items-center justify-between text-xs"
+            className="p-2.5 rounded-xl bg-surface-elevated border border-border flex items-center justify-between text-xs"
           >
             <div className="flex items-center gap-2.5 truncate">
               <span
                 className="w-2.5 h-2.5 rounded-full shrink-0"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-slate-700 dark:text-slate-200 truncate font-medium">
+              <span className="text-foreground truncate font-medium">
                 {item.category}
               </span>
-              <span className="text-[10px] text-slate-400 shrink-0">
+              <span className="text-[10px] text-muted-foreground shrink-0">
                 ({item.transactionCount})
               </span>
             </div>
             <div className="flex items-center gap-3 shrink-0">
-              <span className="text-slate-500 dark:text-slate-400 font-medium">
+              <span className="text-secondary-text font-medium">
                 {item.percentage}%
               </span>
-              <span className="font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
+              <span className="font-bold text-income tabular-nums">
                 +{analyticsService.formatINR(item.amount)}
               </span>
             </div>

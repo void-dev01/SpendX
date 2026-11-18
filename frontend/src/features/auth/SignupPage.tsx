@@ -123,16 +123,16 @@ export const SignupPage: React.FC = () => {
     >
       {/* Email Verification Success State */}
       {verificationPendingEmail ? (
-        <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-white/80 dark:border-white/15 text-center space-y-5 animate-in fade-in duration-300">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#718FE8] to-[#8066CC] text-white mx-auto flex items-center justify-center shadow-md">
+        <div className="rounded-2xl bg-surface border border-border p-6 sm:p-8 text-center space-y-5 shadow-card animate-in fade-in duration-300">
+          <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground mx-auto flex items-center justify-center shadow-xs">
             <Mail className="w-7 h-7" />
           </div>
 
           <div className="space-y-2">
-            <h3 className="text-xl font-bold text-foreground">
+            <h3 className="text-xl font-bold font-display text-foreground">
               Verification Link Dispatched
             </h3>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
+            <p className="text-xs sm:text-sm text-secondary-text leading-relaxed max-w-sm mx-auto">
               We have sent a confirmation email to <strong>{verificationPendingEmail}</strong>.
               Please check your inbox and verify your email to unlock your SPENDX workspace.
             </p>
@@ -141,7 +141,7 @@ export const SignupPage: React.FC = () => {
           <div className="pt-2">
             <Link
               to="/login"
-              className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-xs font-semibold bg-primary text-white hover:bg-primary/90 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-2.5 rounded-xl text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors"
             >
               Return to Sign In
             </Link>
@@ -216,10 +216,10 @@ export const SignupPage: React.FC = () => {
 
             {/* Terms and Privacy Agreement */}
             <div className="space-y-1 pt-1">
-              <label className="flex items-start gap-2.5 cursor-pointer select-none text-xs text-muted-foreground hover:text-foreground">
+              <label className="flex items-start gap-2.5 cursor-pointer select-none text-xs text-secondary-text hover:text-foreground">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 rounded border-white/80 dark:border-white/20 text-primary focus:ring-primary focus:ring-offset-0 bg-white/40 dark:bg-white/10 mt-0.5"
+                  className="w-4 h-4 rounded border-border text-primary focus:ring-primary focus:ring-offset-0 bg-surface-elevated mt-0.5"
                   disabled={isSubmitting}
                   {...register('agreeTerms')}
                 />
@@ -255,7 +255,7 @@ export const SignupPage: React.FC = () => {
               </label>
 
               {errors.agreeTerms?.message && (
-                <p className="flex items-center gap-1.5 text-xs text-red-500 font-medium pl-6">
+                <p className="flex items-center gap-1.5 text-xs text-destructive font-medium pl-6">
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                   <span>{errors.agreeTerms.message}</span>
                 </p>
@@ -267,7 +267,7 @@ export const SignupPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#718FE8] via-[#8B72D6] to-[#8066CC] shadow-[0_4px_16px_rgba(113,143,232,0.35)] hover:shadow-[0_6px_22px_rgba(113,143,232,0.5)] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {isSubmitting ? (
                   <>
@@ -285,7 +285,7 @@ export const SignupPage: React.FC = () => {
           </form>
 
           {/* Navigation to Login */}
-          <div className="pt-4 border-t border-black/5 dark:border-white/10 text-center text-xs text-muted-foreground">
+          <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
             Already have an account?{' '}
             <Link
               to="/login"
@@ -302,13 +302,13 @@ export const SignupPage: React.FC = () => {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
         >
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full border border-white/80 dark:border-white/20 shadow-2xl space-y-4">
+          <div className="bg-surface rounded-2xl p-6 sm:p-8 max-w-md w-full border border-border shadow-elevated space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-primary" />
-                <h3 className="text-base font-bold text-foreground">
+                <h3 className="text-base font-bold font-display text-foreground">
                   {legalModalContent.title}
                 </h3>
               </div>
@@ -316,19 +316,19 @@ export const SignupPage: React.FC = () => {
                 type="button"
                 onClick={() => setLegalModalContent(null)}
                 aria-label="Close modal"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            <p className="text-xs sm:text-sm text-secondary-text leading-relaxed">
               {legalModalContent.text}
             </p>
             <div className="pt-2 flex justify-end">
               <button
                 type="button"
                 onClick={() => setLegalModalContent(null)}
-                className="px-5 py-2 rounded-xl text-xs font-semibold bg-primary text-white hover:bg-primary/90 cursor-pointer"
+                className="px-5 py-2 rounded-xl text-xs font-semibold bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
               >
                 I Understand
               </button>

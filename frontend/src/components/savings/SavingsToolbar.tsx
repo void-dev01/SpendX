@@ -29,9 +29,9 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
   ];
 
   return (
-    <div className="glass-panel p-4 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div className="bg-surface p-4 rounded-2xl border border-border shadow-card flex flex-col md:flex-row md:items-center justify-between gap-3">
       {/* Left: Status Filter Pills */}
-      <div className="flex items-center gap-1 p-1 rounded-2xl glass-surface border border-white/80 dark:border-white/10 shadow-sm self-start md:self-auto overflow-x-auto max-w-full">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border shadow-xs self-start md:self-auto overflow-x-auto max-w-full">
         {statusTabs.map((tab) => {
           const isActive = filters.status === tab.value;
           return (
@@ -39,10 +39,10 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
               key={tab.value}
               type="button"
               onClick={() => onChange({ ...filters, status: tab.value })}
-              className={`px-3.5 py-1.5 text-xs font-medium rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 py-1.5 text-xs rounded-lg transition-all duration-200 cursor-pointer whitespace-nowrap min-h-[36px] ${
                 isActive
-                  ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm font-semibold'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-white/5'
+                  ? 'bg-primary text-white shadow-xs font-medium'
+                  : 'text-secondary-text hover:text-foreground hover:bg-surface'
               }`}
             >
               {tab.label}
@@ -55,13 +55,13 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
       <div className="flex flex-wrap items-center gap-2.5">
         {/* Search Input */}
         <div className="relative min-w-[160px] sm:min-w-[200px]">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Search goals..."
             value={filters.search}
             onChange={(e) => onChange({ ...filters, search: e.target.value })}
-            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary"
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
             aria-label="Search savings goals"
           />
         </div>
@@ -77,7 +77,7 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
               })
             }
             aria-label="Filter savings goals by category"
-            className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+            className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium shadow-xs"
           >
             <option value="ALL">All Categories</option>
             {SAVINGS_CATEGORIES.map((cat) => (
@@ -99,7 +99,7 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
               })
             }
             aria-label="Sort savings goals"
-            className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+            className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium shadow-xs"
           >
             <option value="PROGRESS_DESC">Highest Progress</option>
             <option value="PROGRESS_ASC">Lowest Progress</option>
@@ -113,7 +113,7 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
         <button
           type="button"
           onClick={onCreateGoal}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm hover:shadow hover:opacity-95 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>New Goal</span>

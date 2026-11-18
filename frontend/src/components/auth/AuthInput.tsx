@@ -37,9 +37,9 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
               Icon ? 'pl-10 pr-4' : 'px-4'
             } ${
               error
-                ? 'border-red-500/80 dark:border-red-500/70 bg-red-500/5 focus:ring-2 focus:ring-red-500/30'
-                : 'border-white/80 dark:border-white/15 bg-white/60 dark:bg-white/5 focus:border-[#718FE8] focus:ring-2 focus:ring-[#718FE8]/25'
-            } border shadow-sm text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+                ? 'border-destructive bg-destructive/5 focus:ring-2 focus:ring-destructive/30'
+                : 'border-border bg-surface-elevated focus:border-primary focus:ring-2 focus:ring-primary/25'
+            } border shadow-xs text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
             {...props}
           />
         </div>
@@ -48,7 +48,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
           <p
             id={`${id}-error`}
             role="alert"
-            className="flex items-center gap-1.5 text-xs text-red-500 dark:text-red-400 font-medium pt-0.5"
+            className="flex items-center gap-1.5 text-xs text-destructive font-medium pt-0.5"
           >
             <AlertCircle className="w-3.5 h-3.5 shrink-0" />
             <span>{error}</span>

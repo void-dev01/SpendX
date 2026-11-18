@@ -95,14 +95,16 @@ export const SettingsPage: React.FC = () => {
   return (
     <div className="space-y-6 max-w-4xl pb-12">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gradient-brand">System & Workspace Settings</h1>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground">
+          System & Workspace Settings
+        </h1>
+        <p className="text-xs sm:text-sm text-secondary-text mt-1">
           Personal identity credentials, real accounting ledger configurations, and portable backups.
         </p>
       </div>
 
       {/* 1. Real User Profile & Identity Form */}
-      <Card className="glass-panel border border-white/80 dark:border-white/10 shadow-glass">
+      <Card className="bg-surface border border-border shadow-card">
         <CardHeader>
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
@@ -124,7 +126,7 @@ export const SettingsPage: React.FC = () => {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="e.g. Priyam Prajapati"
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-white/60 dark:bg-white/5 border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   required
                 />
               </div>
@@ -136,7 +138,7 @@ export const SettingsPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="e.g. personal@domain.com"
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-white/60 dark:bg-white/5 border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                   required
                 />
               </div>
@@ -150,7 +152,7 @@ export const SettingsPage: React.FC = () => {
                   value={incomeTarget}
                   onChange={(e) => setIncomeTarget(e.target.value)}
                   placeholder="50000"
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-white/60 dark:bg-white/5 border border-border text-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
 
@@ -160,7 +162,7 @@ export const SettingsPage: React.FC = () => {
                   type="text"
                   value="INR (₹ Indian Rupee)"
                   disabled
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-border text-muted-foreground cursor-not-allowed"
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-muted border border-border text-muted-foreground cursor-not-allowed"
                 />
               </div>
             </div>
@@ -168,7 +170,7 @@ export const SettingsPage: React.FC = () => {
             <div className="flex items-center gap-3 pt-3">
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] hover:opacity-95 shadow-md transition-all cursor-pointer flex items-center gap-1.5"
+                className="px-5 py-2.5 rounded-xl text-xs font-semibold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer flex items-center gap-1.5 min-h-[40px]"
               >
                 {savedSuccess ? <Check className="w-3.5 h-3.5" /> : null}
                 <span>{savedSuccess ? 'Profile Updated!' : 'Save Identity Preferences'}</span>
@@ -179,10 +181,10 @@ export const SettingsPage: React.FC = () => {
       </Card>
 
       {/* 2. Real Data Backup & Restore */}
-      <Card className="glass-panel border border-white/80 dark:border-white/10 shadow-glass">
+      <Card className="bg-surface border border-border shadow-card">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-income/10 text-income flex items-center justify-center">
               <Shield className="w-4 h-4" />
             </div>
             <div>
@@ -192,13 +194,13 @@ export const SettingsPage: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-xs text-secondary-text leading-relaxed">
             Your real accounts, balances, transactions, and categories are stored locally in your private database.
             Use these controls to create standalone offline backups or restore from an existing file at any time.
           </p>
 
           {backupMessage && (
-            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+            <div className="p-3 rounded-xl bg-income/10 border border-income/20 text-xs font-medium text-income">
               {backupMessage}
             </div>
           )}
@@ -207,7 +209,7 @@ export const SettingsPage: React.FC = () => {
             <button
               type="button"
               onClick={handleExportJsonBackup}
-              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground glass-surface border border-border hover:bg-white/60 dark:hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground bg-surface-elevated border border-border hover:bg-surface transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
             >
               <Download className="w-4 h-4 text-primary" />
               <span>Export Full JSON Backup</span>
@@ -216,14 +218,14 @@ export const SettingsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => transactionService.exportToCSV(transactionService.getStoredTransactions())}
-              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground glass-surface border border-border hover:bg-white/60 dark:hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground bg-surface-elevated border border-border hover:bg-surface transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
             >
-              <Download className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <Download className="w-4 h-4 text-income" />
               <span>Export Transactions (CSV)</span>
             </button>
 
-            <label className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground glass-surface border border-border hover:bg-white/60 dark:hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer shadow-sm">
-              <Upload className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <label className="px-4 py-2.5 rounded-xl text-xs font-semibold text-foreground bg-surface-elevated border border-border hover:bg-surface transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]">
+              <Upload className="w-4 h-4 text-amber-500" />
               <span>Restore Backup (JSON)</span>
               <input type="file" accept=".json" onChange={handleImportJsonBackup} className="hidden" />
             </label>
@@ -232,10 +234,10 @@ export const SettingsPage: React.FC = () => {
       </Card>
 
       {/* 3. Environment & Integration Status */}
-      <Card className="glass-panel border border-white/80 dark:border-white/10 shadow-glass">
+      <Card className="bg-surface border border-border shadow-card">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
               <Wallet className="w-4 h-4" />
             </div>
             <div>
@@ -266,7 +268,7 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-xs sm:text-sm font-medium">Design & Typography Engine</p>
-              <p className="text-[11px] text-muted-foreground">THEME.md Inter Design System + Phosphor Duotone Suite</p>
+              <p className="text-[11px] text-muted-foreground">SPENDX Obsidian × Electric Indigo Design System</p>
             </div>
             <Badge variant="secondary">Active</Badge>
           </div>
@@ -274,26 +276,26 @@ export const SettingsPage: React.FC = () => {
       </Card>
 
       {/* 4. Danger Zone: Reset All Local Data (Start Fresh) */}
-      <Card className="glass-panel border border-rose-500/20 shadow-glass">
+      <Card className="bg-surface border border-destructive/20 shadow-card">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
               <Trash2 className="w-4 h-4" />
             </div>
             <div>
-              <CardTitle className="text-lg text-rose-600 dark:text-rose-400">Danger Zone</CardTitle>
+              <CardTitle className="text-lg text-destructive">Danger Zone</CardTitle>
               <CardDescription>Reset local databases and cache back to day-zero empty state.</CardDescription>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-xs text-muted-foreground leading-relaxed">
+          <p className="text-xs text-secondary-text leading-relaxed">
             Wipe all locally stored accounts, transactions, recurring obligations, and categories to start with a 100% clean slate.
           </p>
           <button
             type="button"
             onClick={handleResetAllData}
-            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 transition-all flex items-center gap-2 cursor-pointer shadow-sm"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-destructive-foreground bg-destructive hover:bg-destructive/90 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
           >
             <Trash2 className="w-4 h-4" />
             <span>Reset All Local Data (Start Fresh)</span>

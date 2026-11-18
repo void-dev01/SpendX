@@ -44,31 +44,31 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
     switch (payment.status) {
       case 'OVERDUE':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
             <AlertCircle className="w-3 h-3" /> Overdue
           </span>
         );
       case 'DUE_TODAY':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/20 animate-pulse">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/15 text-amber-500 border border-amber-500/20 animate-pulse">
             <Clock className="w-3 h-3" /> Due Today
           </span>
         );
       case 'PAID':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-income/10 text-income border border-income/20">
             <CheckCircle className="w-3 h-3" /> Paid
           </span>
         );
       case 'PAUSED':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-500/10 text-slate-500 dark:text-slate-400 border border-slate-500/20">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-surface-elevated text-secondary-text border border-border">
             <PauseCircle className="w-3 h-3" /> Paused
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-spendx-blue-primary/10 text-spendx-blue-primary border border-spendx-blue-primary/20">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
             <Clock className="w-3 h-3" /> {diffDays > 0 ? `In ${diffDays} days` : 'Upcoming'}
           </span>
         );
@@ -88,24 +88,24 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
   return (
     <div
       onClick={() => navigate(`/recurring/${payment.id}`)}
-      className="glass-card-interactive p-5 sm:p-6 rounded-3xl flex flex-col justify-between group cursor-pointer transition-all duration-300 relative border border-slate-200/60 dark:border-white/10 hover:border-primary/40"
+      className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group cursor-pointer transition-all duration-300 relative hover:border-primary/40"
     >
       {/* Top Header: Merchant, Title, and Action Menu */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md">
                 {payment.category}
               </span>
-              <span className="text-[11px] text-muted-foreground font-medium">
+              <span className="text-[11px] text-secondary-text font-medium">
                 • {payment.frequency.toLowerCase()}
               </span>
             </div>
-            <h3 className="text-base font-bold text-foreground truncate group-hover:text-primary transition-colors leading-tight">
+            <h3 className="text-base font-display font-bold text-foreground truncate group-hover:text-primary transition-colors leading-tight">
               {payment.name}
             </h3>
-            <p className="text-xs text-muted-foreground truncate mt-0.5 font-medium">
+            <p className="text-xs text-secondary-text truncate mt-0.5 font-medium">
               {payment.merchant}
             </p>
           </div>
@@ -122,7 +122,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                   setShowMenu(!showMenu);
                 }}
                 aria-label="Payment options"
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="p-1 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
               >
                 <MoreVertical className="w-4 h-4" />
               </button>
@@ -130,7 +130,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
               {showMenu && (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-1 w-44 rounded-2xl glass-panel py-1.5 shadow-xl border border-slate-200/80 dark:border-white/10 z-20 text-xs"
+                  className="absolute right-0 top-full mt-1 w-44 rounded-xl bg-surface py-1.5 shadow-elevated border border-border z-20 text-xs"
                 >
                   <button
                     type="button"
@@ -138,7 +138,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                       setShowMenu(false);
                       navigate(`/recurring/${payment.id}`);
                     }}
-                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10 transition-colors"
+                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>View Details</span>
@@ -149,7 +149,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                       setShowMenu(false);
                       onEdit(payment);
                     }}
-                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10 transition-colors"
+                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                     <span>Edit Schedule</span>
@@ -160,11 +160,11 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                       setShowMenu(false);
                       onTogglePause(payment);
                     }}
-                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10 transition-colors"
+                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
                   >
                     {payment.status === 'PAUSED' ? (
                       <>
-                        <PlayCircle className="w-3.5 h-3.5 text-emerald-500" />
+                        <PlayCircle className="w-3.5 h-3.5 text-income" />
                         <span>Resume</span>
                       </>
                     ) : (
@@ -174,14 +174,14 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                       </>
                     )}
                   </button>
-                  <div className="h-px bg-slate-100 dark:bg-white/10 my-1" />
+                  <div className="h-px bg-border my-1" />
                   <button
                     type="button"
                     onClick={() => {
                       setShowMenu(false);
                       onDelete(payment.id);
                     }}
-                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Delete</span>
@@ -193,17 +193,17 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
         </div>
 
         {/* Amount & Due Date row */}
-        <div className="mt-4 pt-3 border-t border-black/5 dark:border-white/10 flex items-baseline justify-between">
+        <div className="mt-4 pt-3 border-t border-border flex items-baseline justify-between">
           <div>
-            <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground tabular-nums">
+            <span className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-foreground tabular-nums">
               {recurringService.formatINR(payment.amount)}
             </span>
-            <span className="text-xs text-muted-foreground ml-1 font-medium">
+            <span className="text-xs text-secondary-text ml-1 font-medium">
               /{payment.frequency === 'MONTHLY' ? 'mo' : payment.frequency.toLowerCase()}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+          <div className="flex items-center gap-1.5 text-xs text-secondary-text font-medium">
             <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
             <span>
               {new Date(payment.nextDueDate).toLocaleDateString('en-IN', {
@@ -217,10 +217,10 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
       </div>
 
       {/* Footer Info & Actions */}
-      <div className="mt-4 pt-3 border-t border-slate-100 dark:border-white/5 flex items-center justify-between gap-2">
+      <div className="mt-4 pt-3 border-t border-border flex items-center justify-between gap-2">
         {/* Linked account badge */}
-        <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 truncate max-w-[55%]">
-          <CreditCard className="w-3.5 h-3.5 shrink-0 text-spendx-blue-primary/80" />
+        <div className="flex items-center gap-1.5 text-xs text-secondary-text truncate max-w-[55%]">
+          <CreditCard className="w-3.5 h-3.5 shrink-0 text-primary" />
           <span className="truncate">{payment.linkedAccountName || 'Unlinked Account'}</span>
         </div>
 
@@ -230,13 +230,13 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
             type="button"
             onClick={handleMarkPaid}
             disabled={isProcessing}
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 transition-all hover:scale-102 active:scale-98 disabled:opacity-50"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium bg-income/10 hover:bg-income/20 text-income border border-income/20 transition-all disabled:opacity-50 cursor-pointer shadow-xs"
           >
             <CheckCircle className="w-3.5 h-3.5" />
             <span>Mark Paid</span>
           </button>
         ) : (
-          <span className="text-xs text-slate-400 font-medium italic">
+          <span className="text-xs text-muted-foreground font-medium italic">
             {payment.status === 'PAID' ? 'Up to date' : 'Schedule paused'}
           </span>
         )}

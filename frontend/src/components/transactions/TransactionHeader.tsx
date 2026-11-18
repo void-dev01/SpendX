@@ -32,14 +32,14 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
       {/* Title & Description */}
       <div>
         <div className="flex items-center gap-2.5">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-foreground">
             Transactions
           </h1>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
             {filteredCount} {filteredCount === 1 ? 'record' : 'records'}
           </span>
         </div>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-secondary-text mt-1">
           Track, manage, and audit every movement of your money.
         </p>
       </div>
@@ -47,7 +47,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
       {/* Date Range Selector & Action Buttons */}
       <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 self-stretch lg:self-auto w-full lg:w-auto">
         {/* Date Range Pills */}
-        <div className="flex items-center gap-1 p-1 rounded-2xl glass-surface border border-white/80 dark:border-white/10 shadow-sm overflow-x-auto max-w-full touch-scroll">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border shadow-xs overflow-x-auto max-w-full touch-scroll">
           {rangeOptions.map((opt) => {
             const isActive = dateRange === opt.value;
             return (
@@ -55,10 +55,10 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
                 key={opt.value}
                 type="button"
                 onClick={() => onDateRangeChange(opt.value)}
-                className={`px-3 py-1.5 text-xs rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 ${
+                className={`px-3 py-1.5 text-xs rounded-lg transition-all duration-150 cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
-                    ? 'bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white shadow-sm font-semibold'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-white/40 dark:hover:bg-white/5 font-medium'
+                    ? 'bg-primary text-white shadow-xs font-semibold'
+                    : 'text-secondary-text hover:text-foreground hover:bg-surface font-medium'
                 }`}
               >
                 {opt.label}
@@ -74,10 +74,10 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
             <button
               type="button"
               onClick={onImport}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 shadow-sm transition-all cursor-pointer"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground bg-surface hover:bg-surface-elevated border border-border shadow-xs transition-colors cursor-pointer"
               title="Import statement via CSV, Excel, PDF, or SMS"
             >
-              <UploadCloud className="w-3.5 h-3.5" />
+              <UploadCloud className="w-3.5 h-3.5 text-primary" />
               <span>Import</span>
             </button>
           )}
@@ -86,10 +86,10 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
           <button
             type="button"
             onClick={onExport}
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 glass-surface border border-white/80 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 shadow-sm transition-all cursor-pointer"
+            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-foreground bg-surface border border-border hover:bg-surface-elevated shadow-xs transition-colors cursor-pointer"
             title="Export current filtered view as CSV"
           >
-            <Download className="w-3.5 h-3.5 text-slate-500" />
+            <Download className="w-3.5 h-3.5 text-secondary-text" />
             <span>Export CSV</span>
           </button>
 
@@ -97,9 +97,9 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
           <button
             type="button"
             onClick={onAddTransaction}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] hover:opacity-95 shadow-md transition-all cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
-            <Plus className="w-4 h-4 text-white" />
+            <Plus className="w-4 h-4" />
             <span>Add Transaction</span>
           </button>
         </div>

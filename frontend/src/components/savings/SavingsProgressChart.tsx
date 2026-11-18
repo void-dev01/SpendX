@@ -19,14 +19,14 @@ interface SavingsProgressChartProps {
 }
 
 const CATEGORY_COLORS = [
-  '#718FE8',
-  '#8B72D6',
-  '#12866E',
-  '#C48620',
-  '#DC5579',
-  '#8066CC',
-  '#4779C9',
-  '#5368A2',
+  '#4F46E5', // Electric Indigo
+  '#7C3AED', // Violet
+  '#10B981', // Emerald
+  '#F59E0B', // Amber
+  '#06B6D4', // Cyan
+  '#EF4444', // Rose
+  '#6366F1', // Indigo Accent
+  '#64748B', // Slate
 ];
 
 export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goals }) => {
@@ -61,23 +61,23 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
       const pct = targetVal > 0 ? Math.round((savedVal / targetVal) * 100) : 0;
 
       return (
-        <div className="glass-surface p-3 rounded-xl border border-white/90 dark:border-white/15 shadow-md text-xs space-y-1 min-w-[150px]">
-          <p className="font-semibold text-slate-700 dark:text-slate-200 border-b border-slate-100/60 dark:border-white/10 pb-1">
+        <div className="bg-surface p-3 rounded-xl border border-border shadow-elevated text-xs space-y-1 min-w-[150px]">
+          <p className="font-semibold text-foreground border-b border-border pb-1">
             {label}
           </p>
-          <div className="flex items-center justify-between text-spendx-blue-primary">
+          <div className="flex items-center justify-between text-primary">
             <span>Saved:</span>
             <span className="font-bold tabular-nums">
               {savingsService.formatINR(savedVal)}
             </span>
           </div>
-          <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
+          <div className="flex items-center justify-between text-secondary-text">
             <span>Target:</span>
             <span className="font-semibold tabular-nums">
               {savingsService.formatINR(targetVal)}
             </span>
           </div>
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 pt-1 border-t border-slate-100/60 dark:border-white/10 font-medium">
+          <div className="flex items-center justify-between text-income pt-1 border-t border-border font-medium">
             <span>Completion:</span>
             <span>{pct}%</span>
           </div>
@@ -91,11 +91,11 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
     if (active && payload && payload.length) {
       const data = payload[0];
       return (
-        <div className="glass-surface p-2.5 rounded-xl border border-white/90 dark:border-white/15 shadow-md text-xs min-w-[130px]">
-          <p className="font-semibold text-slate-700 dark:text-slate-200">
+        <div className="bg-surface p-2.5 rounded-xl border border-border shadow-elevated text-xs min-w-[130px]">
+          <p className="font-semibold text-foreground">
             {data.name}
           </p>
-          <div className="flex items-center justify-between mt-1 text-spendx-blue-primary">
+          <div className="flex items-center justify-between mt-1 text-primary">
             <span>Allocated:</span>
             <span className="font-bold tabular-nums">
               {savingsService.formatINR(data.value)}
@@ -110,22 +110,22 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Target vs Saved Bar Chart */}
-      <div className="glass-panel p-5 rounded-2xl lg:col-span-2 flex flex-col justify-between">
+      <div className="bg-surface p-5 rounded-2xl border border-border shadow-card lg:col-span-2 flex flex-col justify-between">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+            <h3 className="text-sm font-display font-bold text-foreground">
               Savings Targets vs Accumulated Funds
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-secondary-text">
               Direct comparison of current vault balance against milestone goals
             </p>
           </div>
           <div className="flex items-center gap-3 text-xs font-medium">
-            <span className="flex items-center gap-1.5 text-spendx-blue-primary">
-              <span className="w-2.5 h-2.5 rounded-full bg-spendx-blue-primary" /> Saved
+            <span className="flex items-center gap-1.5 text-primary">
+              <span className="w-2.5 h-2.5 rounded-full bg-primary" /> Saved
             </span>
-            <span className="flex items-center gap-1.5 text-slate-400">
-              <span className="w-2.5 h-2.5 rounded-full bg-slate-200 dark:bg-white/20" /> Target
+            <span className="flex items-center gap-1.5 text-muted-foreground">
+              <span className="w-2.5 h-2.5 rounded-full bg-border" /> Target
             </span>
           </div>
         </div>
@@ -154,7 +154,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
               />
-              <Tooltip content={renderBarTooltip} />
+              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(79, 70, 229, 0.06)' }} />
               <Bar
                 dataKey="target"
                 name="Target"
@@ -165,7 +165,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
               <Bar
                 dataKey="saved"
                 name="Saved"
-                fill="#718FE8"
+                fill="#4F46E5"
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
               />
@@ -175,12 +175,12 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
       </div>
 
       {/* Category Breakdown Donut */}
-      <div className="glass-panel p-5 rounded-2xl flex flex-col justify-between">
+      <div className="bg-surface p-5 rounded-2xl border border-border shadow-card flex flex-col justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+          <h3 className="text-sm font-display font-bold text-foreground">
             Category Allocation
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-secondary-text">
             Distribution of saved capital
           </p>
         </div>
@@ -210,7 +210,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
               {pieData.map((item) => (
                 <div
                   key={item.name}
-                  className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300"
+                  className="flex items-center justify-between text-xs text-foreground"
                 >
                   <div className="flex items-center gap-2">
                     <span
@@ -219,7 +219,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                     />
                     <span className="truncate max-w-[110px]">{item.name}</span>
                   </div>
-                  <span className="font-semibold tabular-nums text-slate-700 dark:text-slate-200">
+                  <span className="font-semibold tabular-nums text-foreground">
                     {savingsService.formatINR(item.value)}
                   </span>
                 </div>
@@ -227,7 +227,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
             </div>
           </>
         ) : (
-          <div className="h-48 flex items-center justify-center text-xs text-slate-400">
+          <div className="h-48 flex items-center justify-center text-xs text-secondary-text">
             No allocated funds to display
           </div>
         )}

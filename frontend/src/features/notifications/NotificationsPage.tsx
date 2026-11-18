@@ -15,11 +15,11 @@ export const NotificationsPage: React.FC = () => {
       icon={Bell}
       badge="Personal"
     >
-      <div className="glass-panel rounded-3xl p-5 sm:p-6 border border-white/80 dark:border-white/15 shadow-xl space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/10 text-xs text-muted-foreground font-semibold">
+      <div className="rounded-2xl bg-surface border border-border p-5 sm:p-6 shadow-card space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-border text-xs text-secondary-text font-semibold">
           <span className="flex items-center gap-2">
             <span>Unread Notices</span>
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary/10 text-primary border border-primary/20 tabular-nums">
               {unreadCount}
             </span>
           </span>
@@ -35,7 +35,7 @@ export const NotificationsPage: React.FC = () => {
             {notifications.length > 0 && (
               <button
                 onClick={clearAll}
-                className="text-muted-foreground hover:text-foreground text-[11px] font-medium cursor-pointer transition-colors"
+                className="text-secondary-text hover:text-foreground text-[11px] font-medium cursor-pointer transition-colors"
               >
                 Clear all
               </button>
@@ -46,8 +46,8 @@ export const NotificationsPage: React.FC = () => {
         <div className="space-y-3">
           {notifications.length === 0 ? (
             <div className="py-12 text-center text-muted-foreground space-y-2">
-              <CheckCheck className="w-10 h-10 mx-auto text-emerald-500/70" />
-              <p className="font-bold text-foreground text-sm">All caught up!</p>
+              <CheckCheck className="w-10 h-10 mx-auto text-income" />
+              <p className="font-bold font-display text-foreground text-sm">All caught up!</p>
               <p className="text-xs">No active alerts or notifications.</p>
             </div>
           ) : (
@@ -56,7 +56,7 @@ export const NotificationsPage: React.FC = () => {
               const isWarning = item.type === 'warning';
               const Icon = isSuccess ? CheckCircle2 : isWarning ? AlertCircle : Info;
               const colorClass = isSuccess
-                ? 'text-emerald-500 bg-emerald-500/10'
+                ? 'text-income bg-income/10'
                 : isWarning
                 ? 'text-amber-500 bg-amber-500/10'
                 : 'text-primary bg-primary/10';
@@ -65,23 +65,23 @@ export const NotificationsPage: React.FC = () => {
                 <div
                   key={item.id}
                   onClick={() => markAsRead(item.id)}
-                  className={`rounded-2xl p-4 sm:p-5 border transition-all cursor-pointer flex items-start gap-4 ${
+                  className={`rounded-xl p-4 sm:p-5 border transition-all cursor-pointer flex items-start gap-4 ${
                     item.unread
-                      ? 'bg-white/80 dark:bg-white/10 border-primary/40 shadow-sm'
-                      : 'bg-white/40 dark:bg-white/5 border-white/60 dark:border-white/10 opacity-75 hover:opacity-100'
+                      ? 'bg-surface-elevated border-primary/40 shadow-xs'
+                      : 'bg-surface border-border opacity-75 hover:opacity-100'
                   }`}
                 >
-                  <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${colorClass}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${colorClass}`}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <div className="flex-1 space-y-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <h4 className={`text-sm font-bold truncate ${item.unread ? 'text-foreground' : 'text-foreground/80'}`}>
+                      <h4 className={`text-sm font-bold font-display truncate ${item.unread ? 'text-foreground' : 'text-foreground/80'}`}>
                         {item.title}
                       </h4>
                       <span className="text-[11px] text-muted-foreground font-mono shrink-0">{item.time}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-secondary-text leading-relaxed">
                       {item.description}
                     </p>
                   </div>

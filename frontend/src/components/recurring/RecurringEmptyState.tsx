@@ -13,16 +13,16 @@ export const RecurringEmptyState: React.FC<RecurringEmptyStateProps> = ({
   onAddPayment,
 }) => {
   return (
-    <div className="glass-card p-12 rounded-3xl border border-slate-200/60 dark:border-white/10 text-center flex flex-col items-center justify-center space-y-4">
-      <div className="w-16 h-16 rounded-3xl bg-spendx-blue-primary/10 text-spendx-blue-primary flex items-center justify-center">
+    <div className="bg-surface p-12 rounded-2xl border border-border shadow-card text-center flex flex-col items-center justify-center space-y-4">
+      <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
         <Repeat className="w-8 h-8" />
       </div>
 
       <div className="max-w-md space-y-1">
-        <h3 className="text-lg font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+        <h3 className="text-lg font-display font-bold text-foreground">
           {isFiltering ? 'No recurring payments match your filters' : 'No recurring payments set up yet'}
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-secondary-text">
           {isFiltering
             ? 'Try adjusting your search query, status, or category filters.'
             : 'Track all your fixed liabilities, monthly Netflix & Spotify subscriptions, gym memberships, house rent, and loan EMIs.'}
@@ -34,7 +34,7 @@ export const RecurringEmptyState: React.FC<RecurringEmptyStateProps> = ({
           <button
             type="button"
             onClick={onClearFilters}
-            className="px-4 py-2 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="px-4 py-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 transition-colors shadow-xs cursor-pointer"
           >
             Clear Filters
           </button>
@@ -42,7 +42,7 @@ export const RecurringEmptyState: React.FC<RecurringEmptyStateProps> = ({
         <button
           type="button"
           onClick={onAddPayment}
-          className="btn-spendx-primary px-4 py-2 text-xs font-semibold rounded-xl flex items-center gap-2"
+          className="px-4 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs flex items-center gap-2 transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add Recurring Payment</span>

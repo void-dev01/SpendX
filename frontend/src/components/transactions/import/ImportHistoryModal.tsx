@@ -13,19 +13,19 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({ isOpen, 
   const history = importService.getImportHistory();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="glass-card w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-white/60 dark:border-white/10 relative max-h-[85vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-fadeIn">
+      <div className="bg-surface w-full max-w-2xl rounded-2xl p-6 sm:p-8 shadow-elevated border border-border relative max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-white/10 shrink-0">
+        <div className="flex items-center justify-between pb-4 border-b border-border shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-spendx-blue-primary/10 text-spendx-blue-primary flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
               <History className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+              <h2 className="text-lg font-display font-bold text-foreground">
                 Financial Ingestion History
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-secondary-text">
                 Audit trail of historical statement and SMS batch imports
               </p>
             </div>
@@ -35,7 +35,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({ isOpen, 
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -45,28 +45,28 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({ isOpen, 
         <div className="mt-4 flex-1 overflow-y-auto">
           {history.length === 0 ? (
             <div className="py-12 text-center space-y-2">
-              <FileCheck className="w-8 h-8 text-slate-400 mx-auto" />
-              <p className="text-sm font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+              <FileCheck className="w-8 h-8 text-muted-foreground mx-auto" />
+              <p className="text-sm font-semibold text-foreground">
                 No past imports recorded
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-secondary-text">
                 When you import bank CSVs, Excel files, or SMS transactions, audit logs appear here.
               </p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100 dark:divide-white/5 text-xs">
+            <div className="divide-y divide-border-subtle text-xs">
               {history.map((batch) => (
                 <div key={batch.id} className="py-3.5 flex items-center justify-between gap-4">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-spendx-text-primary dark:text-spendx-soft-purple text-sm">
+                      <span className="font-semibold text-foreground text-sm">
                         {batch.fileName || 'Batch Import'}
                       </span>
-                      <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-spendx-blue-primary/10 text-spendx-blue-primary">
+                      <span className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                         {batch.source}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400 mt-0.5 flex items-center gap-1.5">
+                    <p className="text-[11px] text-secondary-text mt-0.5 flex items-center gap-1.5">
                       <Calendar className="w-3 h-3" />
                       {new Date(batch.importDate).toLocaleDateString('en-IN', {
                         day: 'numeric',
@@ -79,7 +79,7 @@ export const ImportHistoryModal: React.FC<ImportHistoryModalProps> = ({ isOpen, 
                   </div>
 
                   <div className="text-right shrink-0">
-                    <p className="font-semibold text-emerald-600 dark:text-emerald-400">
+                    <p className="font-semibold text-income">
                       {batch.importedCount} / {batch.totalParsed} imported
                     </p>
                     {batch.duplicateCount > 0 && (

@@ -99,14 +99,14 @@ export const ReportsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-spendx-blue-primary bg-spendx-blue-primary/10 px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-lg">
               Reporting & Audit
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-spendx-text-primary dark:text-spendx-soft-purple tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold font-display text-foreground tracking-tight mt-1">
             Financial Reports & Statements
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-secondary-text mt-1 max-w-2xl">
             Generated monthly fiscal statements, tax audit schedules, and RFC 4180 verified financial ledger exports.
           </p>
         </div>
@@ -114,7 +114,7 @@ export const ReportsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsGeneratorOpen(true)}
-          className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-2xl shadow-lg shadow-spendx-blue-primary/20 shrink-0"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors shrink-0 min-h-[42px]"
         >
           <Plus className="w-4 h-4" />
           <span>Custom Report</span>

@@ -86,27 +86,27 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-in fade-in duration-200">
       <div
-        className="glass-panel w-full max-w-lg rounded-3xl p-4 sm:p-6 border border-white/90 dark:border-white/15 shadow-2xl relative max-h-[90dvh] overflow-y-auto space-y-4 sm:space-y-5"
+        className="bg-surface w-full max-w-lg rounded-2xl p-4 sm:p-6 border border-border shadow-elevated relative max-h-[90dvh] overflow-y-auto space-y-4 sm:space-y-5"
         role="dialog"
         aria-modal="true"
         aria-labelledby="budget-dialog-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100/60 dark:border-white/10">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
           <div>
-            <h2 id="budget-dialog-title" className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+            <h2 id="budget-dialog-title" className="text-lg font-display font-bold text-foreground">
               {initialData ? 'Edit Budget' : 'Create New Budget'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-secondary-text mt-0.5">
               {initialData ? 'Update category spending ceiling' : 'Set a planned spending limit for a category'}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-secondary-text hover:text-foreground transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -116,7 +116,7 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4 text-xs">
           {/* Budget Name */}
           <div>
-            <label htmlFor="budget-name" className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+            <label htmlFor="budget-name" className="block font-medium text-foreground mb-1">
               Budget Name *
             </label>
             <input
@@ -124,23 +124,23 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
               type="text"
               placeholder="e.g. Food & Dining Monthly"
               {...register('name')}
-              className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-sm"
+              className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm shadow-xs"
             />
             {errors.name && (
-              <p className="text-[11px] text-rose-500 mt-1">{errors.name.message}</p>
+              <p className="text-[11px] text-destructive mt-1">{errors.name.message}</p>
             )}
           </div>
 
           {/* Category & Period */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label htmlFor="budget-category" className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label htmlFor="budget-category" className="block font-medium text-foreground mb-1">
                 Category *
               </label>
               <select
                 id="budget-category"
                 {...register('category')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 {EXPENSE_CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -149,18 +149,18 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
                 ))}
               </select>
               {errors.category && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.category.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.category.message}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="budget-period" className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label htmlFor="budget-period" className="block font-medium text-foreground mb-1">
                 Period *
               </label>
               <select
                 id="budget-period"
                 {...register('period')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 <option value="MONTHLY">Monthly</option>
                 <option value="YEARLY">Yearly</option>
@@ -171,11 +171,11 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
           {/* Amount & Threshold */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label htmlFor="budget-amount" className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label htmlFor="budget-amount" className="block font-medium text-foreground mb-1">
                 Allocated Limit (₹ INR) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">
                   ₹
                 </span>
                 <input
@@ -184,21 +184,21 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
                   step="0.01"
                   placeholder="8000"
                   {...register('allocatedAmount', { valueAsNumber: true })}
-                  className="w-full pl-8 pr-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-sm"
+                  className="w-full pl-8 pr-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-semibold tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm shadow-xs"
                 />
               </div>
               {errors.allocatedAmount && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.allocatedAmount.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.allocatedAmount.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Warning Threshold (%)
               </label>
               <select
                 {...register('alertThreshold', { valueAsNumber: true })}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 <option value={70}>70% of limit</option>
                 <option value={80}>80% of limit (Recommended)</option>
@@ -211,31 +211,31 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
 
           {/* Description / Notes */}
           <div>
-            <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+            <label className="block font-medium text-foreground mb-1">
               Description / Notes (Optional)
             </label>
             <textarea
               rows={2}
               placeholder="e.g. Dining out with family, food delivery limits"
               {...register('notes')}
-              className="w-full px-3 py-2 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+              className="w-full px-3 py-2 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
             />
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-100/60 dark:border-white/10">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-border">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-semibold glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-white/10 transition-colors cursor-pointer text-center min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-medium bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 transition-colors cursor-pointer text-center min-h-[44px] shadow-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary shadow-md hover:opacity-95 transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-white bg-primary hover:bg-primary/90 shadow-xs transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
             >
               {isSubmitting ? (
                 <>

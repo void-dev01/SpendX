@@ -47,7 +47,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
             const itemText = line.trim().replace(/^[-•]\s*/, '');
             return (
               <div key={idx} className="flex items-start gap-2 pl-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-spendx-blue-primary shrink-0 mt-1.5" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
                 <span>{parseBold(itemText)}</span>
               </div>
             );
@@ -56,7 +56,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
           // Check for headings
           if (line.trim().startsWith('### ')) {
             return (
-              <h4 key={idx} className="font-bold text-sm text-slate-800 dark:text-slate-100 pt-1">
+              <h4 key={idx} className="font-bold font-display text-sm text-foreground pt-1">
                 {line.replace('### ', '')}
               </h4>
             );
@@ -73,7 +73,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return (
-          <strong key={i} className="font-bold text-slate-900 dark:text-white">
+          <strong key={i} className="font-bold text-foreground">
             {part.slice(2, -2)}
           </strong>
         );
@@ -90,16 +90,16 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
     switch (type) {
       case 'SPENDING':
         return (
-          <div className="mt-3 p-3.5 rounded-2xl glass-surface border border-white/80 dark:border-white/10 space-y-2.5">
+          <div className="mt-3 p-3.5 rounded-xl bg-surface-elevated border border-border space-y-2.5">
             <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
-                <Wallet className="w-3.5 h-3.5 text-spendx-blue-primary" />
+              <span className="flex items-center gap-1.5 text-foreground">
+                <Wallet className="w-3.5 h-3.5 text-primary" />
                 {title}
               </span>
               <button
                 type="button"
                 onClick={() => navigate('/transactions')}
-                className="text-[11px] text-spendx-blue-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+                className="text-[11px] text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
               >
                 <span>View Transactions</span>
                 <ArrowUpRight className="w-3 h-3" />
@@ -107,21 +107,21 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
             </div>
 
             <div className="grid grid-cols-3 gap-2 text-center pt-1">
-              <div className="p-2 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20">
-                <span className="text-[10px] text-slate-400 block">Income</span>
-                <span className="font-bold text-emerald-600 dark:text-emerald-400 text-xs">
+              <div className="p-2 rounded-lg bg-income/10">
+                <span className="text-[10px] text-muted-foreground block">Income</span>
+                <span className="font-bold text-income text-xs tabular-nums">
                   {transactionService.formatINR(data.income || 0)}
                 </span>
               </div>
-              <div className="p-2 rounded-xl bg-rose-50/50 dark:bg-rose-950/20">
-                <span className="text-[10px] text-slate-400 block">Expenses</span>
-                <span className="font-bold text-rose-600 dark:text-rose-400 text-xs">
+              <div className="p-2 rounded-lg bg-destructive/10">
+                <span className="text-[10px] text-muted-foreground block">Expenses</span>
+                <span className="font-bold text-destructive text-xs tabular-nums">
                   {transactionService.formatINR(data.expenses || 0)}
                 </span>
               </div>
-              <div className="p-2 rounded-xl bg-spendx-blue-primary/10">
-                <span className="text-[10px] text-slate-400 block">Net Flow</span>
-                <span className="font-bold text-spendx-blue-primary text-xs">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <span className="text-[10px] text-muted-foreground block">Net Flow</span>
+                <span className="font-bold text-primary text-xs tabular-nums">
                   {transactionService.formatINR(data.net || 0)}
                 </span>
               </div>
@@ -131,48 +131,48 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
 
       case 'BUDGET':
         return (
-          <div className="mt-3 p-3.5 rounded-2xl glass-surface border border-white/80 dark:border-white/10 space-y-2">
+          <div className="mt-3 p-3.5 rounded-xl bg-surface-elevated border border-border space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
+              <span className="flex items-center gap-1.5 text-foreground">
                 <PieChart className="w-3.5 h-3.5 text-amber-500" />
                 {title}
               </span>
               <button
                 type="button"
                 onClick={() => navigate('/budgets')}
-                className="text-[11px] text-spendx-blue-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+                className="text-[11px] text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
               >
                 <span>Open Budgets</span>
                 <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pt-1">
-              <span>Spent: {transactionService.formatINR(data.spent || 0)}</span>
-              <span className="font-bold text-spendx-blue-primary">{data.utilization || 0}% used</span>
+            <div className="flex items-center justify-between text-xs text-secondary-text pt-1">
+              <span className="tabular-nums">Spent: {transactionService.formatINR(data.spent || 0)}</span>
+              <span className="font-bold text-primary tabular-nums">{data.utilization || 0}% used</span>
             </div>
           </div>
         );
 
       case 'SAVINGS':
         return (
-          <div className="mt-3 p-3.5 rounded-2xl glass-surface border border-white/80 dark:border-white/10 space-y-2">
+          <div className="mt-3 p-3.5 rounded-xl bg-surface-elevated border border-border space-y-2">
             <div className="flex items-center justify-between text-xs font-semibold">
-              <span className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200">
-                <Target className="w-3.5 h-3.5 text-emerald-500" />
+              <span className="flex items-center gap-1.5 text-foreground">
+                <Target className="w-3.5 h-3.5 text-income" />
                 {title}
               </span>
               <button
                 type="button"
                 onClick={() => navigate('/savings')}
-                className="text-[11px] text-spendx-blue-primary hover:underline flex items-center gap-0.5 cursor-pointer"
+                className="text-[11px] text-primary hover:underline flex items-center gap-0.5 cursor-pointer"
               >
                 <span>View Savings Goal</span>
                 <ArrowUpRight className="w-3 h-3" />
               </button>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 pt-1">
-              <span>Saved: {transactionService.formatINR(data.totalSaved || data.saved || 0)}</span>
-              <span className="font-bold text-emerald-600">
+            <div className="flex items-center justify-between text-xs text-secondary-text pt-1">
+              <span className="tabular-nums">Saved: {transactionService.formatINR(data.totalSaved || data.saved || 0)}</span>
+              <span className="font-bold text-income tabular-nums">
                 Target: {transactionService.formatINR(data.totalTarget || data.target || 0)}
               </span>
             </div>
@@ -192,19 +192,19 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
     >
       {/* Assistant Avatar */}
       {!isUser && (
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-tr from-spendx-ai-accent to-spendx-purple-primary text-white flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-xs mt-0.5">
           <Sparkles className="w-4 h-4" />
         </div>
       )}
 
       {/* Bubble */}
       <div
-        className={`max-w-[90%] xs:max-w-[85%] sm:max-w-[75%] rounded-3xl p-3.5 sm:p-5 shadow-xs transition-all break-words [overflow-wrap:anywhere] min-w-0 ${
+        className={`max-w-[90%] xs:max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-5 shadow-xs transition-all break-words [overflow-wrap:anywhere] min-w-0 ${
           isUser
-            ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white rounded-tr-xs'
+            ? 'bg-primary text-primary-foreground rounded-tr-xs shadow-xs'
             : message.isError
-            ? 'bg-rose-50/80 dark:bg-rose-950/20 border border-rose-500/30 text-rose-800 dark:text-rose-200 rounded-tl-xs'
-            : 'glass-panel border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 rounded-tl-xs'
+            ? 'bg-destructive/10 border border-destructive/20 text-destructive rounded-tl-xs'
+            : 'bg-surface border border-border text-foreground rounded-tl-xs shadow-card'
         }`}
       >
         {renderFormattedContent(message.content)}
@@ -212,7 +212,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
 
         {/* Action Toolbar on Assistant Messages */}
         {!isUser && (
-          <div className="flex items-center justify-between pt-3 mt-2 border-t border-slate-100/60 dark:border-white/10 text-[10px] text-slate-400">
+          <div className="flex items-center justify-between pt-3 mt-2 border-t border-border text-[10px] text-muted-foreground">
             <span>
               {new Date(message.timestamp).toLocaleTimeString([], {
                 hour: '2-digit',
@@ -224,12 +224,12 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
               <button
                 type="button"
                 onClick={handleCopy}
-                className="p-1 rounded-md hover:bg-white/40 dark:hover:bg-white/10 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+                className="p-1 rounded-md hover:bg-surface-elevated text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 title="Copy response"
                 aria-label="Copy response"
               >
                 {copied ? (
-                  <Check className="w-3 h-3 text-emerald-500" />
+                  <Check className="w-3 h-3 text-income" />
                 ) : (
                   <Copy className="w-3 h-3" />
                 )}
@@ -239,7 +239,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
                 <button
                   type="button"
                   onClick={onRetry}
-                  className="flex items-center gap-1 text-rose-600 hover:underline cursor-pointer font-medium"
+                  className="flex items-center gap-1 text-destructive hover:underline cursor-pointer font-medium"
                 >
                   <RotateCcw className="w-3 h-3" />
                   <span>Retry</span>
@@ -252,7 +252,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
 
       {/* User Avatar */}
       {isUser && (
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-200 flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-surface-elevated border border-border text-foreground flex items-center justify-center shrink-0 shadow-xs mt-0.5">
           <User className="w-4 h-4" />
         </div>
       )}

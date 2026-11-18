@@ -40,7 +40,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
   ).sort();
 
   return (
-    <div className="glass-panel p-5 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-5 space-y-4 shadow-card">
       {/* Top Row: Date Presets Pills */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full no-scrollbar">
@@ -53,8 +53,8 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                 onClick={() => onChange({ ...filters, datePreset: preset.value })}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm'
-                    : 'glass-surface text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-white/60 dark:border-white/5'
+                    ? 'bg-primary text-primary-foreground shadow-xs'
+                    : 'bg-surface-elevated text-secondary-text hover:text-foreground border border-border'
                 }`}
               >
                 {preset.label}
@@ -67,7 +67,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 px-3 py-1.5 rounded-xl glass-surface border border-white/60 dark:border-white/5 transition-colors cursor-pointer shrink-0"
+          className="flex items-center gap-1.5 text-xs text-secondary-text hover:text-foreground px-3 py-1.5 rounded-xl bg-surface-elevated border border-border transition-colors cursor-pointer shrink-0 shadow-xs"
           title="Reset to default filters"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -77,11 +77,11 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
 
       {/* Custom Date Range (when CUSTOM selected) */}
       {filters.datePreset === 'CUSTOM' && (
-        <div className="p-3.5 rounded-2xl glass-surface border border-spendx-blue-primary/30 grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in duration-200">
+        <div className="p-3.5 rounded-xl bg-surface-elevated border border-border grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in duration-200">
           <div>
             <label
               htmlFor="analytics-custom-start"
-              className="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1"
+              className="block text-[11px] font-semibold text-secondary-text mb-1"
             >
               Start Date
             </label>
@@ -92,13 +92,13 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               onChange={(e) =>
                 onChange({ ...filters, customStartDate: e.target.value })
               }
-              className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary"
+              className="w-full px-3 py-2 rounded-xl text-xs bg-surface border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
           <div>
             <label
               htmlFor="analytics-custom-end"
-              className="block text-[11px] font-semibold text-slate-600 dark:text-slate-300 mb-1"
+              className="block text-[11px] font-semibold text-secondary-text mb-1"
             >
               End Date
             </label>
@@ -109,14 +109,14 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               onChange={(e) =>
                 onChange({ ...filters, customEndDate: e.target.value })
               }
-              className="w-full px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary"
+              className="w-full px-3 py-2 rounded-xl text-xs bg-surface border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
         </div>
       )}
 
       {/* Bottom Filter Controls: Account, Type, Category & Compare Toggle */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100/60 dark:border-white/5">
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-border">
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Account Filter */}
           <div className="relative">
@@ -127,7 +127,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               id="analytics-account-select"
               value={filters.accountId}
               onChange={(e) => onChange({ ...filters, accountId: e.target.value })}
-              className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
             >
               <option value="ALL">All Accounts</option>
               {accounts.map((acc) => (
@@ -152,7 +152,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                   transactionType: e.target.value as AnalyticsFiltersState['transactionType'],
                 })
               }
-              className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
             >
               <option value="ALL">All Flows (Income & Expense)</option>
               <option value="EXPENSE">Expenses Only</option>
@@ -169,7 +169,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               id="analytics-category-select"
               value={filters.category}
               onChange={(e) => onChange({ ...filters, category: e.target.value })}
-              className="px-3 py-2 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary font-medium"
+              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
             >
               <option value="ALL">All Categories</option>
               {allCategories.map((cat) => (
@@ -184,7 +184,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
         {/* Compare with Previous Period Switch */}
         <label
           htmlFor="analytics-compare-toggle"
-          className="flex items-center gap-2 text-xs font-semibold text-slate-700 dark:text-slate-200 cursor-pointer select-none"
+          className="flex items-center gap-2 text-xs font-semibold text-foreground cursor-pointer select-none"
         >
           <input
             id="analytics-compare-toggle"
@@ -193,9 +193,9 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
             onChange={(e) =>
               onChange({ ...filters, compareWithPrevious: e.target.checked })
             }
-            className="w-4 h-4 rounded text-spendx-blue-primary focus:ring-spendx-blue-primary border-slate-300 dark:border-slate-600 cursor-pointer"
+            className="w-4 h-4 rounded text-primary focus:ring-primary/40 border-border bg-surface-elevated cursor-pointer"
           />
-          <ArrowRightLeft className="w-3.5 h-3.5 text-spendx-purple-primary" />
+          <ArrowRightLeft className="w-3.5 h-3.5 text-secondary" />
           <span>Compare vs. Prior Period</span>
         </label>
       </div>

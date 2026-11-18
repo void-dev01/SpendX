@@ -195,16 +195,16 @@ export const BudgetsPage: React.FC = () => {
   if (isBudgetsLoading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200/70 dark:bg-slate-800 rounded-xl" />
+        <div className="h-10 w-48 bg-surface-elevated border border-border rounded-xl" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="glass-panel p-5 rounded-2xl h-32" />
+            <div key={i} className="bg-surface border border-border p-5 rounded-2xl h-32 shadow-card" />
           ))}
         </div>
-        <div className="glass-panel p-6 rounded-3xl h-44" />
+        <div className="bg-surface border border-border p-6 rounded-2xl h-44 shadow-card" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-panel p-5 rounded-3xl h-44" />
+            <div key={i} className="bg-surface border border-border p-5 rounded-2xl h-44 shadow-card" />
           ))}
         </div>
       </div>
@@ -213,20 +213,20 @@ export const BudgetsPage: React.FC = () => {
 
   if (isBudgetsError) {
     return (
-      <div className="glass-panel p-8 rounded-3xl max-w-xl mx-auto my-12 text-center space-y-4 border border-rose-500/20">
-        <div className="w-12 h-12 mx-auto rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+      <div className="bg-surface border border-border p-8 rounded-2xl max-w-xl mx-auto my-12 text-center space-y-4 shadow-elevated">
+        <div className="w-12 h-12 mx-auto rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
           <AlertTriangle className="w-6 h-6" />
         </div>
-        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+        <h2 className="text-xl font-display font-bold text-foreground">
           Unable to Load Budgets
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+        <p className="text-xs text-secondary-text max-w-md mx-auto">
           {budgetsError instanceof Error ? budgetsError.message : 'An error occurred while calculating budget telemetry.'}
         </p>
         <button
           type="button"
           onClick={() => refetch()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-spendx-blue-primary hover:bg-spendx-blue-primary/90 transition-all cursor-pointer shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 transition-all cursor-pointer shadow-xs"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           Retry Connection
@@ -239,10 +239,10 @@ export const BudgetsPage: React.FC = () => {
     <div className="space-y-6">
       {/* 1. Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple">
+        <h1 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-foreground">
           Budgets
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-secondary-text mt-1">
           Plan smarter, spend better, and stay in control of your money.
         </p>
       </div>

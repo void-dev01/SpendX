@@ -3,19 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import {
   Utensils,
   ShoppingBag,
-  Car,
-  Zap,
-  Film,
-  HeartPulse,
-  GraduationCap,
-  Plane,
   Home,
+  Car,
+  Film,
+  Zap,
+  HeartPulse,
   Tag,
+  AlertTriangle,
+  ShieldCheck,
   MoreVertical,
   Edit2,
   Trash2,
   ArrowUpRight,
-  AlertTriangle,
 } from 'lucide-react';
 import { BudgetWithMetrics, budgetService } from '@/services/budgetService';
 
@@ -33,82 +32,79 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const getCategoryIcon = (cat: string) => {
-    switch (cat) {
-      case 'Food & Dining':
-        return <Utensils className="w-5 h-5 text-spendx-blue-primary" />;
-      case 'Shopping':
-        return <ShoppingBag className="w-5 h-5 text-spendx-purple-primary" />;
-      case 'Transport':
-        return <Car className="w-5 h-5 text-blue-500" />;
-      case 'Bills & Utilities':
-        return <Zap className="w-5 h-5 text-amber-500" />;
-      case 'Entertainment':
-        return <Film className="w-5 h-5 text-purple-500" />;
-      case 'Healthcare':
-        return <HeartPulse className="w-5 h-5 text-rose-500" />;
-      case 'Education':
-        return <GraduationCap className="w-5 h-5 text-indigo-500" />;
-      case 'Travel':
-        return <Plane className="w-5 h-5 text-emerald-500" />;
-      case 'Housing & Rent':
-        return <Home className="w-5 h-5 text-teal-500" />;
-      default:
-        return <Tag className="w-5 h-5 text-spendx-blue-primary" />;
-    }
+  const getCategoryIcon = (category: string) => {
+    const cat = category.toLowerCase();
+    if (cat.includes('food') || cat.includes('dining') || cat.includes('grocery'))
+      return <Utensils className="w-5 h-5 text-primary" />;
+    if (cat.includes('shop'))
+      return <ShoppingBag className="w-5 h-5 text-secondary" />;
+    if (cat.includes('hous') || cat.includes('rent'))
+      return <Home className="w-5 h-5 text-income" />;
+    if (cat.includes('transport') || cat.includes('fuel'))
+      return <Car className="w-5 h-5 text-amber-500" />;
+    if (cat.includes('entertain'))
+      return <Film className="w-5 h-5 text-primary" />;
+    if (cat.includes('util') || cat.includes('bill'))
+      return <Zap className="w-5 h-5 text-amber-500" />;
+    if (cat.includes('health') || cat.includes('med'))
+      return <HeartPulse className="w-5 h-5 text-expense" />;
+    return <Tag className="w-5 h-5 text-primary" />;
   };
 
   const getStatusBadge = () => {
-    if (budget.status === 'EXCEEDED') {
-      return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md">
-          <AlertTriangle className="w-3 h-3" /> Exceeded ({budget.utilizationPercentage}%)
-        </span>
-      );
+    switch (budget.status) {
+      case 'EXCEEDED':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-destructive bg-destructive/10 px-2 py-0.5 rounded-full border border-destructive/20">
+            <AlertTriangle className="w-3 h-3" /> Exceeded (
+            {budget.utilizationPercentage}%)
+          </span>
+        );
+      case 'NEAR_LIMIT':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+            <AlertTriangle className="w-3 h-3" /> Near Limit (
+            {budget.utilizationPercentage}%)
+          </span>
+        );
+      case 'APPROACHING':
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+            {budget.utilizationPercentage}%
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-income bg-income/10 px-2 py-0.5 rounded-full border border-income/20">
+            <ShieldCheck className="w-3 h-3" /> On Track (
+            {budget.utilizationPercentage}%)
+          </span>
+        );
     }
-    if (budget.status === 'NEAR_LIMIT') {
-      return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
-          Near Limit ({budget.utilizationPercentage}%)
-        </span>
-      );
-    }
-    if (budget.status === 'APPROACHING') {
-      return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md">
-          Approaching ({budget.utilizationPercentage}%)
-        </span>
-      );
-    }
-    return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-spendx-blue-primary bg-spendx-blue-primary/10 px-2 py-0.5 rounded-md">
-        On Track ({budget.utilizationPercentage}%)
-      </span>
-    );
   };
 
   const getProgressBarColor = () => {
-    if (budget.status === 'EXCEEDED') return 'bg-rose-500';
+    if (budget.status === 'EXCEEDED') return 'bg-destructive';
     if (budget.status === 'NEAR_LIMIT' || budget.status === 'APPROACHING')
       return 'bg-amber-500';
-    return 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary';
+    return 'bg-primary';
   };
 
   return (
-    <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-glass flex flex-col justify-between relative group hover:border-primary/50 transition-all">
+    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card hover:shadow-elevated flex flex-col justify-between relative group transition-all">
       {/* Top Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10 flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-surface-elevated border border-border flex items-center justify-center shrink-0">
             {getCategoryIcon(budget.category)}
           </div>
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
               {budget.category}
             </span>
             <h3
               onClick={() => navigate(`/budgets/${budget.id}`)}
-              className="text-base font-bold text-foreground hover:text-primary transition-colors cursor-pointer truncate max-w-[170px] leading-tight"
+              className="text-base font-display font-bold text-foreground hover:text-primary transition-colors cursor-pointer truncate max-w-[170px] leading-tight"
             >
               {budget.name}
             </h3>
@@ -120,7 +116,7 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-white/40 dark:hover:bg-white/5 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
             aria-label="Budget actions"
           >
             <MoreVertical className="w-4 h-4" />
@@ -129,14 +125,14 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
           {menuOpen && (
             <>
               <div className="fixed inset-0 z-20" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl glass-panel border border-white/80 dark:border-white/15 p-1.5 shadow-xl text-left">
+              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl bg-surface border border-border p-1.5 shadow-elevated text-left">
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     navigate(`/budgets/${budget.id}`);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated cursor-pointer"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" />
                   <span>View Details</span>
@@ -147,19 +143,19 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
                     setMenuOpen(false);
                     onEdit(budget);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-spendx-blue-primary/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated cursor-pointer"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                   <span>Edit</span>
                 </button>
-                <div className="my-1 border-t border-slate-100/60 dark:border-white/5" />
+                <div className="my-1 border-t border-border" />
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     onDelete(budget);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-rose-600 hover:bg-rose-500/10"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-destructive hover:bg-destructive/10 cursor-pointer"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>Delete</span>
@@ -173,15 +169,15 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
       {/* Progress Bar & Status */}
       <div className="my-4 space-y-2.5">
         <div className="flex items-baseline justify-between">
-          <span className="text-sm font-extrabold text-foreground tabular-nums tracking-tight">
+          <span className="text-sm font-display font-extrabold text-foreground tabular-nums tracking-tight">
             {budgetService.formatINR(budget.spent)}
           </span>
-          <span className="text-xs text-muted-foreground font-medium">
+          <span className="text-xs text-secondary-text font-medium">
             of {budgetService.formatINR(budget.allocatedAmount)}
           </span>
         </div>
 
-        <div className="w-full h-2 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
+        <div className="w-full h-2 rounded-full bg-surface-elevated border border-border overflow-hidden">
           <div
             className={`h-full rounded-full transition-all duration-500 ${getProgressBarColor()}`}
             style={{ width: `${Math.min(100, budget.utilizationPercentage)}%` }}
@@ -190,19 +186,19 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
 
         <div className="flex items-center justify-between text-xs pt-1">
           <div>{getStatusBadge()}</div>
-          <span className="text-muted-foreground text-[11px] font-medium">
+          <span className="text-secondary-text text-[11px] font-medium">
             {budget.matchingTransactionCount} txns
           </span>
         </div>
       </div>
 
       {/* Bottom Footer: Remaining & Deep link */}
-      <div className="pt-3 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-xs">
-        <span className="text-muted-foreground font-medium">
+      <div className="pt-3 border-t border-border flex items-center justify-between text-xs">
+        <span className="text-secondary-text font-medium">
           Remaining:{' '}
           <strong
             className={`tabular-nums font-bold ${
-              budget.status === 'EXCEEDED' ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'
+              budget.status === 'EXCEEDED' ? 'text-expense' : 'text-income'
             }`}
           >
             {budgetService.formatINR(budget.remaining)}
@@ -212,7 +208,7 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
         <button
           type="button"
           onClick={() => navigate(`/budgets/${budget.id}`)}
-          className="inline-flex items-center gap-1 font-bold text-primary hover:underline transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 font-semibold text-primary hover:underline transition-colors cursor-pointer"
         >
           <span>Audit</span>
           <ArrowUpRight className="w-3.5 h-3.5" />

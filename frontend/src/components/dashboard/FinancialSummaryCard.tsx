@@ -22,29 +22,23 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
   trendIsPositive,
 }) => {
   return (
-    <div className="glass-card-interactive p-4 sm:p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
+    <div className="bg-surface rounded-2xl p-5 border border-border shadow-card flex flex-col justify-between hover:shadow-elevated hover:border-primary/30 transition-all duration-200 group">
       {/* Top row: Label & Squircle Icon */}
       <div className="flex items-center justify-between gap-3">
         <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground truncate">
           {label}
         </span>
         <div
-          className={`squircle-icon transition-transform duration-200 group-hover:scale-105 shadow-sm shrink-0 ${iconColorClass}`}
+          className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-200 group-hover:scale-105 shadow-xs ${iconColorClass}`}
         >
           <Icon weight="duotone" className="w-5 h-5" />
         </div>
       </div>
 
       {/* Center: Financial Value (Lining & Tabular Numerals) */}
-      <div className="my-3 sm:my-4 min-w-0">
+      <div className="my-3 min-w-0">
         <div
-          className={`text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums kpi-value leading-tight truncate ${
-            label.toLowerCase().includes('balance') ||
-            label.toLowerCase().includes('net worth') ||
-            label.toLowerCase().includes('savings')
-              ? 'text-gradient-wealth'
-              : 'text-foreground'
-          }`}
+          className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight tabular-nums text-foreground leading-tight truncate"
           title={dashboardService.formatINR(value)}
         >
           {dashboardService.formatINR(value)}
@@ -52,8 +46,8 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
       </div>
 
       {/* Bottom: Description & optional Trend */}
-      <div className="flex items-center justify-between gap-2 mt-auto pt-3 border-t border-black/5 dark:border-white/10 text-xs">
-        <span className="text-xs text-muted-foreground truncate font-medium">
+      <div className="flex items-center justify-between gap-2 mt-auto pt-3 border-t border-border text-xs">
+        <span className="text-xs text-secondary-text truncate font-medium">
           {description}
         </span>
 
@@ -61,14 +55,14 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
           <div
             className={`inline-flex items-center gap-1 font-bold text-xs px-2 py-0.5 rounded-lg shrink-0 ${
               trendIsPositive
-                ? 'text-emerald-700 dark:text-emerald-300 bg-emerald-500/10'
-                : 'text-rose-700 dark:text-rose-300 bg-rose-500/10'
+                ? 'text-income bg-income/10'
+                : 'text-expense bg-expense/10'
             }`}
           >
             {trendIsPositive ? (
-              <TrendUp weight="bold" className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <TrendUp weight="bold" className="w-3.5 h-3.5 text-income" />
             ) : (
-              <TrendDown weight="bold" className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+              <TrendDown weight="bold" className="w-3.5 h-3.5 text-expense" />
             )}
             <span>
               {trendPercentage > 0 ? `+${trendPercentage}%` : `${trendPercentage}%`}

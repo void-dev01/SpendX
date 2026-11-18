@@ -28,21 +28,21 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
       case 'income':
         return {
           title: 'Income Inflow Velocity',
-          color: '#12866E',
+          color: '#10B981',
           gradientId: 'incomeGrad',
           name: 'Income',
         };
       case 'net':
         return {
           title: 'Net Cash Flow Surplus/Deficit',
-          color: '#718FE8',
+          color: '#6366F1',
           gradientId: 'netGrad',
           name: 'Net Flow',
         };
       default:
         return {
           title: 'Expenditure Burn Rate',
-          color: '#DC5579',
+          color: '#F43F5E',
           gradientId: 'expenseGrad',
           name: 'Expenses',
         };
@@ -55,8 +55,8 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
     if (active && payload && payload.length) {
       const val = payload[0].value || 0;
       return (
-        <div className="glass-surface p-2.5 rounded-xl border border-white/90 dark:border-white/15 shadow-md text-xs min-w-[140px] space-y-1">
-          <p className="font-bold text-slate-800 dark:text-slate-100">{label}</p>
+        <div className="bg-surface p-2.5 rounded-xl border border-border shadow-elevated text-xs min-w-[140px] space-y-1">
+          <p className="font-bold font-display text-foreground">{label}</p>
           <div className="flex items-center justify-between font-semibold" style={{ color: config.color }}>
             <span>{config.name}:</span>
             <span className="tabular-nums">{analyticsService.formatINR(val)}</span>
@@ -68,27 +68,27 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-4 shadow-card">
       {/* Header and Switcher Pills */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-base font-bold font-display text-foreground">
             Spending Trends
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Velocity and pattern progression over chronological intervals
           </p>
         </div>
 
         {/* Toggle Pills */}
-        <div className="flex items-center gap-1 p-1 rounded-xl glass-surface border border-white/80 dark:border-white/10 self-start sm:self-auto">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setMetric('expense')}
             className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
               metric === 'expense'
-                ? 'bg-rose-500 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                ? 'bg-destructive text-destructive-foreground shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
           >
             Expenses
@@ -98,8 +98,8 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
             onClick={() => setMetric('income')}
             className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
               metric === 'income'
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                ? 'bg-income text-income-foreground shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
           >
             Income
@@ -109,8 +109,8 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
             onClick={() => setMetric('net')}
             className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
               metric === 'net'
-                ? 'bg-spendx-blue-primary text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
           >
             Net Cash Flow

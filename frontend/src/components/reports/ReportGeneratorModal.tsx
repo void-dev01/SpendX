@@ -59,15 +59,15 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="glass-card w-full max-w-lg rounded-3xl p-4 sm:p-8 shadow-2xl border border-white/60 dark:border-white/10 relative max-h-[90dvh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-fadeIn">
+      <div className="w-full max-w-lg rounded-2xl p-5 sm:p-7 bg-surface border border-border shadow-elevated relative max-h-[90dvh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-white/10">
+        <div className="flex items-center justify-between pb-4 border-b border-border">
           <div>
-            <h2 className="text-xl font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+            <h2 className="text-xl font-bold font-display text-foreground">
               Generate Financial Report
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-secondary-text mt-0.5">
               Build custom statements, tax audit exports, or ledger downloads.
             </p>
           </div>
@@ -75,7 +75,7 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -84,7 +84,7 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
         <form onSubmit={handleSubmit} className="mt-5 space-y-4">
           {/* Report Type */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-foreground mb-1.5">
               Report Type
             </label>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -98,10 +98,10 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
                   key={item.type}
                   type="button"
                   onClick={() => setReportType(item.type as any)}
-                  className={`p-2.5 rounded-xl border text-left font-semibold transition-all ${
+                  className={`p-2.5 rounded-xl border text-left font-semibold transition-all shadow-xs ${
                     reportType === item.type
-                      ? 'bg-spendx-blue-primary text-white border-spendx-blue-primary shadow-sm'
-                      : 'bg-white/50 dark:bg-slate-900/40 border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'bg-surface-elevated border-border text-foreground hover:bg-surface'
                   }`}
                 >
                   {item.label}
@@ -113,28 +113,28 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
           {/* Date Presets */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-semibold text-foreground">
                 Period Range
               </label>
               <div className="flex items-center gap-1.5 text-[11px]">
                 <button
                   type="button"
                   onClick={() => handleApplyPreset('THIS_MONTH')}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-spendx-blue-primary hover:bg-spendx-blue-primary/10 transition-colors"
+                  className="px-2 py-0.5 rounded-md bg-surface-elevated border border-border text-primary hover:bg-surface transition-colors"
                 >
                   This Month
                 </button>
                 <button
                   type="button"
                   onClick={() => handleApplyPreset('LAST_MONTH')}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-spendx-blue-primary hover:bg-spendx-blue-primary/10 transition-colors"
+                  className="px-2 py-0.5 rounded-md bg-surface-elevated border border-border text-primary hover:bg-surface transition-colors"
                 >
                   Last Month
                 </button>
                 <button
                   type="button"
                   onClick={() => handleApplyPreset('YTD')}
-                  className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-spendx-blue-primary hover:bg-spendx-blue-primary/10 transition-colors"
+                  className="px-2 py-0.5 rounded-md bg-surface-elevated border border-border text-primary hover:bg-surface transition-colors"
                 >
                   Year to Date
                 </button>
@@ -143,23 +143,23 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <span className="text-[11px] text-slate-400 block mb-1">From</span>
+                <span className="text-[11px] text-muted-foreground block mb-1">From</span>
                 <input
                   type="date"
                   value={startDate}
                   aria-label="Start date"
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
               <div>
-                <span className="text-[11px] text-slate-400 block mb-1">To</span>
+                <span className="text-[11px] text-muted-foreground block mb-1">To</span>
                 <input
                   type="date"
                   value={endDate}
                   aria-label="End date"
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 text-xs rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                  className="w-full px-3 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
             </div>
@@ -167,14 +167,14 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
 
           {/* Account Filter */}
           <div>
-            <label htmlFor="rep-acc" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label htmlFor="rep-acc" className="block text-xs font-semibold text-foreground mb-1">
               Account Filter
             </label>
             <select
               id="rep-acc"
               value={accountId}
               onChange={(e) => setAccountId(e.target.value)}
-              className="w-full px-3 py-2 text-xs rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 cursor-pointer"
+              className="w-full px-3 py-2 text-xs rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer shadow-xs"
             >
               <option value="">All Accounts Consolidated</option>
               {accounts.map((acc) => (
@@ -187,7 +187,7 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
 
           {/* Export Output Format */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-foreground mb-1.5">
               Export Format
             </label>
             <div className="grid grid-cols-3 gap-2 text-xs">
@@ -200,10 +200,10 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
                   key={item.format}
                   type="button"
                   onClick={() => setFormat(item.format as any)}
-                  className={`py-2 rounded-xl border text-center font-semibold transition-all ${
+                  className={`py-2 rounded-xl border text-center font-semibold transition-all shadow-xs ${
                     format === item.format
-                      ? 'bg-spendx-purple-primary text-white border-spendx-purple-primary shadow-sm'
-                      : 'bg-white/50 dark:bg-slate-900/40 border-slate-200/80 dark:border-white/10 text-slate-700 dark:text-slate-300'
+                      ? 'bg-secondary text-secondary-foreground border-secondary'
+                      : 'bg-surface-elevated border-border text-foreground hover:bg-surface'
                   }`}
                 >
                   {item.label}
@@ -213,17 +213,17 @@ export const ReportGeneratorModal: React.FC<ReportGeneratorModalProps> = ({
           </div>
 
           {/* Action buttons */}
-          <div className="pt-4 border-t border-slate-200/60 dark:border-white/10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
+          <div className="pt-4 border-t border-border flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-center min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 text-xs font-semibold text-secondary-text hover:text-foreground hover:bg-surface-elevated rounded-xl transition-colors text-center min-h-[44px]"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="btn-spendx-primary w-full sm:w-auto px-5 py-2.5 text-xs font-semibold rounded-xl flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full sm:w-auto px-5 py-2.5 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors flex items-center justify-center gap-2 min-h-[44px]"
             >
               <Download className="w-4 h-4" />
               <span>Generate & Export</span>

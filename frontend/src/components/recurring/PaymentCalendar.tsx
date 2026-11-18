@@ -56,18 +56,18 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
   };
 
   return (
-    <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-6">
+    <div className="bg-surface p-6 rounded-2xl border border-border shadow-card space-y-6">
       {/* Calendar Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-spendx-blue-primary/10 text-spendx-blue-primary flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
             <CalendarIcon className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+            <h3 className="text-lg font-display font-bold text-foreground">
               {monthNames[month]} {year}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-secondary-text">
               Visual payment roadmap & scheduled debit days
             </p>
           </div>
@@ -78,14 +78,14 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
             type="button"
             onClick={handlePrevMonth}
             aria-label="Previous month"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-xl text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-spendx-blue-primary/10 text-spendx-blue-primary hover:bg-spendx-blue-primary/20 transition-colors"
+            className="px-3 py-1.5 text-xs font-medium rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors cursor-pointer"
           >
             Today
           </button>
@@ -93,7 +93,7 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
             type="button"
             onClick={handleNextMonth}
             aria-label="Next month"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-xl text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
@@ -101,7 +101,7 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
       </div>
 
       {/* Weekday headers */}
-      <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
+      <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider">
         <span>Sun</span>
         <span>Mon</span>
         <span>Tue</span>
@@ -115,7 +115,7 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
       <div className="grid grid-cols-7 gap-2">
         {/* Leading empty days */}
         {Array.from({ length: firstDayIndex }).map((_, i) => (
-          <div key={`empty-${i}`} className="min-h-[70px] sm:min-h-[85px] rounded-2xl bg-transparent" />
+          <div key={`empty-${i}`} className="min-h-[70px] sm:min-h-[85px] rounded-xl bg-transparent" />
         ))}
 
         {/* Days of month */}
@@ -134,36 +134,36 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
             <div
               key={`day-${day}`}
               onClick={() => handleDayClick(day)}
-              className={`min-h-[70px] sm:min-h-[85px] p-2 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+              className={`min-h-[70px] sm:min-h-[85px] p-2 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
                 isSelected
-                  ? 'border-spendx-blue-primary bg-spendx-blue-primary/10 ring-2 ring-spendx-blue-primary/30'
+                  ? 'border-primary bg-primary/10 ring-1 ring-primary/30 shadow-xs'
                   : hasPayments
-                  ? 'border-spendx-blue-primary/40 bg-white/60 dark:bg-slate-900/40 hover:border-spendx-blue-primary'
-                  : 'border-slate-100 dark:border-white/5 bg-white/20 dark:bg-white/[0.02] hover:bg-white/40 dark:hover:bg-white/[0.05]'
+                  ? 'border-primary/40 bg-surface-elevated hover:border-primary shadow-xs'
+                  : 'border-border bg-surface hover:bg-surface-elevated'
               }`}
             >
               <div className="flex items-center justify-between">
                 <span
                   className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ${
                     isToday
-                      ? 'bg-spendx-blue-primary text-white'
-                      : 'text-spendx-text-primary dark:text-slate-200'
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-foreground'
                   }`}
                 >
                   {day}
                 </span>
 
                 {hasPayments && (
-                  <span className="w-2 h-2 rounded-full bg-spendx-purple-primary animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-secondary" />
                 )}
               </div>
 
               {hasPayments && (
                 <div className="mt-1">
-                  <p className="text-[11px] font-bold text-spendx-indigo dark:text-spendx-soft-purple truncate">
+                  <p className="text-[11px] font-display font-bold text-foreground truncate">
                     {recurringService.formatINR(totalAmount)}
                   </p>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-secondary-text">
                     {dayList.length} {dayList.length === 1 ? 'charge' : 'charges'}
                   </p>
                 </div>
@@ -175,12 +175,12 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
 
       {/* Selected Day Drilldown Panel */}
       {selectedDayNumber !== null && (
-        <div className="pt-4 border-t border-slate-200/60 dark:border-white/10 animate-fadeIn">
+        <div className="pt-4 border-t border-border animate-fadeIn">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-sm font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+            <h4 className="text-sm font-display font-bold text-foreground">
               Charges on {monthNames[month]} {selectedDayNumber}, {year}
             </h4>
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-secondary-text">
               {selectedDayPayments?.length || 0} scheduled
             </span>
           </div>
@@ -191,25 +191,25 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
                 <div
                   key={p.id}
                   onClick={() => onSelectPayment(p)}
-                  className="p-3 rounded-xl bg-white/60 dark:bg-slate-900/60 border border-slate-200/80 dark:border-white/10 hover:border-spendx-blue-primary transition-all cursor-pointer flex items-center justify-between"
+                  className="p-3 rounded-xl bg-surface-elevated border border-border hover:border-primary transition-all cursor-pointer flex items-center justify-between shadow-xs"
                 >
                   <div className="truncate mr-2">
-                    <p className="text-xs font-bold text-spendx-text-primary dark:text-spendx-soft-purple truncate">
+                    <p className="text-xs font-semibold text-foreground truncate">
                       {p.name}
                     </p>
-                    <p className="text-[10px] text-slate-400 truncate">{p.merchant}</p>
+                    <p className="text-[10px] text-secondary-text truncate">{p.merchant}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-xs font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+                    <p className="text-xs font-display font-bold text-foreground">
                       {recurringService.formatINR(p.amount)}
                     </p>
-                    <span className="text-[10px] text-spendx-blue-primary">{p.status}</span>
+                    <span className="text-[10px] text-primary font-medium">{p.status}</span>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-xs text-slate-400 italic">No payments due on this date.</p>
+            <p className="text-xs text-secondary-text italic">No payments due on this date.</p>
           )}
         </div>
       )}

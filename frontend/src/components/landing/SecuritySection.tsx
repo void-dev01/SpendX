@@ -99,7 +99,7 @@ export const SecuritySection: React.FC = () => {
         </div>
 
         {/* Honest Trust Banner */}
-        <div className="p-4 sm:p-5 rounded-2xl glass-panel border border-white/70 dark:border-white/10 max-w-3xl mx-auto flex items-start gap-3 text-xs text-muted-foreground leading-relaxed">
+        <div className="p-4 sm:p-5 rounded-xl bg-surface-elevated border border-border shadow-xs max-w-3xl mx-auto flex items-start gap-3 text-xs text-secondary-text leading-relaxed">
           <ShieldAlert className="w-4 h-4 text-primary shrink-0 mt-0.5" />
           <span>
             <strong>Our Security Pledge:</strong> We do not make unsubstantiated claims or display

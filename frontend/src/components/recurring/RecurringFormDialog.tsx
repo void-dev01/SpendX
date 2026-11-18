@@ -101,15 +101,15 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn">
-      <div className="glass-card w-full max-w-lg rounded-3xl p-4 sm:p-8 shadow-2xl border border-white/60 dark:border-white/10 relative max-h-[90dvh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-fadeIn">
+      <div className="w-full max-w-lg rounded-2xl p-5 sm:p-7 bg-surface border border-border shadow-elevated relative max-h-[90dvh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-white/10">
+        <div className="flex items-center justify-between pb-4 border-b border-border">
           <div>
-            <h2 className="text-xl font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+            <h2 className="text-xl font-bold font-display text-foreground">
               {editingPayment ? 'Edit Recurring Schedule' : 'New Recurring Schedule'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-secondary-text mt-0.5">
               Automate and track repeating charges, loans, rent, and subscriptions.
             </p>
           </div>
@@ -117,7 +117,7 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -128,7 +128,7 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
           {/* Name & Merchant */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="rec-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-name" className="block text-xs font-semibold text-foreground mb-1.5">
                 Plan / Service Name *
               </label>
               <div className="relative">
@@ -137,16 +137,16 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
                   type="text"
                   placeholder="e.g. Netflix Premium 4K"
                   {...register('name')}
-                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
               {errors.name && (
-                <p className="text-xs text-rose-500 mt-1">{errors.name.message}</p>
+                <p className="text-xs text-destructive mt-1">{errors.name.message}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="rec-merchant" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-merchant" className="block text-xs font-semibold text-foreground mb-1.5">
                 Merchant / Payee *
               </label>
               <div className="relative">
@@ -155,11 +155,11 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
                   type="text"
                   placeholder="e.g. Netflix Ltd"
                   {...register('merchant')}
-                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
               {errors.merchant && (
-                <p className="text-xs text-rose-500 mt-1">{errors.merchant.message}</p>
+                <p className="text-xs text-destructive mt-1">{errors.merchant.message}</p>
               )}
             </div>
           </div>
@@ -167,7 +167,7 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
           {/* Amount & Frequency */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="rec-amount" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-amount" className="block text-xs font-semibold text-foreground mb-1.5">
                 Amount (₹) *
               </label>
               <div className="relative">
@@ -177,22 +177,22 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
                   step="any"
                   placeholder="649"
                   {...register('amount', { valueAsNumber: true })}
-                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </div>
               {errors.amount && (
-                <p className="text-xs text-rose-500 mt-1">{errors.amount.message}</p>
+                <p className="text-xs text-destructive mt-1">{errors.amount.message}</p>
               )}
             </div>
 
             <div>
-              <label htmlFor="rec-freq" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-freq" className="block text-xs font-semibold text-foreground mb-1.5">
                 Billing Cycle *
               </label>
               <select
                 id="rec-freq"
                 {...register('frequency')}
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 cursor-pointer"
+                className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 <option value="DAILY">Daily</option>
                 <option value="WEEKLY">Weekly</option>
@@ -206,13 +206,13 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
           {/* Category & Next Due Date */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="rec-category" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-category" className="block text-xs font-semibold text-foreground mb-1.5">
                 Category *
               </label>
               <select
                 id="rec-category"
                 {...register('category')}
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 cursor-pointer"
+                className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
               >
                 {RECURRING_CATEGORIES.map((cat) => (
                   <option key={cat} value={cat}>
@@ -223,30 +223,30 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
             </div>
 
             <div>
-              <label htmlFor="rec-due" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+              <label htmlFor="rec-due" className="block text-xs font-semibold text-foreground mb-1.5">
                 Next Due Date *
               </label>
               <input
                 id="rec-due"
                 type="date"
                 {...register('nextDueDate')}
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
               />
               {errors.nextDueDate && (
-                <p className="text-xs text-rose-500 mt-1">{errors.nextDueDate.message}</p>
+                <p className="text-xs text-destructive mt-1">{errors.nextDueDate.message}</p>
               )}
             </div>
           </div>
 
           {/* Linked Payment Account */}
           <div>
-            <label htmlFor="rec-account" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label htmlFor="rec-account" className="block text-xs font-semibold text-foreground mb-1.5">
               Payment Source Account (Auto-Deduct on Payment)
             </label>
             <select
               id="rec-account"
               {...register('linkedAccountId')}
-              className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 cursor-pointer"
+              className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
             >
               <option value="">Unlinked (No automatic deduction)</option>
               {accounts.map((acc) => (
@@ -259,7 +259,7 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
 
           {/* Notes */}
           <div>
-            <label htmlFor="rec-notes" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+            <label htmlFor="rec-notes" className="block text-xs font-semibold text-foreground mb-1.5">
               Notes / Account Number / Reference (Optional)
             </label>
             <textarea
@@ -267,24 +267,24 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
               rows={2}
               placeholder="e.g. Auto-debit active on ICICI card ending in 4102"
               {...register('notes')}
-              className="w-full px-3.5 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+              className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-4 border-t border-slate-200/60 dark:border-white/10 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
+          <div className="pt-4 border-t border-border flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-full sm:w-auto px-4 py-2.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors text-center min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 text-sm font-semibold text-secondary-text hover:text-foreground hover:bg-surface-elevated rounded-xl transition-colors text-center min-h-[44px]"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-spendx-primary w-full sm:w-auto px-5 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full sm:w-auto px-5 py-2.5 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>{editingPayment ? 'Save Changes' : 'Create Schedule'}</span>
             </button>

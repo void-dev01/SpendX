@@ -16,13 +16,13 @@ export const AccountAnalysis: React.FC<AccountAnalysisProps> = ({ accounts }) =>
   if (accounts.length === 0) return null;
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-4 shadow-card">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-base font-bold font-display text-foreground">
             Account Financial Analysis
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Flow reconciliation across registered bank, checking, and credit repositories
           </p>
         </div>
@@ -30,7 +30,7 @@ export const AccountAnalysis: React.FC<AccountAnalysisProps> = ({ accounts }) =>
         <button
           type="button"
           onClick={() => navigate('/accounts')}
-          className="self-start sm:self-auto flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer"
         >
           <span>View All Accounts</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -40,7 +40,7 @@ export const AccountAnalysis: React.FC<AccountAnalysisProps> = ({ accounts }) =>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="border-b border-slate-100/80 dark:border-white/10 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+            <tr className="border-b border-border text-muted-foreground font-semibold uppercase tracking-wider text-[10px]">
               <th className="py-2.5 px-3">Account Name</th>
               <th className="py-2.5 px-3 text-right">Inflows</th>
               <th className="py-2.5 px-3 text-right">Outflows</th>
@@ -48,38 +48,38 @@ export const AccountAnalysis: React.FC<AccountAnalysisProps> = ({ accounts }) =>
               <th className="py-2.5 px-3 text-right">Activity</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100/60 dark:divide-white/5">
+          <tbody className="divide-y divide-border">
             {accounts.map((acc) => {
               const isPositive = acc.netCashFlow >= 0;
               return (
                 <tr
                   key={acc.accountId}
                   onClick={() => navigate(`/accounts/${acc.accountId}`)}
-                  className="hover:bg-white/40 dark:hover:bg-white/5 transition-colors cursor-pointer group"
+                  className="hover:bg-surface-elevated transition-colors cursor-pointer group"
                 >
-                  <td className="py-3 px-3 font-semibold text-slate-700 dark:text-slate-200 group-hover:text-spendx-blue-primary transition-colors">
+                  <td className="py-3 px-3 font-semibold text-foreground group-hover:text-primary transition-colors">
                     <div className="flex items-center gap-2">
-                      <Landmark className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <Landmark className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                       <span className="truncate max-w-[200px]">{acc.accountName}</span>
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-right font-medium text-emerald-600 dark:text-emerald-400 tabular-nums">
+                  <td className="py-3 px-3 text-right font-medium text-income tabular-nums">
                     +{analyticsService.formatINR(acc.income)}
                   </td>
-                  <td className="py-3 px-3 text-right font-medium text-rose-600 dark:text-rose-400 tabular-nums">
+                  <td className="py-3 px-3 text-right font-medium text-destructive tabular-nums">
                     {analyticsService.formatINR(acc.expenses)}
                   </td>
                   <td
                     className={`py-3 px-3 text-right font-bold tabular-nums ${
                       isPositive
-                        ? 'text-spendx-indigo dark:text-spendx-soft-purple'
-                        : 'text-rose-500'
+                        ? 'text-primary'
+                        : 'text-destructive'
                     }`}
                   >
                     {isPositive ? '+' : ''}
                     {analyticsService.formatINR(acc.netCashFlow)}
                   </td>
-                  <td className="py-3 px-3 text-right text-slate-400 tabular-nums">
+                  <td className="py-3 px-3 text-right text-muted-foreground tabular-nums">
                     {acc.transactionCount} txns
                   </td>
                 </tr>

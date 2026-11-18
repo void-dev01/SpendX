@@ -44,24 +44,24 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       {/* Left: Greeting & Date */}
       <div>
         <div className="flex items-center gap-2.5 flex-wrap">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gradient-brand">
+          <h1 className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-foreground">
             {getGreeting()}, {userDisplayName}!
           </h1>
 
           {isDemo && (
             <div className="inline-flex items-center gap-2">
               <span
-                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20"
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-warning/10 text-warning border border-warning/20"
                 title="Currently showing illustrative benchmark data. Connect your accounts to enable live synchronization."
               >
-                <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                <AlertCircle className="w-3 h-3 text-warning" />
                 Demo Data
               </span>
               {onClearSampleData && (
                 <button
                   type="button"
                   onClick={onClearSampleData}
-                  className="text-[11px] font-semibold underline text-amber-700 dark:text-amber-300 hover:text-amber-900 dark:hover:text-amber-100 transition-colors cursor-pointer"
+                  className="text-[11px] font-semibold underline text-warning hover:opacity-80 transition-opacity cursor-pointer"
                   title="Clear benchmark sample data and start with an empty real portfolio"
                 >
                   Clear Sample Data & Start Fresh
@@ -71,16 +71,16 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           )}
         </div>
 
-        <div className="flex items-center gap-2 mt-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-          <Calendar className="w-3.5 h-3.5 text-spendx-blue-primary" />
+        <div className="flex items-center gap-2 mt-1.5 text-xs sm:text-sm text-secondary-text">
+          <Calendar className="w-3.5 h-3.5 text-primary" />
           <span>{currentDateFormatted}</span>
-          <span className="text-slate-300 dark:text-slate-600">•</span>
+          <span className="text-border">•</span>
           <span>Here's what's happening with your money today.</span>
         </div>
       </div>
 
       {/* Right: Date-range selector */}
-      <div className="flex items-center gap-1.5 p-1 rounded-2xl glass-surface border border-white/80 dark:border-white/10 self-start md:self-auto shadow-sm">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border self-start md:self-auto shadow-xs">
         {periodOptions.map((opt) => {
           const isActive = selectedPeriod === opt.value;
           return (
@@ -88,10 +88,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               key={opt.value}
               type="button"
               onClick={() => onPeriodChange(opt.value)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-xl transition-all duration-200 cursor-pointer ${
+              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-pointer ${
                 isActive
-                  ? 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm font-semibold'
-                  : 'text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-white/10'
+                  ? 'bg-primary text-white shadow-xs font-semibold'
+                  : 'text-secondary-text hover:text-foreground hover:bg-surface'
               }`}
             >
               {opt.label}

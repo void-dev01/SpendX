@@ -181,10 +181,10 @@ export const SavingsPage: React.FC = () => {
       {/* 1. Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple">
+          <h1 className="text-2xl sm:text-3xl font-display font-bold tracking-tight text-foreground">
             Savings Goals
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-sm text-secondary-text mt-1">
             Turn your financial dreams into achievable milestones with automated pacing.
           </p>
         </div>
@@ -192,7 +192,7 @@ export const SavingsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsCreateOpen(true)}
-          className="self-start sm:self-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white font-medium text-xs shadow-md hover:shadow-lg hover:opacity-95 transition-all cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium text-xs shadow-xs transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Goal</span>
@@ -212,14 +212,14 @@ export const SavingsPage: React.FC = () => {
 
       {/* 4. Main Goals Content */}
       {isLoading ? (
-        <div className="glass-panel p-12 rounded-3xl flex flex-col items-center justify-center text-center">
-          <Loader2 className="w-8 h-8 text-spendx-blue-primary animate-spin mb-3" />
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <div className="bg-surface border border-border p-12 rounded-2xl shadow-card flex flex-col items-center justify-center text-center">
+          <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
+          <p className="text-xs text-secondary-text font-medium">
             Loading savings milestones...
           </p>
         </div>
       ) : isError ? (
-        <div className="glass-panel p-10 rounded-2xl text-center text-rose-500 text-xs">
+        <div className="bg-surface border border-destructive/20 p-10 rounded-2xl text-center text-destructive text-xs shadow-card">
           Failed to load savings goals. Please reload or check your connection.
         </div>
       ) : filteredGoals.length > 0 ? (
@@ -297,17 +297,17 @@ export const SavingsPage: React.FC = () => {
       {/* Modal 4: Delete Confirmation */}
       {deletingGoal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-sm glass-panel p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-2xl space-y-4">
-            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <div className="w-full max-w-sm bg-surface p-6 rounded-2xl border border-border shadow-elevated space-y-4">
+            <h3 className="text-base font-display font-bold text-foreground">
               Delete Savings Goal?
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-xs text-secondary-text leading-relaxed">
               Are you sure you want to delete{' '}
-              <span className="font-semibold text-slate-800 dark:text-slate-100">
+              <span className="font-semibold text-foreground">
                 "{deletingGoal.name}"
               </span>
               ? Your accumulated ledger balance will remain recorded in source accounts.
@@ -316,7 +316,7 @@ export const SavingsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDeletingGoal(null)}
-                className="px-4 py-2 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/10 cursor-pointer"
+                className="px-4 py-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 shadow-xs cursor-pointer"
               >
                 Cancel
               </button>
@@ -324,7 +324,7 @@ export const SavingsPage: React.FC = () => {
                 type="button"
                 onClick={() => deleteMutation.mutate(deletingGoal.id)}
                 disabled={deleteMutation.isPending}
-                className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-rose-600 hover:bg-rose-700 text-white shadow transition-all cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-destructive hover:bg-destructive/90 text-white shadow-xs transition-all cursor-pointer disabled:opacity-50"
               >
                 {deleteMutation.isPending && (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />

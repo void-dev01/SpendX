@@ -149,27 +149,27 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
       : ['Transfer', 'Emergency Fund', 'Savings Allocation', 'Other'];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-in fade-in duration-200">
       <div
-        className="glass-panel w-full max-w-lg rounded-3xl p-4 sm:p-6 border border-white/90 dark:border-white/15 shadow-2xl relative max-h-[90dvh] overflow-y-auto space-y-4 sm:space-y-5"
+        className="bg-surface w-full max-w-lg rounded-2xl p-4 sm:p-6 border border-border shadow-elevated relative max-h-[90dvh] overflow-y-auto space-y-4 sm:space-y-5"
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
       >
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100/60 dark:border-white/10">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
           <div>
-            <h2 id="dialog-title" className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+            <h2 id="dialog-title" className="text-lg font-display font-bold text-foreground">
               {initialData ? 'Edit Transaction' : 'Add New Transaction'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-secondary-text mt-0.5">
               {initialData ? 'Update verified transaction metadata' : 'Record an income or expense transaction'}
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-secondary-text hover:text-foreground transition-colors cursor-pointer"
             aria-label="Close dialog"
           >
             <X className="w-5 h-5" />
@@ -179,17 +179,17 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
         <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4 text-xs">
           {/* Segmented Type Selector */}
           <div>
-            <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5">
+            <label className="block text-xs font-medium text-foreground mb-1.5">
               Transaction Type
             </label>
-            <div className="grid grid-cols-3 gap-2 p-1 rounded-2xl glass-surface border border-white/80 dark:border-white/10">
+            <div className="grid grid-cols-3 gap-2 p-1 rounded-xl bg-surface-elevated border border-border">
               <button
                 type="button"
                 onClick={() => handleTypeSelect('EXPENSE')}
-                className={`py-2 px-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`py-2 px-3 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   selectedType === 'EXPENSE'
-                    ? 'bg-rose-500 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                    ? 'bg-destructive text-white shadow-xs'
+                    : 'text-secondary-text hover:text-foreground'
                 }`}
               >
                 <ArrowDownRight className="w-3.5 h-3.5" />
@@ -199,10 +199,10 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
               <button
                 type="button"
                 onClick={() => handleTypeSelect('INCOME')}
-                className={`py-2 px-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`py-2 px-3 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   selectedType === 'INCOME'
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                    ? 'bg-income text-white shadow-xs'
+                    : 'text-secondary-text hover:text-foreground'
                 }`}
               >
                 <ArrowUpRight className="w-3.5 h-3.5" />
@@ -212,10 +212,10 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
               <button
                 type="button"
                 onClick={() => handleTypeSelect('TRANSFER')}
-                className={`py-2 px-3 rounded-xl font-semibold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                className={`py-2 px-3 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   selectedType === 'TRANSFER'
-                    ? 'bg-spendx-blue-primary text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'text-secondary-text hover:text-foreground'
                 }`}
               >
                 <ArrowLeftRight className="w-3.5 h-3.5" />
@@ -227,11 +227,11 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
           {/* Amount & Transaction Name */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Amount (₹ INR) *
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-semibold">
                   ₹
                 </span>
                 <input
@@ -239,26 +239,26 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                   step="0.01"
                   placeholder="0.00"
                   {...register('amount', { valueAsNumber: true })}
-                  className="w-full pl-8 pr-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 font-bold tabular-nums focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-sm"
+                  className="w-full pl-8 pr-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-semibold tabular-nums focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm shadow-xs"
                 />
               </div>
               {errors.amount && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.amount.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.amount.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Transaction Name *
               </label>
               <input
                 type="text"
                 placeholder="e.g. Grocery Shopping"
                 {...register('description')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-sm"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-sm shadow-xs"
               />
               {errors.description && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.description.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.description.message}</p>
               )}
             </div>
           </div>
@@ -266,12 +266,12 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
           {/* Category & Account */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Category *
               </label>
               <select
                 {...register('category')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 {categories.map((c) => (
                   <option key={c} value={c}>
@@ -280,17 +280,17 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                 ))}
               </select>
               {errors.category && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.category.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.category.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Account *
               </label>
               <select
                 {...register('accountId')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 {DEFAULT_USER_ACCOUNTS.map((acc) => (
                   <option key={acc.id} value={acc.id}>
@@ -299,7 +299,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                 ))}
               </select>
               {errors.accountId && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.accountId.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.accountId.message}</p>
               )}
             </div>
           </div>
@@ -307,26 +307,26 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
           {/* Date & Payment Method */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Date & Time *
               </label>
               <input
                 type="datetime-local"
                 {...register('date')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               />
               {errors.date && (
-                <p className="text-[11px] text-rose-500 mt-1">{errors.date.message}</p>
+                <p className="text-[11px] text-destructive mt-1">{errors.date.message}</p>
               )}
             </div>
 
             <div>
-              <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+              <label className="block font-medium text-foreground mb-1">
                 Payment Method
               </label>
               <select
                 {...register('paymentMethod')}
-                className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
                 <option value="UPI">UPI (Google Pay / PhonePe / Paytm)</option>
                 <option value="Credit Card">Credit Card</option>
@@ -340,27 +340,27 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
 
           {/* Merchant Name */}
           <div>
-            <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+            <label className="block font-medium text-foreground mb-1">
               Merchant Name (Optional)
             </label>
             <input
               type="text"
               placeholder="e.g. Starbucks Coffee, Amazon, Shell"
               {...register('merchantName')}
-              className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+              className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
             />
           </div>
 
           {/* Notes */}
           <div>
-            <label className="block font-semibold text-slate-600 dark:text-slate-300 mb-1">
+            <label className="block font-medium text-foreground mb-1">
               Notes (Optional)
             </label>
             <textarea
               rows={2}
               placeholder="Add optional notes or audit remarks..."
               {...register('notes')}
-              className="w-full px-3 py-2 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40"
+              className="w-full px-3 py-2 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
             />
           </div>
 
@@ -370,30 +370,30 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
               type="checkbox"
               id="isRecurring"
               {...register('isRecurring')}
-              className="rounded border-slate-300 dark:border-slate-600 text-spendx-blue-primary focus:ring-spendx-blue-primary w-4 h-4 cursor-pointer"
+              className="rounded border-border text-primary focus:ring-primary w-4 h-4 cursor-pointer"
             />
             <label
               htmlFor="isRecurring"
-              className="font-medium text-slate-700 dark:text-slate-200 cursor-pointer"
+              className="font-medium text-foreground cursor-pointer"
             >
               Recurring automated transaction (e.g. monthly bill, subscription, salary)
             </label>
           </div>
 
           {/* Actions */}
-          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-100/60 dark:border-white/10">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2.5 sm:gap-3 pt-4 border-t border-border">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-semibold glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-white/10 transition-colors cursor-pointer text-center min-h-[44px]"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-xl font-medium bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 transition-colors cursor-pointer text-center min-h-[44px] shadow-xs"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary shadow-md hover:opacity-95 transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-white bg-primary hover:bg-primary/90 shadow-xs transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
             >
               {isSubmitting ? (
                 <>

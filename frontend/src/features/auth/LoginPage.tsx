@@ -144,7 +144,7 @@ export const LoginPage: React.FC = () => {
           <label className="flex items-center gap-2 cursor-pointer select-none text-muted-foreground hover:text-foreground">
             <input
               type="checkbox"
-              className="w-4 h-4 rounded border-white/80 dark:border-white/20 text-primary focus:ring-primary focus:ring-offset-0 bg-white/40 dark:bg-white/10"
+              className="w-4 h-4 rounded border-border text-primary focus:ring-primary focus:ring-offset-0 bg-surface-elevated"
               {...register('rememberMe')}
             />
             <span>Remember Me</span>
@@ -167,7 +167,7 @@ export const LoginPage: React.FC = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-[#718FE8] via-[#8B72D6] to-[#8066CC] shadow-[0_4px_16px_rgba(113,143,232,0.35)] hover:shadow-[0_6px_22px_rgba(113,143,232,0.5)] transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             {isSubmitting ? (
               <>
@@ -185,7 +185,7 @@ export const LoginPage: React.FC = () => {
       </form>
 
       {/* Navigation to Signup */}
-      <div className="pt-4 border-t border-black/5 dark:border-white/10 text-center text-xs text-muted-foreground">
+      <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
         Don&apos;t have an account?{' '}
         <Link
           to="/signup"
@@ -201,18 +201,18 @@ export const LoginPage: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="forgot-password-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
         >
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 max-w-md w-full border border-white/80 dark:border-white/20 shadow-2xl space-y-4">
+          <div className="bg-surface rounded-2xl p-6 sm:p-8 max-w-md w-full border border-border shadow-elevated space-y-4">
             <div className="flex items-center justify-between">
-              <h3 id="forgot-password-title" className="text-lg font-bold text-foreground">
+              <h3 id="forgot-password-title" className="text-lg font-bold font-display text-foreground">
                 Reset Your Password
               </h3>
               <button
                 type="button"
                 onClick={() => setForgotPasswordOpen(false)}
                 aria-label="Close dialog"
-                className="w-8 h-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10"
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-surface-elevated transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>

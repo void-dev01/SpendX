@@ -18,27 +18,27 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
   const currentList = tab === 'EXPENSE' ? expenses : income;
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-4 shadow-card">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-base font-bold font-display text-foreground">
             Largest Transactions
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Single most impactful individual debits and credits
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Tabs */}
-          <div className="flex items-center gap-1 p-1 rounded-xl glass-surface border border-white/80 dark:border-white/10">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border">
             <button
               type="button"
               onClick={() => setTab('EXPENSE')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'EXPENSE'
-                  ? 'bg-rose-500 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                  ? 'bg-destructive text-destructive-foreground shadow-xs'
+                  : 'text-secondary-text hover:text-foreground'
               }`}
             >
               Highest Expenses
@@ -48,8 +48,8 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
               onClick={() => setTab('INCOME')}
               className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
                 tab === 'INCOME'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                  ? 'bg-income text-income-foreground shadow-xs'
+                  : 'text-secondary-text hover:text-foreground'
               }`}
             >
               Highest Income
@@ -59,7 +59,7 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
           <button
             type="button"
             onClick={() => navigate('/transactions')}
-            className="hidden sm:flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer"
+            className="hidden sm:flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer"
           >
             <span>All</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
@@ -68,7 +68,7 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
       </div>
 
       {currentList.length === 0 ? (
-        <div className="py-8 text-center text-xs text-slate-400">
+        <div className="py-8 text-center text-xs text-muted-foreground">
           No transactions found for this view.
         </div>
       ) : (
@@ -77,13 +77,13 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
             <div
               key={t.id}
               onClick={() => navigate(`/transactions/${t.id}`)}
-              className="p-3 rounded-2xl glass-surface border border-white/60 dark:border-white/5 hover:border-spendx-blue-primary/30 transition-all cursor-pointer flex items-center justify-between text-xs group"
+              className="p-3 rounded-xl bg-surface-elevated border border-border hover:border-primary/40 transition-all cursor-pointer flex items-center justify-between text-xs group"
             >
               <div>
-                <span className="font-semibold text-slate-800 dark:text-slate-200 group-hover:text-spendx-blue-primary transition-colors block">
+                <span className="font-semibold text-foreground group-hover:text-primary transition-colors block">
                   {t.description || t.merchantName || 'Transaction'}
                 </span>
-                <span className="text-[10px] text-slate-400">
+                <span className="text-[10px] text-muted-foreground">
                   {t.category} • {t.accountName} •{' '}
                   {new Date(t.date).toLocaleDateString('en-IN', {
                     day: 'numeric',
@@ -97,8 +97,8 @@ export const LargestTransactions: React.FC<LargestTransactionsProps> = ({
                 <span
                   className={`font-bold tabular-nums ${
                     t.type === 'INCOME'
-                      ? 'text-emerald-600 dark:text-emerald-400'
-                      : 'text-rose-600 dark:text-rose-400'
+                      ? 'text-income'
+                      : 'text-destructive'
                   }`}
                 >
                   {t.type === 'INCOME' ? '+' : '-'}

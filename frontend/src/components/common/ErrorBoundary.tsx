@@ -37,12 +37,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   public render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="glass-card rounded-3xl p-6 border border-rose-500/20 bg-rose-500/5 text-center flex flex-col items-center justify-center min-h-[220px] space-y-3">
-          <div className="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center">
+        <div className="rounded-2xl p-6 border border-destructive/20 bg-destructive/5 text-center flex flex-col items-center justify-center min-h-[220px] space-y-3 shadow-card">
+          <div className="w-12 h-12 rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
             <AlertTriangle className="w-6 h-6" />
           </div>
           <div className="space-y-1">
-            <h4 className="text-sm font-bold text-foreground">
+            <h4 className="text-sm font-bold font-display text-foreground">
               {this.props.fallbackTitle || 'Visualization Temporarily Unavailable'}
             </h4>
             <p className="text-xs text-muted-foreground max-w-sm">

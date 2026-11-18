@@ -12,20 +12,20 @@ export const BudgetEmptyState: React.FC<BudgetEmptyStateProps> = ({
 }) => {
   if (type === 'NO_RESULTS') {
     return (
-      <div className="glass-panel p-10 rounded-3xl text-center max-w-lg mx-auto my-8 border border-white/80 dark:border-white/10 shadow-glass">
-        <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-4">
+      <div className="bg-surface p-10 rounded-2xl text-center max-w-lg mx-auto my-8 border border-border shadow-card">
+        <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-4">
           <SearchX className="w-7 h-7" />
         </div>
-        <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+        <h3 className="text-lg font-display font-bold text-foreground">
           No Matching Budgets
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto leading-relaxed">
+        <p className="text-xs text-secondary-text mt-1 max-w-xs mx-auto leading-relaxed">
           No category budgets match your active filter settings. Try switching to "All Budgets".
         </p>
         <button
           type="button"
           onClick={onActionClick}
-          className="mt-6 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-spendx-blue-primary glass-surface border border-spendx-blue-primary/30 hover:bg-spendx-blue-primary/10 transition-colors cursor-pointer shadow-sm"
+          className="mt-6 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium text-foreground bg-surface-elevated border border-border hover:bg-surface-elevated/80 transition-colors cursor-pointer shadow-xs"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Filters</span>
@@ -35,23 +35,23 @@ export const BudgetEmptyState: React.FC<BudgetEmptyStateProps> = ({
   }
 
   return (
-    <div className="glass-panel p-10 sm:p-14 rounded-3xl text-center max-w-xl mx-auto my-8 border border-white/80 dark:border-white/10 shadow-glass-elevated">
-      <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-tr from-spendx-blue-primary/20 to-spendx-purple-primary/20 text-spendx-blue-primary flex items-center justify-center mb-5 shadow-sm">
+    <div className="bg-surface p-10 sm:p-14 rounded-2xl text-center max-w-xl mx-auto my-8 border border-border shadow-elevated">
+      <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5">
         <Target className="w-8 h-8" />
       </div>
 
-      <h3 className="text-xl font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+      <h3 className="text-xl font-display font-bold text-foreground">
         Give every rupee a purpose.
       </h3>
 
-      <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-sm mx-auto leading-relaxed">
+      <p className="text-xs sm:text-sm text-secondary-text mt-2 max-w-sm mx-auto leading-relaxed">
         Create your first budget to set monthly spending boundaries, avoid accidental overspending, and grow your financial reserves.
       </p>
 
       <button
         type="button"
         onClick={onActionClick}
-        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary hover:opacity-95 shadow-md transition-all cursor-pointer"
+        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 shadow-xs transition-all cursor-pointer"
       >
         <Plus className="w-4 h-4" />
         <span>Create Your First Budget</span>

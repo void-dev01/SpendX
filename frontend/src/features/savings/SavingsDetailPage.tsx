@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
 import {
   ArrowLeft,
   Calendar,
+  Target,
+  PlusCircle,
+  Edit2,
+  Trash2,
+  Sparkles,
+  Wallet,
   CheckCircle2,
   Clock,
-  Edit2,
   Loader2,
-  PlusCircle,
-  Sparkles,
-  Target,
-  Trash2,
-  Wallet,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { savingsService, SavingsGoalRecord } from '@/services/savingsService';
 import { CreateGoalDialog } from '@/components/savings/CreateGoalDialog';
 import { AddContributionDialog } from '@/components/savings/AddContributionDialog';
@@ -24,6 +24,7 @@ export const SavingsDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  // Modals state
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isAddMoneyOpen, setIsAddMoneyOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -34,48 +35,23 @@ export const SavingsDetailPage: React.FC = () => {
     isLoading: isGoalLoading,
     isError,
   } = useQuery({
-    queryKey: ['savings-goal', id],
+    queryKey: ['savingsGoal', id],
     queryFn: () => (id ? savingsService.getGoalById(id) : null),
-    enabled: Boolean(id),
   });
 
   // Fetch contributions
-  const {
-    data: contributions = [],
-    isLoading: isContribsLoading,
-  } = useQuery({
-    queryKey: ['savings-contributions', id],
+  const { data: contributions = [], isLoading: isContribsLoading } = useQuery({
+    queryKey: ['savingsContributions', id],
     queryFn: () => (id ? savingsService.getGoalContributions(id) : []),
     enabled: Boolean(id),
   });
 
-  // Mutations
-  const updateMutation = useMutation({
-    mutationFn: (data: Partial<Omit<SavingsGoalRecord, 'id' | 'userId' | 'createdAt'>>) => {
-      if (!id) throw new Error('Missing goal ID');
-      return savingsService.updateGoal(id, data);
-    },
-    onSuccess: (updated) => {
-      queryClient.invalidateQueries({ queryKey: ['savings-goal', id] });
-      queryClient.invalidateQueries({ queryKey: ['savings-goals'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      toast.success(`Goal "${updated.name}" updated!`);
-      setIsEditOpen(false);
-    },
-    onError: (err: any) => {
-      toast.error(err?.message || 'Failed to update goal');
-    },
-  });
-
+  // Delete mutation
   const deleteMutation = useMutation({
-    mutationFn: () => {
-      if (!id) throw new Error('Missing goal ID');
-      return savingsService.deleteGoal(id);
-    },
+    mutationFn: () => savingsService.deleteGoal(id!),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['savings-goals'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      toast.success('Savings goal deleted.');
+      queryClient.invalidateQueries({ queryKey: ['savingsGoals'] });
+      toast.success('Savings goal deleted');
       navigate('/savings');
     },
     onError: (err: any) => {
@@ -83,6 +59,21 @@ export const SavingsDetailPage: React.FC = () => {
     },
   });
 
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: (data: Partial<SavingsGoalRecord>) => savingsService.updateGoal(id!, data),
+    onSuccess: (updated) => {
+      queryClient.invalidateQueries({ queryKey: ['savingsGoal', id] });
+      queryClient.invalidateQueries({ queryKey: ['savingsGoals'] });
+      setIsEditOpen(false);
+      toast.success(`Updated "${updated.name}"`);
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || 'Failed to update goal');
+    },
+  });
+
+  // Contribute mutation
   const contributeMutation = useMutation({
     mutationFn: (data: {
       amount: number;
@@ -90,21 +81,14 @@ export const SavingsDetailPage: React.FC = () => {
       sourceAccountName: string;
       date: string;
       notes?: string;
-    }) => {
-      if (!id) throw new Error('Missing goal ID');
-      return savingsService.addContribution(id, data);
-    },
-    onSuccess: ({ contribution }) => {
-      queryClient.invalidateQueries({ queryKey: ['savings-goal', id] });
-      queryClient.invalidateQueries({ queryKey: ['savings-contributions', id] });
-      queryClient.invalidateQueries({ queryKey: ['savings-goals'] });
+    }) => savingsService.addContribution(id!, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['savingsGoal', id] });
+      queryClient.invalidateQueries({ queryKey: ['savingsGoals'] });
+      queryClient.invalidateQueries({ queryKey: ['savingsContributions', id] });
       queryClient.invalidateQueries({ queryKey: ['accounts'] });
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      toast.success(
-        `Added ${savingsService.formatINR(contribution.amount)} to goal!`
-      );
       setIsAddMoneyOpen(false);
+      toast.success('Contribution added successfully');
     },
     onError: (err: any) => {
       toast.error(err?.message || 'Failed to record contribution');
@@ -114,25 +98,25 @@ export const SavingsDetailPage: React.FC = () => {
   if (isGoalLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh]">
-        <Loader2 className="w-8 h-8 text-spendx-blue-primary animate-spin mb-3" />
-        <p className="text-xs text-slate-500 font-medium">Loading goal details...</p>
+        <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
+        <p className="text-xs text-secondary-text font-medium">Loading goal details...</p>
       </div>
     );
   }
 
   if (isError || !goal) {
     return (
-      <div className="glass-panel p-10 rounded-2xl text-center space-y-4">
-        <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">
+      <div className="bg-surface p-10 rounded-2xl text-center space-y-4 border border-border shadow-card">
+        <h2 className="text-lg font-display font-bold text-foreground">
           Savings Goal Not Found
         </h2>
-        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+        <p className="text-xs text-secondary-text max-w-sm mx-auto">
           The goal you requested could not be located. It may have been archived or removed.
         </p>
         <button
           type="button"
           onClick={() => navigate('/savings')}
-          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-spendx-blue-primary text-white cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-primary text-white cursor-pointer shadow-xs"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Return to Goals</span>
@@ -164,7 +148,7 @@ export const SavingsDetailPage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate('/savings')}
-          className="self-start inline-flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-1.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 transition-colors cursor-pointer"
+          className="self-start inline-flex items-center gap-2 text-xs font-medium text-foreground px-3 py-1.5 rounded-xl bg-surface-elevated border border-border hover:bg-surface-elevated/80 transition-colors cursor-pointer shadow-xs"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Savings Goals</span>
@@ -174,7 +158,7 @@ export const SavingsDetailPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsAddMoneyOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-sm hover:shadow hover:opacity-95 transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all cursor-pointer"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Add Money</span>
@@ -182,7 +166,7 @@ export const SavingsDetailPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsEditOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-white/40 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border hover:bg-surface-elevated/80 text-foreground transition-colors cursor-pointer shadow-xs"
           >
             <Edit2 className="w-3.5 h-3.5" />
             <span>Edit</span>
@@ -190,7 +174,7 @@ export const SavingsDetailPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsDeleting(true)}
-            className="p-2 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-rose-50 dark:hover:bg-rose-950/20 text-rose-600 dark:text-rose-400 transition-colors cursor-pointer"
+            className="p-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border hover:bg-destructive/10 text-destructive transition-colors cursor-pointer shadow-xs"
             aria-label="Delete Goal"
           >
             <Trash2 className="w-4 h-4" />
@@ -199,28 +183,28 @@ export const SavingsDetailPage: React.FC = () => {
       </div>
 
       {/* Hero Card */}
-      <div className="glass-panel p-6 sm:p-8 rounded-3xl space-y-6">
+      <div className="bg-surface p-6 sm:p-8 rounded-2xl border border-border shadow-card space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 rounded-2xl bg-spendx-blue-primary/10 text-spendx-blue-primary flex items-center justify-center shrink-0 shadow-inner">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
               <Target className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100">
+                <h1 className="text-xl sm:text-2xl font-display font-bold text-foreground">
                   {goal.name}
                 </h1>
                 <span
                   className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full ${
                     isCompleted
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                      : 'bg-spendx-blue-primary/10 text-spendx-blue-primary border border-spendx-blue-primary/20'
+                      ? 'bg-income/10 text-income border border-income/20'
+                      : 'bg-primary/10 text-primary border border-primary/20'
                   }`}
                 >
                   {isCompleted ? 'Goal Completed' : 'Active'}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p className="text-xs text-secondary-text mt-0.5">
                 Category: <span className="font-semibold">{goal.category}</span> • Created on{' '}
                 {new Date(goal.createdAt).toLocaleDateString('en-IN', {
                   day: 'numeric',
@@ -233,15 +217,15 @@ export const SavingsDetailPage: React.FC = () => {
 
           <div className="flex items-baseline gap-4 self-start md:self-auto">
             <div>
-              <span className="text-xs text-slate-400 block font-medium">Saved</span>
-              <span className="text-2xl sm:text-3xl font-extrabold text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+              <span className="text-xs text-secondary-text block font-medium">Saved</span>
+              <span className="text-2xl sm:text-3xl font-display font-extrabold text-foreground tabular-nums">
                 {savingsService.formatINR(goal.currentAmount)}
               </span>
             </div>
-            <div className="text-slate-300 dark:text-white/20 text-2xl font-light">/</div>
+            <div className="text-muted-foreground text-2xl font-light">/</div>
             <div>
-              <span className="text-xs text-slate-400 block font-medium">Target</span>
-              <span className="text-xl sm:text-2xl font-bold text-slate-600 dark:text-slate-300 tabular-nums">
+              <span className="text-xs text-secondary-text block font-medium">Target</span>
+              <span className="text-xl sm:text-2xl font-display font-bold text-secondary-text tabular-nums">
                 {savingsService.formatINR(goal.targetAmount)}
               </span>
             </div>
@@ -251,25 +235,25 @@ export const SavingsDetailPage: React.FC = () => {
         {/* Progress Bar & Details */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs font-semibold">
-            <span className="text-slate-600 dark:text-slate-300">Milestone Progress</span>
-            <span className={isCompleted ? 'text-emerald-600' : 'text-spendx-blue-primary'}>
+            <span className="text-foreground">Milestone Progress</span>
+            <span className={isCompleted ? 'text-income' : 'text-primary'}>
               {progress}%
             </span>
           </div>
-          <div className="w-full h-3 rounded-full bg-slate-200/60 dark:bg-white/10 overflow-hidden">
+          <div className="w-full h-2.5 rounded-full bg-surface-elevated border border-border overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 isCompleted
-                  ? 'bg-emerald-500'
-                  : 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary'
+                  ? 'bg-income'
+                  : 'bg-primary'
               }`}
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-1">
+          <div className="flex items-center justify-between text-xs text-secondary-text pt-1">
             <span>
               {isCompleted ? (
-                <span className="text-emerald-600 font-medium">All targets achieved!</span>
+                <span className="text-income font-medium">All targets achieved!</span>
               ) : (
                 `${savingsService.formatINR(remaining)} remaining to achieve goal`
               )}
@@ -287,8 +271,8 @@ export const SavingsDetailPage: React.FC = () => {
         </div>
 
         {goal.notes && (
-          <div className="p-3.5 rounded-2xl bg-white/40 dark:bg-white/5 border border-white/60 dark:border-white/5 text-xs text-slate-600 dark:text-slate-300">
-            <span className="font-semibold text-slate-800 dark:text-slate-200 block mb-0.5">
+          <div className="p-3.5 rounded-xl bg-surface-elevated border border-border text-xs text-foreground">
+            <span className="font-semibold text-secondary-text block mb-0.5">
               Goal Notes:
             </span>
             {goal.notes}
@@ -297,9 +281,9 @@ export const SavingsDetailPage: React.FC = () => {
       </div>
 
       {/* Milestone Roadmap */}
-      <div className="glass-panel p-6 rounded-3xl space-y-4">
-        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-spendx-purple-primary" />
+      <div className="bg-surface p-6 rounded-2xl border border-border shadow-card space-y-4">
+        <h3 className="text-sm font-display font-bold text-foreground flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-secondary" />
           <span>Milestone Checkpoints</span>
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -308,26 +292,26 @@ export const SavingsDetailPage: React.FC = () => {
             return (
               <div
                 key={ms.pct}
-                className={`p-4 rounded-2xl border transition-all ${
+                className={`p-4 rounded-xl border transition-all ${
                   isReached
-                    ? 'bg-emerald-50/60 dark:bg-emerald-950/20 border-emerald-500/25'
-                    : 'glass-surface border-white/80 dark:border-white/10 opacity-70'
+                    ? 'bg-income/5 border-income/30'
+                    : 'bg-surface-elevated border-border opacity-70'
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-200">
+                  <span className="text-xs font-semibold text-foreground">
                     {ms.label}
                   </span>
                   {isReached ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-income" />
                   ) : (
-                    <Clock className="w-4 h-4 text-slate-400" />
+                    <Clock className="w-4 h-4 text-muted-foreground" />
                   )}
                 </div>
-                <div className="text-base font-bold text-slate-800 dark:text-slate-100 tabular-nums">
+                <div className="text-base font-display font-bold text-foreground tabular-nums">
                   {savingsService.formatINR(ms.amount)}
                 </div>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
+                <div className="text-[11px] text-secondary-text mt-1">
                   {isReached ? 'Achieved' : 'Pending Milestone'}
                 </div>
               </div>
@@ -337,21 +321,21 @@ export const SavingsDetailPage: React.FC = () => {
       </div>
 
       {/* Contribution History Ledger */}
-      <div className="glass-panel p-6 rounded-3xl space-y-4">
+      <div className="bg-surface p-6 rounded-2xl border border-border shadow-card space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-spendx-blue-primary" />
+            <h3 className="text-sm font-display font-bold text-foreground flex items-center gap-2">
+              <Wallet className="w-4 h-4 text-primary" />
               <span>Contribution History</span>
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-secondary-text mt-0.5">
               Verified asset reallocations deposited towards this milestone
             </p>
           </div>
           <button
             type="button"
             onClick={() => setIsAddMoneyOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 hover:bg-white/40 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-xl bg-surface-elevated border border-border hover:bg-surface-elevated/80 text-foreground transition-colors cursor-pointer shadow-xs"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             <span>New Deposit</span>
@@ -359,14 +343,14 @@ export const SavingsDetailPage: React.FC = () => {
         </div>
 
         {isContribsLoading ? (
-          <div className="py-10 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
-            <Loader2 className="w-4 h-4 animate-spin text-spendx-blue-primary" /> Loading history...
+          <div className="py-10 text-center text-xs text-secondary-text flex items-center justify-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin text-primary" /> Loading history...
           </div>
         ) : contributions.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-100/80 dark:border-white/10 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="border-b border-border text-muted-foreground font-semibold uppercase tracking-wider text-[10px]">
                   <th className="py-2.5 px-3">Date</th>
                   <th className="py-2.5 px-3">Amount</th>
                   <th className="py-2.5 px-3">Funding Account</th>
@@ -374,27 +358,27 @@ export const SavingsDetailPage: React.FC = () => {
                   <th className="py-2.5 px-3 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100/60 dark:divide-white/5">
+              <tbody className="divide-y divide-border-subtle">
                 {contributions.map((c) => (
-                  <tr key={c.id} className="hover:bg-white/40 dark:hover:bg-white/5 transition-colors">
-                    <td className="py-3 px-3 text-slate-600 dark:text-slate-300 font-medium">
+                  <tr key={c.id} className="hover:bg-surface-elevated transition-colors">
+                    <td className="py-3 px-3 text-foreground font-medium">
                       {new Date(c.date).toLocaleDateString('en-IN', {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
                       })}
                     </td>
-                    <td className="py-3 px-3 font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
+                    <td className="py-3 px-3 font-display font-bold text-income tabular-nums">
                       +{savingsService.formatINR(c.amount)}
                     </td>
-                    <td className="py-3 px-3 text-slate-700 dark:text-slate-200 font-medium">
+                    <td className="py-3 px-3 text-foreground font-medium">
                       {c.sourceAccountName}
                     </td>
-                    <td className="py-3 px-3 text-slate-500 dark:text-slate-400">
+                    <td className="py-3 px-3 text-secondary-text">
                       {c.notes || 'Direct allocation'}
                     </td>
                     <td className="py-3 px-3 text-right">
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-income/10 text-income border border-income/20">
                         <CheckCircle2 className="w-3 h-3" /> Reconciled
                       </span>
                     </td>
@@ -404,7 +388,7 @@ export const SavingsDetailPage: React.FC = () => {
             </table>
           </div>
         ) : (
-          <div className="py-8 text-center text-xs text-slate-400">
+          <div className="py-8 text-center text-xs text-secondary-text">
             No contributions deposited to this goal yet. Click "Add Money" to make your first deposit!
           </div>
         )}
@@ -435,17 +419,17 @@ export const SavingsDetailPage: React.FC = () => {
       {/* Delete Confirmation Modal */}
       {isDeleting && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-sm glass-panel p-6 rounded-3xl border border-white/80 dark:border-white/10 shadow-2xl space-y-4">
-            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <div className="w-full max-w-sm bg-surface p-6 rounded-2xl border border-border shadow-elevated space-y-4">
+            <h3 className="text-base font-display font-bold text-foreground">
               Delete Savings Goal?
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            <p className="text-xs text-secondary-text leading-relaxed">
               Are you sure you want to delete{' '}
-              <span className="font-semibold text-slate-800 dark:text-slate-100">
+              <span className="font-semibold text-foreground">
                 "{goal.name}"
               </span>
               ? Your accounts and past transaction records will remain safely intact.
@@ -454,7 +438,7 @@ export const SavingsDetailPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsDeleting(false)}
-                className="px-4 py-2 text-xs font-medium rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/10 cursor-pointer"
+                className="px-4 py-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 shadow-xs cursor-pointer"
               >
                 Cancel
               </button>
@@ -462,7 +446,7 @@ export const SavingsDetailPage: React.FC = () => {
                 type="button"
                 onClick={() => deleteMutation.mutate()}
                 disabled={deleteMutation.isPending}
-                className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-rose-600 hover:bg-rose-700 text-white shadow transition-all cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-destructive hover:bg-destructive/90 text-white shadow-xs transition-all cursor-pointer disabled:opacity-50"
               >
                 {deleteMutation.isPending && (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -476,3 +460,5 @@ export const SavingsDetailPage: React.FC = () => {
     </div>
   );
 };
+
+export default SavingsDetailPage;

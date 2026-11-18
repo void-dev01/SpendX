@@ -21,16 +21,16 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
   const endItem = Math.min(totalItems, currentPage * pageSize);
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 py-3 px-2">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-secondary-text py-3 px-2">
       {/* Result count & Page size selector */}
       <div className="flex items-center gap-3">
         <span>
           Showing{' '}
-          <strong className="text-slate-700 dark:text-slate-200 tabular-nums">{startItem}</strong>{' '}
+          <strong className="text-foreground tabular-nums">{startItem}</strong>{' '}
           to{' '}
-          <strong className="text-slate-700 dark:text-slate-200 tabular-nums">{endItem}</strong>{' '}
+          <strong className="text-foreground tabular-nums">{endItem}</strong>{' '}
           of{' '}
-          <strong className="text-slate-700 dark:text-slate-200 tabular-nums">{totalItems}</strong>{' '}
+          <strong className="text-foreground tabular-nums">{totalItems}</strong>{' '}
           results
         </span>
 
@@ -40,7 +40,7 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
             aria-label="Transactions per page"
-            className="px-2 py-1 rounded-lg text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-spendx-blue-primary"
+            className="px-2 py-1 rounded-lg text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium"
           >
             <option value={10}>10</option>
             <option value={25}>25</option>
@@ -55,7 +55,7 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
           type="button"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="p-1.5 rounded-lg glass-surface border border-white/80 dark:border-white/10 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
+          className="p-1.5 rounded-lg bg-surface-elevated border border-border disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface text-foreground transition-colors"
           aria-label="Previous page"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -81,8 +81,8 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
               onClick={() => onPageChange(pageNum)}
               className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-spendx-blue-primary text-white shadow-sm'
-                  : 'glass-surface border border-white/80 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200'
+                  ? 'bg-primary text-white shadow-xs'
+                  : 'bg-surface-elevated border border-border hover:bg-surface text-foreground'
               }`}
             >
               {pageNum}
@@ -94,7 +94,7 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
           type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="p-1.5 rounded-lg glass-surface border border-white/80 dark:border-white/10 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/60 dark:hover:bg-white/10 transition-colors"
+          className="p-1.5 rounded-lg bg-surface-elevated border border-border disabled:opacity-40 disabled:cursor-not-allowed hover:bg-surface text-foreground transition-colors"
           aria-label="Next page"
         >
           <ChevronRight className="w-4 h-4" />

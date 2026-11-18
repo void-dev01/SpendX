@@ -27,7 +27,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
 
   if (data.length === 0) {
     return (
-      <div className="glass-panel p-8 rounded-3xl text-center text-xs text-slate-400">
+      <div className="rounded-2xl bg-surface border border-border p-8 text-center text-xs text-muted-foreground shadow-card">
         No income or expense data found for the selected timeframe.
       </div>
     );
@@ -40,25 +40,25 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
       const net = incomeVal - expenseVal;
 
       return (
-        <div className="glass-surface p-3 rounded-xl border border-white/90 dark:border-white/15 shadow-md text-xs space-y-1.5 min-w-[170px]">
-          <p className="font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100/60 dark:border-white/10 pb-1">
+        <div className="bg-surface p-3 rounded-xl border border-border shadow-elevated text-xs space-y-1.5 min-w-[170px]">
+          <p className="font-bold font-display text-foreground border-b border-border pb-1">
             {label}
           </p>
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-medium">
+          <div className="flex items-center justify-between text-income font-medium">
             <span>Income:</span>
             <span className="font-bold tabular-nums">
               {analyticsService.formatINR(incomeVal)}
             </span>
           </div>
-          <div className="flex items-center justify-between text-rose-500 font-medium">
+          <div className="flex items-center justify-between text-destructive font-medium">
             <span>Expenses:</span>
             <span className="font-bold tabular-nums">
               {analyticsService.formatINR(expenseVal)}
             </span>
           </div>
-          <div className="flex items-center justify-between text-slate-700 dark:text-slate-200 pt-1 border-t border-slate-100/60 dark:border-white/10 font-semibold">
+          <div className="flex items-center justify-between text-foreground pt-1 border-t border-border font-semibold">
             <span>Net Delta:</span>
-            <span className={net >= 0 ? 'text-emerald-600' : 'text-rose-500'}>
+            <span className={`tabular-nums ${net >= 0 ? 'text-income' : 'text-destructive'}`}>
               {net >= 0 ? '+' : ''}
               {analyticsService.formatINR(net)}
             </span>
@@ -70,26 +70,26 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
   };
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-4 shadow-card">
       {/* Header & Chart Type Selector */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-base font-bold font-display text-foreground">
             Income vs Expenses
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Temporal comparison of gross inflows against expenditures
           </p>
         </div>
 
-        <div className="flex items-center gap-1 p-1 rounded-xl glass-surface border border-white/80 dark:border-white/10 self-start sm:self-auto">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border self-start sm:self-auto">
           <button
             type="button"
             onClick={() => setChartType('BAR')}
             className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
               chartType === 'BAR'
-                ? 'bg-spendx-blue-primary text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
             title="Grouped Bar Chart"
             aria-label="Bar chart view"
@@ -102,8 +102,8 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
             onClick={() => setChartType('LINE')}
             className={`p-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
               chartType === 'LINE'
-                ? 'bg-spendx-blue-primary text-white shadow-xs'
-                : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5'
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'text-secondary-text hover:text-foreground'
             }`}
             title="Line Trend Chart"
             aria-label="Line chart view"

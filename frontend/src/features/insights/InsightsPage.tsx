@@ -103,14 +103,14 @@ export const InsightsPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-spendx-purple-primary bg-spendx-purple-primary/10 px-2.5 py-1 rounded-lg flex items-center gap-1.5">
+            <span className="text-xs font-bold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-lg flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" /> Intelligence Engine
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-1">
-            <span className="text-gradient-ai">Financial Insights & Advisory</span>
+          <h1 className="text-2xl sm:text-3xl font-bold font-display tracking-tight mt-1 text-foreground">
+            Financial Insights & Advisory
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-2xl">
+          <p className="text-xs sm:text-sm text-secondary-text mt-1 max-w-2xl">
             Proactive financial recommendations, spending pace warnings, subscription audits, and capital growth opportunities.
           </p>
         </div>

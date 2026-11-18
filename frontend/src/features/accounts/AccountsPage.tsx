@@ -197,20 +197,20 @@ export const AccountsPage: React.FC = () => {
 
   if (isError) {
     return (
-      <div className="glass-panel p-8 rounded-3xl max-w-xl mx-auto my-12 text-center space-y-4 border border-rose-500/20">
-        <div className="w-12 h-12 mx-auto rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+      <div className="bg-surface p-8 rounded-2xl max-w-xl mx-auto my-12 text-center space-y-4 border border-border shadow-elevated">
+        <div className="w-12 h-12 mx-auto rounded-xl bg-expense/10 text-expense flex items-center justify-center">
           <AlertTriangle className="w-6 h-6" />
         </div>
-        <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+        <h2 className="text-xl font-display font-bold text-foreground">
           Unable to Load Connected Accounts
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+        <p className="text-xs text-secondary-text max-w-md mx-auto">
           {error instanceof Error ? error.message : 'An error occurred while communicating with the account registry.'}
         </p>
         <button
           type="button"
           onClick={() => refetch()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-spendx-blue-primary hover:bg-spendx-blue-primary/90 transition-all cursor-pointer shadow-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-primary hover:bg-primary-hover transition-colors cursor-pointer shadow-xs"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           Retry Connection
@@ -223,10 +223,10 @@ export const AccountsPage: React.FC = () => {
     <div className="space-y-6">
       {/* 1. Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple">
+        <h1 className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-foreground">
           My Accounts
         </h1>
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs sm:text-sm text-secondary-text mt-1">
           Manage all your financial accounts, vaults, and credit cards in one place.
         </p>
       </div>

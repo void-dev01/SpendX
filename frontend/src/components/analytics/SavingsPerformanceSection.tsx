@@ -21,20 +21,20 @@ export const SavingsPerformanceSection: React.FC<SavingsPerformanceSectionProps>
   if (goals.length === 0) return null;
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-5">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-5 shadow-card">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+            <h2 className="text-base font-bold font-display text-foreground">
               Savings Performance
             </h2>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-spendx-purple-primary/10 text-spendx-purple-primary border border-spendx-purple-primary/20">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary/10 text-secondary border border-secondary/20">
               {metrics.completedGoalCount > 0
                 ? `${metrics.completedGoalCount} Completed`
                 : `${metrics.activeGoalCount} Active Milestones`}
             </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Internal capital allocation toward long-term assets
           </p>
         </div>
@@ -42,7 +42,7 @@ export const SavingsPerformanceSection: React.FC<SavingsPerformanceSectionProps>
         <button
           type="button"
           onClick={() => navigate('/savings')}
-          className="self-start sm:self-auto flex items-center gap-1 text-xs font-semibold text-spendx-blue-primary hover:text-spendx-purple-primary transition-colors cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer"
         >
           <span>Savings Goals</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
@@ -50,28 +50,28 @@ export const SavingsPerformanceSection: React.FC<SavingsPerformanceSectionProps>
       </div>
 
       {/* Overview Stat Badges */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl glass-surface border border-white/80 dark:border-white/10">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-xl bg-surface-elevated border border-border">
         <div>
-          <span className="text-[11px] text-slate-400 block font-medium">Total Saved</span>
-          <span className="text-sm font-bold text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+          <span className="text-[11px] text-muted-foreground block font-medium">Total Saved</span>
+          <span className="text-sm font-bold text-primary tabular-nums">
             {savingsService.formatINR(metrics.totalSaved)}
           </span>
         </div>
         <div>
-          <span className="text-[11px] text-slate-400 block font-medium">Total Target</span>
-          <span className="text-sm font-bold text-slate-800 dark:text-slate-100 tabular-nums">
+          <span className="text-[11px] text-muted-foreground block font-medium">Total Target</span>
+          <span className="text-sm font-bold text-foreground tabular-nums">
             {savingsService.formatINR(metrics.totalTarget)}
           </span>
         </div>
         <div>
-          <span className="text-[11px] text-slate-400 block font-medium">Remaining</span>
-          <span className="text-sm font-bold text-amber-600 dark:text-amber-400 tabular-nums">
+          <span className="text-[11px] text-muted-foreground block font-medium">Remaining</span>
+          <span className="text-sm font-bold text-amber-500 tabular-nums">
             {savingsService.formatINR(metrics.remainingToSave)}
           </span>
         </div>
         <div>
-          <span className="text-[11px] text-slate-400 block font-medium">Progress</span>
-          <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
+          <span className="text-[11px] text-muted-foreground block font-medium">Progress</span>
+          <span className="text-sm font-bold text-income tabular-nums">
             {metrics.overallProgress}%
           </span>
         </div>
@@ -90,35 +90,35 @@ export const SavingsPerformanceSection: React.FC<SavingsPerformanceSectionProps>
             <div
               key={goal.id}
               onClick={() => navigate(`/savings/${goal.id}`)}
-              className="p-3.5 rounded-2xl glass-surface border border-white/60 dark:border-white/5 hover:border-spendx-blue-primary/30 transition-all cursor-pointer group"
+              className="p-3.5 rounded-xl bg-surface-elevated border border-border hover:border-primary/40 transition-all cursor-pointer group"
             >
               <div className="flex items-center justify-between text-xs font-semibold mb-1">
-                <span className="text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-spendx-blue-primary transition-colors">
+                <span className="text-foreground line-clamp-1 group-hover:text-primary transition-colors">
                   {goal.name}
                 </span>
                 <span
                   className={
                     isDone
-                      ? 'text-emerald-600 font-bold'
-                      : 'text-spendx-blue-primary font-bold'
+                      ? 'text-income font-bold tabular-nums'
+                      : 'text-primary font-bold tabular-nums'
                   }
                 >
                   {prog}%
                 </span>
               </div>
 
-              <div className="w-full h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden my-2">
+              <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden my-2">
                 <div
                   className={`h-full rounded-full transition-all duration-300 ${
                     isDone
-                      ? 'bg-emerald-500'
-                      : 'bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary'
+                      ? 'bg-income'
+                      : 'bg-primary'
                   }`}
                   style={{ width: `${prog}%` }}
                 />
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+              <div className="flex items-center justify-between text-[11px] text-secondary-text tabular-nums">
                 <span>{savingsService.formatINR(goal.currentAmount)}</span>
                 <span>of {savingsService.formatINR(goal.targetAmount)}</span>
               </div>

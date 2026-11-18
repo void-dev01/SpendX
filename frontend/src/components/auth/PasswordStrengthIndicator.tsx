@@ -48,7 +48,7 @@ export const PasswordStrengthIndicator: React.FC<PasswordStrengthProps> = ({
             {strengthLabel}
           </span>
         </div>
-        <div className="w-full h-1.5 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
+        <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
           <div className={`h-full rounded-full transition-all duration-300 ${barColor} ${barWidth}`} />
         </div>
       </div>

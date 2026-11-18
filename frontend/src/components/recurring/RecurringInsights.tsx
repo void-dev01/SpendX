@@ -49,52 +49,52 @@ export const RecurringInsights: React.FC<RecurringInsightsProps> = ({ payments }
   });
 
   return (
-    <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-4">
+    <div className="bg-surface p-6 rounded-2xl border border-border shadow-card space-y-4">
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
           <Lightbulb className="w-4 h-4" />
         </div>
-        <h3 className="text-base font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+        <h3 className="text-base font-display font-bold text-foreground">
           Recurring Intelligence & Projections
         </h3>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Annualized Projection */}
-        <div className="p-4 rounded-2xl bg-white/40 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10">
-          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border shadow-xs">
+          <span className="text-xs text-secondary-text font-medium">
             Projected Annual Outflow
           </span>
-          <p className="text-xl font-bold text-spendx-indigo dark:text-spendx-soft-purple mt-1 tabular-nums">
+          <p className="text-xl font-display font-bold text-foreground mt-1 tabular-nums">
             {recurringService.formatINR(annualTotal)}
           </p>
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-[11px] text-secondary-text mt-1">
             Total recurring liability per calendar year
           </p>
         </div>
 
         {/* Top Category */}
-        <div className="p-4 rounded-2xl bg-white/40 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10">
-          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border shadow-xs">
+          <span className="text-xs text-secondary-text font-medium">
             Top Category Obligation
           </span>
-          <p className="text-xl font-bold text-spendx-blue-primary mt-1 truncate">
+          <p className="text-xl font-display font-bold text-primary mt-1 truncate">
             {topCategory}
           </p>
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-[11px] text-secondary-text mt-1">
             {recurringService.formatINR(topCategoryAmount)} / month commitment
           </p>
         </div>
 
         {/* Highest Single Commitment */}
-        <div className="p-4 rounded-2xl bg-white/40 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10">
-          <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border shadow-xs">
+          <span className="text-xs text-secondary-text font-medium">
             Largest Commitment
           </span>
-          <p className="text-xl font-bold text-spendx-purple-primary mt-1 truncate">
+          <p className="text-xl font-display font-bold text-secondary mt-1 truncate">
             {largestPayment ? largestPayment.name : 'None'}
           </p>
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-[11px] text-secondary-text mt-1">
             {largestPayment ? `${recurringService.formatINR(largestPayment.amount)} / ${largestPayment.frequency.toLowerCase()}` : 'No active subscriptions'}
           </p>
         </div>

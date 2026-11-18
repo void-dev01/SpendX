@@ -206,14 +206,14 @@ export const RecurringPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-lg">
+            <span className="text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-lg">
               Money Management
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-display font-bold text-foreground tracking-tight mt-1">
             Recurring Payments & Subscriptions
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-secondary-text mt-1">
             Manage your subscriptions, EMIs, house rent, and automated scheduled direct debits.
           </p>
         </div>
@@ -221,7 +221,7 @@ export const RecurringPage: React.FC = () => {
         <button
           type="button"
           onClick={handleOpenCreate}
-          className="btn-spendx-primary flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold rounded-2xl shadow-lg shrink-0"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all shrink-0 cursor-pointer"
         >
           <Plus className="w-4 h-4 text-white" />
           <span>New Schedule</span>

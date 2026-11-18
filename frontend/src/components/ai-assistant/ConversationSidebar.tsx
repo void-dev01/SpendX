@@ -75,8 +75,8 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
               key={conv.id}
               className={`group flex items-center justify-between p-2.5 rounded-xl text-xs transition-all cursor-pointer ${
                 isActive
-                  ? 'bg-spendx-blue-primary/10 text-spendx-blue-primary font-semibold border border-spendx-blue-primary/30'
-                  : 'text-slate-700 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-white/5 border border-transparent'
+                  ? 'bg-primary/10 text-primary font-semibold border border-primary/30'
+                  : 'text-secondary-text hover:text-foreground hover:bg-surface-elevated border border-transparent'
               }`}
               onClick={() => {
                 onSelect(conv.id);
@@ -84,7 +84,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
               }}
             >
               <div className="flex items-center gap-2 truncate pr-2">
-                <MessageSquare className="w-3.5 h-3.5 shrink-0 text-slate-400 group-hover:text-spendx-blue-primary transition-colors" />
+                <MessageSquare className="w-3.5 h-3.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
                 <span className="truncate">{conv.title}</span>
               </div>
 
@@ -95,7 +95,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                     e.stopPropagation();
                     setDeletingId(conv.id);
                   }}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-rose-500 transition-all cursor-pointer rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/20 shrink-0"
+                  className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-destructive transition-all cursor-pointer rounded-lg hover:bg-destructive/10 shrink-0"
                   title="Delete conversation"
                   aria-label="Delete conversation"
                 >
@@ -115,26 +115,26 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
     <>
       {/* Mobile Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs md:hidden"
+        className="fixed inset-0 z-40 bg-slate-950/70 md:hidden"
         onClick={onClose}
       />
 
       {/* Sidebar Panel */}
       <aside
-        className="fixed md:static inset-y-0 left-0 z-50 w-[min(288px,85vw)] md:w-64 glass-panel p-4 flex flex-col justify-between shrink-0 rounded-3xl border border-white/80 dark:border-white/10 shadow-xl md:shadow-none animate-in slide-in-from-left duration-200"
+        className="fixed md:static inset-y-0 left-0 z-50 w-[min(288px,85vw)] md:w-64 bg-surface border border-border p-4 flex flex-col justify-between shrink-0 rounded-2xl shadow-elevated md:shadow-card animate-in slide-in-from-left duration-200"
         aria-label="Conversation history"
       >
         <div>
           {/* Header */}
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100/60 dark:border-white/10">
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-spendx-purple-primary" />
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-border">
+            <span className="text-xs font-bold font-display text-foreground flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-secondary" />
               <span>Conversation History</span>
             </span>
             <button
               type="button"
               onClick={onClose}
-              className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 md:hidden cursor-pointer"
+              className="p-1 text-secondary-text hover:text-foreground md:hidden cursor-pointer"
               aria-label="Close sidebar"
             >
               <X className="w-4 h-4" />
@@ -148,7 +148,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
               onNewChat();
               if (window.innerWidth < 768) onClose();
             }}
-            className="w-full flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-xl bg-gradient-to-r from-spendx-blue-primary to-spendx-purple-primary text-white shadow-xs hover:shadow transition-all cursor-pointer mb-4"
+            className="w-full flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer mb-4 min-h-[38px]"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>New Conversation</span>
@@ -164,29 +164,29 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
         </div>
 
         {/* Footer info */}
-        <div className="pt-3 border-t border-slate-100/60 dark:border-white/10 text-[10px] text-slate-400 text-center">
+        <div className="pt-3 border-t border-border text-[10px] text-muted-foreground text-center">
           Persisted locally & user-scoped
         </div>
 
         {/* Delete Confirmation Modal */}
         {deletingId && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70"
             role="dialog"
             aria-modal="true"
           >
-            <div className="w-full max-w-xs glass-panel p-5 rounded-2xl shadow-xl space-y-3">
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100">
+            <div className="w-full max-w-xs bg-surface border border-border p-5 rounded-2xl shadow-elevated space-y-3">
+              <h4 className="text-xs font-bold font-display text-foreground">
                 Delete Conversation?
               </h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed">
+              <p className="text-[11px] text-secondary-text leading-relaxed">
                 This chat will be permanently removed from your history.
               </p>
               <div className="flex items-center justify-end gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setDeletingId(null)}
-                  className="px-3 py-1.5 text-[11px] font-medium rounded-lg glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300 cursor-pointer"
+                  className="px-3 py-1.5 text-[11px] font-medium rounded-lg bg-surface-elevated border border-border text-foreground hover:bg-surface cursor-pointer shadow-xs"
                 >
                   Cancel
                 </button>
@@ -196,7 +196,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                     onDelete(deletingId);
                     setDeletingId(null);
                   }}
-                  className="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-rose-600 text-white cursor-pointer"
+                  className="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 cursor-pointer shadow-xs"
                 >
                   Delete
                 </button>

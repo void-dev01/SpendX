@@ -20,12 +20,12 @@ interface PeriodComparisonProps {
 export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) => {
   if (summary.prevIncome === 0 && summary.prevExpenses === 0) {
     return (
-      <div className="glass-panel p-6 rounded-3xl space-y-2">
-        <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          <ArrowRightLeft className="w-4 h-4 text-spendx-purple-primary" />
+      <div className="rounded-2xl bg-surface border border-border p-6 space-y-2 shadow-card">
+        <h2 className="text-base font-bold font-display text-foreground flex items-center gap-2">
+          <ArrowRightLeft className="w-4 h-4 text-secondary" />
           <span>Period Comparison</span>
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-secondary-text">
           Prior equivalent period records are currently empty. Historical metrics will populate as more timeline data accumulates.
         </p>
       </div>
@@ -38,28 +38,28 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
   const savingsRateDelta = summary.savingsRate - summary.prevSavingsRate;
 
   return (
-    <div className="glass-panel p-6 rounded-3xl space-y-4">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-4 shadow-card">
       <div>
-        <h2 className="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          <ArrowRightLeft className="w-4 h-4 text-spendx-purple-primary" />
+        <h2 className="text-base font-bold font-display text-foreground flex items-center gap-2">
+          <ArrowRightLeft className="w-4 h-4 text-secondary" />
           <span>Period-over-Period Performance</span>
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+        <p className="text-xs text-secondary-text mt-0.5">
           Direct comparative analysis against the preceding equivalent time interval
         </p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Income Change */}
-        <div className="p-4 rounded-2xl glass-surface border border-white/60 dark:border-white/5 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-secondary-text">
             <span>Income Change</span>
-            <TrendingUp className="w-4 h-4 text-emerald-500" />
+            <TrendingUp className="w-4 h-4 text-income" />
           </div>
           <div className="flex items-baseline justify-between">
             <span
-              className={`text-lg font-bold tabular-nums ${
-                incomeDelta >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'
+              className={`text-lg font-bold font-display tabular-nums ${
+                incomeDelta >= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {incomeDelta >= 0 ? '+' : ''}
@@ -67,7 +67,7 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
             </span>
             <span
               className={`flex items-center text-xs font-semibold ${
-                summary.incomeChangePct >= 0 ? 'text-emerald-600' : 'text-rose-500'
+                summary.incomeChangePct >= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {summary.incomeChangePct >= 0 ? (
@@ -78,21 +78,21 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
               {Math.abs(summary.incomeChangePct)}%
             </span>
           </div>
-          <span className="text-[10px] text-slate-400 block">
+          <span className="text-[10px] text-muted-foreground block tabular-nums">
             Prior: {analyticsService.formatINR(summary.prevIncome)}
           </span>
         </div>
 
         {/* Expense Change */}
-        <div className="p-4 rounded-2xl glass-surface border border-white/60 dark:border-white/5 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-secondary-text">
             <span>Expense Change</span>
-            <TrendingDown className="w-4 h-4 text-rose-500" />
+            <TrendingDown className="w-4 h-4 text-destructive" />
           </div>
           <div className="flex items-baseline justify-between">
             <span
-              className={`text-lg font-bold tabular-nums ${
-                expenseDelta <= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'
+              className={`text-lg font-bold font-display tabular-nums ${
+                expenseDelta <= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {expenseDelta >= 0 ? '+' : ''}
@@ -100,7 +100,7 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
             </span>
             <span
               className={`flex items-center text-xs font-semibold ${
-                summary.expenseChangePct <= 0 ? 'text-emerald-600' : 'text-rose-500'
+                summary.expenseChangePct <= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {summary.expenseChangePct >= 0 ? (
@@ -111,23 +111,23 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
               {Math.abs(summary.expenseChangePct)}%
             </span>
           </div>
-          <span className="text-[10px] text-slate-400 block">
+          <span className="text-[10px] text-muted-foreground block tabular-nums">
             Prior: {analyticsService.formatINR(summary.prevExpenses)}
           </span>
         </div>
 
         {/* Net Flow Change */}
-        <div className="p-4 rounded-2xl glass-surface border border-white/60 dark:border-white/5 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-secondary-text">
             <span>Net Flow Shift</span>
-            <Scale className="w-4 h-4 text-spendx-blue-primary" />
+            <Scale className="w-4 h-4 text-primary" />
           </div>
           <div className="flex items-baseline justify-between">
             <span
-              className={`text-lg font-bold tabular-nums ${
+              className={`text-lg font-bold font-display tabular-nums ${
                 netDelta >= 0
-                  ? 'text-spendx-indigo dark:text-spendx-soft-purple'
-                  : 'text-rose-500'
+                  ? 'text-primary'
+                  : 'text-destructive'
               }`}
             >
               {netDelta >= 0 ? '+' : ''}
@@ -135,7 +135,7 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
             </span>
             <span
               className={`flex items-center text-xs font-semibold ${
-                summary.cashFlowChangePct >= 0 ? 'text-emerald-600' : 'text-rose-500'
+                summary.cashFlowChangePct >= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {summary.cashFlowChangePct >= 0 ? (
@@ -146,31 +146,31 @@ export const PeriodComparison: React.FC<PeriodComparisonProps> = ({ summary }) =
               {Math.abs(summary.cashFlowChangePct)}%
             </span>
           </div>
-          <span className="text-[10px] text-slate-400 block">
+          <span className="text-[10px] text-muted-foreground block tabular-nums">
             Prior: {analyticsService.formatINR(summary.prevNetCashFlow)}
           </span>
         </div>
 
         {/* Savings Rate Shift */}
-        <div className="p-4 rounded-2xl glass-surface border border-white/60 dark:border-white/5 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500">
+        <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-2">
+          <div className="flex items-center justify-between text-xs font-semibold text-secondary-text">
             <span>Savings Rate Shift</span>
-            <PiggyBank className="w-4 h-4 text-spendx-purple-primary" />
+            <PiggyBank className="w-4 h-4 text-secondary" />
           </div>
           <div className="flex items-baseline justify-between">
             <span
-              className={`text-lg font-bold tabular-nums ${
-                savingsRateDelta >= 0 ? 'text-emerald-600' : 'text-rose-500'
+              className={`text-lg font-bold font-display tabular-nums ${
+                savingsRateDelta >= 0 ? 'text-income' : 'text-destructive'
               }`}
             >
               {savingsRateDelta >= 0 ? '+' : ''}
               {savingsRateDelta.toFixed(1)}% pts
             </span>
-            <span className="text-xs font-semibold text-spendx-purple-primary">
+            <span className="text-xs font-semibold text-secondary tabular-nums">
               {summary.savingsRate}% now
             </span>
           </div>
-          <span className="text-[10px] text-slate-400 block">
+          <span className="text-[10px] text-muted-foreground block tabular-nums">
             Prior rate: {summary.prevSavingsRate}%
           </span>
         </div>

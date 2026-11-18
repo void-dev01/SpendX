@@ -23,21 +23,21 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
   };
 
   return (
-    <div className="glass-card p-5 rounded-2xl border border-slate-200/60 dark:border-white/10 space-y-4">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-white/10">
+    <div className="bg-surface p-5 rounded-2xl border border-border shadow-card space-y-4">
+      <div className="flex items-center justify-between pb-3 border-b border-border">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="w-4 h-4 text-spendx-blue-primary" />
-          <h4 className="text-sm font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+          <SlidersHorizontal className="w-4 h-4 text-primary" />
+          <h4 className="text-sm font-semibold text-foreground">
             Map Statement Columns
           </h4>
         </div>
 
-        <label className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-300 cursor-pointer">
+        <label className="flex items-center gap-2 text-xs font-medium text-foreground cursor-pointer">
           <input
             type="checkbox"
             checked={mapping.hasHeader}
             onChange={(e) => onMappingChange({ ...mapping, hasHeader: e.target.checked })}
-            className="rounded border-slate-300 text-spendx-blue-primary focus:ring-spendx-blue-primary"
+            className="rounded border-border text-primary focus:ring-primary"
           />
           <span>First row contains headers</span>
         </label>
@@ -46,13 +46,13 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
         {/* Date Column */}
         <div>
-          <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block font-medium text-foreground mb-1">
             Transaction Date *
           </label>
           <select
             value={mapping.dateCol}
             onChange={(e) => handleSelectCol('dateCol', parseInt(e.target.value, 10))}
-            className="w-full p-2 rounded-xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple font-medium"
+            className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-medium shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
             {sampleHeaders.map((header, idx) => (
               <option key={`date-${idx}`} value={idx}>
@@ -64,13 +64,13 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
 
         {/* Description / Merchant Column */}
         <div>
-          <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block font-medium text-foreground mb-1">
             Description / Narration *
           </label>
           <select
             value={mapping.descCol}
             onChange={(e) => handleSelectCol('descCol', parseInt(e.target.value, 10))}
-            className="w-full p-2 rounded-xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple font-medium"
+            className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-medium shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
             {sampleHeaders.map((header, idx) => (
               <option key={`desc-${idx}`} value={idx}>
@@ -82,13 +82,13 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
 
         {/* Amount Column */}
         <div>
-          <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block font-medium text-foreground mb-1">
             Transaction Amount (₹) *
           </label>
           <select
             value={mapping.amountCol}
             onChange={(e) => handleSelectCol('amountCol', parseInt(e.target.value, 10))}
-            className="w-full p-2 rounded-xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple font-medium"
+            className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-medium shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
             {sampleHeaders.map((header, idx) => (
               <option key={`amt-${idx}`} value={idx}>
@@ -100,13 +100,13 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
 
         {/* Optional Type Column */}
         <div>
-          <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block font-medium text-foreground mb-1">
             Type / Cr/Dr (Optional)
           </label>
           <select
             value={mapping.typeCol !== undefined ? mapping.typeCol : -1}
             onChange={(e) => handleSelectCol('typeCol', parseInt(e.target.value, 10))}
-            className="w-full p-2 rounded-xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple font-medium"
+            className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-medium shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
             <option value={-1}>-- Not present (Auto-detect) --</option>
             {sampleHeaders.map((header, idx) => (
@@ -119,13 +119,13 @@ export const ImportColumnMapper: React.FC<ImportColumnMapperProps> = ({
 
         {/* Optional Reference Number Column */}
         <div>
-          <label className="block font-semibold text-slate-700 dark:text-slate-300 mb-1">
+          <label className="block font-medium text-foreground mb-1">
             Reference / UTR / TxID (Optional)
           </label>
           <select
             value={mapping.refCol !== undefined ? mapping.refCol : -1}
             onChange={(e) => handleSelectCol('refCol', parseInt(e.target.value, 10))}
-            className="w-full p-2 rounded-xl bg-white/60 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple font-medium"
+            className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-foreground font-medium shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
           >
             <option value={-1}>-- None --</option>
             {sampleHeaders.map((header, idx) => (

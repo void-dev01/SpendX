@@ -16,7 +16,7 @@ interface IncomeExpenseChartProps {
 }
 
 export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) => {
-  // Custom Glassmorphic Tooltip
+  // Custom Solid FinTech Tooltip
   const renderCustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const incomeVal = payload.find((p: any) => p.dataKey === 'income')?.value || 0;
@@ -24,12 +24,12 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
       const netSavings = incomeVal - expenseVal;
 
       return (
-        <div className="glass-surface p-3.5 rounded-xl border border-white/90 dark:border-white/15 shadow-lg text-xs space-y-1.5 min-w-[160px]">
-          <p className="font-semibold text-slate-700 dark:text-slate-200 border-b border-slate-100/60 dark:border-white/10 pb-1">
+        <div className="bg-surface p-3.5 rounded-xl border border-border shadow-elevated text-xs space-y-1.5 min-w-[160px]">
+          <p className="font-semibold text-foreground border-b border-border pb-1">
             {label}
           </p>
 
-          <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
+          <div className="flex items-center justify-between text-income">
             <span className="flex items-center gap-1 font-medium">
               <ArrowUpRight className="w-3 h-3" /> Income:
             </span>
@@ -38,7 +38,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-rose-600 dark:text-rose-400">
+          <div className="flex items-center justify-between text-expense">
             <span className="flex items-center gap-1 font-medium">
               <ArrowDownRight className="w-3 h-3" /> Expenses:
             </span>
@@ -47,9 +47,9 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
             </span>
           </div>
 
-          <div className="pt-1 border-t border-slate-100/60 dark:border-white/10 flex items-center justify-between text-slate-500 dark:text-slate-400 font-medium">
+          <div className="pt-1 border-t border-border flex items-center justify-between text-secondary-text font-medium">
             <span>Net Saved:</span>
-            <span className={`font-semibold tabular-nums ${netSavings >= 0 ? 'text-spendx-blue-primary' : 'text-amber-500'}`}>
+            <span className={`font-semibold tabular-nums ${netSavings >= 0 ? 'text-primary' : 'text-warning'}`}>
               {dashboardService.formatINR(netSavings)}
             </span>
           </div>
@@ -60,16 +60,16 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
   };
 
   return (
-    <div className="glass-panel p-4 sm:p-6 rounded-2xl flex flex-col justify-between h-full min-w-0 overflow-hidden">
+    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
         <div>
           <div className="flex items-center gap-2">
-            <h2 className="text-base sm:text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple">
+            <h2 className="text-base sm:text-lg font-display font-bold text-foreground">
               Income vs Expenses
             </h2>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-secondary-text mt-0.5">
             Understand how your money moves over time.
           </p>
         </div>
@@ -77,12 +77,12 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
         {/* Legend */}
         <div className="flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#12866E]" />
-            <span className="text-slate-600 dark:text-slate-300">Income</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-income" />
+            <span className="text-secondary-text">Income</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#DC5579]" />
-            <span className="text-slate-600 dark:text-slate-300">Expenses</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-expense" />
+            <span className="text-secondary-text">Expenses</span>
           </div>
         </div>
       </div>
@@ -97,14 +97,14 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
             <defs>
               {/* Income Gradient */}
               <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#12866E" stopOpacity={0.45} />
-                <stop offset="95%" stopColor="#12866E" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#11866D" stopOpacity={0.4} />
+                <stop offset="95%" stopColor="#11866D" stopOpacity={0.0} />
               </linearGradient>
 
               {/* Expense Gradient */}
               <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#DC5579" stopOpacity={0.40} />
-                <stop offset="95%" stopColor="#DC5579" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#D95765" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="#D95765" stopOpacity={0.0} />
               </linearGradient>
             </defs>
 
@@ -118,40 +118,40 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
               dataKey="period"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#94A3B8', fontSize: 12 }}
+              tick={{ fill: '#8492AA', fontSize: 12 }}
               dy={6}
             />
 
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#94A3B8', fontSize: 11 }}
+              tick={{ fill: '#8492AA', fontSize: 11 }}
               tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
               dx={-4}
             />
 
-            <Tooltip content={renderCustomTooltip} cursor={{ stroke: 'rgba(113, 143, 232, 0.25)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
+            <Tooltip content={renderCustomTooltip} cursor={{ stroke: 'rgba(73, 107, 219, 0.25)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
 
             <Area
               type="monotone"
               dataKey="income"
               name="Income"
-              stroke="#12866E"
+              stroke="#11866D"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#incomeGradient)"
-              activeDot={{ r: 5, stroke: '#12866E', strokeWidth: 2, fill: '#FFFFFF' }}
+              activeDot={{ r: 5, stroke: '#11866D', strokeWidth: 2, fill: '#FFFFFF' }}
             />
 
             <Area
               type="monotone"
               dataKey="expenses"
               name="Expenses"
-              stroke="#DC5579"
+              stroke="#D95765"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#expenseGradient)"
-              activeDot={{ r: 5, stroke: '#DC5579', strokeWidth: 2, fill: '#FFFFFF' }}
+              activeDot={{ r: 5, stroke: '#D95765', strokeWidth: 2, fill: '#FFFFFF' }}
             />
           </AreaChart>
         </ResponsiveContainer>

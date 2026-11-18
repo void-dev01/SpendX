@@ -35,9 +35,9 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             aria-describedby={error ? `${id}-error` : helperText ? `${id}-helper` : undefined}
             className={`w-full min-h-[48px] rounded-xl text-sm font-medium transition-all duration-200 outline-none pl-10 pr-11 ${
               error
-                ? 'border-red-500/80 dark:border-red-500/70 bg-red-500/5 focus:ring-2 focus:ring-red-500/30'
-                : 'border-white/80 dark:border-white/15 bg-white/60 dark:bg-white/5 focus:border-[#718FE8] focus:ring-2 focus:ring-[#718FE8]/25'
-            } border shadow-sm text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+                ? 'border-destructive bg-destructive/5 focus:ring-2 focus:ring-destructive/30'
+                : 'border-border bg-surface-elevated focus:border-primary focus:ring-2 focus:ring-primary/25'
+            } border shadow-xs text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
             {...props}
           />
 
@@ -46,7 +46,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             tabIndex={0}
             onClick={() => setShowPassword(!showPassword)}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-surface transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
@@ -56,7 +56,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
           <p
             id={`${id}-error`}
             role="alert"
-            className="flex items-center gap-1.5 text-xs text-red-500 dark:text-red-400 font-medium pt-0.5"
+            className="flex items-center gap-1.5 text-xs text-destructive font-medium pt-0.5"
           >
             <AlertCircle className="w-3.5 h-3.5 shrink-0" />
             <span>{error}</span>

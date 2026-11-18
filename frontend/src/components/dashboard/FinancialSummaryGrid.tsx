@@ -16,7 +16,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         value={overview.totalBalance.value}
         description={overview.totalBalance.description}
         icon={Wallet}
-        iconColorClass="bg-spendx-blue-primary/10 text-spendx-blue-primary dark:bg-spendx-blue-primary/20 dark:text-spendx-blue-primary"
+        iconColorClass="bg-primary/10 text-primary"
         trendPercentage={overview.totalBalance.trendPercentage}
         trendIsPositive={overview.totalBalance.trendIsPositive}
       />
@@ -27,7 +27,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         value={overview.totalIncome.value}
         description={overview.totalIncome.description}
         icon={TrendUp}
-        iconColorClass="bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400"
+        iconColorClass="bg-income/10 text-income"
         trendPercentage={overview.totalIncome.trendPercentage}
         trendIsPositive={overview.totalIncome.trendIsPositive}
       />
@@ -38,7 +38,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         value={overview.totalExpenses.value}
         description={overview.totalExpenses.description}
         icon={TrendDown}
-        iconColorClass="bg-rose-500/10 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400"
+        iconColorClass="bg-expense/10 text-expense"
         trendPercentage={overview.totalExpenses.trendPercentage}
         trendIsPositive={overview.totalExpenses.trendIsPositive}
       />
@@ -49,7 +49,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         value={overview.availableBalance.value}
         description={overview.availableBalance.description}
         icon={CurrencyInr}
-        iconColorClass="bg-spendx-purple-primary/10 text-spendx-purple-primary dark:bg-spendx-purple-primary/20 dark:text-spendx-purple-primary"
+        iconColorClass="bg-secondary/10 text-secondary"
         trendPercentage={overview.availableBalance.trendPercentage}
         trendIsPositive={overview.availableBalance.trendIsPositive}
       />

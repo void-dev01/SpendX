@@ -36,17 +36,17 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
   return (
     <div className="space-y-3">
       {/* Search & Top Controls */}
-      <div className="glass-card p-4 rounded-2xl flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <div className="p-4 rounded-xl bg-surface border border-border shadow-card flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         {/* Search Input */}
         <div className="relative flex-1 min-w-[220px]">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search intelligence, advice, budget nudges..."
             value={searchQuery}
             aria-label="Search insights"
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 transition-all"
+            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
           />
         </div>
 
@@ -58,14 +58,14 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
               value={selectedImpact}
               onChange={(e) => onImpactChange(e.target.value)}
               aria-label="Filter by impact level"
-              className="w-full appearance-none pl-3 pr-7 py-2 text-xs font-semibold rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-spendx-text-primary dark:text-spendx-soft-purple focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 cursor-pointer"
+              className="w-full appearance-none pl-3 pr-7 py-2 text-xs font-semibold rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer shadow-xs"
             >
               <option value="ALL">All Impact</option>
               <option value="HIGH">High Impact</option>
               <option value="MEDIUM">Medium Impact</option>
               <option value="LOW">Low Impact</option>
             </select>
-            <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Filter className="w-3.5 h-3.5 text-muted-foreground absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           {/* Bookmarked toggle button */}
@@ -73,13 +73,13 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
             type="button"
             onClick={onToggleBookmarkedOnly}
             aria-label="Show bookmarked only"
-            className={`px-3 py-2 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1.5 ${
+            className={`px-3 py-2 text-xs font-semibold rounded-xl border transition-all flex items-center gap-1.5 shadow-xs ${
               showBookmarkedOnly
-                ? 'bg-spendx-purple-primary text-white border-spendx-purple-primary shadow-sm'
-                : 'bg-white/50 dark:bg-slate-900/40 border-slate-200/80 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                ? 'bg-secondary text-secondary-foreground border-secondary'
+                : 'bg-surface-elevated border-border text-secondary-text hover:text-foreground hover:bg-surface'
             }`}
           >
-            <Bookmark className={`w-3.5 h-3.5 ${showBookmarkedOnly ? 'fill-white' : ''}`} />
+            <Bookmark className={`w-3.5 h-3.5 ${showBookmarkedOnly ? 'fill-current' : ''}`} />
             <span>Saved</span>
           </button>
 
@@ -88,7 +88,7 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
             type="button"
             onClick={onResetDismissed}
             title="Restore dismissed insights"
-            className="p-2 text-xs font-semibold rounded-xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="p-2 text-xs font-semibold rounded-xl bg-surface-elevated border border-border text-secondary-text hover:text-foreground hover:bg-surface transition-colors shadow-xs"
           >
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
@@ -104,8 +104,8 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
             onClick={() => onTypeChange(pill.value)}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
               selectedType === pill.value
-                ? 'bg-spendx-blue-primary text-white shadow-sm shadow-spendx-blue-primary/20'
-                : 'bg-white/60 dark:bg-slate-900/40 border border-slate-200/70 dark:border-white/10 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800'
+                ? 'bg-primary bg-spendx-blue-primary text-primary-foreground shadow-xs'
+                : 'bg-surface-elevated border border-border text-secondary-text hover:text-foreground'
             }`}
           >
             {pill.label}

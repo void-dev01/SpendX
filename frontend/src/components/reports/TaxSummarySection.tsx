@@ -13,17 +13,17 @@ export const TaxSummarySection: React.FC<TaxSummarySectionProps> = ({
   onExportTaxReport,
 }) => {
   return (
-    <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-5">
+    <div className="rounded-2xl bg-surface border border-border p-6 space-y-5 shadow-card">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-income/10 text-income flex items-center justify-center">
             <Receipt className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+            <h3 className="text-base font-bold font-display text-foreground">
               Tax Optimization & Deductions ({taxSummary.taxYear})
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-secondary-text">
               Categorized tax-allowable expenditures compiled from your verified financial ledger
             </p>
           </div>
@@ -32,7 +32,7 @@ export const TaxSummarySection: React.FC<TaxSummarySectionProps> = ({
         <button
           type="button"
           onClick={onExportTaxReport}
-          className="btn-spendx-primary px-4 py-2 text-xs font-semibold rounded-xl flex items-center gap-2 self-start sm:self-auto shrink-0"
+          className="px-4 py-2 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors flex items-center gap-2 self-start sm:self-auto shrink-0 min-h-[38px]"
         >
           <Download className="w-3.5 h-3.5" />
           <span>Export Tax Schedule</span>
@@ -44,28 +44,28 @@ export const TaxSummarySection: React.FC<TaxSummarySectionProps> = ({
         {taxSummary.buckets.map((b) => (
           <div
             key={b.bucket}
-            className="p-4 rounded-2xl bg-white/40 dark:bg-slate-900/40 border border-slate-100 dark:border-white/5 flex flex-col justify-between space-y-3"
+            className="p-4 rounded-xl bg-surface-elevated border border-border flex flex-col justify-between space-y-3"
           >
             <div>
-              <span className="text-[11px] font-bold text-spendx-blue-primary">
+              <span className="text-[11px] font-bold text-primary">
                 {b.bucket}
               </span>
-              <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+              <p className="text-xs text-secondary-text mt-1 line-clamp-2">
                 {b.description}
               </p>
             </div>
 
-            <div className="pt-2 border-t border-slate-100 dark:border-white/5 flex items-baseline justify-between">
+            <div className="pt-2 border-t border-border flex items-baseline justify-between">
               <div>
-                <span className="text-lg font-bold text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+                <span className="text-lg font-bold font-display text-foreground tabular-nums">
                   {transactionService.formatINR(b.totalAmount)}
                 </span>
-                <span className="text-[10px] text-slate-400 block">
+                <span className="text-[10px] text-muted-foreground block">
                   {b.transactionCount} transactions
                 </span>
               </div>
 
-              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <ShieldCheck className="w-4 h-4 text-income" />
             </div>
           </div>
         ))}

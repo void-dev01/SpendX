@@ -50,7 +50,7 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           {icon}
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {title} ({items.length})
           </h4>
         </div>
@@ -60,22 +60,22 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
             <div
               key={item.id}
               onClick={() => onSelectPayment(item)}
-              className="p-3.5 rounded-2xl bg-white/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-white/10 hover:border-spendx-blue-primary/40 transition-all flex items-center justify-between cursor-pointer group"
+              className="p-3.5 rounded-xl bg-surface-elevated border border-border hover:border-primary/40 transition-all flex items-center justify-between cursor-pointer group shadow-xs"
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-2 h-10 rounded-full shrink-0 ${badgeColor}`}
+                  className={`w-1.5 h-8 rounded-full shrink-0 ${badgeColor}`}
                 />
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-bold text-spendx-text-primary dark:text-spendx-soft-purple group-hover:text-spendx-blue-primary transition-colors truncate">
+                    <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate">
                       {item.name}
                     </p>
-                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/10 text-slate-500 font-medium shrink-0">
+                    <span className="text-[10px] px-2 py-0.5 rounded-md bg-surface border border-border text-secondary-text font-medium shrink-0">
                       {item.category}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 truncate mt-0.5">
+                  <p className="text-xs text-secondary-text truncate mt-0.5">
                     {item.merchant} • Due:{' '}
                     {new Date(item.nextDueDate).toLocaleDateString('en-IN', {
                       day: 'numeric',
@@ -87,10 +87,10 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
 
               <div className="flex items-center gap-3 shrink-0">
                 <div className="text-right">
-                  <p className="text-sm font-bold text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+                  <p className="text-sm font-display font-bold text-foreground tabular-nums">
                     {recurringService.formatINR(item.amount)}
                   </p>
-                  <p className="text-[10px] text-slate-400 capitalize">
+                  <p className="text-[10px] text-secondary-text capitalize">
                     {item.frequency.toLowerCase()}
                   </p>
                 </div>
@@ -102,7 +102,7 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
                     onMarkAsPaid(item.id);
                   }}
                   aria-label={`Mark ${item.name} as paid`}
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 transition-all"
+                  className="p-1.5 rounded-xl text-secondary-text hover:text-income hover:bg-income/10 transition-all cursor-pointer"
                   title="Mark as Paid"
                 >
                   <CheckCircle2 className="w-5 h-5" />
@@ -123,12 +123,12 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
 
   if (!hasAnyUpcoming) {
     return (
-      <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 text-center py-8">
-        <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-        <h4 className="text-sm font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+      <div className="bg-surface p-6 rounded-2xl border border-border shadow-card text-center py-8">
+        <CheckCircle2 className="w-8 h-8 text-income mx-auto mb-2" />
+        <h4 className="text-sm font-display font-bold text-foreground">
           All caught up!
         </h4>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-secondary-text mt-1">
           No pending recurring payments due in the current billing cycle.
         </p>
       </div>
@@ -136,12 +136,12 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
   }
 
   return (
-    <div className="glass-card p-6 rounded-3xl border border-slate-200/60 dark:border-white/10 space-y-5">
+    <div className="bg-surface p-6 rounded-2xl border border-border shadow-card space-y-5">
       <div>
-        <h3 className="text-base font-bold text-spendx-text-primary dark:text-spendx-soft-purple">
+        <h3 className="text-base font-display font-bold text-foreground">
           Upcoming Schedule Timeline
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-secondary-text">
           Prioritized sequence of upcoming liability debits
         </p>
       </div>
@@ -150,8 +150,8 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
         {renderSection(
           'Overdue Bills',
           overdueList,
-          'bg-rose-500',
-          <AlertTriangle className="w-4 h-4 text-rose-500" />
+          'bg-destructive',
+          <AlertTriangle className="w-4 h-4 text-destructive" />
         )}
         {renderSection(
           'Due Today',
@@ -162,14 +162,14 @@ export const UpcomingPaymentsTimeline: React.FC<UpcomingPaymentsTimelineProps> =
         {renderSection(
           'Next 7 Days',
           thisWeekList,
-          'bg-spendx-blue-primary',
-          <CalendarCheck className="w-4 h-4 text-spendx-blue-primary" />
+          'bg-primary',
+          <CalendarCheck className="w-4 h-4 text-primary" />
         )}
         {renderSection(
           'Later This Month',
           laterList,
-          'bg-slate-400',
-          <Clock className="w-4 h-4 text-slate-400" />
+          'bg-muted-foreground',
+          <Clock className="w-4 h-4 text-muted-foreground" />
         )}
       </div>
     </div>
