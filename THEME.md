@@ -137,6 +137,23 @@ Financial status colors must be universally consistent across all ledgers, widge
 
 ---
 
+### 5.4 Dual-Mode Fintech Palette & Two-Color Gradient Typography
+
+#### 1. Dual-Mode Surface Architecture
+- **Light Mode Surface:** Crisp Pearl base (`#F8FAFC`), Frosted White cards (`rgba(255, 255, 255, 0.78)` with subtle hairline border `rgba(99, 102, 241, 0.14)`), Deep Slate body text (`#0F172A`).
+- **Dark Mode Surface:** Deep Obsidian Navy base (`#070B14`), Smoked Glass cards (`rgba(15, 23, 42, 0.72)` with luminous cyan border `rgba(56, 189, 248, 0.16)`), Crisp Ice text (`#F1F5F9`).
+
+#### 2. Reusable Two-Color Gradient Typography Utilities
+All gradient typography classes are implemented in `frontend/src/index.css` using `-webkit-background-clip: text`, `background-clip: text`, and `-webkit-text-fill-color: transparent`. To prevent text clipping across font render engines, each utility enforces `display: inline-block`, `padding-bottom: 0.08em`, and `line-height: 1.15`.
+
+- **`.text-gradient-brand`**: Electric Indigo &rarr; Cyber Cyan (`linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%)` in Light; `#818CF8 -> #22D3EE` in Dark). Applied to Hero headlines, SPENDX Brand logo, and primary page titles.
+- **`.text-gradient-wealth`**: Wealth Emerald &rarr; Cyber Cyan (`linear-gradient(135deg, #059669 0%, #06B6D4 100%)` in Light; `#34D399 -> #22D3EE` in Dark). Applied to Net Worth metrics, Total Balance, and positive cash flow cards.
+- **`.text-gradient-ai`**: Royal Violet &rarr; Sky Cyan (`linear-gradient(135deg, #7C3AED 0%, #0284C7 100%)` in Light; `#A78BFA -> #38BDF8` in Dark). Applied to AI Financial Assistant, Gemini badges, and Proactive Advisory titles.
+
+---
+
+---
+
 ## 6. Background Gradient System
 
 ### 6.1 Light Mode Canvas Gradient

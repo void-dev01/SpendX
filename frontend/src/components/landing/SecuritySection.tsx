@@ -24,7 +24,7 @@ const securityPrinciples = [
     description:
       'We collect only the essential financial metadata required to provide analytics and intelligent recommendations.',
     badge: 'Privacy by Design',
-    color: 'text-[#8066CC] bg-[#8066CC]/15',
+    color: 'text-[#D4AF37] bg-[#D4AF37]/15',
   },
   {
     icon: UserCheck,
@@ -49,7 +49,7 @@ export const SecuritySection: React.FC = () => {
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Your Financial Data{' '}
-            <span className="bg-gradient-to-r from-emerald-600 via-[#718FE8] to-[#8066CC] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-emerald-500 via-[#D4AF37] to-[#10B981] bg-clip-text text-transparent">
               Deserves Care.
             </span>
           </h2>

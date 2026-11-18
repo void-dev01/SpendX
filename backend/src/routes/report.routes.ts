@@ -1,10 +1,15 @@
 import { Router } from 'express';
+import {
+  getMonthlyStatement,
+  getTaxSummary,
+  exportCsv,
+} from '../controllers/report.controller.js';
 import { requireAuth } from '../middleware/auth.js';
-import { getTaxSummary, exportCSV } from '../controllers/report.controller.js';
 
 const router = Router();
 
+router.get('/monthly-statement', requireAuth, getMonthlyStatement);
 router.get('/tax-summary', requireAuth, getTaxSummary);
-router.get('/export-csv', requireAuth, exportCSV);
+router.get('/export-csv', requireAuth, exportCsv);
 
 export default router;

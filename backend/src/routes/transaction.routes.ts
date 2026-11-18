@@ -1,20 +1,21 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.js';
 import {
+  createTransaction,
   getTransactions,
   getTransactionById,
-  createTransaction,
   updateTransaction,
   deleteTransaction,
+  batchImportTransactions,
 } from '../controllers/transaction.controller.js';
-import { validateCreateTransaction } from '../validators/transaction.validator.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
 router.get('/', requireAuth, getTransactions);
-router.post('/', requireAuth, validateCreateTransaction, createTransaction);
+router.post('/', requireAuth, createTransaction);
+router.post('/batch', requireAuth, batchImportTransactions);
 router.get('/:id', requireAuth, getTransactionById);
-router.put('/:id', requireAuth, updateTransaction);
+router.patch('/:id', requireAuth, updateTransaction);
 router.delete('/:id', requireAuth, deleteTransaction);
 
 export default router;

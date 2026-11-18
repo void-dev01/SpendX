@@ -4,6 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SavingsPage } from '../features/savings/SavingsPage';
 import { useAuthStore } from '../stores/authStore';
+import { savingsService, INITIAL_DEMO_SAVINGS_GOALS, INITIAL_DEMO_CONTRIBUTIONS } from '../services/savingsService';
+import { accountService, INITIAL_DEMO_ACCOUNTS } from '../services/accountService';
 
 // Mock Recharts ResponsiveContainer for jsdom
 vi.mock('recharts', async () => {
@@ -40,6 +42,9 @@ describe('SPENDX Savings Page & Goals Telemetry', () => {
     });
 
     localStorage.clear();
+    savingsService.saveStoredGoals(INITIAL_DEMO_SAVINGS_GOALS);
+    savingsService.saveStoredContributions(INITIAL_DEMO_CONTRIBUTIONS);
+    accountService.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
   });
 
   const renderSavings = () =>

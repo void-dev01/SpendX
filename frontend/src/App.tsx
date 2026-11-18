@@ -25,6 +25,27 @@ export const App: React.FC = () => {
     }
   }, [theme]);
 
+  useEffect(() => {
+    // 1-time migration for Real Mode: Wipe old seed/demo data from browser localStorage
+    const REAL_MODE_KEY = 'spendx_real_mode_v1';
+    if (typeof window !== 'undefined' && !localStorage.getItem(REAL_MODE_KEY)) {
+      const keysToClear = [
+        'spendx_transactions_store_v1',
+        'spendx_accounts_store_v1',
+        'spendx_recurring_payments_v1',
+        'spendx_budgets_store_v1',
+        'spendx_savings_goals_v1',
+        'spendx_savings_contribs_v1',
+      ];
+      const existingTx = localStorage.getItem('spendx_transactions_store_v1');
+      if (existingTx && (existingTx.includes('Acme Corp') || existingTx.includes('Nature Basket') || existingTx.includes('Netflix'))) {
+        keysToClear.forEach((key) => localStorage.removeItem(key));
+      }
+      localStorage.setItem('spendx_demo_mode', 'cleared');
+      localStorage.setItem(REAL_MODE_KEY, 'true');
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>

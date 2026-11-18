@@ -1,12 +1,12 @@
 import React from 'react';
-import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
+import { TrendUp, TrendDown } from '@phosphor-icons/react';
 import { dashboardService } from '@/services/dashboardService';
 
 interface FinancialSummaryCardProps {
   label: string;
   value: number;
   description: string;
-  icon: LucideIcon;
+  icon: React.ElementType;
   iconColorClass: string;
   trendPercentage?: number;
   trendIsPositive?: boolean;
@@ -23,21 +23,29 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
 }) => {
   return (
     <div className="glass-card-interactive p-5 sm:p-6 rounded-3xl flex flex-col justify-between relative overflow-hidden group">
-      {/* Top row: Label & Icon */}
+      {/* Top row: Label & Squircle Icon */}
       <div className="flex items-center justify-between gap-3">
         <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
           {label}
         </span>
         <div
-          className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-transform duration-200 group-hover:scale-105 shadow-sm ${iconColorClass}`}
+          className={`squircle-icon transition-transform duration-200 group-hover:scale-105 shadow-sm ${iconColorClass}`}
         >
-          <Icon className="w-5 h-5" />
+          <Icon weight="duotone" className="w-5 h-5" />
         </div>
       </div>
 
-      {/* Center: Financial Value */}
+      {/* Center: Financial Value (Lining & Tabular Numerals) */}
       <div className="my-4">
-        <div className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground tabular-nums leading-none">
+        <div
+          className={`text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums kpi-value leading-none ${
+            label.toLowerCase().includes('balance') ||
+            label.toLowerCase().includes('net worth') ||
+            label.toLowerCase().includes('savings')
+              ? 'text-gradient-wealth'
+              : 'text-foreground'
+          }`}
+        >
           {dashboardService.formatINR(value)}
         </div>
       </div>
@@ -57,9 +65,9 @@ export const FinancialSummaryCard: React.FC<FinancialSummaryCardProps> = ({
             }`}
           >
             {trendIsPositive ? (
-              <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <TrendUp weight="bold" className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
             ) : (
-              <TrendingDown className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+              <TrendDown weight="bold" className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
             )}
             <span>
               {trendPercentage > 0 ? `+${trendPercentage}%` : `${trendPercentage}%`}

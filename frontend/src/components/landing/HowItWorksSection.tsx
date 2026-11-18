@@ -24,7 +24,7 @@ const steps = [
     title: 'Let SPENDX Organize',
     description: 'Transactions are structured, categorized, and presented in a clear overview.',
     badge: 'Automation',
-    color: 'text-[#8066CC] bg-[#8066CC]/15',
+    color: 'text-[#D4AF37] bg-[#D4AF37]/15',
   },
   {
     step: '04',
@@ -48,7 +48,7 @@ export const HowItWorksSection: React.FC = () => {
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Getting Started{' '}
-            <span className="bg-gradient-to-r from-[#718FE8] via-[#8B72D6] to-[#8066CC] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#D4AF37] via-[#E2C766] to-[#10B981] bg-clip-text text-transparent">
               Is Simple.
             </span>
           </h2>

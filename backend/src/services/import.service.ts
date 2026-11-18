@@ -1,117 +1,134 @@
-import { supabaseAdminClient } from '../config/supabase.js';
+import { supabaseClient } from '../config/supabase.js';
 import { TransactionService } from './transaction.service.js';
 import { AppError } from '../middleware/errorHandler.js';
-import { logger } from '../utils/logger.js';
+import { Transaction } from '../types/index.js';
 
-export interface ImportTransactionItem {
-  date: string;
-  amount: number;
-  type: 'INCOME' | 'EXPENSE' | 'TRANSFER';
-  category: string;
-  description: string;
-  merchantName?: string;
-  paymentMethod?: string;
-  referenceNumber?: string;
-  accountId: string;
+export interface CaptureEventRecord {
+  id: string;
+  userId: string;
+  source: 'CSV' | 'EXCEL' | 'PDF_TEXT' | 'SMS_TEXT';
+  fileName?: string;
+  totalCount: number;
+  importedCount: number;
+  duplicateCount: number;
+  createdAt: string;
 }
 
+const inMemoryCaptureEvents: CaptureEventRecord[] = [];
+
 export class ImportService {
-  public static async commitBatch(
+  public static async validateBatch(
     userId: string,
-    payload: {
-      source: 'CSV' | 'EXCEL' | 'PDF_TEXT' | 'SMS_TEXT' | 'MANUAL';
-      fileName?: string;
-      transactions: ImportTransactionItem[];
-    }
-  ) {
-    if (!supabaseAdminClient) throw new AppError('Database service unavailable', 503);
-
-    const { source, fileName, transactions } = payload;
-    if (!transactions || transactions.length === 0) {
-      throw new AppError('No transactions provided for ingestion', 400);
-    }
-
-    let importedCount = 0;
+    items: Array<Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
+  ): Promise<{
+    total: number;
+    validCount: number;
+    duplicateCount: number;
+    validatedItems: Array<{
+      item: Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
+      isDuplicate: boolean;
+    }>;
+  }> {
     let duplicateCount = 0;
-    const insertedIds: string[] = [];
+    const validatedItems: Array<{
+      item: Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>;
+      isDuplicate: boolean;
+    }> = [];
 
-    for (const item of transactions) {
-      try {
-        const isDuplicate = await TransactionService.detectDuplicate(
-          userId,
-          item.accountId,
-          item.amount,
-          item.date,
-          item.description
-        );
+    for (const item of items) {
+      const isDup = await TransactionService.detectDuplicate(
+        userId,
+        item.accountId,
+        item.amount,
+        item.date,
+        item.description
+      );
 
-        if (isDuplicate) {
-          duplicateCount++;
-          continue;
-        }
-
-        const created = await TransactionService.createTransaction(userId, {
-          accountId: item.accountId,
-          amount: item.amount,
-          type: item.type,
-          category: item.category || TransactionService.inferCategory(item.description),
-          description: item.description,
-          date: item.date,
-          merchantName: item.merchantName,
-          paymentMethod: item.paymentMethod as any,
-          referenceNumber: item.referenceNumber,
-          isRecurring: false,
-        });
-
-        insertedIds.push(created.id);
-        importedCount++;
-      } catch (err) {
-        logger.warn({ err, item }, 'Failed to import single row in batch');
-      }
+      if (isDup) duplicateCount++;
+      validatedItems.push({ item, isDuplicate: isDup });
     }
 
-    // Record capture event in database
-    const { data: event, error: evErr } = await supabaseAdminClient
-      .from('capture_events')
-      .insert({
-        user_id: userId,
-        source,
-        file_name: fileName || null,
-        total_parsed: transactions.length,
-        imported_count: importedCount,
-        duplicate_count: duplicateCount,
-        status: importedCount === 0 && duplicateCount > 0 ? 'PARTIAL' : 'COMPLETED',
-      })
-      .select()
-      .single();
-
-    if (evErr) {
-      logger.error({ evErr }, 'Failed logging capture event');
-    }
-
+    const validCount = items.length - duplicateCount;
     return {
-      success: true,
-      captureEventId: event?.id,
-      totalParsed: transactions.length,
-      importedCount,
+      total: items.length,
+      validCount,
       duplicateCount,
-      insertedIds,
+      validatedItems,
     };
   }
 
-  public static async getCaptureHistory(userId: string) {
-    if (!supabaseAdminClient) throw new AppError('Database service unavailable', 503);
+  public static async commitBatch(
+    userId: string,
+    source: 'CSV' | 'EXCEL' | 'PDF_TEXT' | 'SMS_TEXT',
+    fileName: string | undefined,
+    items: Array<Omit<Transaction, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
+  ): Promise<{
+    event: CaptureEventRecord;
+    insertedCount: number;
+    duplicateCount: number;
+    transactions: Transaction[];
+  }> {
+    const { inserted, duplicates, items: createdTransactions } =
+      await TransactionService.batchCreateTransactions(userId, items);
 
-    const { data, error } = await supabaseAdminClient
+    const eventRecord: CaptureEventRecord = {
+      id: `evt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      userId,
+      source,
+      fileName,
+      totalCount: items.length,
+      importedCount: inserted,
+      duplicateCount: duplicates,
+      createdAt: new Date().toISOString(),
+    };
+
+    if (!supabaseClient) {
+      inMemoryCaptureEvents.unshift(eventRecord);
+    } else {
+      const { error } = await supabaseClient.from('capture_events').insert({
+        user_id: userId,
+        source,
+        file_name: fileName,
+        total_count: items.length,
+        imported_count: inserted,
+        duplicate_count: duplicates,
+      });
+      if (error) {
+        // Fallback log
+        inMemoryCaptureEvents.unshift(eventRecord);
+      }
+    }
+
+    return {
+      event: eventRecord,
+      insertedCount: inserted,
+      duplicateCount: duplicates,
+      transactions: createdTransactions,
+    };
+  }
+
+  public static async getHistory(userId: string): Promise<CaptureEventRecord[]> {
+    if (!supabaseClient) {
+      return inMemoryCaptureEvents.filter((e) => e.userId === userId);
+    }
+
+    const { data, error } = await supabaseClient
       .from('capture_events')
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
-    if (error) {
-      throw new AppError('Unable to fetch import capture history', 500);
-    }
+    if (error) throw new AppError('Failed to fetch capture history', 500);
 
-    return data || [];
+    return (data || []).map((e) => ({
+      id: e.id,
+      userId: e.user_id,
+      source: e.source,
+      fileName: e.file_name,
+      totalCount: e.total_count,
+      importedCount: e.imported_count,
+      duplicateCount: e.duplicate_count,
+      createdAt: e.created_at,
+    }));
   }
 }

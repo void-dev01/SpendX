@@ -1,75 +1,134 @@
 import { Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from '../types/index.js';
+import { AuthenticatedRequest, ApiResponse } from '../types/index.js';
+import {
+  createRecurringSchema,
+  updateRecurringSchema,
+  detectPatternsSchema,
+} from '../validators/recurring.validator.js';
 import { RecurringService } from '../services/recurring.service.js';
 import { AppError } from '../middleware/errorHandler.js';
 
-export const getRecurringPayments = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getRecurring = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const data = await RecurringService.getRecurringPayments(userId);
-    res.json({ success: true, data });
+    const recurring = await RecurringService.getRecurring(userId);
+    res.status(200).json({
+      success: true,
+      data: recurring,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const getById = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getRecurringById = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const item = await RecurringService.getById(userId, req.params.id as string);
-    res.json({ success: true, data: item });
+    const id = String(req.params.id);
+    const recurring = await RecurringService.getRecurringById(userId, id);
+    res.status(200).json({
+      success: true,
+      data: recurring,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const create = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const createRecurring = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const item = await RecurringService.create(userId, req.body);
-    res.status(201).json({ success: true, data: item, message: 'Recurring payment created successfully' });
+    const validated = createRecurringSchema.parse(req.body);
+    const created = await RecurringService.createRecurring(userId, validated);
+
+    res.status(201).json({
+      success: true,
+      message: 'Recurring payment created successfully',
+      data: created,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const update = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const updateRecurring = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const item = await RecurringService.update(userId, req.params.id as string, req.body);
-    res.json({ success: true, data: item, message: 'Recurring payment updated successfully' });
+    const id = String(req.params.id);
+    const validated = updateRecurringSchema.parse(req.body);
+    const updated = await RecurringService.updateRecurring(userId, id, validated);
+
+    res.status(200).json({
+      success: true,
+      message: 'Recurring payment updated successfully',
+      data: updated,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateStatus = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const deleteRecurring = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const item = await RecurringService.updateStatus(userId, req.params.id as string, req.body.status);
-    res.json({ success: true, data: item, message: 'Status updated successfully' });
+    const id = String(req.params.id);
+    await RecurringService.deleteRecurring(userId, id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Recurring payment deleted successfully',
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const remove = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const detectPatterns = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const result = await RecurringService.delete(userId, req.params.id as string);
-    res.json({ success: true, data: result, message: 'Recurring payment deleted successfully' });
+    const validated = detectPatternsSchema.parse(req.body || {});
+    const detected = await RecurringService.detectPatterns(userId, validated.lookbackDays);
+
+    res.status(200).json({
+      success: true,
+      data: detected,
+    });
   } catch (err) {
     next(err);
   }

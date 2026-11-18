@@ -64,6 +64,16 @@ export const DashboardPage: React.FC = () => {
     data.overview.totalBalance.value === 0 &&
     data.recentTransactions.length === 0;
 
+  const handleClearSampleData = () => {
+    dashboardService.clearDemoData();
+    refetch();
+  };
+
+  const handleLoadSampleData = () => {
+    dashboardService.loadDemoData();
+    refetch();
+  };
+
   if (isCompletelyEmpty) {
     return (
       <div className="space-y-6">
@@ -73,7 +83,7 @@ export const DashboardPage: React.FC = () => {
           selectedPeriod={selectedPeriod}
           onPeriodChange={setSelectedPeriod}
         />
-        <DashboardEmptyState />
+        <DashboardEmptyState onLoadSampleData={handleLoadSampleData} />
       </div>
     );
   }
@@ -86,6 +96,7 @@ export const DashboardPage: React.FC = () => {
         isDemo={data.isDemo}
         selectedPeriod={selectedPeriod}
         onPeriodChange={setSelectedPeriod}
+        onClearSampleData={handleClearSampleData}
       />
 
       {/* 2. Financial Overview / Summary Cards */}

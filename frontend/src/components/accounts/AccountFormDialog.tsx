@@ -171,10 +171,22 @@ export const AccountFormDialog: React.FC<AccountFormDialogProps> = ({
               <input
                 id="account-institution"
                 type="text"
-                placeholder="e.g. HDFC Bank, SBI, ICICI"
+                list="indian-banks"
+                placeholder="e.g. HDFC Bank, SBI, ICICI, GPay"
                 {...register('institution')}
                 className="w-full px-3 py-2.5 rounded-xl glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-spendx-blue-primary/40 text-sm"
               />
+              <datalist id="indian-banks">
+                <option value="HDFC Bank" />
+                <option value="State Bank of India (SBI)" />
+                <option value="ICICI Bank" />
+                <option value="Axis Bank" />
+                <option value="Kotak Mahindra Bank" />
+                <option value="Punjab National Bank (PNB)" />
+                <option value="Bank of Baroda" />
+                <option value="Paytm / GPay UPI Wallet" />
+                <option value="Physical Cash Wallet" />
+              </datalist>
               {errors.institution && (
                 <p className="text-[11px] text-rose-500 mt-1">{errors.institution.message}</p>
               )}

@@ -1,9 +1,15 @@
 import { Router } from 'express';
+import {
+  getFinancialSummary,
+  getHealthScore,
+  getBurnRate,
+} from '../controllers/analytics.controller.js';
 import { requireAuth } from '../middleware/auth.js';
-import { getAnalytics } from '../controllers/analytics.controller.js';
 
 const router = Router();
 
-router.get('/', requireAuth, getAnalytics);
+router.get('/summary', requireAuth, getFinancialSummary);
+router.get('/health-score', requireAuth, getHealthScore);
+router.get('/burn-rate', requireAuth, getBurnRate);
 
 export default router;

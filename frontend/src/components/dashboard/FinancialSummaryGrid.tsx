@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wallet, TrendingUp, TrendingDown, IndianRupee } from 'lucide-react';
+import { Wallet, TrendUp, TrendDown, CurrencyInr } from '@phosphor-icons/react';
 import { OverviewMetrics } from '@/services/dashboardService';
 import { FinancialSummaryCard } from './FinancialSummaryCard';
 
@@ -26,7 +26,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         label={overview.totalIncome.label}
         value={overview.totalIncome.value}
         description={overview.totalIncome.description}
-        icon={TrendingUp}
+        icon={TrendUp}
         iconColorClass="bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400"
         trendPercentage={overview.totalIncome.trendPercentage}
         trendIsPositive={overview.totalIncome.trendIsPositive}
@@ -37,7 +37,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         label={overview.totalExpenses.label}
         value={overview.totalExpenses.value}
         description={overview.totalExpenses.description}
-        icon={TrendingDown}
+        icon={TrendDown}
         iconColorClass="bg-rose-500/10 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400"
         trendPercentage={overview.totalExpenses.trendPercentage}
         trendIsPositive={overview.totalExpenses.trendIsPositive}
@@ -48,7 +48,7 @@ export const FinancialSummaryGrid: React.FC<FinancialSummaryGridProps> = ({ over
         label={overview.availableBalance.label}
         value={overview.availableBalance.value}
         description={overview.availableBalance.description}
-        icon={IndianRupee}
+        icon={CurrencyInr}
         iconColorClass="bg-spendx-purple-primary/10 text-spendx-purple-primary dark:bg-spendx-purple-primary/20 dark:text-spendx-purple-primary"
         trendPercentage={overview.availableBalance.trendPercentage}
         trendIsPositive={overview.availableBalance.trendIsPositive}

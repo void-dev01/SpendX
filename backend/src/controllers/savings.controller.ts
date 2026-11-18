@@ -1,87 +1,118 @@
 import { Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from '../types/index.js';
+import { AuthenticatedRequest, ApiResponse } from '../types/index.js';
 import { SavingsService } from '../services/savings.service.js';
+import {
+  createSavingsGoalSchema,
+  updateSavingsGoalSchema,
+  recordContributionSchema,
+} from '../validators/savings.validator.js';
 import { AppError } from '../middleware/errorHandler.js';
 
-export const getGoals = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getSavingsGoals = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
     const goals = await SavingsService.getGoals(userId);
-    res.json({ success: true, data: goals });
+    res.status(200).json({
+      success: true,
+      data: goals,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const getGoalById = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const createSavingsGoal = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const goal = await SavingsService.getGoalById(userId, req.params.id as string);
-    res.json({ success: true, data: goal });
+    const validated = createSavingsGoalSchema.parse(req.body);
+    const created = await SavingsService.createGoal(userId, validated);
+
+    res.status(201).json({
+      success: true,
+      message: 'Savings goal created',
+      data: created,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const createGoal = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const updateSavingsGoal = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const goal = await SavingsService.createGoal(userId, req.body);
-    res.status(201).json({ success: true, data: goal, message: 'Savings goal created successfully' });
+    const id = String(req.params.id);
+    const validated = updateSavingsGoalSchema.parse(req.body);
+    const updated = await SavingsService.updateGoal(userId, id, validated);
+
+    res.status(200).json({
+      success: true,
+      message: 'Savings goal updated',
+      data: updated,
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateGoal = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const deleteSavingsGoal = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const goal = await SavingsService.updateGoal(userId, req.params.id as string, req.body);
-    res.json({ success: true, data: goal, message: 'Savings goal updated successfully' });
+    const id = String(req.params.id);
+    await SavingsService.deleteGoal(userId, id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Savings goal deleted',
+    });
   } catch (err) {
     next(err);
   }
 };
 
-export const deleteGoal = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const recordContribution = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const result = await SavingsService.deleteGoal(userId, req.params.id as string);
-    res.json({ success: true, data: result, message: 'Savings goal deleted successfully' });
-  } catch (err) {
-    next(err);
-  }
-};
+    const id = String(req.params.id);
+    const { amount, notes } = recordContributionSchema.parse(req.body);
+    const result = await SavingsService.recordContribution(userId, id, amount, notes);
 
-export const addContribution = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) return next(new AppError('Unauthorized', 401));
-
-    const result = await SavingsService.addContribution(userId, req.params.id as string, req.body);
-    res.status(201).json({ success: true, data: result, message: 'Contribution added successfully' });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const getContributions = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) return next(new AppError('Unauthorized', 401));
-
-    const contributions = await SavingsService.getContributions(userId, req.query.goalId as string);
-    res.json({ success: true, data: contributions });
+    res.status(200).json({
+      success: true,
+      message: result.milestoneCelebrated
+        ? 'Contribution recorded and milestone unlocked!'
+        : 'Contribution recorded successfully',
+      data: result,
+    });
   } catch (err) {
     next(err);
   }

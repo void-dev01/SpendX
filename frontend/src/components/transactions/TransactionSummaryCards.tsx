@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListFilter, TrendingUp, TrendingDown, Scale } from 'lucide-react';
+import { Receipt, TrendUp, TrendDown, Scales } from '@phosphor-icons/react';
 import { TransactionRecord, transactionService } from '@/services/transactionService';
 
 interface TransactionSummaryCardsProps {
@@ -27,19 +27,19 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
       {/* 1. Total Transactions */}
       <div className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Total Transactions
           </span>
-          <div className="w-9 h-9 rounded-xl bg-spendx-blue-primary/10 text-spendx-blue-primary flex items-center justify-center">
-            <ListFilter className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center">
+            <Receipt weight="duotone" className="w-5 h-5" />
           </div>
         </div>
         <div className="mt-3 mb-1">
-          <span className="text-2xl sm:text-3xl font-bold tracking-tight text-spendx-indigo dark:text-spendx-soft-purple tabular-nums">
+          <span className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground tabular-nums">
             {totalCount}
           </span>
         </div>
-        <div className="text-xs text-slate-400 pt-2 border-t border-slate-100/60 dark:border-white/5 truncate">
+        <div className="text-xs text-muted-foreground pt-2 border-t border-black/5 dark:border-white/5 truncate">
           Recorded in active filter view
         </div>
       </div>
@@ -47,11 +47,11 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
       {/* 2. Total Income */}
       <div className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Total Income
           </span>
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-            <TrendingUp className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center">
+            <TrendUp weight="duotone" className="w-5 h-5" />
           </div>
         </div>
         <div className="mt-3 mb-1">
@@ -59,7 +59,7 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
             {transactionService.formatINR(totalIncome)}
           </span>
         </div>
-        <div className="text-xs text-slate-400 pt-2 border-t border-slate-100/60 dark:border-white/5 truncate">
+        <div className="text-xs text-muted-foreground pt-2 border-t border-black/5 dark:border-white/5 truncate">
           Credited cash inflows
         </div>
       </div>
@@ -67,11 +67,11 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
       {/* 3. Total Expenses */}
       <div className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Total Expenses
           </span>
-          <div className="w-9 h-9 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-            <TrendingDown className="w-4 h-4" />
+          <div className="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 flex items-center justify-center">
+            <TrendDown weight="duotone" className="w-5 h-5" />
           </div>
         </div>
         <div className="mt-3 mb-1">
@@ -79,7 +79,7 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
             {transactionService.formatINR(totalExpenses)}
           </span>
         </div>
-        <div className="text-xs text-slate-400 pt-2 border-t border-slate-100/60 dark:border-white/5 truncate">
+        <div className="text-xs text-muted-foreground pt-2 border-t border-black/5 dark:border-white/5 truncate">
           Total debited outflows
         </div>
       </div>
@@ -87,31 +87,31 @@ export const TransactionSummaryCards: React.FC<TransactionSummaryCardsProps> = (
       {/* 4. Net Cash Flow */}
       <div className="glass-card-interactive p-5 rounded-2xl flex flex-col justify-between group">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Net Cash Flow
           </span>
           <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center ${
+            className={`w-10 h-10 rounded-xl flex items-center justify-center border ${
               netCashFlow >= 0
-                ? 'bg-spendx-purple-primary/10 text-spendx-purple-primary'
-                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
             }`}
           >
-            <Scale className="w-4 h-4" />
+            <Scales weight="duotone" className="w-5 h-5" />
           </div>
         </div>
         <div className="mt-3 mb-1">
           <span
             className={`text-2xl sm:text-3xl font-bold tracking-tight tabular-nums ${
               netCashFlow >= 0
-                ? 'text-spendx-indigo dark:text-spendx-soft-purple'
-                : 'text-rose-600 dark:text-rose-400'
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-amber-600 dark:text-amber-400'
             }`}
           >
             {transactionService.formatINR(netCashFlow)}
           </span>
         </div>
-        <div className="text-xs text-slate-400 pt-2 border-t border-slate-100/60 dark:border-white/5 truncate">
+        <div className="text-xs text-muted-foreground pt-2 border-t border-black/5 dark:border-white/5 truncate">
           {netCashFlow >= 0 ? 'Surplus retained' : 'Deficit in current period'}
         </div>
       </div>

@@ -146,7 +146,17 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
 
       setIsProcessing(true);
       try {
-        const textToParse = smsInputText.trim() || (rawCSVRows.map((r) => r.join(' ')).join('\n'));
+        let textToParse = smsInputText.trim();
+        if (file && (file.name.endsWith('.pdf') || file.type === 'application/pdf')) {
+          const buffer = await file.arrayBuffer();
+          const extracted = await importService.extractTextFromPDF(buffer);
+          if (extracted.trim()) {
+            textToParse = extracted;
+          }
+        } else if (!textToParse && rawCSVRows.length > 0) {
+          textToParse = rawCSVRows.map((r) => r.join(' ')).join('\n');
+        }
+
         const rawPDF = importService.parseBankStatementText(textToParse);
         if (rawPDF.length === 0) {
           toast.error('No statement lines matched standard bank table formats.');

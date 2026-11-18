@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AccountsPage } from '../features/accounts/AccountsPage';
 import { useAuthStore } from '../stores/authStore';
+import { accountService, INITIAL_DEMO_ACCOUNTS } from '../services/accountService';
 
 describe('SPENDX Accounts Page & Telemetry', () => {
   let queryClient: QueryClient;
@@ -27,6 +28,7 @@ describe('SPENDX Accounts Page & Telemetry', () => {
     });
 
     localStorage.clear();
+    accountService.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
   });
 
   const renderAccounts = () =>

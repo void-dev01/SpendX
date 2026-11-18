@@ -1,23 +1,19 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.js';
 import {
-  getGoals,
-  getGoalById,
-  createGoal,
-  updateGoal,
-  deleteGoal,
-  addContribution,
-  getContributions,
+  getSavingsGoals,
+  createSavingsGoal,
+  updateSavingsGoal,
+  deleteSavingsGoal,
+  recordContribution,
 } from '../controllers/savings.controller.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
-router.get('/', requireAuth, getGoals);
-router.post('/', requireAuth, createGoal);
-router.get('/contributions', requireAuth, getContributions);
-router.get('/:id', requireAuth, getGoalById);
-router.put('/:id', requireAuth, updateGoal);
-router.delete('/:id', requireAuth, deleteGoal);
-router.post('/:id/contributions', requireAuth, addContribution);
+router.get('/', requireAuth, getSavingsGoals);
+router.post('/', requireAuth, createSavingsGoal);
+router.patch('/:id', requireAuth, updateSavingsGoal);
+router.delete('/:id', requireAuth, deleteSavingsGoal);
+router.post('/:id/contributions', requireAuth, recordContribution);
 
 export default router;

@@ -104,8 +104,7 @@ export const accountService = {
     } catch (e) {
       console.warn('Failed to parse cached accounts', e);
     }
-    this.saveStoredAccounts(INITIAL_DEMO_ACCOUNTS);
-    return INITIAL_DEMO_ACCOUNTS;
+    return [];
   },
 
   saveStoredAccounts(accounts: AccountRecord[]): void {
@@ -411,6 +410,10 @@ export const accountService = {
    * Format Indian Rupee currency
    */
   formatINR(amount: number): string {
-    return transactionService.formatINR(amount);
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      maximumFractionDigits: 2,
+    }).format(amount);
   },
 };

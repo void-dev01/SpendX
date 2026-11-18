@@ -1,87 +1,156 @@
 import { Response, NextFunction } from 'express';
-import { AuthenticatedRequest } from '../types/index.js';
+import { AuthenticatedRequest, ApiResponse } from '../types/index.js';
+import {
+  createTransactionSchema,
+  updateTransactionSchema,
+  queryTransactionsSchema,
+} from '../validators/transaction.validator.js';
 import { TransactionService } from '../services/transaction.service.js';
 import { AppError } from '../middleware/errorHandler.js';
+import { z } from 'zod';
 
-export const getTransactions = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+const batchImportSchema = z.object({
+  items: z.array(createTransactionSchema).min(1, 'At least one transaction is required for batch import'),
+});
+
+export const createTransaction = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
+    const validatedData = createTransactionSchema.parse(req.body);
     const userId = req.user?.id;
-    if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const options = {
-      page: req.query.page ? parseInt(req.query.page as string, 10) : 1,
-      limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 20,
-      search: req.query.search as string,
-      type: req.query.type as any,
-      category: req.query.category as string,
-      accountId: req.query.accountId as string,
-      startDate: req.query.startDate as string,
-      endDate: req.query.endDate as string,
-      sortBy: req.query.sortBy as any,
-      sortOrder: req.query.sortOrder as any,
-    };
+    if (!userId) {
+      return next(new AppError('Unauthorized: User identity could not be verified', 401));
+    }
 
-    const result = await TransactionService.getTransactions(userId, options);
-    res.json({ success: true, data: result });
-  } catch (err) {
-    next(err);
-  }
-};
+    const transaction = await TransactionService.createTransaction(userId, validatedData);
 
-export const getTransactionById = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) return next(new AppError('Unauthorized', 401));
-
-    const transaction = await TransactionService.getTransactionById(userId, req.params.id as string);
-    res.json({ success: true, data: transaction });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const createTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) return next(new AppError('Unauthorized', 401));
-
-    const transaction = await TransactionService.createTransaction(userId, req.body);
     res.status(201).json({
       success: true,
-      data: transaction,
       message: 'Transaction recorded successfully',
+      data: transaction,
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const updateTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const getTransactions = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const transaction = await TransactionService.updateTransaction(userId, req.params.id as string, req.body);
-    res.json({
+    const parsedQuery = queryTransactionsSchema.parse(req.query);
+    const search = typeof req.query.search === 'string' ? req.query.search : undefined;
+
+    const result = await TransactionService.getTransactions(userId, {
+      ...parsedQuery,
+      search,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: result.transactions,
+      meta: {
+        page: result.page,
+        limit: result.limit,
+        total: result.total,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getTransactionById = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return next(new AppError('Unauthorized', 401));
+
+    const id = String(req.params.id);
+    const transaction = await TransactionService.getTransactionById(userId, id);
+
+    res.status(200).json({
       success: true,
       data: transaction,
-      message: 'Transaction updated successfully',
     });
   } catch (err) {
     next(err);
   }
 };
 
-export const deleteTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+export const updateTransaction = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     if (!userId) return next(new AppError('Unauthorized', 401));
 
-    const result = await TransactionService.deleteTransaction(userId, req.params.id as string);
-    res.json({
+    const id = String(req.params.id);
+    const validatedData = updateTransactionSchema.parse(req.body);
+
+    const updated = await TransactionService.updateTransaction(userId, id, validatedData);
+
+    res.status(200).json({
       success: true,
-      data: result,
+      message: 'Transaction updated successfully',
+      data: updated,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteTransaction = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return next(new AppError('Unauthorized', 401));
+
+    const id = String(req.params.id);
+    await TransactionService.deleteTransaction(userId, id);
+
+    res.status(200).json({
+      success: true,
       message: 'Transaction deleted successfully',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const batchImportTransactions = async (
+  req: AuthenticatedRequest,
+  res: Response<ApiResponse>,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) return next(new AppError('Unauthorized', 401));
+
+    const { items } = batchImportSchema.parse(req.body);
+    const result = await TransactionService.batchCreateTransactions(userId, items);
+
+    res.status(201).json({
+      success: true,
+      message: `Batch import complete: ${result.inserted} inserted, ${result.duplicates} duplicates skipped`,
+      data: result,
     });
   } catch (err) {
     next(err);

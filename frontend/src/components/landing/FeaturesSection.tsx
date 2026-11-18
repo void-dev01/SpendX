@@ -25,8 +25,8 @@ const features: FeatureItem[] = [
     description:
       'Track income and expenses in one organized place, with clear transaction history and intelligent categorization.',
     badge: 'Core Ledger',
-    color: 'text-[#718FE8]',
-    iconBg: 'bg-[#718FE8]/15',
+    color: 'text-[#D4AF37]',
+    iconBg: 'bg-[#D4AF37]/15',
   },
   {
     icon: Zap,
@@ -43,8 +43,8 @@ const features: FeatureItem[] = [
     description:
       'Ask questions about your spending, understand your financial habits, and get contextual insights.',
     badge: 'Intelligence',
-    color: 'text-[#8066CC]',
-    iconBg: 'bg-[#8066CC]/15',
+    color: 'text-emerald-500',
+    iconBg: 'bg-emerald-500/15',
   },
   {
     icon: Wallet,
@@ -52,8 +52,8 @@ const features: FeatureItem[] = [
     description:
       'Create budgets, monitor category-wise spending, and understand how much you can safely spend.',
     badge: 'Envelopes',
-    color: 'text-[#8B72D6]',
-    iconBg: 'bg-[#8B72D6]/15',
+    color: 'text-[#D4AF37]',
+    iconBg: 'bg-[#D4AF37]/15',
   },
   {
     icon: ChartNoAxesCombined,
@@ -86,7 +86,7 @@ export const FeaturesSection: React.FC = () => {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             Everything Your Money Needs.{' '}
-            <span className="bg-gradient-to-r from-[#718FE8] via-[#8B72D6] to-[#8066CC] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#D4AF37] via-[#E2C766] to-[#10B981] bg-clip-text text-transparent">
               In One Place.
             </span>
           </h2>
