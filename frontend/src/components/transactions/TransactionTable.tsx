@@ -96,7 +96,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
   };
 
   return (
-    <div className="bg-surface rounded-2xl overflow-hidden border border-border shadow-card">
+    <div className="bg-surface rounded-[20px] overflow-hidden border border-border shadow-card">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -152,7 +152,7 @@ export const TransactionTable: React.FC<TransactionTableProps> = ({
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
                           isIncome
                             ? 'bg-income/10 text-income'
                             : isTransfer

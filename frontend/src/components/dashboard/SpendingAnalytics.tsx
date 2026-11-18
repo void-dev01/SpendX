@@ -55,7 +55,7 @@ export const SpendingAnalytics: React.FC<SpendingAnalyticsProps> = ({
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>

@@ -44,7 +44,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -93,7 +93,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
                       <td className="py-3 pl-1">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                            className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
                               isIncome
                                 ? 'bg-income/10 text-income'
                                 : 'bg-surface-elevated text-secondary-text border border-border-subtle'
@@ -159,7 +159,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
                         isIncome
                           ? 'bg-income/10 text-income'
                           : 'bg-surface text-secondary-text border border-border-subtle'

@@ -88,7 +88,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
   return (
     <div
       onClick={() => navigate(`/recurring/${payment.id}`)}
-      className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group cursor-pointer transition-all duration-300 relative hover:border-primary/40"
+      className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group cursor-pointer transition-all duration-300 relative hover:border-primary/40"
     >
       {/* Top Header: Merchant, Title, and Action Menu */}
       <div>

@@ -20,98 +20,90 @@ export const InsightsOverviewCards: React.FC<InsightsOverviewCardsProps> = ({ su
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* 1. Financial Health Score */}
-      <div className="rounded-2xl bg-surface border border-border p-5 flex flex-col justify-between shadow-card hover:border-primary/40 transition-colors">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text">
+      <div className="rounded-[20px] bg-surface border border-border p-5 sm:p-6 flex items-center gap-4 shadow-card hover:shadow-elevated transition-all group">
+        <div className="w-14 h-14 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+          <ShieldCheck className="w-7 h-7" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text block truncate">
             Financial Health
           </span>
-          <div className="w-9 h-9 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center">
-            <ShieldCheck className="w-4 h-4" />
+          <div className="my-0.5 flex items-baseline gap-2">
+            <span className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-foreground tabular-nums">
+              {healthScore.overallScore}
+            </span>
+            <span className="text-xs text-muted-foreground">/ 100</span>
+            <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ml-auto ${getScoreColor()}`}>
+              {healthScore.rating.replace('_', ' ')}
+            </span>
           </div>
-        </div>
-
-        <div className="mt-3 mb-1 flex items-baseline gap-2">
-          <span className="text-3xl font-bold font-display tracking-tight text-foreground tabular-nums">
-            {healthScore.overallScore}
-          </span>
-          <span className="text-xs text-muted-foreground">/ 100</span>
-          <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ml-auto ${getScoreColor()}`}>
-            {healthScore.rating.replace('_', ' ')}
-          </span>
-        </div>
-
-        <div className="text-xs text-muted-foreground pt-2 border-t border-border truncate">
-          Synthesized from 4 pillars of liquidity & debt
+          <div className="text-xs text-muted-foreground truncate">
+            Synthesized from 4 pillars
+          </div>
         </div>
       </div>
 
       {/* 2. Actionable Opportunities */}
-      <div className="rounded-2xl bg-surface border border-border p-5 flex flex-col justify-between shadow-card hover:border-primary/40 transition-colors">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text">
+      <div className="rounded-[20px] bg-surface border border-border p-5 sm:p-6 flex items-center gap-4 shadow-card hover:shadow-elevated transition-all group">
+        <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+          <TrendingUp className="w-7 h-7" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text block truncate">
             Action Opportunities
           </span>
-          <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-            <TrendingUp className="w-4 h-4" />
+          <div className="my-0.5 flex items-baseline gap-2">
+            <span className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-primary tabular-nums">
+              {summary.actionableOpportunities}
+            </span>
+            <span className="text-xs text-secondary-text">identified</span>
           </div>
-        </div>
-
-        <div className="mt-3 mb-1 flex items-baseline gap-2">
-          <span className="text-3xl font-bold font-display tracking-tight text-primary tabular-nums">
-            {summary.actionableOpportunities}
-          </span>
-          <span className="text-xs text-secondary-text">identified</span>
-        </div>
-
-        <div className="text-xs text-muted-foreground pt-2 border-t border-border truncate">
-          Discretionary optimizations & surplus captures
+          <div className="text-xs text-muted-foreground truncate">
+            Discretionary optimizations
+          </div>
         </div>
       </div>
 
       {/* 3. Potential Monthly Savings */}
-      <div className="rounded-2xl bg-surface border border-border p-5 flex flex-col justify-between shadow-card hover:border-primary/40 transition-colors">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text">
+      <div className="rounded-[20px] bg-surface border border-border p-5 sm:p-6 flex items-center gap-4 shadow-card hover:shadow-elevated transition-all group">
+        <div className="w-14 h-14 rounded-full bg-income/10 text-income flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+          <DollarSign className="w-7 h-7" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text block truncate">
             Potential Monthly Savings
           </span>
-          <div className="w-9 h-9 rounded-xl bg-income/10 text-income flex items-center justify-center">
-            <DollarSign className="w-4 h-4" />
+          <div className="my-0.5">
+            <span className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-income tabular-nums block truncate">
+              {transactionService.formatINR(summary.potentialMonthlySavings)}
+            </span>
           </div>
-        </div>
-
-        <div className="mt-3 mb-1">
-          <span className="text-2xl sm:text-3xl font-bold font-display tracking-tight text-income tabular-nums">
-            {transactionService.formatINR(summary.potentialMonthlySavings)}
-          </span>
-        </div>
-
-        <div className="text-xs text-muted-foreground pt-2 border-t border-border truncate">
-          Annualized ~{transactionService.formatINR(summary.potentialMonthlySavings * 12)}
+          <div className="text-xs text-muted-foreground truncate">
+            Annualized ~{transactionService.formatINR(summary.potentialMonthlySavings * 12)}
+          </div>
         </div>
       </div>
 
       {/* 4. Critical Alerts */}
-      <div className="rounded-2xl bg-surface border border-border p-5 flex flex-col justify-between shadow-card hover:border-primary/40 transition-colors">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text">
+      <div className="rounded-[20px] bg-surface border border-border p-5 sm:p-6 flex items-center gap-4 shadow-card hover:shadow-elevated transition-all group">
+        <div className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform ${summary.criticalAlertsCount > 0 ? 'bg-destructive/10 text-destructive' : 'bg-income/10 text-income'}`}>
+          <AlertTriangle className="w-7 h-7" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <span className="text-xs font-semibold uppercase tracking-wider text-secondary-text block truncate">
             Critical Alerts
           </span>
-          <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${summary.criticalAlertsCount > 0 ? 'bg-destructive/10 text-destructive' : 'bg-income/10 text-income'}`}>
-            <AlertTriangle className="w-4 h-4" />
+          <div className="my-0.5 flex items-baseline gap-2">
+            <span className={`text-2xl sm:text-3xl font-bold font-display tracking-tight tabular-nums ${summary.criticalAlertsCount > 0 ? 'text-destructive' : 'text-income'}`}>
+              {summary.criticalAlertsCount}
+            </span>
+            <span className="text-xs text-secondary-text">
+              {summary.criticalAlertsCount === 0 ? 'all clear' : 'require action'}
+            </span>
           </div>
-        </div>
-
-        <div className="mt-3 mb-1 flex items-baseline gap-2">
-          <span className={`text-3xl font-bold font-display tracking-tight tabular-nums ${summary.criticalAlertsCount > 0 ? 'text-destructive' : 'text-income'}`}>
-            {summary.criticalAlertsCount}
-          </span>
-          <span className="text-xs text-secondary-text">
-            {summary.criticalAlertsCount === 0 ? 'all clear' : 'require action'}
-          </span>
-        </div>
-
-        <div className="text-xs text-muted-foreground pt-2 border-t border-border truncate">
-          {summary.criticalAlertsCount === 0 ? 'Zero active budget or bill overruns' : 'Overdue bills or budget overruns'}
+          <div className="text-xs text-muted-foreground truncate">
+            {summary.criticalAlertsCount === 0 ? 'Zero active budget overruns' : 'Overdue bills or budget overruns'}
+          </div>
         </div>
       </div>
     </div>

@@ -165,7 +165,7 @@ export const AiAssistantPage: React.FC = () => {
         />
 
         {/* Main Chat Panel */}
-        <div className="flex-1 rounded-2xl bg-surface border border-border p-3 sm:p-6 flex flex-col justify-between min-h-[420px] sm:min-h-[540px] h-[calc(100dvh-13rem)] relative overflow-hidden shadow-card">
+        <div className="flex-1 rounded-[20px] bg-surface border border-border p-3 sm:p-6 flex flex-col justify-between min-h-[420px] sm:min-h-[540px] h-[calc(100dvh-13rem)] relative overflow-hidden shadow-card">
           {/* Scrollable Messages Stream */}
           <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
             {isWelcomeScreen ? (

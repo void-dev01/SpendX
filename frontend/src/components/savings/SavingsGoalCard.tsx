@@ -79,12 +79,12 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group transition-all duration-200">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group transition-all duration-200">
       {/* Top Header */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-surface-elevated border border-border flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-full bg-surface-elevated border border-border flex items-center justify-center shrink-0 shadow-xs">
               {getCategoryIcon(goal.category)}
             </div>
             <div>

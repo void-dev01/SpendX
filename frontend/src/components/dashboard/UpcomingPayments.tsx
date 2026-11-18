@@ -22,7 +22,7 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -55,7 +55,7 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
               className="p-3.5 rounded-xl bg-surface-elevated border border-border flex items-center justify-between gap-3 hover:border-primary/40 transition-all shadow-xs"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-xl bg-warning/10 text-warning flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-full bg-warning/10 text-warning flex items-center justify-center shrink-0 shadow-xs">
                   {getIcon(payment.iconName)}
                 </div>
                 <div className="min-w-0">

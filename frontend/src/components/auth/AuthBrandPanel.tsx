@@ -19,7 +19,7 @@ export const AuthBrandPanel: React.FC = () => {
         <div className="pt-4 space-y-2">
           <h2 className="text-2xl sm:text-3xl font-display font-extrabold tracking-tight text-foreground leading-tight">
             Intelligent Wealth Telemetry.{' '}
-            <span className="bg-gradient-to-r from-[#496BDB] via-[#5F42C7] to-[#7256D9] bg-clip-text text-transparent block">
+            <span className="text-gradient-brand block">
               Without the Friction.
             </span>
           </h2>
@@ -32,7 +32,7 @@ export const AuthBrandPanel: React.FC = () => {
 
       {/* Center: Fintech Telemetry Preview Card */}
       <div className="my-8 relative">
-        <div className="bg-surface rounded-2xl p-5 border border-border shadow-elevated space-y-4 max-w-md">
+        <div className="bg-surface rounded-[20px] p-5 border border-border shadow-elevated space-y-4 max-w-md">
           {/* Header pill */}
           <div className="flex items-center justify-between text-xs">
             <div className="flex items-center gap-2">

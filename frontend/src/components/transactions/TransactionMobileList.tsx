@@ -74,7 +74,7 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
         return (
           <div
             key={t.id}
-            className={`bg-surface p-4 rounded-2xl border transition-all ${
+            className={`bg-surface p-4 rounded-[20px] border transition-all ${
               isSelected
                 ? 'border-primary bg-primary/10 shadow-elevated'
                 : 'border-border shadow-card'
@@ -92,7 +92,7 @@ export const TransactionMobileList: React.FC<TransactionMobileListProps> = ({
                 />
 
                 <div
-                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                  className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
                     isIncome
                       ? 'bg-income/10 text-income'
                       : isTransfer

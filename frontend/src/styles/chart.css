@@ -9,25 +9,27 @@
  */
 
 :root {
-  --chart-primary: #496BDB;
-  --chart-secondary: #7256D9;
-  --chart-emerald: #11866D;
-  --chart-rose: #D95765;
-  --chart-amber: #B7791F;
-  --chart-grid: #EDF0F5;
+  --chart-primary: #4318FF;
+  --chart-secondary: #7551E9;
+  --chart-accent: #3965FF;
+  --chart-emerald: #05CD99;
+  --chart-rose: #EE5D50;
+  --chart-amber: #FFCE20;
+  --chart-grid: #E9EDF7;
   --chart-tooltip-bg: #FFFFFF;
-  --chart-tooltip-border: #E2E8F0;
+  --chart-tooltip-border: #E9EDF7;
 }
 
 .dark {
-  --chart-primary: #7895FF;
-  --chart-secondary: #A18BFF;
-  --chart-emerald: #36C6A0;
-  --chart-rose: #FF7C86;
-  --chart-amber: #F4BB58;
-  --chart-grid: #29364A;
-  --chart-tooltip-bg: #1D293B;
-  --chart-tooltip-border: #344258;
+  --chart-primary: #7551FF;
+  --chart-secondary: #A78BFA;
+  --chart-accent: #5B8CFF;
+  --chart-emerald: #05CD99;
+  --chart-rose: #FF6B75;
+  --chart-amber: #FFCE70;
+  --chart-grid: #26345E;
+  --chart-tooltip-bg: #111C44;
+  --chart-tooltip-border: #26345E;
 }
 
 .recharts-wrapper,

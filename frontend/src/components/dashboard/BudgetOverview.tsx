@@ -50,7 +50,7 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -81,7 +81,7 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
             {/* Top row: Name & Status */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 shadow-xs">
                   {getIcon(b.iconName)}
                 </span>
                 <span className="font-semibold text-sm text-foreground">

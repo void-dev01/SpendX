@@ -60,7 +60,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-6">
         <div>
@@ -97,14 +97,14 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
             <defs>
               {/* Income Gradient */}
               <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#11866D" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#11866D" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#05CD99" stopOpacity={0.35} />
+                <stop offset="95%" stopColor="#05CD99" stopOpacity={0.0} />
               </linearGradient>
 
               {/* Expense Gradient */}
               <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#D95765" stopOpacity={0.35} />
-                <stop offset="95%" stopColor="#D95765" stopOpacity={0.0} />
+                <stop offset="5%" stopColor="#EE5D50" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#EE5D50" stopOpacity={0.0} />
               </linearGradient>
             </defs>
 
@@ -130,28 +130,28 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
               dx={-4}
             />
 
-            <Tooltip content={renderCustomTooltip} cursor={{ stroke: 'rgba(73, 107, 219, 0.25)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
+            <Tooltip content={renderCustomTooltip} cursor={{ stroke: 'rgba(67, 24, 255, 0.25)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
 
             <Area
               type="monotone"
               dataKey="income"
               name="Income"
-              stroke="#11866D"
+              stroke="#05CD99"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#incomeGradient)"
-              activeDot={{ r: 5, stroke: '#11866D', strokeWidth: 2, fill: '#FFFFFF' }}
+              activeDot={{ r: 5, stroke: '#05CD99', strokeWidth: 2, fill: '#FFFFFF' }}
             />
 
             <Area
               type="monotone"
               dataKey="expenses"
               name="Expenses"
-              stroke="#D95765"
+              stroke="#EE5D50"
               strokeWidth={2.5}
               fillOpacity={1}
               fill="url(#expenseGradient)"
-              activeDot={{ r: 5, stroke: '#D95765', strokeWidth: 2, fill: '#FFFFFF' }}
+              activeDot={{ r: 5, stroke: '#EE5D50', strokeWidth: 2, fill: '#FFFFFF' }}
             />
           </AreaChart>
         </ResponsiveContainer>

@@ -91,11 +91,11 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card hover:shadow-elevated flex flex-col justify-between relative group transition-all">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between relative group transition-all">
       {/* Top Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-xl bg-surface-elevated border border-border flex items-center justify-center shrink-0">
+          <div className="w-12 h-12 rounded-full bg-surface-elevated border border-border flex items-center justify-center shrink-0 shadow-xs">
             {getCategoryIcon(budget.category)}
           </div>
           <div>

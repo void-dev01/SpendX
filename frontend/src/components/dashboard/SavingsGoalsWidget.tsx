@@ -20,7 +20,7 @@ export const SavingsGoalsWidget: React.FC<SavingsGoalsWidgetProps> = ({ goals })
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-2xl border border-border shadow-card flex flex-col justify-between h-full">
+    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -51,7 +51,7 @@ export const SavingsGoalsWidget: React.FC<SavingsGoalsWidgetProps> = ({ goals })
             {/* Top row */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+                <div className="w-9 h-9 rounded-full bg-secondary/10 text-secondary flex items-center justify-center shrink-0 shadow-xs">
                   {getIcon(goal.iconName)}
                 </div>
                 <div>
@@ -74,7 +74,7 @@ export const SavingsGoalsWidget: React.FC<SavingsGoalsWidgetProps> = ({ goals })
             {/* Progress Bar */}
             <div className="w-full h-2 rounded-full bg-surface border border-border-subtle overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[#496BDB] to-[#7256D9] transition-all duration-500"
+                className="h-full rounded-full bg-gradient-brand transition-all duration-500"
                 style={{ width: `${Math.min(100, goal.progressPercentage)}%` }}
               />
             </div>
