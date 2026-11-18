@@ -31,13 +31,13 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
           viewBox="0 0 36 36"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow-[0_4px_12px_rgba(113,143,232,0.30)]"
+          className="w-full h-full drop-shadow-[0_4px_12px_rgba(73,107,219,0.30)]"
         >
           <defs>
             <linearGradient id="spendxGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#718FE8" />
-              <stop offset="50%" stopColor="#8066CC" />
-              <stop offset="100%" stopColor="#8B72D6" />
+              <stop offset="0%" stopColor="#496BDB" />
+              <stop offset="50%" stopColor="#5F42C7" />
+              <stop offset="100%" stopColor="#7256D9" />
             </linearGradient>
             <linearGradient id="facetGrad" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.6" />

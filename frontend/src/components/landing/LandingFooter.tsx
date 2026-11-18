@@ -185,28 +185,28 @@ export const LandingFooter: React.FC = () => {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
         >
-          <div className="glass-panel rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-white/80 dark:border-white/20 shadow-2xl space-y-4">
+          <div className="bg-surface rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-border shadow-elevated space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-foreground">
+              <h3 className="text-lg font-display font-bold text-foreground">
                 {legalModalContent.title}
               </h3>
               <button
                 onClick={() => setLegalModalContent(null)}
                 aria-label="Close modal"
-                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/10 text-muted-foreground hover:text-foreground"
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-elevated text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-secondary-text leading-relaxed">
               {legalModalContent.text}
             </p>
             <div className="pt-3 flex justify-end">
               <button
                 onClick={() => setLegalModalContent(null)}
-                className="px-5 py-2 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary/90 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
               >
                 Understood
               </button>

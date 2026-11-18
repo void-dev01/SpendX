@@ -81,7 +81,7 @@ export const MobileMoreDrawer: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation drawer"
-          className="fixed inset-0 z-50 flex flex-col justify-end md:hidden bg-slate-900/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex flex-col justify-end md:hidden bg-slate-950/70"
           onClick={closeMobileDrawer}
         >
           <motion.div
@@ -89,28 +89,28 @@ export const MobileMoreDrawer: React.FC = () => {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300, mass: 0.8 }}
-            className="bg-[var(--glass-modal-bg)] backdrop-blur-3xl rounded-t-[32px] border-t border-slate-200/90 dark:border-white/15 p-4 sm:p-6 max-h-[85dvh] overflow-y-auto space-y-4 sm:space-y-5 shadow-2xl pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]"
+            className="bg-surface rounded-t-[32px] border-t border-border p-4 sm:p-6 max-h-[85dvh] overflow-y-auto space-y-4 sm:space-y-5 shadow-elevated pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]"
             onClick={(e) => e.stopPropagation()}
           >
         {/* Grab Handle */}
-        <div className="w-12 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 mx-auto -mt-1 mb-2" />
+        <div className="w-12 h-1.5 rounded-full bg-border mx-auto -mt-1 mb-2" />
 
         {/* Drawer Header with User Card & Close Button */}
-        <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/10">
+        <div className="flex items-center justify-between pb-3 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-sm shadow-xs">
               {initials}
             </div>
             <div>
-              <h3 className="text-sm font-bold text-foreground leading-tight">{displayName}</h3>
-              <p className="text-xs text-muted-foreground">{displayEmail}</p>
+              <h3 className="text-sm font-display font-bold text-foreground leading-tight">{displayName}</h3>
+              <p className="text-xs text-secondary-text">{displayEmail}</p>
             </div>
           </div>
 
           <button
             onClick={closeMobileDrawer}
             aria-label="Close drawer"
-            className="w-9 h-9 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+            className="w-9 h-9 rounded-full flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -133,12 +133,12 @@ export const MobileMoreDrawer: React.FC = () => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3.5 py-3 rounded-2xl text-xs font-semibold transition-colors ${
                       isActive
-                        ? 'bg-primary/15 text-primary border border-primary/25 font-bold'
-                        : 'text-foreground hover:bg-white/50 dark:hover:bg-white/10'
+                        ? 'bg-primary/10 text-primary border border-primary/25 font-bold'
+                        : 'text-foreground hover:bg-surface-elevated'
                     }`
                   }
                 >
-                  <div className="w-8 h-8 rounded-xl bg-white/40 dark:bg-white/5 flex items-center justify-center shrink-0">
+                  <div className="w-8 h-8 rounded-xl bg-surface-elevated border border-border-subtle flex items-center justify-center shrink-0">
                     <Icon className="w-4 h-4 text-primary" />
                   </div>
                   <span>{item.name}</span>
@@ -149,15 +149,15 @@ export const MobileMoreDrawer: React.FC = () => {
         </div>
 
         {/* Bottom Actions */}
-        <div className="pt-3 border-t border-black/5 dark:border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+        <div className="pt-3 border-t border-border flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-xs text-income font-medium">
             <ShieldCheck className="w-4 h-4" />
             <span>Encrypted Session</span>
           </div>
 
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-expense hover:bg-expense/10 transition-colors cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>

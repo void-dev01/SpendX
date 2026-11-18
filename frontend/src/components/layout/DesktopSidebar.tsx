@@ -39,12 +39,12 @@ export const DesktopSidebar: React.FC = () => {
   return (
     <aside
       aria-label="Desktop Sidebar Navigation"
-      className={`hidden md:flex flex-col justify-between shrink-0 transition-all duration-300 ease-in-out glass-panel rounded-3xl border border-white/80 dark:border-white/15 shadow-xl backdrop-blur-2xl fixed left-4 top-4 bottom-4 h-[calc(100vh-2rem)] select-none z-30 ${
+      className={`hidden md:flex flex-col justify-between shrink-0 transition-all duration-300 ease-in-out bg-surface rounded-2xl border border-border shadow-card fixed left-4 top-4 bottom-4 h-[calc(100vh-2rem)] select-none z-30 ${
         isSidebarCollapsed ? 'w-20 p-3' : 'w-64 p-4'
       }`}
     >
       {/* 1. Brand Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/10">
+      <div className="flex items-center justify-between pb-3 border-b border-border">
         <NavLink
           to="/dashboard"
           className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl flex items-center gap-2 overflow-hidden"
@@ -63,7 +63,7 @@ export const DesktopSidebar: React.FC = () => {
         <button
           onClick={toggleSidebarCollapse}
           aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
+          className="w-8 h-8 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
         >
           {isSidebarCollapsed ? (
             <ChevronRight className="w-4 h-4" />
@@ -74,7 +74,7 @@ export const DesktopSidebar: React.FC = () => {
       </div>
 
       {/* 2. Scrollable Navigation Groups */}
-      <nav className="flex-1 overflow-y-auto py-1 space-y-2 pr-1 pb-6 scrollbar-thin scrollbar-thumb-amber-500/20">
+      <nav className="flex-1 overflow-y-auto py-1 space-y-2 pr-1 pb-6 scrollbar-thin">
         {NAVIGATION_GROUPS.map((group) => {
           const groupItems = NAVIGATION_ITEMS.filter((item) => item.group === group);
           if (groupItems.length === 0) return null;
@@ -104,14 +104,14 @@ export const DesktopSidebar: React.FC = () => {
                       <NavLink
                         to={item.path}
                         className={({ isActive }) =>
-                          `flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-200 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                          `flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-150 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                             isSidebarCollapsed
                               ? 'justify-center w-10 h-10 mx-auto'
                               : 'px-3 py-1.5 w-full'
                           } ${
                             isActive
-                              ? 'bg-gradient-to-r from-amber-500/15 to-yellow-600/10 text-amber-600 dark:text-amber-400 shadow-sm border border-amber-500/30 font-bold'
-                              : 'text-muted-foreground hover:text-foreground hover:bg-white/50 dark:hover:bg-white/10'
+                              ? 'bg-primary/10 text-primary shadow-xs border border-primary/25 font-bold'
+                              : 'text-secondary-text hover:text-foreground hover:bg-surface-elevated'
                           }`
                         }
                       >
@@ -121,7 +121,7 @@ export const DesktopSidebar: React.FC = () => {
                               weight={isActive ? 'fill' : 'duotone'}
                               className={`shrink-0 transition-transform duration-200 ${
                                 isSidebarCollapsed ? 'w-5 h-5' : 'w-4 h-4'
-                              } ${isActive ? 'scale-110 text-amber-600 dark:text-amber-400' : ''}`}
+                              } ${isActive ? 'scale-105 text-primary' : ''}`}
                             />
 
                             {!isSidebarCollapsed && (
@@ -131,8 +131,8 @@ export const DesktopSidebar: React.FC = () => {
                                   <span
                                     className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                                       item.isAiAccent
-                                        ? 'bg-gradient-to-r from-[#8066CC] to-[#8B72D6] text-white'
-                                        : 'bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white'
+                                        ? 'bg-secondary text-white'
+                                        : 'bg-primary text-white'
                                     }`}
                                   >
                                     {item.badge}
@@ -148,12 +148,12 @@ export const DesktopSidebar: React.FC = () => {
                       {isSidebarCollapsed && isHovered && (
                         <div
                           role="tooltip"
-                          className="absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 px-2.5 py-1.5 rounded-xl glass-panel border border-white/80 dark:border-white/15 text-xs font-semibold text-foreground shadow-xl whitespace-nowrap animate-in fade-in duration-150 pointer-events-none"
+                          className="absolute left-full top-1/2 -translate-y-1/2 ml-3 z-50 px-2.5 py-1.5 rounded-xl bg-surface border border-border text-xs font-semibold text-foreground shadow-elevated whitespace-nowrap animate-in fade-in duration-150 pointer-events-none"
                         >
                           <div className="flex items-center gap-1.5">
                             <span>{item.name}</span>
                             {item.badge && (
-                              <span className="text-[9px] px-1 rounded bg-[#718FE8] text-white font-bold">
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary text-white font-bold">
                                 {item.badge}
                               </span>
                             )}
@@ -170,19 +170,19 @@ export const DesktopSidebar: React.FC = () => {
       </nav>
 
       {/* 3. Sidebar Footer (Quick Action, Data Sync & Profile) */}
-      <div className="pt-2 border-t border-black/5 dark:border-white/10 space-y-2">
+      <div className="pt-2 border-t border-border space-y-2">
         {/* Quick Add Action & Local Sync Status */}
         {!isSidebarCollapsed && (
           <div className="space-y-1.5">
             <button
               onClick={() => navigate('/transactions')}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white font-semibold text-xs shadow-md hover:opacity-95 transition-all cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs shadow-xs transition-colors cursor-pointer"
             >
               <Plus weight="bold" className="w-3.5 h-3.5 text-white" />
               <span>Record Transaction</span>
             </button>
-            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 text-[10px] text-muted-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#12866E] animate-pulse" />
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-surface-elevated text-[10px] text-muted-foreground border border-border-subtle">
+              <span className="w-1.5 h-1.5 rounded-full bg-income animate-pulse" />
               <span className="font-medium">Local Storage Active</span>
             </div>
           </div>
@@ -190,23 +190,23 @@ export const DesktopSidebar: React.FC = () => {
 
         {/* User Capsule — Navigates directly to Settings on click */}
         <div
-          className={`flex items-center rounded-2xl p-1 transition-colors hover:bg-black/5 dark:hover:bg-white/5 ${
+          className={`flex items-center rounded-2xl p-1 transition-colors hover:bg-surface-elevated ${
             isSidebarCollapsed ? 'justify-center' : 'justify-between'
           }`}
         >
           <button
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-2.5 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#718FE8] rounded-xl cursor-pointer flex-1 group"
+            className="flex items-center gap-2.5 overflow-hidden text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl cursor-pointer flex-1 group"
             title="Account Settings — Click to update name & email"
             aria-label="Open Account Settings to update name and email"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs group-hover:scale-105 transition-transform">
               {initials}
             </div>
 
             {!isSidebarCollapsed && (
               <div className="truncate">
-                <p className="text-xs font-bold text-foreground group-hover:text-[#718FE8] transition-colors truncate">
+                <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors truncate">
                   {displayName}
                 </p>
                 <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
@@ -219,7 +219,7 @@ export const DesktopSidebar: React.FC = () => {
               onClick={handleLogout}
               aria-label="Sign out"
               title="Sign Out"
-              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0 ml-1"
+              className="w-8 h-8 rounded-xl flex items-center justify-center text-muted-foreground hover:text-expense hover:bg-expense/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0 ml-1"
             >
               <SignOut className="w-4 h-4" />
             </button>

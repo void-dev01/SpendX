@@ -94,7 +94,7 @@ export const TopNavbar: React.FC = () => {
     <header className="sticky top-4 z-20 mb-4 sm:mb-6">
       <nav
         aria-label="Top Navigation"
-        className="glass-panel rounded-2xl border border-white/80 dark:border-white/15 shadow-xl backdrop-blur-2xl px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4"
+        className="bg-surface rounded-2xl border border-border shadow-card px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4"
       >
         {/* Left: Mobile Menu Trigger + Dynamic Page Title & Breadcrumbs */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -102,7 +102,7 @@ export const TopNavbar: React.FC = () => {
           <button
             onClick={openMobileDrawer}
             aria-label="Open navigation menu"
-            className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
+            className="md:hidden w-10 h-10 rounded-xl flex items-center justify-center text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -117,7 +117,7 @@ export const TopNavbar: React.FC = () => {
                     className={
                       idx === metadata.breadcrumbs.length - 1
                         ? 'text-foreground font-semibold'
-                        : 'text-muted-foreground hover:text-foreground'
+                        : 'text-secondary-text hover:text-foreground'
                     }
                   >
                     {crumb}
@@ -127,7 +127,7 @@ export const TopNavbar: React.FC = () => {
             </div>
 
             {/* Dynamic Page Title */}
-            <h1 className="text-sm xs:text-base sm:text-lg font-bold tracking-tight text-foreground truncate">
+            <h1 className="text-sm xs:text-base sm:text-lg font-display font-bold tracking-tight text-foreground truncate">
               {metadata.title}
             </h1>
           </div>
@@ -138,13 +138,13 @@ export const TopNavbar: React.FC = () => {
           <button
             type="button"
             onClick={() => setGlobalSearchOpen(true)}
-            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-white/50 dark:bg-white/5 border border-white/80 dark:border-white/15 text-xs text-muted-foreground hover:text-foreground hover:border-primary/40 transition-colors cursor-pointer group shadow-sm"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl bg-surface-elevated border border-border text-xs text-secondary-text hover:text-foreground hover:border-primary/50 transition-colors cursor-pointer group shadow-xs"
           >
             <div className="flex items-center gap-2">
               <Search className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
               <span>Search transactions, accounts, insights...</span>
             </div>
-            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-black/5 dark:bg-white/10 text-[10px] font-mono text-muted-foreground">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-surface border border-border text-[10px] font-mono text-muted-foreground">
               ⌘K
             </kbd>
           </button>
@@ -157,7 +157,7 @@ export const TopNavbar: React.FC = () => {
             type="button"
             onClick={() => setGlobalSearchOpen(true)}
             aria-label="Open search command palette"
-            className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
+            className="lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
           >
             <Search className="w-4 h-4" />
           </button>
@@ -171,11 +171,11 @@ export const TopNavbar: React.FC = () => {
               }}
               aria-label="View notifications"
               aria-expanded={isNotificationsOpen}
-              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
+              className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
             >
               <Bell className="w-4 h-4" />
               {unreadCount > 0 && (
-                <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-[#DC5579] animate-pulse" />
+                <span className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 w-2 h-2 rounded-full bg-expense animate-pulse" />
               )}
             </button>
 
@@ -188,12 +188,12 @@ export const TopNavbar: React.FC = () => {
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="region"
                   aria-label="Notifications panel"
-                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-3 sm:p-4 z-50 backdrop-blur-3xl space-y-3"
+                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-2xl bg-surface border border-border shadow-elevated p-3 sm:p-4 z-50 space-y-3"
                 >
                   {/* Header */}
-                  <div className="flex items-center justify-between pb-2.5 border-b border-black/5 dark:border-white/10">
+                  <div className="flex items-center justify-between pb-2.5 border-b border-border">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-bold text-foreground">Notifications</h3>
+                      <h3 className="text-xs font-display font-bold text-foreground">Notifications</h3>
                       {unreadCount > 0 && (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/15 text-primary font-bold">
                           {unreadCount} new
@@ -213,8 +213,8 @@ export const TopNavbar: React.FC = () => {
                   {/* List */}
                   <div className="max-h-72 overflow-y-auto no-scrollbar space-y-2">
                     {notifications.length === 0 ? (
-                      <div className="py-8 text-center text-xs text-muted-foreground space-y-1">
-                        <CheckCheck className="w-7 h-7 mx-auto text-emerald-500/70" />
+                      <div className="py-8 text-center text-xs text-secondary-text space-y-1">
+                        <CheckCheck className="w-7 h-7 mx-auto text-income/70" />
                         <p className="font-semibold text-foreground">All caught up!</p>
                         <p className="text-[11px]">No active notifications</p>
                       </div>
@@ -225,16 +225,16 @@ export const TopNavbar: React.FC = () => {
                           onClick={() => markAsRead(item.id)}
                           className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start gap-2.5 ${
                             item.unread
-                              ? 'bg-primary/10 dark:bg-primary/15 border-primary/25 hover:border-primary/40'
-                              : 'bg-white/40 dark:bg-white/5 border-transparent hover:border-white/30 opacity-75'
+                              ? 'bg-primary/10 border-primary/25 hover:border-primary/40'
+                              : 'bg-surface-elevated border-border-subtle hover:border-border opacity-75'
                           }`}
                         >
                           <div
                             className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
                               item.type === 'success'
-                                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
+                                ? 'bg-income/15 text-income'
                                 : item.type === 'warning'
-                                ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400'
+                                ? 'bg-warning/15 text-warning'
                                 : 'bg-primary/15 text-primary'
                             }`}
                           >
@@ -255,7 +255,7 @@ export const TopNavbar: React.FC = () => {
                                 {item.time}
                               </span>
                             </div>
-                            <p className="text-[11px] text-muted-foreground line-clamp-2 mt-0.5 leading-snug">
+                            <p className="text-[11px] text-secondary-text line-clamp-2 mt-0.5 leading-snug">
                               {item.description}
                             </p>
                           </div>
@@ -265,7 +265,7 @@ export const TopNavbar: React.FC = () => {
                   </div>
 
                   {/* Footer */}
-                  <div className="pt-2 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-[11px]">
+                  <div className="pt-2 border-t border-border flex items-center justify-between text-[11px]">
                     <Link
                       to="/notifications"
                       onClick={() => setIsNotificationsOpen(false)}
@@ -289,7 +289,7 @@ export const TopNavbar: React.FC = () => {
           <button
             onClick={toggleTheme}
             aria-label="Toggle visual theme"
-            className="w-10 h-10 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
           >
             {theme === 'dark' ? (
               <Sun className="w-4 h-4 text-warning" />
@@ -304,9 +304,9 @@ export const TopNavbar: React.FC = () => {
               onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
               aria-label="User account menu"
               aria-expanded={isProfileMenuOpen}
-              className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-white/40 dark:hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+              className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 {initials}
               </div>
               <div className="hidden xl:block text-left text-xs">
@@ -324,13 +324,13 @@ export const TopNavbar: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95, y: -6 }}
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="menu"
-                  className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-[var(--glass-modal-bg)] border border-slate-200/90 dark:border-white/15 shadow-2xl p-2 space-y-1 z-50 backdrop-blur-3xl"
+                  className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-surface border border-border shadow-elevated p-2 space-y-1 z-50"
                 >
                   {/* User Info Header */}
-                  <div className="px-3 py-2 border-b border-black/5 dark:border-white/10 space-y-0.5">
+                  <div className="px-3 py-2 border-b border-border space-y-0.5">
                     <p className="text-xs font-bold text-foreground truncate">{displayName}</p>
                     <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
-                    <div className="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400 pt-1">
+                    <div className="inline-flex items-center gap-1 text-[9px] font-semibold text-income pt-1">
                       <ShieldCheck className="w-3 h-3" />
                       <span>Verified Session</span>
                     </div>
@@ -340,7 +340,7 @@ export const TopNavbar: React.FC = () => {
                     <Link
                       to="/profile"
                       onClick={() => setIsProfileMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                       role="menuitem"
                     >
                       <User className="w-4 h-4 text-primary" />
@@ -350,7 +350,7 @@ export const TopNavbar: React.FC = () => {
                     <Link
                       to="/settings"
                       onClick={() => setIsProfileMenuOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-white/50 dark:hover:bg-white/10 transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors"
                       role="menuitem"
                     >
                       <SettingsIcon className="w-4 h-4 text-muted-foreground" />
@@ -358,10 +358,10 @@ export const TopNavbar: React.FC = () => {
                     </Link>
                   </div>
 
-                  <div className="pt-1 border-t border-black/5 dark:border-white/10">
+                  <div className="pt-1 border-t border-border">
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-expense hover:bg-expense/10 transition-colors cursor-pointer"
                       role="menuitem"
                     >
                       <LogOut className="w-4 h-4" />

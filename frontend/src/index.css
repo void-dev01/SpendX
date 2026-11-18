@@ -6,106 +6,158 @@
 
 @layer base {
   :root {
-    /* Canonical Canvas & Base Tokens */
-    --background: #EBF3FC;
-    --foreground: #263653;
-    --surface: rgba(255, 255, 255, 0.62);
-    --primary: #718FE8;
+    /* SPENDX Premium Obsidian x Electric Indigo Design System */
+    /* Light Mode Tokens */
+    --background: #F5F7FB;
+    --foreground: #17243A;
+    --surface: #FFFFFF;
+    --surface-elevated: #F0F3F9;
+    --card: #FFFFFF;
+    --card-foreground: #17243A;
+    --card-elevated: #F0F3F9;
+    --popover: #FFFFFF;
+    --popover-foreground: #17243A;
+
+    --primary: #496BDB;
+    --primary-hover: #3C5CC7;
     --primary-foreground: #FFFFFF;
-    --secondary: #8B72D6;
+    --secondary: #7256D9;
+    --secondary-hover: #5F42C7;
     --secondary-foreground: #FFFFFF;
-    --income: #12866E;
-    --expense: #DC5579;
-    --warning: #C48620;
+    --accent: #0E9F85;
+    --accent-foreground: #FFFFFF;
+
+    --main-text: #17243A;
+    --secondary-text: #627087;
+    --muted-text: #8995A8;
+
+    --muted: #F0F3F9;
+    --muted-foreground: #8995A8;
+    --border: #E2E8F0;
+    --border-subtle: #EDF0F5;
+    --input: #E2E8F0;
+    --ring: #496BDB;
+    --radius: 1rem;
+
+    /* Semantic Financial Indicators */
+    --income: #11866D;
+    --expense: #D95765;
+    --warning: #B7791F;
     --info: #4779C9;
-    --muted: rgba(255, 255, 255, 0.30);
-    --muted-foreground: #64748B;
-    --border: rgba(255, 255, 255, 0.80);
-    --input: rgba(255, 255, 255, 0.50);
-    --ring: #718FE8;
-    --radius: 1.25rem; /* 20px standard border radius */
+    --success: #16866E;
+    --error: #D95765;
+    --ai-accent: #7256D9;
 
-    /* Core SPENDX Brand Tokens (THEME.md Authoritative Specification) */
-    --brand-primary: #718FE8;
-    --brand-secondary: #8B72D6;
-    --brand-ai: #8066CC;
-    --brand-ice: #DDF5FF;
-    --brand-sky: #C9E5FF;
-    --brand-lavender: #DCD9FF;
-    --brand-soft-purple: #EDE4FF;
-    --brand-deep-indigo: #5368A2;
+    /* Legacy Brand Aliases (for components using previous token names) */
+    --brand-primary: #496BDB;
+    --brand-secondary: #7256D9;
+    --brand-ai: #7256D9;
+    --brand-ice: #F0F3F9;
+    --brand-sky: #E2E8F0;
+    --brand-lavender: #F0F3F9;
+    --brand-soft-purple: #F0F3F9;
+    --brand-deep-indigo: #17243A;
 
-    /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #5368A2;
-    --spendx-deep-indigo: #263653;
-    --spendx-soft-purple: #8B72D6;
-    --spendx-text-primary: #263653;
+    --spendx-indigo: #627087;
+    --spendx-deep-indigo: #17243A;
+    --spendx-soft-purple: #7256D9;
+    --spendx-text-primary: #17243A;
 
-    /* Frosted Glass Surfaces (Light Mode) */
-    --glass-bg: rgba(255, 255, 255, 0.62);
-    --glass-border: rgba(255, 255, 255, 0.80);
-    --glass-nav-bg: rgba(255, 255, 255, 0.70);
-    --glass-nav-border: rgba(255, 255, 255, 0.85);
-    --glass-modal-bg: rgba(255, 255, 255, 0.88);
-    --glass-modal-border: rgba(255, 255, 255, 1.00);
-    --glass-surface-bg: rgba(255, 255, 255, 0.45);
-    --glass-surface-border: rgba(255, 255, 255, 0.65);
+    /* Solid Surfaces Replacement for Glass */
+    --glass-bg: #FFFFFF;
+    --glass-border: #E2E8F0;
+    --glass-nav-bg: #FFFFFF;
+    --glass-nav-border: #E2E8F0;
+    --glass-modal-bg: #FFFFFF;
+    --glass-modal-border: #E2E8F0;
+    --glass-surface-bg: #F0F3F9;
+    --glass-surface-border: #EDF0F5;
 
-    /* Soft Indigo-Tinted Shadows */
-    --shadow-glass: 0 10px 32px -4px rgba(83, 104, 162, 0.08), 0 4px 12px -2px rgba(83, 104, 162, 0.04);
-    --shadow-glass-elevated: 0 16px 40px -6px rgba(83, 104, 162, 0.14), 0 6px 16px -3px rgba(83, 104, 162, 0.08);
-    --shadow-nav: 0 12px 36px -4px rgba(83, 104, 162, 0.12), 0 2px 8px -1px rgba(83, 104, 162, 0.06);
+    /* Controlled Light Mode Shadows */
+    --shadow-card: 0 1px 3px rgba(23, 36, 58, 0.05), 0 1px 2px rgba(23, 36, 58, 0.03);
+    --shadow-elevated: 0 10px 25px -5px rgba(23, 36, 58, 0.08), 0 8px 10px -6px rgba(23, 36, 58, 0.04);
+    --shadow-nav: 0 1px 3px rgba(23, 36, 58, 0.05);
+    --shadow-glass: 0 1px 3px rgba(23, 36, 58, 0.05), 0 1px 2px rgba(23, 36, 58, 0.03);
+    --shadow-glass-elevated: 0 10px 25px -5px rgba(23, 36, 58, 0.08), 0 8px 10px -6px rgba(23, 36, 58, 0.04);
   }
 
   .dark {
-    /* Deep Cosmic Navy-to-Midnight Tokens (THEME.md Specification) */
+    /* Dark Mode (Obsidian) Tokens */
     --background: #101827;
-    --foreground: #F1F5FF;
-    --surface: #1E293B;
-    --primary: #A5BFFF;
+    --foreground: #F5F7FF;
+    --surface: #1D293B;
+    --surface-elevated: #263449;
+    --card: #1D293B;
+    --card-foreground: #F5F7FF;
+    --card-elevated: #263449;
+    --popover: #1D293B;
+    --popover-foreground: #F5F7FF;
+
+    --primary: #7895FF;
+    --primary-hover: #91A7FF;
     --primary-foreground: #101827;
-    --secondary: #B9A4FF;
+    --secondary: #A18BFF;
+    --secondary-hover: #B5A4FF;
     --secondary-foreground: #101827;
-    --income: #34D399;
-    --expense: #FB7185;
-    --warning: #FBBF24;
-    --info: #60A5FA;
-    --muted: rgba(255, 255, 255, 0.04);
-    --muted-foreground: #A8B5CC;
-    --border: rgba(255, 255, 255, 0.14);
-    --input: rgba(255, 255, 255, 0.06);
-    --ring: #A5BFFF;
+    --accent: #36C6A0;
+    --accent-foreground: #101827;
 
-    /* Dark Brand Tokens */
-    --brand-primary: #A5BFFF;
-    --brand-secondary: #B9A4FF;
-    --brand-ai: #A285FF;
+    --main-text: #F5F7FF;
+    --secondary-text: #A6B1C7;
+    --muted-text: #8492AA;
+
+    --muted: #263449;
+    --muted-foreground: #8492AA;
+    --border: #344258;
+    --border-subtle: #29364A;
+    --input: #344258;
+    --ring: #7895FF;
+
+    /* Semantic Financial Indicators */
+    --income: #36C6A0;
+    --expense: #FF7C86;
+    --warning: #F4BB58;
+    --info: #8BB7FF;
+    --success: #36C6A0;
+    --error: #FF7C86;
+    --ai-accent: #A18BFF;
+
+    /* Legacy Brand Aliases */
+    --brand-primary: #7895FF;
+    --brand-secondary: #A18BFF;
+    --brand-ai: #A18BFF;
     --brand-ice: #101827;
-    --brand-sky: #131E33;
-    --brand-lavender: #17243C;
-    --brand-soft-purple: #1E293B;
-    --brand-deep-indigo: #F1F5FF;
+    --brand-sky: #1D293B;
+    --brand-lavender: #263449;
+    --brand-soft-purple: #263449;
+    --brand-deep-indigo: #F5F7FF;
 
-    /* SpendX Dynamic Text & Component Colors */
-    --spendx-indigo: #A8B5CC;
-    --spendx-deep-indigo: #F1F5FF;
-    --spendx-soft-purple: #B9A4FF;
-    --spendx-text-primary: #F1F5FF;
+    --spendx-indigo: #A6B1C7;
+    --spendx-deep-indigo: #F5F7FF;
+    --spendx-soft-purple: #A18BFF;
+    --spendx-text-primary: #F5F7FF;
 
-    /* Rich Dark Frosted Glass Surfaces */
-    --glass-bg: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.14);
-    --glass-nav-bg: rgba(23, 36, 60, 0.85);
-    --glass-nav-border: rgba(255, 255, 255, 0.16);
-    --glass-modal-bg: rgba(23, 36, 60, 0.94);
-    --glass-modal-border: rgba(255, 255, 255, 0.20);
-    --glass-surface-bg: rgba(255, 255, 255, 0.05);
-    --glass-surface-border: rgba(255, 255, 255, 0.10);
+    /* Solid Surfaces in Dark Mode */
+    --glass-bg: #1D293B;
+    --glass-border: #344258;
+    --glass-nav-bg: #1D293B;
+    --glass-nav-border: #344258;
+    --glass-modal-bg: #1D293B;
+    --glass-modal-border: #344258;
+    --glass-surface-bg: #263449;
+    --glass-surface-border: #29364A;
 
-    /* Deep Cosmic Shadows */
-    --shadow-glass: 0 10px 32px -4px rgba(0, 0, 0, 0.45), 0 4px 12px -2px rgba(0, 0, 0, 0.25);
-    --shadow-glass-elevated: 0 16px 40px -6px rgba(0, 0, 0, 0.65), 0 6px 16px -3px rgba(0, 0, 0, 0.35);
-    --shadow-nav: 0 12px 36px -4px rgba(0, 0, 0, 0.50), 0 2px 8px -1px rgba(0, 0, 0, 0.30);
+    /* Controlled Dark Shadows */
+    --shadow-card: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-elevated: 0 14px 30px -4px rgba(0, 0, 0, 0.55), 0 6px 12px -2px rgba(0, 0, 0, 0.35);
+    --shadow-nav: 0 2px 6px rgba(0, 0, 0, 0.30);
+    --shadow-glass: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-glass-elevated: 0 14px 30px -4px rgba(0, 0, 0, 0.55), 0 6px 12px -2px rgba(0, 0, 0, 0.35);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
   }
 }
 
@@ -113,10 +165,15 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
+  --color-secondary-hover: var(--secondary-hover);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-income: var(--income);
   --color-expense: var(--expense);
   --color-warning: var(--warning);
@@ -124,6 +181,7 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
@@ -150,10 +208,11 @@
   --color-spendx-primary: var(--primary);
   --color-spendx-text-primary: var(--spendx-text-primary);
 
-  /* Canonical Inter Typography */
+  /* Typography: Manrope for Headings, Inter for Body */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
@@ -223,12 +282,12 @@ body::-webkit-scrollbar {
   height: 0 !important;
 }
 
-/* Canonical Canvas Gradients (THEME.md Section 6.1 & 6.2) */
+/* Clean Structured Solid Canvas (No Glass / Blur) */
 html,
 body,
 .spendx-ambient-bg {
-  background: linear-gradient(135deg, #DDF5FF 0%, #C9E5FF 38%, #DCD9FF 72%, #EDE4FF 100%);
-  background-attachment: fixed;
+  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
   overflow-x: hidden;
   scrollbar-width: none !important;
@@ -238,14 +297,14 @@ body,
 .dark html,
 .dark body,
 .dark .spendx-ambient-bg {
-  background: linear-gradient(145deg, #101827 0%, #131E33 45%, #17243C 100%);
-  background-attachment: fixed;
+  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
 }
 
 /* Gradient Typography System */
 .text-gradient-brand {
-  background: linear-gradient(135deg, #718FE8 0%, #8B72D6 100%);
+  background: linear-gradient(135deg, #496BDB 0%, #7256D9 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -254,14 +313,14 @@ body,
 }
 
 .dark .text-gradient-brand {
-  background: linear-gradient(135deg, #A5BFFF 0%, #B9A4FF 100%);
+  background: linear-gradient(135deg, #7895FF 0%, #A18BFF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-ai {
-  background: linear-gradient(135deg, #718FE8 0%, #8066CC 100%);
+  background: linear-gradient(135deg, #7256D9 0%, #496BDB 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -270,14 +329,14 @@ body,
 }
 
 .dark .text-gradient-ai {
-  background: linear-gradient(135deg, #B9A4FF 0%, #A285FF 100%);
+  background: linear-gradient(135deg, #A18BFF 0%, #7895FF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-wealth {
-  background: linear-gradient(135deg, #12866E 0%, #168B83 100%);
+  background: linear-gradient(135deg, #11866D 0%, #0E9F85 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -286,82 +345,86 @@ body,
 }
 
 .dark .text-gradient-wealth {
-  background: linear-gradient(135deg, #34D399 0%, #2DD4BF 100%);
+  background: linear-gradient(135deg, #36C6A0 0%, #2DD4BF 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* Glassmorphism Utilities (THEME.md Section 7) */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-glass);
+/* Solid Surface Design Architecture (Zero Glassmorphism) */
+.surface-card,
+.glass-panel,
+.glass-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  border-radius: 1.25rem;
 }
 
+.surface-elevated,
+.glass-surface {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  border-radius: 1rem;
+}
+
+.surface-nav,
 .glass-nav {
-  background: var(--glass-nav-bg);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border: 1px solid var(--glass-nav-border);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-nav);
 }
 
-.glass-surface {
-  background: var(--glass-surface-bg);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border: 1px solid var(--glass-surface-border);
-}
-
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-glass);
-  border-radius: 20px;
-}
-
+.surface-interactive,
 .glass-card-interactive {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-glass);
-  border-radius: 20px;
-  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+  border-radius: 1.25rem;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease;
 }
 
+.surface-interactive:hover,
 .glass-card-interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glass-elevated);
-  border-color: rgba(113, 143, 232, 0.40);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-elevated);
+  border-color: rgba(73, 107, 219, 0.35);
 }
 
+.dark .surface-interactive:hover,
 .dark .glass-card-interactive:hover {
-  transform: translateY(-2px);
-  border-color: rgba(165, 191, 255, 0.35);
+  transform: translateY(-3px);
+  border-color: rgba(120, 149, 255, 0.35);
 }
 
-/* Primary SpendX CTA Button (THEME.md Section 15.1) */
+/* Primary SpendX CTA Button */
 .btn-spendx-primary {
-  background: linear-gradient(135deg, #718FE8 0%, #8B72D6 100%) !important;
-  color: #FFFFFF !important;
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
   font-weight: 600 !important;
-  box-shadow: 0 4px 14px rgba(113, 143, 232, 0.35) !important;
-  border: 1px solid rgba(255, 255, 255, 0.40) !important;
-  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(73, 107, 219, 0.25) !important;
+  border: 1px solid transparent !important;
+  border-radius: 0.75rem !important;
   transition: all 180ms ease !important;
   cursor: pointer !important;
 }
 
 .btn-spendx-primary:hover {
-  opacity: 0.95 !important;
+  background: var(--primary-hover) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 6px 20px rgba(113, 143, 232, 0.45) !important;
+  box-shadow: 0 4px 14px rgba(73, 107, 219, 0.35) !important;
+}
+
+.dark .btn-spendx-primary {
+  background: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: 0 2px 10px rgba(120, 149, 255, 0.30) !important;
+}
+
+.dark .btn-spendx-primary:hover {
+  background: var(--primary-hover) !important;
+  box-shadow: 0 4px 16px rgba(120, 149, 255, 0.45) !important;
 }
 
 .dark {
@@ -374,7 +437,7 @@ body,
 .dark h4,
 .dark h5,
 .dark h6 {
-  color: #F1F5FF !important;
+  color: var(--foreground) !important;
 }
 
 .dark label {
@@ -384,14 +447,14 @@ body,
 .dark input,
 .dark select,
 .dark textarea {
-  color: #F1F5FF !important;
-  background-color: rgba(255, 255, 255, 0.06) !important;
-  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #F5F7FF !important;
+  background-color: #1D293B !important;
+  border-color: #344258 !important;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #71829E !important;
+  color: #8492AA !important;
 }
 
 /* Animations */
@@ -433,25 +496,5 @@ body,
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(20px)) {
-  .glass-panel,
-  .glass-card,
-  .glass-card-interactive {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-  }
-  .dark .glass-panel,
-  .dark .glass-card,
-  .dark .glass-card-interactive {
-    background-color: #17243C !important;
-  }
-  .glass-nav {
-    background-color: rgba(255, 255, 255, 0.98) !important;
-  }
-  .dark .glass-nav {
-    background-color: #17243C !important;
   }
 }

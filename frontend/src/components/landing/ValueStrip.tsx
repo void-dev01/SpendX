@@ -18,13 +18,13 @@ const valueProps = [
     icon: Sparkles,
     title: 'AI Financial Guidance',
     description: 'Context-aware answers and proactive spending nudges.',
-    color: 'text-[#8066CC] dark:text-[#A78BFA] bg-[#8066CC]/10',
+    color: 'text-secondary bg-secondary/10',
   },
   {
     icon: LineChart,
     title: 'Clear Financial Insights',
     description: 'Deep clarity across cash flow, commitments, and runway.',
-    color: 'text-emerald-500 bg-emerald-500/10',
+    color: 'text-income bg-income/10',
   },
 ];
 
@@ -32,8 +32,8 @@ export const ValueStrip: React.FC = () => {
   return (
     <section className="py-8 px-4 sm:px-6 relative">
       <div className="max-w-6xl mx-auto">
-        <div className="glass-panel rounded-3xl p-4 sm:p-6 border border-white/80 dark:border-white/10 shadow-lg">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:divide-x lg:divide-black/5 lg:dark:divide-white/10">
+        <div className="bg-surface rounded-3xl p-4 sm:p-6 border border-border shadow-card">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:divide-x lg:divide-border">
             {valueProps.map((prop, idx) => (
               <div
                 key={prop.title}
@@ -47,7 +47,7 @@ export const ValueStrip: React.FC = () => {
                   <prop.icon className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-semibold text-foreground tracking-tight">
+                  <h4 className="text-sm font-semibold text-foreground font-display tracking-tight">
                     {prop.title}
                   </h4>
                   <p className="text-xs text-muted-foreground leading-relaxed">

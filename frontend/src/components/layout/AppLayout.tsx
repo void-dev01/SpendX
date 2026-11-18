@@ -25,12 +25,8 @@ export const AppLayout: React.FC = () => {
   }, [setSidebarCollapsed]);
 
   return (
-    <div className="min-h-screen min-h-dvh spendx-ambient-bg text-foreground flex overflow-x-hidden relative selection:bg-primary/20 selection:text-primary">
-      {/* Subtle Ambient Background Lighting */}
-      <div className="fixed top-0 left-1/4 w-[650px] h-[650px] bg-[#B9DEFF]/25 dark:bg-[#4F75E8]/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-      <div className="fixed bottom-0 right-1/4 w-[650px] h-[650px] bg-[#E2D2FF]/25 dark:bg-[#7E57C2]/10 rounded-full blur-[160px] pointer-events-none -z-10" />
-
-      {/* 1. Desktop Floating Frosted-Glass Sidebar (Fixed) */}
+    <div className="min-h-screen min-h-dvh bg-background text-foreground flex overflow-x-hidden relative selection:bg-primary/20 selection:text-primary">
+      {/* 1. Desktop Sidebar (Fixed) */}
       <DesktopSidebar />
 
       {/* 2. Main Workspace Column */}

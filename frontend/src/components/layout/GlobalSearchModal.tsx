@@ -56,7 +56,7 @@ export const GlobalSearchModal: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-label="Global search command palette"
-          className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-slate-900/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-start justify-center pt-20 sm:pt-28 px-4 bg-slate-950/70"
           onClick={() => setGlobalSearchOpen(false)}
         >
           <motion.div
@@ -64,11 +64,11 @@ export const GlobalSearchModal: React.FC = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: -12 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-[var(--glass-modal-bg)] backdrop-blur-3xl rounded-3xl p-4 sm:p-5 border border-slate-200/90 dark:border-white/20 shadow-2xl max-w-lg w-full space-y-3"
+            className="bg-surface rounded-2xl p-4 sm:p-5 border border-border shadow-elevated max-w-lg w-full space-y-3"
             onClick={(e) => e.stopPropagation()}
           >
         {/* Search Input Bar */}
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/80 dark:border-white/10">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-surface-elevated border border-border">
           <Search className="w-5 h-5 text-primary shrink-0" />
           <input
             type="text"
@@ -86,7 +86,7 @@ export const GlobalSearchModal: React.FC = () => {
               <X className="w-4 h-4" />
             </button>
           )}
-          <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-black/5 dark:bg-white/10 text-muted-foreground font-mono">
+          <kbd className="text-[10px] px-1.5 py-0.5 rounded bg-surface border border-border text-muted-foreground font-mono">
             ESC
           </kbd>
         </div>
@@ -104,7 +104,7 @@ export const GlobalSearchModal: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => handleSelect(item.path)}
-                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-white/60 dark:hover:bg-white/10 text-xs font-semibold text-foreground transition-colors group cursor-pointer text-left"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl hover:bg-surface-elevated text-xs font-semibold text-foreground transition-colors group cursor-pointer text-left"
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -126,7 +126,7 @@ export const GlobalSearchModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="pt-2 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-[11px] text-muted-foreground">
+        <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] text-muted-foreground">
           <span>Navigate with click or enter</span>
           <span className="flex items-center gap-1">
             SPENDX Command Center <ArrowRight className="w-3 h-3 text-primary" />

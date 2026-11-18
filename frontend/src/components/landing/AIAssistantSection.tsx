@@ -11,21 +11,18 @@ import {
 export const AIAssistantSection: React.FC = () => {
   return (
     <section id="ai-assistant" className="py-20 sm:py-28 px-4 sm:px-6 relative overflow-hidden">
-      {/* Soft Ambient Aura */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-[#718FE8]/15 via-[#8066CC]/15 to-[#8B72D6]/10 rounded-full blur-3xl -z-10 pointer-events-none" />
-
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           {/* Left Column: AI Identity, Heading, Description, Benefits */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-panel text-xs font-semibold text-[#8066CC] dark:text-[#A78BFA] uppercase tracking-wider">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border text-xs font-semibold text-secondary uppercase tracking-wider shadow-xs">
               <Sparkles className="w-3.5 h-3.5" />
               <span>SPENDX Intelligence Core</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display tracking-tight text-foreground leading-tight">
               Meet Your Personal{' '}
-              <span className="bg-gradient-to-r from-[#718FE8] via-[#8066CC] to-[#8B72D6] bg-clip-text text-transparent">
+              <span className="text-gradient-ai">
                 AI Money Assistant.
               </span>
             </h2>
@@ -37,11 +34,11 @@ export const AIAssistantSection: React.FC = () => {
 
             <div className="space-y-4 pt-2">
               <div className="flex items-start gap-3.5">
-                <div className="w-8 h-8 rounded-xl bg-[#718FE8]/15 text-[#718FE8] flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5">
                   <MessageSquare className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-foreground">
+                  <h4 className="text-sm font-semibold font-display text-foreground">
                     Natural language financial queries
                   </h4>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -51,11 +48,11 @@ export const AIAssistantSection: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-8 h-8 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center shrink-0 mt-0.5">
                   <TrendingDown className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-foreground">
+                  <h4 className="text-sm font-semibold font-display text-foreground">
                     Proactive spending alerts & trend detection
                   </h4>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -65,11 +62,11 @@ export const AIAssistantSection: React.FC = () => {
               </div>
 
               <div className="flex items-start gap-3.5">
-                <div className="w-8 h-8 rounded-xl bg-[#12866E]/15 text-[#12866E] dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-8 h-8 rounded-xl bg-income/10 text-income flex items-center justify-center shrink-0 mt-0.5">
                   <Lightbulb className="w-4 h-4" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-foreground">
+                  <h4 className="text-sm font-semibold font-display text-foreground">
                     Personalized budget optimization
                   </h4>
                   <p className="text-xs text-muted-foreground mt-0.5">
@@ -82,19 +79,19 @@ export const AIAssistantSection: React.FC = () => {
 
           {/* Right Column: AI Chat Interface Showcase */}
           <div className="lg:col-span-7">
-            <div className="glass-panel rounded-3xl p-5 sm:p-7 border border-white/80 dark:border-white/15 shadow-2xl relative backdrop-blur-2xl">
+            <div className="bg-surface rounded-3xl p-5 sm:p-7 border border-border shadow-elevated relative">
               {/* Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-black/5 dark:border-white/10">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center shadow-sm font-bold">
+                  <div className="w-8 h-8 rounded-xl bg-secondary text-white flex items-center justify-center shadow-xs font-bold font-display">
                     <Bot className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-foreground">SPENDX AI Coach</h3>
+                    <h3 className="text-sm font-bold font-display text-foreground">SPENDX AI Coach</h3>
                     <p className="text-[10px] text-muted-foreground">Always active • Context Aware</p>
                   </div>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#8066CC]/15 text-[#8066CC] dark:text-[#A78BFA] font-semibold border border-[#8066CC]/30">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-semibold border border-secondary/20">
                   Illustrative AI Preview (Demo)
                 </span>
               </div>
@@ -103,17 +100,17 @@ export const AIAssistantSection: React.FC = () => {
               <div className="space-y-3.5 py-4 text-xs sm:text-sm">
                 {/* User Message 1 */}
                 <div className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white font-medium p-3.5 shadow-sm">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-white font-medium p-3.5 shadow-xs">
                     Where did most of my money go this month?
                   </div>
                 </div>
 
                 {/* AI Response 1 */}
                 <div className="flex justify-start items-start gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-[#8066CC]/20 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center shrink-0 mt-1">
+                  <div className="w-6 h-6 rounded-lg bg-secondary/15 text-secondary flex items-center justify-center shrink-0 mt-1">
                     <Sparkles className="w-3.5 h-3.5" />
                   </div>
-                  <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 p-3.5 text-foreground shadow-sm space-y-2">
+                  <div className="max-w-[88%] rounded-2xl rounded-tl-xs bg-surface-elevated border border-border-subtle p-3.5 text-foreground shadow-xs space-y-2">
                     <p>
                       Your highest spending category this month is <strong>Food & Dining</strong>,
                       accounting for <strong className="text-primary tabular-nums">₹6,200</strong> of your
@@ -121,9 +118,9 @@ export const AIAssistantSection: React.FC = () => {
                     </p>
 
                     {/* AI Embedded Insight Badge */}
-                    <div className="rounded-xl bg-[#8066CC]/10 border border-[#8066CC]/20 p-2.5 flex items-center gap-2 text-xs">
-                      <Sparkles className="w-3.5 h-3.5 text-[#8066CC] dark:text-[#A78BFA] shrink-0" />
-                      <span className="text-[#8066CC] dark:text-[#A78BFA] font-medium">
+                    <div className="rounded-xl bg-secondary/10 border border-secondary/20 p-2.5 flex items-center gap-2 text-xs">
+                      <Sparkles className="w-3.5 h-3.5 text-secondary shrink-0" />
+                      <span className="text-secondary font-medium">
                         Dining expenses increased 12% compared with last month.
                       </span>
                     </div>
@@ -132,17 +129,17 @@ export const AIAssistantSection: React.FC = () => {
 
                 {/* User Message 2 */}
                 <div className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white font-medium p-3.5 shadow-sm">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-white font-medium p-3.5 shadow-xs">
                     How can I reduce my monthly expenses?
                   </div>
                 </div>
 
                 {/* AI Response 2 */}
                 <div className="flex justify-start items-start gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-[#8066CC]/20 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center shrink-0 mt-1">
+                  <div className="w-6 h-6 rounded-lg bg-secondary/15 text-secondary flex items-center justify-center shrink-0 mt-1">
                     <Sparkles className="w-3.5 h-3.5" />
                   </div>
-                  <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-white/70 dark:bg-white/10 border border-white/80 dark:border-white/10 p-3.5 text-foreground shadow-sm">
+                  <div className="max-w-[88%] rounded-2xl rounded-tl-xs bg-surface-elevated border border-border-subtle p-3.5 text-foreground shadow-xs">
                     Your recent spending shows opportunities to review dining and subscription expenses.
                     Consider setting category limits to monitor them.
                   </div>

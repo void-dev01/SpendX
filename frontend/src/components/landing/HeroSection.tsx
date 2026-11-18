@@ -18,42 +18,36 @@ export const HeroSection: React.FC = () => {
       id="hero"
       className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-6 overflow-hidden"
     >
-      {/* Ambient Gradient Background Glows */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[400px] sm:h-[550px] bg-gradient-to-tr from-[#718FE8]/20 via-[#8066CC]/15 to-[#8B72D6]/15 blur-3xl rounded-full -z-10 pointer-events-none" />
-      <div className="absolute top-48 -left-32 w-72 h-72 bg-[#718FE8]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-48 -right-32 w-72 h-72 bg-[#8B72D6]/10 rounded-full blur-3xl pointer-events-none -z-10" />
-
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Headline, Copy, CTAs, Trust Indicators */}
           <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6">
             {/* Intelligent Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border border-white/80 dark:border-white/15 text-xs font-medium text-foreground shadow-sm">
-              <span className="flex h-2 w-2 rounded-full bg-primary animate-ping" />
-              <span className="font-semibold text-primary">Next-Gen Fintech</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface border border-border text-xs font-medium text-foreground shadow-xs">
+              <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
+              <span className="font-semibold text-primary">Intelligent FinTech</span>
               <span className="text-muted-foreground">•</span>
-              <span className="text-muted-foreground">Automated Financial Intelligence</span>
+              <span className="text-muted-foreground">Automated Wealth Intelligence</span>
             </div>
 
             {/* Hero Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.12]">
-              Your Money.{' '}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground font-display leading-[1.12]">
+              Take Control of Your{' '}
               <span className="text-gradient-brand block sm:inline">
-                Your Intelligence.
+                Financial Future.
               </span>
             </h1>
 
             {/* Supporting Copy */}
             <p className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
-              Manage your money smarter with AI-powered tracking, automated transactions,
-              and personalized financial insights — all in one place.
+              One intelligent platform to track spending, understand your money, and make smarter financial decisions.
             </p>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center gap-3.5 w-full sm:w-auto pt-2">
               <button
                 onClick={() => navigate('/signup')}
-                className="w-full sm:w-auto px-7 py-3.5 rounded-full text-base font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-[0_8px_24px_rgba(113,143,232,0.4)] hover:shadow-[0_12px_28px_rgba(113,143,232,0.55)] transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer group"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-full text-base font-semibold text-white bg-primary hover:bg-primary-hover shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer group"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -61,7 +55,7 @@ export const HeroSection: React.FC = () => {
 
               <button
                 onClick={scrollToFeatures}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-full text-base font-medium text-foreground glass-panel hover:bg-white/70 dark:hover:bg-white/10 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer border border-white/80 dark:border-white/15"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full text-base font-medium text-foreground bg-surface hover:bg-surface-elevated transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer border border-border shadow-xs"
               >
                 <Compass className="w-4 h-4 text-primary" />
                 <span>Explore Features</span>
@@ -69,7 +63,7 @@ export const HeroSection: React.FC = () => {
             </div>
 
             {/* Supporting Trust Indicators */}
-            <div className="pt-4 border-t border-black/5 dark:border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
+            <div className="pt-4 border-t border-border grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 w-full">
               <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-medium text-muted-foreground">
                 <div className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
                   <ArrowLeftRight className="w-3 h-3" />

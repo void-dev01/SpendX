@@ -8,7 +8,7 @@ const securityPrinciples = [
     description:
       'Sensitive service credentials and cryptographic tokens strictly remain isolated on server environments.',
     badge: 'Server-Side Security',
-    color: 'text-amber-500 bg-amber-500/15',
+    color: 'text-warning bg-warning/10',
   },
   {
     icon: Lock,
@@ -16,7 +16,7 @@ const securityPrinciples = [
     description:
       'Financial ledgers, balances, and transaction records are only accessible to authenticated, verified accounts.',
     badge: 'Zero-Trust Scopes',
-    color: 'text-primary bg-primary/15',
+    color: 'text-primary bg-primary/10',
   },
   {
     icon: Shield,
@@ -24,7 +24,7 @@ const securityPrinciples = [
     description:
       'We collect only the essential financial metadata required to provide analytics and intelligent recommendations.',
     badge: 'Privacy by Design',
-    color: 'text-[#8066CC] dark:text-[#A78BFA] bg-[#8066CC]/15',
+    color: 'text-secondary bg-secondary/10',
   },
   {
     icon: UserCheck,
@@ -32,7 +32,7 @@ const securityPrinciples = [
     description:
       'You retain full authority to export your ledger, disconnect authorized sources, or wipe stored data at any time.',
     badge: 'User Autonomy',
-    color: 'text-emerald-500 bg-emerald-500/15',
+    color: 'text-income bg-income/10',
   },
 ];
 
@@ -42,14 +42,14 @@ export const SecuritySection: React.FC = () => {
       <div className="max-w-6xl mx-auto space-y-14">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-panel text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface border border-border text-xs font-semibold text-income uppercase tracking-wider shadow-xs">
             <Shield className="w-3.5 h-3.5" />
             <span>Integrity & Governance</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold font-display tracking-tight text-foreground">
             Your Financial Data{' '}
-            <span className="bg-gradient-to-r from-[#718FE8] via-[#8066CC] to-[#8B72D6] bg-clip-text text-transparent">
+            <span className="text-gradient-brand">
               Deserves Care.
             </span>
           </h2>
@@ -66,12 +66,12 @@ export const SecuritySection: React.FC = () => {
           {securityPrinciples.map((item) => (
             <div
               key={item.title}
-              className="glass-card-interactive rounded-3xl p-6 sm:p-7 border border-white/80 dark:border-white/10 flex flex-col justify-between space-y-4 group"
+              className="bg-surface hover:bg-surface-elevated rounded-3xl p-6 sm:p-7 border border-border shadow-card hover:shadow-elevated transition-all duration-200 hover:-translate-y-1 flex flex-col justify-between space-y-4 group"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.color} shadow-sm group-hover:scale-110 transition-transform duration-200`}
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center ${item.color} shadow-xs group-hover:scale-105 transition-transform duration-200`}
                   >
                     <item.icon className="w-6 h-6" />
                   </div>
