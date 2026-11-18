@@ -91,10 +91,10 @@ export const TopNavbar: React.FC = () => {
     .toUpperCase() || 'PC';
 
   return (
-    <header className="sticky top-4 z-20 mb-4 sm:mb-6">
+    <header className="sticky top-0 z-30 pt-3 sm:pt-4 pb-3 sm:pb-4 mb-2 sm:mb-4 bg-background/95 backdrop-blur-md transition-all duration-200">
       <nav
         aria-label="Top Navigation"
-        className="bg-surface rounded-2xl border border-border shadow-card px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4"
+        className="bg-surface rounded-[20px] border border-border shadow-card px-3 sm:px-6 h-[64px] sm:h-[72px] flex items-center justify-between gap-2 sm:gap-4"
       >
         {/* Left: Mobile Menu Trigger + Dynamic Page Title & Breadcrumbs */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
@@ -188,7 +188,7 @@ export const TopNavbar: React.FC = () => {
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="region"
                   aria-label="Notifications panel"
-                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-2xl bg-surface border border-border shadow-elevated p-3 sm:p-4 z-50 space-y-3"
+                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-[20px] bg-surface border border-border shadow-elevated p-3 sm:p-4 z-50 space-y-3"
                 >
                   {/* Header */}
                   <div className="flex items-center justify-between pb-2.5 border-b border-border">
@@ -306,7 +306,7 @@ export const TopNavbar: React.FC = () => {
               aria-expanded={isProfileMenuOpen}
               className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-xs shadow-xs">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 {initials}
               </div>
               <div className="hidden xl:block text-left text-xs">
@@ -324,7 +324,7 @@ export const TopNavbar: React.FC = () => {
                   exit={{ opacity: 0, scale: 0.95, y: -6 }}
                   transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
                   role="menu"
-                  className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-2xl bg-surface border border-border shadow-elevated p-2 space-y-1 z-50"
+                  className="absolute right-0 top-full mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-[20px] bg-surface border border-border shadow-elevated p-2 space-y-1 z-50"
                 >
                   {/* User Info Header */}
                   <div className="px-3 py-2 border-b border-border space-y-0.5">

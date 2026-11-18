@@ -31,11 +31,11 @@ export const AppLayout: React.FC = () => {
 
       {/* 2. Main Workspace Column */}
       <div
-        className={`flex-1 flex flex-col min-w-0 min-h-screen min-h-dvh px-3 sm:px-6 lg:pr-6 pt-3 sm:pt-4 transition-all duration-300 ease-in-out ${
+        className={`flex-1 flex flex-col min-w-0 min-h-screen min-h-dvh px-3 sm:px-6 lg:pr-6 transition-all duration-300 ease-in-out ${
           isSidebarCollapsed ? 'md:pl-28' : 'md:pl-72'
         }`}
       >
-        {/* Floating Top Navbar */}
+        {/* Fixed / Sticky Top Navbar */}
         <TopNavbar />
 
         {/* Scrollable Page Content Area */}
