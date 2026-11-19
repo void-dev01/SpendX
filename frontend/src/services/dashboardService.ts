@@ -159,11 +159,11 @@ const DEMO_DASHBOARD_DATA: Record<DateRangePeriod, Omit<DashboardData, 'isDemo' 
     spendingAnalytics: {
       totalSpent: 18450,
       categories: [
-        { id: '1', name: 'Food & Dining', amount: 6200, percentage: 33.6, color: '#718FE8', iconName: 'Utensils' },
-        { id: '2', name: 'Shopping', amount: 4500, percentage: 24.4, color: '#8B72D6', iconName: 'ShoppingBag' },
-        { id: '3', name: 'Transport', amount: 3000, percentage: 16.3, color: '#4779C9', iconName: 'Car' },
-        { id: '4', name: 'Bills & Utilities', amount: 2750, percentage: 14.9, color: '#C48620', iconName: 'Zap' },
-        { id: '5', name: 'Entertainment', amount: 2000, percentage: 10.8, color: '#8066CC', iconName: 'Film' },
+        { id: '1', name: 'Food & Dining', amount: 6200, percentage: 33.6, color: '#10B981', iconName: 'Utensils' },
+        { id: '2', name: 'Shopping', amount: 4500, percentage: 24.4, color: '#A5F12B', iconName: 'ShoppingBag' },
+        { id: '3', name: 'Transport', amount: 3000, percentage: 16.3, color: '#05CD99', iconName: 'Car' },
+        { id: '4', name: 'Bills & Utilities', amount: 2750, percentage: 14.9, color: '#D97706', iconName: 'Zap' },
+        { id: '5', name: 'Entertainment', amount: 2000, percentage: 10.8, color: '#0D9488', iconName: 'Film' },
       ],
     },
     budgets: [
@@ -372,11 +372,11 @@ const DEMO_DASHBOARD_DATA: Record<DateRangePeriod, Omit<DashboardData, 'isDemo' 
     spendingAnalytics: {
       totalSpent: 19800,
       categories: [
-        { id: '1', name: 'Food & Dining', amount: 6800, percentage: 34.3, color: '#718FE8', iconName: 'Utensils' },
-        { id: '2', name: 'Shopping', amount: 5200, percentage: 26.3, color: '#8B72D6', iconName: 'ShoppingBag' },
-        { id: '3', name: 'Transport', amount: 3100, percentage: 15.7, color: '#4779C9', iconName: 'Car' },
-        { id: '4', name: 'Bills & Utilities', amount: 2800, percentage: 14.1, color: '#C48620', iconName: 'Zap' },
-        { id: '5', name: 'Entertainment', amount: 1900, percentage: 9.6, color: '#8066CC', iconName: 'Film' },
+        { id: '1', name: 'Food & Dining', amount: 6800, percentage: 34.3, color: '#10B981', iconName: 'Utensils' },
+        { id: '2', name: 'Shopping', amount: 5200, percentage: 26.3, color: '#A5F12B', iconName: 'ShoppingBag' },
+        { id: '3', name: 'Transport', amount: 3100, percentage: 15.7, color: '#05CD99', iconName: 'Car' },
+        { id: '4', name: 'Bills & Utilities', amount: 2800, percentage: 14.1, color: '#D97706', iconName: 'Zap' },
+        { id: '5', name: 'Entertainment', amount: 1900, percentage: 9.6, color: '#0D9488', iconName: 'Film' },
       ],
     },
     budgets: [
@@ -506,11 +506,11 @@ const DEMO_DASHBOARD_DATA: Record<DateRangePeriod, Omit<DashboardData, 'isDemo' 
     spendingAnalytics: {
       totalSpent: 58250,
       categories: [
-        { id: '1', name: 'Food & Dining', amount: 19200, percentage: 33.0, color: '#718FE8', iconName: 'Utensils' },
-        { id: '2', name: 'Shopping', amount: 14700, percentage: 25.2, color: '#8B72D6', iconName: 'ShoppingBag' },
-        { id: '3', name: 'Transport', amount: 9600, percentage: 16.5, color: '#4779C9', iconName: 'Car' },
-        { id: '4', name: 'Bills & Utilities', amount: 8750, percentage: 15.0, color: '#C48620', iconName: 'Zap' },
-        { id: '5', name: 'Entertainment', amount: 6000, percentage: 10.3, color: '#8066CC', iconName: 'Film' },
+        { id: '1', name: 'Food & Dining', amount: 19200, percentage: 33.0, color: '#10B981', iconName: 'Utensils' },
+        { id: '2', name: 'Shopping', amount: 14700, percentage: 25.2, color: '#A5F12B', iconName: 'ShoppingBag' },
+        { id: '3', name: 'Transport', amount: 9600, percentage: 16.5, color: '#05CD99', iconName: 'Car' },
+        { id: '4', name: 'Bills & Utilities', amount: 8750, percentage: 15.0, color: '#D97706', iconName: 'Zap' },
+        { id: '5', name: 'Entertainment', amount: 6000, percentage: 10.3, color: '#0D9488', iconName: 'Film' },
       ],
     },
     budgets: [
@@ -631,11 +631,11 @@ const DEMO_DASHBOARD_DATA: Record<DateRangePeriod, Omit<DashboardData, 'isDemo' 
     spendingAnalytics: {
       totalSpent: 234000,
       categories: [
-        { id: '1', name: 'Food & Dining', amount: 78000, percentage: 33.3, color: '#718FE8', iconName: 'Utensils' },
-        { id: '2', name: 'Shopping', amount: 58000, percentage: 24.8, color: '#8B72D6', iconName: 'ShoppingBag' },
-        { id: '3', name: 'Transport', amount: 38000, percentage: 16.2, color: '#4779C9', iconName: 'Car' },
-        { id: '4', name: 'Bills & Utilities', amount: 36000, percentage: 15.4, color: '#C48620', iconName: 'Zap' },
-        { id: '5', name: 'Entertainment', amount: 24000, percentage: 10.3, color: '#8066CC', iconName: 'Film' },
+        { id: '1', name: 'Food & Dining', amount: 78000, percentage: 33.3, color: '#10B981', iconName: 'Utensils' },
+        { id: '2', name: 'Shopping', amount: 58000, percentage: 24.8, color: '#A5F12B', iconName: 'ShoppingBag' },
+        { id: '3', name: 'Transport', amount: 38000, percentage: 16.2, color: '#05CD99', iconName: 'Car' },
+        { id: '4', name: 'Bills & Utilities', amount: 36000, percentage: 15.4, color: '#D97706', iconName: 'Zap' },
+        { id: '5', name: 'Entertainment', amount: 24000, percentage: 10.3, color: '#0D9488', iconName: 'Film' },
       ],
     },
     budgets: [

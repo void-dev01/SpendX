@@ -19,13 +19,13 @@ interface SavingsProgressChartProps {
 }
 
 const CATEGORY_COLORS = [
-  '#4F46E5', // Electric Indigo
-  '#7C3AED', // Violet
   '#10B981', // Emerald
+  '#A5F12B', // Neon Lime
+  '#05CD99', // Mint
+  '#0D9488', // Teal
   '#F59E0B', // Amber
-  '#06B6D4', // Cyan
+  '#84CC16', // Olive Lime
   '#EF4444', // Rose
-  '#6366F1', // Indigo Accent
   '#64748B', // Slate
 ];
 
@@ -154,7 +154,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
               />
-              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(79, 70, 229, 0.06)' }} />
+              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(16, 185, 129, 0.08)' }} />
               <Bar
                 dataKey="target"
                 name="Target"
@@ -165,7 +165,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
               <Bar
                 dataKey="saved"
                 name="Saved"
-                fill="#4F46E5"
+                fill="#10B981"
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
               />

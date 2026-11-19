@@ -297,7 +297,7 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between py-2">
             <div>
               <p className="text-xs sm:text-sm font-medium">Design & Typography Engine</p>
-              <p className="text-[11px] text-muted-foreground">SPENDX Obsidian × Electric Indigo Design System</p>
+              <p className="text-[11px] text-muted-foreground">SPENDX Minimal White × Neon Lime FinTech Design System</p>
             </div>
             <Badge variant="secondary">Active</Badge>
           </div>

@@ -18,13 +18,13 @@ interface BudgetChartsProps {
 }
 
 const CATEGORY_COLORS = [
-  '#4F46E5', // Electric Indigo
-  '#7C3AED', // Violet
   '#10B981', // Emerald
+  '#A5F12B', // Neon Lime
+  '#05CD99', // Mint
+  '#0D9488', // Teal
   '#F59E0B', // Amber
-  '#06B6D4', // Cyan
+  '#84CC16', // Olive Lime
   '#EF4444', // Rose
-  '#6366F1', // Indigo Accent
   '#64748B', // Slate
 ];
 
@@ -202,8 +202,8 @@ export const BudgetCharts: React.FC<BudgetChartsProps> = ({ budgetMetrics }) => 
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
                 dx={-4}
               />
-              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(79, 70, 229, 0.06)' }} />
-              <Bar dataKey="budget" name="Allocated" fill="#4F46E5" radius={[4, 4, 0, 0]} />
+              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(16, 185, 129, 0.08)' }} />
+              <Bar dataKey="budget" name="Allocated" fill="#10B981" radius={[4, 4, 0, 0]} />
               <Bar dataKey="spent" name="Spent" fill="#EF4444" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

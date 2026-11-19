@@ -247,7 +247,7 @@ export const AnalyticsSection: React.FC = () => {
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Recurring Subscriptions
                   </span>
-                  <span className="w-6 h-6 rounded-full bg-[#8066CC]/15 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center">
+                  <span className="w-6 h-6 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                     <Layers className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -260,7 +260,7 @@ export const AnalyticsSection: React.FC = () => {
               </div>
 
               {/* Monthly Trend Indicator */}
-              <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-[#8066CC]/10 to-[#8B72D6]/10 p-4 border border-[#8066CC]/20 space-y-1.5">
+              <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-emerald-500/10 to-primary/10 p-4 border border-emerald-500/20 space-y-1.5">
                 <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
                   <TrendingUp className="w-3.5 h-3.5" />
                   <span>3-Month Projected Runway</span>

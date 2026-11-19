@@ -87,18 +87,18 @@ export interface AnalyticsInsightItem {
 }
 
 const CATEGORY_PALETTE = [
-  '#718FE8',
-  '#8B72D6',
-  '#12866E',
-  '#C48620',
-  '#DC5579',
-  '#8066CC',
-  '#4779C9',
-  '#5368A2',
-  '#168B83',
-  '#A063C7',
-  '#F59E0B',
-  '#64748B',
+  '#10B981', // Emerald
+  '#A5F12B', // Neon Lime
+  '#05CD99', // Mint
+  '#D97706', // Warm Amber
+  '#0D9488', // Teal
+  '#166534', // Forest Green
+  '#84CC16', // Olive Lime
+  '#15803D', // Medium Green
+  '#047857', // Pine Green
+  '#DC2626', // Crimson (for alerts)
+  '#F59E0B', // Amber
+  '#64748B', // Slate
 ];
 
 export const analyticsService = {

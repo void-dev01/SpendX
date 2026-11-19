@@ -104,7 +104,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
                 <Cell
                   key={`cell-${entry.category}`}
                   fill={entry.color}
-                  stroke={selectedCategory === entry.category ? '#6366F1' : 'transparent'}
+                  stroke={selectedCategory === entry.category ? '#10B981' : 'transparent'}
                   strokeWidth={selectedCategory === entry.category ? 2 : 0}
                 />
               ))}

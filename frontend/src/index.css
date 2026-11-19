@@ -43,7 +43,7 @@
     --income: #16A34A;
     --expense: #DC2626;
     --warning: #D97706;
-    --info: #2563EB;
+    --info: #05CD99;
     --success: #16A34A;
     --error: #DC2626;
     --ai-accent: #A5F12B;
@@ -107,7 +107,7 @@
     --income: #4ADE80;
     --expense: #F87171;
     --warning: #FBBF24;
-    --info: #60A5FA;
+    --info: #34D399;
     --success: #4ADE80;
     --error: #F87171;
     --ai-accent: #A5F12B;
@@ -284,7 +284,7 @@ body,
 
 /* Gradient Typography System */
 .text-gradient-brand {
-  background: linear-gradient(135deg, #4318FF 0%, #7551E9 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #16A34A 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -293,14 +293,14 @@ body,
 }
 
 .dark .text-gradient-brand {
-  background: linear-gradient(135deg, #7551FF 0%, #A78BFA 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #4ADE80 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-ai {
-  background: linear-gradient(135deg, #7551E9 0%, #4318FF 100%);
+  background: linear-gradient(135deg, #16A34A 0%, #A5F12B 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -309,14 +309,14 @@ body,
 }
 
 .dark .text-gradient-ai {
-  background: linear-gradient(135deg, #A78BFA 0%, #7551FF 100%);
+  background: linear-gradient(135deg, #4ADE80 0%, #A5F12B 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-wealth {
-  background: linear-gradient(135deg, #05CD99 0%, #3965FF 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #05CD99 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -325,7 +325,7 @@ body,
 }
 
 .dark .text-gradient-wealth {
-  background: linear-gradient(135deg, #05CD99 0%, #5B8CFF 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #34D399 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -333,24 +333,28 @@ body,
 
 /* Static Gradient Utility System */
 .bg-gradient-brand {
-  background: linear-gradient(135deg, #4318FF 0%, #7551E9 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #16A34A 100%);
 }
 .dark .bg-gradient-brand {
-  background: linear-gradient(135deg, #7551FF 0%, #A78BFA 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #4ADE80 100%);
 }
 
-.bg-gradient-soft-blue {
-  background: linear-gradient(135deg, #EAF0FF 0%, #DCE7FF 100%);
+.bg-gradient-soft-blue,
+.bg-gradient-soft-green {
+  background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
 }
-.dark .bg-gradient-soft-blue {
-  background: linear-gradient(135deg, #111C44 0%, #172554 100%);
+.dark .bg-gradient-soft-blue,
+.dark .bg-gradient-soft-green {
+  background: linear-gradient(135deg, #142416 0%, #1B2E1D 100%);
 }
 
-.bg-gradient-purple-accent {
-  background: linear-gradient(135deg, #F0EAFE 0%, #E2D9FF 100%);
+.bg-gradient-purple-accent,
+.bg-gradient-green-accent {
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
 }
-.dark .bg-gradient-purple-accent {
-  background: linear-gradient(135deg, #1E1B4B 0%, #2E1065 100%);
+.dark .bg-gradient-purple-accent,
+.dark .bg-gradient-green-accent {
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
 }
 
 .bg-gradient-income {
@@ -368,10 +372,10 @@ body,
 }
 
 .bg-gradient-ai {
-  background: linear-gradient(135deg, #4318FF 0%, #7551E9 55%, #9A72E8 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #10B981 55%, #059669 100%);
 }
 .dark .bg-gradient-ai {
-  background: linear-gradient(135deg, #7551FF 0%, #A78BFA 55%, #C4B5FD 100%);
+  background: linear-gradient(135deg, #A5F12B 0%, #34D399 55%, #6EE7B7 100%);
 }
 
 /* Solid Surface Design Architecture (Zero Glassmorphism) */

@@ -72,7 +72,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-center lg:justify-start gap-2 text-xs font-medium text-muted-foreground">
-                <div className="w-5 h-5 rounded-full bg-[#8066CC]/15 text-[#8066CC] dark:text-[#A78BFA] flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-primary/20 text-foreground dark:text-primary flex items-center justify-center shrink-0">
                   <Sparkles className="w-3 h-3" />
                 </div>
                 <span>AI-Powered Insights</span>

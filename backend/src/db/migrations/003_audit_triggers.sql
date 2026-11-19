@@ -77,12 +77,12 @@ BEGIN
             ('Investments & Dividends', 'INCOME', 'TrendingUp', '#06B6D4', true),
             ('Food & Dining', 'EXPENSE', 'Utensils', '#F59E0B', true),
             ('Groceries', 'EXPENSE', 'ShoppingBag', '#84CC16', true),
-            ('Housing & Rent', 'EXPENSE', 'Home', '#6366F1', true),
+            ('Housing & Rent', 'EXPENSE', 'Home', '#0D9488', true),
             ('Utilities & Bills', 'EXPENSE', 'Zap', '#EAB308', true),
-            ('Transportation', 'EXPENSE', 'Car', '#3B82F6', true),
+            ('Transportation', 'EXPENSE', 'Car', '#16A34A', true),
             ('Healthcare & Medical', 'EXPENSE', 'HeartPulse', '#EC4899', true),
-            ('Entertainment & Leisure', 'EXPENSE', 'Film', '#8B5CF6', true),
-            ('Shopping & Electronics', 'EXPENSE', 'Tag', '#A855F7', true),
+            ('Entertainment & Leisure', 'EXPENSE', 'Film', '#10B981', true),
+            ('Shopping & Electronics', 'EXPENSE', 'Tag', '#05CD99', true),
             ('Account Transfer', 'TRANSFER', 'ArrowLeftRight', '#64748B', true);
     END IF;
 

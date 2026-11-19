@@ -35,7 +35,7 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
       case 'net':
         return {
           title: 'Net Cash Flow Surplus/Deficit',
-          color: '#6366F1',
+          color: '#10B981',
           gradientId: 'netGrad',
           name: 'Net Flow',
         };
