@@ -89,7 +89,7 @@ describe('SPENDX Financial Insights & Intelligence Page', () => {
     const savingsPill = screen.getByRole('button', { name: 'Savings Opportunities' });
     fireEvent.click(savingsPill);
 
-    expect(savingsPill).toHaveClass('bg-spendx-blue-primary');
+    expect(savingsPill).toHaveClass('bg-primary');
   });
 
   it('allows user to bookmark an insight card', async () => {

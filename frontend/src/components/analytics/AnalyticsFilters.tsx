@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ArrowRightLeft,
   RotateCcw,
+  ChevronDown,
 } from 'lucide-react';
 import {
   AnalyticsDatePreset,
@@ -40,7 +41,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
   ).sort();
 
   return (
-    <div className="rounded-2xl bg-surface border border-border p-5 space-y-4 shadow-card">
+    <div className="rounded-2xl bg-card dark:bg-[#1B211B] border border-border p-4 sm:p-5 space-y-4 shadow-xs">
       {/* Top Row: Date Presets Pills */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full no-scrollbar">
@@ -53,8 +54,8 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                 onClick={() => onChange({ ...filters, datePreset: preset.value })}
                 className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-all duration-200 cursor-pointer whitespace-nowrap ${
                   isActive
-                    ? 'bg-primary text-primary-foreground shadow-xs'
-                    : 'bg-surface-elevated text-secondary-text hover:text-foreground border border-border'
+                    ? 'bg-primary text-[#111711] shadow-xs font-bold'
+                    : 'bg-surface-subtle dark:bg-[#242C23] text-secondary-text hover:text-foreground hover:bg-card border border-border'
                 }`}
               >
                 {preset.label}
@@ -67,7 +68,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
         <button
           type="button"
           onClick={onReset}
-          className="flex items-center gap-1.5 text-xs text-secondary-text hover:text-foreground px-3 py-1.5 rounded-xl bg-surface-elevated border border-border transition-colors cursor-pointer shrink-0 shadow-xs"
+          className="flex items-center gap-1.5 text-xs font-semibold text-secondary-text hover:text-foreground px-3 py-1.5 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border hover:border-primary/40 transition-colors cursor-pointer shrink-0 shadow-xs"
           title="Reset to default filters"
         >
           <RotateCcw className="w-3.5 h-3.5" />
@@ -77,7 +78,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
 
       {/* Custom Date Range (when CUSTOM selected) */}
       {filters.datePreset === 'CUSTOM' && (
-        <div className="p-3.5 rounded-xl bg-surface-elevated border border-border grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in duration-200">
+        <div className="p-3.5 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border grid grid-cols-1 sm:grid-cols-2 gap-3 animate-in fade-in duration-200">
           <div>
             <label
               htmlFor="analytics-custom-start"
@@ -92,7 +93,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               onChange={(e) =>
                 onChange({ ...filters, customStartDate: e.target.value })
               }
-              className="w-full px-3 py-2 rounded-xl text-xs bg-surface border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full h-10 px-3 rounded-xl text-xs bg-surface dark:bg-[#1B211B] border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
           <div>
@@ -109,7 +110,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               onChange={(e) =>
                 onChange({ ...filters, customEndDate: e.target.value })
               }
-              className="w-full px-3 py-2 rounded-xl text-xs bg-surface border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full h-10 px-3 rounded-xl text-xs bg-surface dark:bg-[#1B211B] border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
           </div>
         </div>
@@ -127,7 +128,11 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               id="analytics-account-select"
               value={filters.accountId}
               onChange={(e) => onChange({ ...filters, accountId: e.target.value })}
-              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
+              className={`appearance-none h-10 pl-3.5 pr-8 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs ${
+                filters.accountId !== 'ALL'
+                  ? 'border-primary/60 bg-primary/10 text-foreground font-semibold'
+                  : 'border-border text-foreground hover:border-primary/40 font-medium'
+              }`}
             >
               <option value="ALL">All Accounts</option>
               {accounts.map((acc) => (
@@ -136,6 +141,7 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                 </option>
               ))}
             </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           {/* Transaction Type Filter */}
@@ -152,12 +158,17 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                   transactionType: e.target.value as AnalyticsFiltersState['transactionType'],
                 })
               }
-              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
+              className={`appearance-none h-10 pl-3.5 pr-8 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs ${
+                filters.transactionType !== 'ALL'
+                  ? 'border-primary/60 bg-primary/10 text-foreground font-semibold'
+                  : 'border-border text-foreground hover:border-primary/40 font-medium'
+              }`}
             >
               <option value="ALL">All Flows (Income & Expense)</option>
               <option value="EXPENSE">Expenses Only</option>
               <option value="INCOME">Income Only</option>
             </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           {/* Category Filter */}
@@ -169,7 +180,11 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
               id="analytics-category-select"
               value={filters.category}
               onChange={(e) => onChange({ ...filters, category: e.target.value })}
-              className="px-3 py-2 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 font-medium cursor-pointer shadow-xs"
+              className={`appearance-none h-10 pl-3.5 pr-8 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/30 shadow-xs ${
+                filters.category !== 'ALL'
+                  ? 'border-primary/60 bg-primary/10 text-foreground font-semibold'
+                  : 'border-border text-foreground hover:border-primary/40 font-medium'
+              }`}
             >
               <option value="ALL">All Categories</option>
               {allCategories.map((cat) => (
@@ -178,13 +193,14 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
                 </option>
               ))}
             </select>
+            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
         {/* Compare with Previous Period Switch */}
         <label
           htmlFor="analytics-compare-toggle"
-          className="flex items-center gap-2 text-xs font-semibold text-foreground cursor-pointer select-none"
+          className="flex items-center gap-2 text-xs font-semibold text-foreground cursor-pointer select-none py-1"
         >
           <input
             id="analytics-compare-toggle"
@@ -193,9 +209,9 @@ export const AnalyticsFilters: React.FC<AnalyticsFiltersProps> = ({
             onChange={(e) =>
               onChange({ ...filters, compareWithPrevious: e.target.checked })
             }
-            className="w-4 h-4 rounded text-primary focus:ring-primary/40 border-border bg-surface-elevated cursor-pointer"
+            className="w-4 h-4 rounded text-primary accent-primary focus:ring-primary/40 border-border bg-surface-subtle cursor-pointer"
           />
-          <ArrowRightLeft className="w-3.5 h-3.5 text-secondary" />
+          <ArrowRightLeft className="w-3.5 h-3.5 text-primary" />
           <span>Compare vs. Prior Period</span>
         </label>
       </div>

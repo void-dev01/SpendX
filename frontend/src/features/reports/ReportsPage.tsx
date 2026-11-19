@@ -114,7 +114,7 @@ export const ReportsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsGeneratorOpen(true)}
-          className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors shrink-0 min-h-[42px]"
+          className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold rounded-xl bg-primary text-[#111711] hover:bg-primary-hover shadow-xs transition-colors shrink-0 min-h-[42px] cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Custom Report</span>

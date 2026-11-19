@@ -90,7 +90,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               onClick={() => onPeriodChange(opt.value)}
               className={`px-3 py-1.5 text-xs rounded-lg transition-all duration-150 cursor-pointer ${
                 isActive
-                  ? 'bg-primary text-primary-foreground font-bold shadow-xs'
+                  ? 'bg-primary text-[#111711] font-bold shadow-xs'
                   : 'text-secondary-text hover:text-foreground hover:bg-surface-subtle font-medium'
               }`}
             >
