@@ -32,6 +32,7 @@
   --chart-tooltip-border: #303A2D;
 }
 
+/* Complete reset for any focus, active, selection border or background on all chart elements */
 .recharts-wrapper,
 .recharts-surface,
 .recharts-responsive-container,
@@ -43,20 +44,65 @@
 .recharts-pie,
 .recharts-pie-sector,
 .recharts-area,
-.recharts-bar-rectangle {
+.recharts-bar,
+.recharts-bar-rectangle,
+.recharts-bar-rectangles,
+.recharts-active-bar,
+svg.recharts-surface,
+svg.recharts-surface * {
   outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
   -webkit-tap-highlight-color: transparent !important;
-  user-select: none;
+  user-select: none !important;
 }
 
 .recharts-wrapper:focus,
 .recharts-wrapper:focus-visible,
+.recharts-wrapper:active,
 .recharts-surface:focus,
 .recharts-surface:focus-visible,
+.recharts-surface:active,
 svg.recharts-surface:focus,
 svg.recharts-surface:focus-visible,
-svg:focus {
+svg.recharts-surface:active,
+svg:focus,
+svg:active,
+svg *:focus,
+svg *:active,
+path:focus,
+path:active,
+rect:focus,
+rect:active,
+g:focus,
+g:active,
+circle:focus,
+circle:active {
   outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove background highlight rectangle & border when selecting/hovering graph */
+.recharts-tooltip-cursor,
+rect.recharts-tooltip-cursor,
+path.recharts-tooltip-cursor,
+line.recharts-tooltip-cursor {
+  fill: transparent !important;
+  stroke: transparent !important;
+  background: transparent !important;
+  opacity: 0 !important;
+}
+
+/* Remove active bar selection stroke & overlay */
+.recharts-active-bar,
+.recharts-bar-rectangle:focus,
+.recharts-sector:focus,
+path.recharts-sector:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  stroke: none !important;
 }
 
 /* Smooth transition for active data points */

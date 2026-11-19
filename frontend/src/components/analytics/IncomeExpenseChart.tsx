@@ -140,7 +140,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
               />
-              <Tooltip content={renderTooltip} />
+              <Tooltip content={renderTooltip} cursor={false} />
               <Legend
                 verticalAlign="top"
                 align="right"
@@ -153,6 +153,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 fill="#12866E"
                 radius={[4, 4, 0, 0]}
                 maxBarSize={30}
+                activeBar={false}
               />
               <Bar
                 dataKey="expense"
@@ -160,6 +161,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 fill="#DC5579"
                 radius={[4, 4, 0, 0]}
                 maxBarSize={30}
+                activeBar={false}
               />
             </BarChart>
           ) : (

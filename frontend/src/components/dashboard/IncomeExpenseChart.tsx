@@ -126,7 +126,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
               dx={-4}
             />
 
-            <Tooltip content={renderCustomTooltip} cursor={{ stroke: 'rgba(165, 241, 43, 0.5)', strokeWidth: 1.5, strokeDasharray: '4 4' }} />
+            <Tooltip content={renderCustomTooltip} cursor={false} />
 
             <Area
               type="monotone"

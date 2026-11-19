@@ -137,6 +137,7 @@ export const AnalyticsSection: React.FC = () => {
                           tickFormatter={(val) => `₹${val / 1000}k`}
                         />
                         <Tooltip
+                          cursor={false}
                           content={({ active, payload }) => {
                             if (active && payload && payload.length) {
                               return (
@@ -161,12 +162,14 @@ export const AnalyticsSection: React.FC = () => {
                           fill="#11866D"
                           radius={[6, 6, 0, 0]}
                           maxBarSize={28}
+                          activeBar={false}
                         />
                         <Bar
                           dataKey="expense"
                           fill="#D95765"
                           radius={[6, 6, 0, 0]}
                           maxBarSize={28}
+                          activeBar={false}
                         />
                       </BarChart>
                     </ResponsiveContainer>

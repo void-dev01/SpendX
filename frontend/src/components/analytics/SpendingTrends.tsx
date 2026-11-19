@@ -148,7 +148,7 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
               tick={{ fill: '#94a3b8', fontSize: 11 }}
               tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
             />
-            <Tooltip content={renderTooltip} />
+            <Tooltip content={renderTooltip} cursor={false} />
             <Area
               type="monotone"
               dataKey={metric}

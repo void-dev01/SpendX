@@ -202,9 +202,9 @@ export const BudgetCharts: React.FC<BudgetChartsProps> = ({ budgetMetrics }) => 
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
                 dx={-4}
               />
-              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(16, 185, 129, 0.08)' }} />
-              <Bar dataKey="budget" name="Allocated" fill="#10B981" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="spent" name="Spent" fill="#EF4444" radius={[4, 4, 0, 0]} />
+              <Tooltip content={renderBarTooltip} cursor={false} />
+              <Bar dataKey="budget" name="Allocated" fill="#10B981" radius={[4, 4, 0, 0]} activeBar={false} />
+              <Bar dataKey="spent" name="Spent" fill="#EF4444" radius={[4, 4, 0, 0]} activeBar={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>

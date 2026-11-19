@@ -72,9 +72,10 @@ export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
               outerRadius={70}
               paddingAngle={2}
               dataKey="amount"
+              stroke="none"
             >
               {items.map((entry) => (
-                <Cell key={`income-${entry.category}`} fill={entry.color} />
+                <Cell key={`income-${entry.category}`} fill={entry.color} stroke="none" />
               ))}
             </Pie>
           </PieChart>

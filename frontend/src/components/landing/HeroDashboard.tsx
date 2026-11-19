@@ -144,6 +144,7 @@ export const HeroDashboard: React.FC = () => {
                     tick={{ fontSize: 10, fill: '#8995A8' }}
                   />
                   <Tooltip
+                    cursor={false}
                     content={({ active, payload }) => {
                       if (active && payload && payload.length) {
                         return (

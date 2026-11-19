@@ -92,7 +92,7 @@ export const SpendingAnalytics: React.FC<SpendingAnalyticsProps> = ({
               stroke="none"
             >
               {categories.map((entry) => (
-                <Cell key={`cell-${entry.id}`} fill={entry.color} />
+                <Cell key={`cell-${entry.id}`} fill={entry.color} stroke="none" />
               ))}
             </Pie>
           </PieChart>

@@ -154,13 +154,14 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 tickFormatter={(val) => `₹${val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}`}
               />
-              <Tooltip content={renderBarTooltip} cursor={{ fill: 'rgba(16, 185, 129, 0.08)' }} />
+              <Tooltip content={renderBarTooltip} cursor={false} />
               <Bar
                 dataKey="target"
                 name="Target"
                 fill="rgba(148, 163, 184, 0.2)"
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
+                activeBar={false}
               />
               <Bar
                 dataKey="saved"
@@ -168,6 +169,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 fill="#10B981"
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
+                activeBar={false}
               />
             </BarChart>
           </ResponsiveContainer>
