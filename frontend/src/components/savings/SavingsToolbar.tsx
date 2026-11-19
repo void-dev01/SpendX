@@ -29,9 +29,9 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
   ];
 
   return (
-    <div className="bg-surface p-4 rounded-2xl border border-border shadow-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div className="bg-card dark:bg-[#1B211B] p-4 rounded-[20px] border border-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
       {/* Left: Status Filter Pills */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border shadow-xs self-start md:self-auto overflow-x-auto max-w-full">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border shadow-xs self-start md:self-auto overflow-x-auto max-w-full">
         {statusTabs.map((tab) => {
           const isActive = filters.status === tab.value;
           return (
@@ -41,8 +41,8 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
               onClick={() => onChange({ ...filters, status: tab.value })}
               className={`px-3.5 py-1.5 text-xs rounded-lg transition-all duration-200 cursor-pointer whitespace-nowrap min-h-[36px] ${
                 isActive
-                  ? 'bg-primary text-white shadow-xs font-medium'
-                  : 'text-secondary-text hover:text-foreground hover:bg-surface'
+                  ? 'bg-primary text-primary-foreground font-bold shadow-xs'
+                  : 'text-secondary-text hover:text-foreground hover:bg-card'
               }`}
             >
               {tab.label}
@@ -113,7 +113,7 @@ export const SavingsToolbar: React.FC<SavingsToolbarProps> = ({
         <button
           type="button"
           onClick={onCreateGoal}
-          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground shadow-xs transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>New Goal</span>

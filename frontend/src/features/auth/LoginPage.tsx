@@ -203,7 +203,7 @@ export const LoginPage: React.FC = () => {
           aria-labelledby="forgot-password-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
         >
-          <div className="bg-surface rounded-2xl p-6 sm:p-8 max-w-md w-full border border-border shadow-elevated space-y-4">
+          <div className="bg-card dark:bg-[#1B211B] rounded-[22px] p-6 sm:p-8 max-w-md w-full border border-border shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <h3 id="forgot-password-title" className="text-lg font-bold font-display text-foreground">
                 Reset Your Password
@@ -232,7 +232,7 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setForgotPasswordOpen(false)}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold bg-primary text-white hover:bg-primary/90"
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs"
                 >
                   Done
                 </button>
@@ -265,7 +265,7 @@ export const LoginPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={forgotLoading || !forgotEmail}
-                    className="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl text-xs font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                   >
                     {forgotLoading ? (
                       <>

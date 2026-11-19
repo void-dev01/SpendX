@@ -22,7 +22,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
   accountCount,
 }) => {
   return (
-    <div className="bg-surface p-3.5 sm:p-4 rounded-2xl border border-border shadow-card flex flex-col md:flex-row md:items-center justify-between gap-3">
+    <div className="bg-card dark:bg-[#1B211B] p-4 rounded-[20px] border border-border shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3">
       {/* Search Input */}
       <div className="relative w-full md:max-w-md">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
@@ -31,7 +31,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
           value={filters.search}
           onChange={(e) => onChange({ ...filters, search: e.target.value })}
           placeholder="Search by account, bank, or card name..."
-          className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm bg-surface-elevated border border-border placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground transition-all min-h-[44px]"
+          className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm bg-surface-subtle dark:bg-[#242C23] border border-border placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground transition-all min-h-[44px]"
         />
         {filters.search && (
           <button
@@ -53,7 +53,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
             onChange({ ...filters, type: e.target.value as AccountFiltersState['type'] })
           }
           aria-label="Filter accounts by type"
-          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium min-h-[44px]"
+          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium min-h-[44px]"
         >
           <option value="ALL">All Types ({accountCount})</option>
           <option value="BANK">Checking / Bank</option>
@@ -70,7 +70,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
             onChange({ ...filters, sortBy: e.target.value as AccountFiltersState['sortBy'] })
           }
           aria-label="Sort accounts"
-          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium min-h-[44px]"
+          className="flex-1 sm:flex-none min-w-[130px] px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary font-medium min-h-[44px]"
         >
           <option value="BALANCE_DESC">Balance: High to Low</option>
           <option value="BALANCE_ASC">Balance: Low to High</option>
@@ -82,7 +82,7 @@ export const AccountsToolbar: React.FC<AccountsToolbarProps> = ({
         <button
           type="button"
           onClick={onAddAccount}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer whitespace-nowrap min-h-[44px]"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer whitespace-nowrap min-h-[44px]"
         >
           <Plus className="w-4 h-4" />
           <span>Add Account</span>

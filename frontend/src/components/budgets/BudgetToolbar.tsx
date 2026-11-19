@@ -92,7 +92,7 @@ export const BudgetToolbar: React.FC<BudgetToolbarProps> = ({
         <button
           type="button"
           onClick={onCreateBudget}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium text-white bg-primary hover:bg-primary/90 shadow-xs transition-all cursor-pointer whitespace-nowrap min-h-[40px]"
+          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-all cursor-pointer whitespace-nowrap min-h-[40px]"
         >
           <Plus className="w-4 h-4" />
           <span>Create Budget</span>

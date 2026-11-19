@@ -50,7 +50,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
   };
 
   return (
-    <div className="bg-surface p-4 rounded-2xl border border-border shadow-card space-y-3">
+    <div className="bg-card dark:bg-[#1B211B] p-4 rounded-[20px] border border-border shadow-xs space-y-3">
       {/* Top Search Bar & Mobile Trigger */}
       <div className="flex items-center gap-3">
         {/* Search Input */}
@@ -61,7 +61,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             value={filters.search}
             onChange={handleSearchChange}
             placeholder="Search transactions, merchants, or categories..."
-            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm bg-surface-elevated border border-border placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground transition-all"
+            className="w-full pl-10 pr-9 py-2 rounded-xl text-xs sm:text-sm bg-surface-subtle dark:bg-[#242C23] border border-border placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 text-foreground transition-all"
           />
           {filters.search && (
             <button
@@ -78,12 +78,12 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
         <button
           type="button"
           onClick={() => setMobileDrawerOpen(true)}
-          className="md:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-surface-elevated border border-border text-foreground hover:bg-surface shadow-xs"
+          className="md:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground hover:bg-card shadow-xs"
         >
           <SlidersHorizontal className="w-3.5 h-3.5 text-primary" />
           <span>Filters</span>
           {activeFilterCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-primary text-white text-[10px] flex items-center justify-center font-bold">
+            <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center font-bold">
               {activeFilterCount}
             </span>
           )}
@@ -188,11 +188,11 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
 
       {/* Mobile Filters Bottom Sheet Drawer */}
       {mobileDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end bg-slate-900/60 backdrop-blur-sm md:hidden animate-in fade-in duration-200">
-          <div className="glass-panel rounded-t-3xl p-6 border-t border-white/80 dark:border-white/10 max-h-[85vh] overflow-y-auto space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100/60 dark:border-white/10">
+        <div className="fixed inset-0 z-50 flex flex-col justify-end bg-black/50 md:hidden animate-in fade-in duration-200">
+          <div className="bg-card dark:bg-[#1B211B] rounded-t-3xl p-6 border-t border-border max-h-[85vh] overflow-y-auto space-y-4 shadow-xl">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
               <div className="flex items-center gap-2">
-                <Filter className="w-4 h-4 text-amber-500" />
+                <Filter className="w-4 h-4 text-primary" />
                 <h3 className="font-bold text-base text-foreground">
                   Filter Transactions
                 </h3>
@@ -200,7 +200,7 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
               <button
                 type="button"
                 onClick={() => setMobileDrawerOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                className="p-1.5 rounded-lg text-secondary-text hover:text-foreground"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -209,13 +209,13 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
             {/* Mobile Controls */}
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-secondary-text mb-1">
                   Type
                 </label>
                 <select
                   value={filters.type}
                   onChange={handleTypeChange}
-                  className="w-full px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100"
+                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground"
                 >
                   <option value="ALL">All Types</option>
                   <option value="INCOME">Income (+)</option>
@@ -225,13 +225,13 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-secondary-text mb-1">
                   Category
                 </label>
                 <select
                   value={filters.category}
                   onChange={handleCategoryChange}
-                  className="w-full px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100"
+                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground"
                 >
                   <option value="ALL">All Categories</option>
                   {allCategories.map((c) => (
@@ -243,13 +243,13 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-secondary-text mb-1">
                   Account
                 </label>
                 <select
                   value={filters.accountId}
                   onChange={handleAccountChange}
-                  className="w-full px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100"
+                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground"
                 >
                   <option value="ALL">All Accounts</option>
                   {DEFAULT_USER_ACCOUNTS.map((acc) => (
@@ -261,13 +261,13 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1">
+                <label className="block text-xs font-bold text-secondary-text mb-1">
                   Sort Order
                 </label>
                 <select
                   value={filters.sortBy}
                   onChange={handleSortChange}
-                  className="w-full px-3 py-2.5 rounded-xl text-xs glass-surface border border-white/80 dark:border-white/10 text-slate-800 dark:text-slate-100 font-medium"
+                  className="w-full px-3 py-2.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground font-medium"
                 >
                   <option value="NEWEST">Newest First</option>
                   <option value="OLDEST">Oldest First</option>
@@ -286,14 +286,14 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
                   onReset();
                   setMobileDrawerOpen(false);
                 }}
-                className="flex-1 py-2.5 rounded-xl text-xs font-semibold glass-surface border border-white/80 dark:border-white/10 text-slate-600 dark:text-slate-300"
+                className="flex-1 py-2.5 rounded-xl text-xs font-semibold bg-surface-subtle dark:bg-[#242C23] border border-border text-secondary-text"
               >
                 Reset Filters
               </button>
               <button
                 type="button"
                 onClick={() => setMobileDrawerOpen(false)}
-                className="flex-1 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-[#718FE8] to-[#8B72D6] shadow-md"
+                className="flex-1 py-2.5 rounded-xl text-xs font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs"
               >
                 Apply Filters
               </button>

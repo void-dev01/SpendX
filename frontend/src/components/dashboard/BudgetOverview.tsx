@@ -24,20 +24,20 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
   const getStatusBadge = (b: BudgetProgress) => {
     if (b.percentage >= 100) {
       return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-expense bg-expense/10 px-2 py-0.5 rounded-md">
+        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-expense bg-expense/10 px-2 py-0.5 rounded-full">
           <AlertTriangle className="w-3 h-3" /> Over Budget
         </span>
       );
     }
     if (b.percentage >= 80) {
       return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-warning bg-warning/10 px-2 py-0.5 rounded-md">
+        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-warning bg-warning/10 px-2 py-0.5 rounded-full">
           Near Limit ({Math.round(b.percentage)}%)
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-primary-foreground bg-primary px-2 py-0.5 rounded-full">
         On Track ({Math.round(b.percentage)}%)
       </span>
     );
@@ -50,7 +50,7 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full">
+    <div className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:shadow-card transition-all duration-200 flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -64,7 +64,7 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
 
         <Link
           to="/budgets"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:text-primary transition-colors cursor-pointer group"
         >
           View All Budgets
           <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -76,15 +76,15 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
         {budgets.map((b) => (
           <div
             key={b.id}
-            className="p-3.5 rounded-xl bg-surface-elevated border border-border space-y-2 hover:border-primary/40 transition-all shadow-xs"
+            className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border/80 space-y-2.5 hover:border-primary/40 transition-all shadow-xs"
           >
             {/* Top row: Name & Status */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0 shadow-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="w-8 h-8 rounded-lg bg-card dark:bg-[#1B211B] border border-border text-foreground flex items-center justify-center shrink-0 shadow-xs">
                   {getIcon(b.iconName)}
                 </span>
-                <span className="font-semibold text-sm text-foreground">
+                <span className="font-bold text-sm text-foreground">
                   {b.category}
                 </span>
               </div>
@@ -92,30 +92,25 @@ export const BudgetOverview: React.FC<BudgetOverviewProps> = ({ budgets }) => {
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full h-2 rounded-full bg-surface border border-border-subtle overflow-hidden">
+            <div className="w-full h-2 rounded-full bg-border/40 dark:bg-[#121612] overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${getProgressBarColor(b)}`}
                 style={{ width: `${Math.min(100, b.percentage)}%` }}
               />
             </div>
 
-            {/* Spent vs Remaining numbers */}
+            {/* Bottom details */}
             <div className="flex items-center justify-between text-xs pt-0.5">
-              <span className="text-secondary-text">
+              <span className="text-secondary-text font-medium">
                 Spent:{' '}
-                <strong className="text-foreground tabular-nums">
+                <strong className="text-foreground tabular-nums font-bold">
                   {dashboardService.formatINR(b.spent)}
-                </strong>{' '}
-                of {dashboardService.formatINR(b.limit)}
+                </strong>
               </span>
-              <span className="text-secondary-text">
-                Remaining:{' '}
-                <strong
-                  className={`tabular-nums ${
-                    b.remaining < 0 ? 'text-expense' : 'text-income'
-                  }`}
-                >
-                  {dashboardService.formatINR(b.remaining)}
+              <span className="text-secondary-text font-medium">
+                Limit:{' '}
+                <strong className="text-foreground tabular-nums font-bold">
+                  {dashboardService.formatINR(b.limit)}
                 </strong>
               </span>
             </div>

@@ -9,27 +9,27 @@
  */
 
 :root {
-  --chart-primary: #4318FF;
-  --chart-secondary: #7551E9;
-  --chart-accent: #3965FF;
-  --chart-emerald: #05CD99;
-  --chart-rose: #EE5D50;
-  --chart-amber: #FFCE20;
-  --chart-grid: #E9EDF7;
+  --chart-primary: #A5F12B;
+  --chart-secondary: #202420;
+  --chart-accent: #747B74;
+  --chart-emerald: #16A34A;
+  --chart-rose: #DC2626;
+  --chart-amber: #D97706;
+  --chart-grid: #E8EBE6;
   --chart-tooltip-bg: #FFFFFF;
-  --chart-tooltip-border: #E9EDF7;
+  --chart-tooltip-border: #E8EBE6;
 }
 
 .dark {
-  --chart-primary: #7551FF;
-  --chart-secondary: #A78BFA;
-  --chart-accent: #5B8CFF;
-  --chart-emerald: #05CD99;
-  --chart-rose: #FF6B75;
-  --chart-amber: #FFCE70;
-  --chart-grid: #26345E;
-  --chart-tooltip-bg: #111C44;
-  --chart-tooltip-border: #26345E;
+  --chart-primary: #A5F12B;
+  --chart-secondary: #F3F6F0;
+  --chart-accent: #ADB6A8;
+  --chart-emerald: #4ADE80;
+  --chart-rose: #F87171;
+  --chart-amber: #FBBF24;
+  --chart-grid: #303A2D;
+  --chart-tooltip-bg: #1B211B;
+  --chart-tooltip-border: #303A2D;
 }
 
 .recharts-wrapper,

@@ -44,7 +44,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full min-w-0 overflow-hidden">
+    <div className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:shadow-card transition-all duration-200 flex flex-col justify-between h-full min-w-0 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -58,7 +58,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
 
         <Link
           to="/transactions"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer group shrink-0"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:text-primary transition-colors cursor-pointer group shrink-0"
         >
           <span>View All Transactions</span>
           <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -66,7 +66,7 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
       </div>
 
       {transactions.length === 0 ? (
-        <div className="py-8 text-center text-xs text-secondary-text">
+        <div className="py-10 text-center text-xs text-secondary-text font-medium">
           No transactions recorded for this period.
         </div>
       ) : (
@@ -75,34 +75,34 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
           <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border text-[11px] font-bold text-muted-foreground uppercase tracking-wider">
+                <tr className="border-b border-border text-[11px] font-bold text-secondary-text uppercase tracking-wider">
                   <th className="pb-3 pl-1">Transaction</th>
                   <th className="pb-3 px-3">Category</th>
                   <th className="pb-3 px-3">Date</th>
                   <th className="pb-3 pr-1 text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border-subtle">
+              <tbody className="divide-y divide-border/60">
                 {transactions.map((txn) => {
                   const isIncome = txn.type === 'income';
                   return (
                     <tr
                       key={txn.id}
-                      className="group hover:bg-surface-elevated transition-colors"
+                      className="group hover:bg-surface-subtle dark:hover:bg-[#242C23] transition-colors"
                     >
-                      <td className="py-3 pl-1">
+                      <td className="py-3.5 pl-1">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
+                            className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-xs border ${
                               isIncome
-                                ? 'bg-income/10 text-income'
-                                : 'bg-surface-elevated text-secondary-text border border-border-subtle'
+                                ? 'bg-income/10 text-income border-income/20'
+                                : 'bg-surface-subtle dark:bg-[#242C23] text-foreground border-border'
                             }`}
                           >
                             {getIcon(txn.iconName)}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-foreground leading-snug">
+                            <p className="text-sm font-bold text-foreground leading-snug">
                               {txn.title}
                             </p>
                             <p className="text-xs text-secondary-text">
@@ -112,17 +112,17 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
                         </div>
                       </td>
 
-                      <td className="py-3 px-3">
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-surface-elevated text-secondary-text border border-border-subtle">
+                      <td className="py-3.5 px-3">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-subtle dark:bg-[#242C23] text-secondary-text border border-border">
                           {txn.category}
                         </span>
                       </td>
 
-                      <td className="py-3 px-3 text-xs text-secondary-text whitespace-nowrap">
+                      <td className="py-3.5 px-3 text-xs text-secondary-text whitespace-nowrap font-medium">
                         {txn.date}
                       </td>
 
-                      <td className="py-3 pr-1 text-right">
+                      <td className="py-3.5 pr-1 text-right">
                         <div
                           className={`inline-flex items-center justify-end gap-1 font-bold text-sm tabular-nums ${
                             isIncome
@@ -155,20 +155,20 @@ export const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transact
               return (
                 <div
                   key={txn.id}
-                  className="p-3 rounded-xl bg-surface-elevated border border-border flex items-center justify-between gap-3 shadow-xs"
+                  className="p-3.5 rounded-2xl bg-card dark:bg-[#1B211B] border border-border flex items-center justify-between gap-3 shadow-xs"
                 >
-                  <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="flex items-center gap-3 min-w-0">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ${
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-xs border ${
                         isIncome
-                          ? 'bg-income/10 text-income'
-                          : 'bg-surface text-secondary-text border border-border-subtle'
+                          ? 'bg-income/10 text-income border-income/20'
+                          : 'bg-surface-subtle dark:bg-[#242C23] text-foreground border-border'
                       }`}
                     >
                       {getIcon(txn.iconName)}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-foreground truncate">
+                      <p className="text-sm font-bold text-foreground truncate">
                         {txn.title}
                       </p>
                       <div className="flex items-center gap-1.5 text-xs text-secondary-text mt-0.5">

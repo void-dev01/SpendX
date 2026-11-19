@@ -79,12 +79,12 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group transition-all duration-200">
+    <div className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:border-primary/40 hover:shadow-card flex flex-col justify-between group transition-all duration-200">
       {/* Top Header */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-surface-elevated border border-border flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border flex items-center justify-center shrink-0 shadow-xs">
               {getCategoryIcon(goal.category)}
             </div>
             <div>
@@ -97,10 +97,10 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
                 </span>
                 <span className="inline-block w-1 h-1 rounded-full bg-border" />
                 <span
-                  className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                     isCompleted
                       ? 'bg-income/10 text-income border border-income/20'
-                      : 'bg-primary/10 text-primary border border-primary/20'
+                      : 'bg-primary/20 text-foreground border border-primary/40'
                   }`}
                 >
                   {isCompleted ? 'Completed' : 'Active'}
@@ -114,7 +114,7 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1.5 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-subtle dark:hover:bg-[#242C23] transition-colors cursor-pointer"
               aria-label="Savings goal actions"
             >
               <MoreVertical className="w-4 h-4" />
@@ -126,14 +126,14 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
                   className="fixed inset-0 z-20"
                   onClick={() => setMenuOpen(false)}
                 />
-                <div className="absolute right-0 mt-1 w-36 py-1 bg-surface rounded-xl shadow-elevated border border-border z-30 text-xs">
+                <div className="absolute right-0 mt-1 w-36 py-1 bg-card dark:bg-[#1B211B] rounded-xl shadow-elevated border border-border z-30 text-xs">
                   <button
                     type="button"
                     onClick={() => {
                       setMenuOpen(false);
                       onEdit(goal);
                     }}
-                    className="w-full px-3 py-2 text-left flex items-center gap-2 text-foreground hover:bg-surface-elevated cursor-pointer"
+                    className="w-full px-3 py-2 text-left flex items-center gap-2 text-foreground hover:bg-surface-subtle dark:hover:bg-[#242C23] cursor-pointer"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                     <span>Edit Goal</span>
@@ -227,7 +227,7 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
         <button
           type="button"
           onClick={() => onAddMoney(goal)}
-          className="flex-1 py-2 px-3 text-xs font-medium rounded-xl bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+          className="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
         >
           <PlusCircle className="w-3.5 h-3.5" />
           <span>Add Money</span>
@@ -236,7 +236,7 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
         <button
           type="button"
           onClick={() => navigate(`/savings/${goal.id}`)}
-          className="py-2 px-3 text-xs font-medium rounded-xl bg-surface-elevated border border-border hover:bg-surface-elevated/80 text-foreground transition-all flex items-center gap-1 cursor-pointer shadow-xs"
+          className="py-2 px-3 text-xs font-semibold rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border hover:bg-card text-foreground transition-all flex items-center gap-1 cursor-pointer shadow-xs"
           title="View goal history and details"
         >
           <span>Details</span>

@@ -6,7 +6,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 // Sleek Route Loading Fallback Indicator
 export const RouteLoadingFallback: React.FC = () => (
   <div className="min-h-[50vh] flex flex-col items-center justify-center p-8">
-    <div className="w-10 h-10 border-3 border-spendx-blue-primary/20 border-t-spendx-blue-primary rounded-full animate-spin" />
+    <div className="w-10 h-10 border-3 border-primary/20 border-t-primary rounded-full animate-spin" />
     <span className="mt-4 text-xs font-bold text-muted-foreground uppercase tracking-widest animate-pulse">
       Loading SPENDX...
     </span>

@@ -89,19 +89,19 @@ export const AccountDetailPage: React.FC = () => {
       </div>
 
       {/* Account Hero Card */}
-      <div className="bg-surface rounded-2xl p-6 sm:p-8 border border-border shadow-card space-y-6">
+      <div className="bg-card dark:bg-[#1B211B] rounded-[22px] p-6 sm:p-8 border border-border shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-surface-elevated border border-border flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-14 h-14 rounded-2xl bg-surface-subtle dark:bg-[#242C23] border border-border flex items-center justify-center shrink-0 shadow-xs">
               {getAccountIcon(account?.type)}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-secondary-text">
                   {account?.institution || 'Banking Institution'}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-income/10 text-income">
-                  <CheckCircle2 className="w-3 h-3" /> Active Connection
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/20 text-foreground border border-primary/40">
+                  <CheckCircle2 className="w-3 h-3 text-primary" /> Active Connection
                 </span>
               </div>
               <h1 className="text-xl sm:text-2xl font-display font-extrabold text-foreground mt-0.5">
@@ -128,15 +128,15 @@ export const AccountDetailPage: React.FC = () => {
 
         {/* Info Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-1">
-            <span className="text-secondary-text">Account Classification</span>
+          <div className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border space-y-1">
+            <span className="text-secondary-text font-medium">Account Classification</span>
             <p className="font-bold text-foreground text-sm">
               {account?.type || 'BANK'}
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-1">
-            <div className="flex items-center gap-1 text-secondary-text">
+          <div className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border space-y-1">
+            <div className="flex items-center gap-1 text-secondary-text font-medium">
               <ShieldCheck className="w-3.5 h-3.5 text-income" />
               <span>Masked Number</span>
             </div>
@@ -145,8 +145,8 @@ export const AccountDetailPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-surface-elevated border border-border space-y-1">
-            <div className="flex items-center gap-1 text-secondary-text">
+          <div className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border space-y-1">
+            <div className="flex items-center gap-1 text-secondary-text font-medium">
               <Calendar className="w-3.5 h-3.5 text-primary" />
               <span>Registered Date</span>
             </div>
@@ -157,21 +157,21 @@ export const AccountDetailPage: React.FC = () => {
         </div>
 
         {account?.notes && (
-          <div className="p-4 rounded-xl bg-surface-elevated border border-border text-xs text-secondary-text">
-            <span className="font-semibold text-muted-foreground block mb-1">Account Remarks</span>
+          <div className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border text-xs text-secondary-text">
+            <span className="font-bold text-foreground block mb-1">Account Remarks</span>
             <p>{account.notes}</p>
           </div>
         )}
       </div>
 
       {/* Associated Transactions Activity */}
-      <div className="bg-surface rounded-2xl p-6 sm:p-8 border border-border shadow-card space-y-5">
+      <div className="bg-card dark:bg-[#1B211B] rounded-[22px] p-6 sm:p-8 border border-border shadow-xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border">
           <div>
             <h2 className="text-lg font-display font-bold text-foreground">
               Account Activity ({accountTransactions.length})
             </h2>
-            <p className="text-xs text-secondary-text">
+            <p className="text-xs text-secondary-text mt-0.5">
               Historical ledger entries debited or credited to this account.
             </p>
           </div>
@@ -179,13 +179,13 @@ export const AccountDetailPage: React.FC = () => {
           <div className="flex items-center gap-2.5">
             {/* Search */}
             <div className="relative">
-              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-secondary-text" />
               <input
                 type="text"
                 value={txSearch}
                 onChange={(e) => setTxSearch(e.target.value)}
                 placeholder="Filter entries..."
-                className="pl-8 pr-3 py-1.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                className="pl-8 pr-3 py-1.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
               />
             </div>
 
@@ -193,7 +193,7 @@ export const AccountDetailPage: React.FC = () => {
             <select
               value={txType}
               onChange={(e) => setTxType(e.target.value as any)}
-              className="px-2.5 py-1.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground font-medium"
+              className="px-2.5 py-1.5 rounded-xl text-xs bg-surface-subtle dark:bg-[#242C23] border border-border text-foreground font-medium"
             >
               <option value="ALL">All Flow</option>
               <option value="INCOME">Income (+)</option>
@@ -204,7 +204,7 @@ export const AccountDetailPage: React.FC = () => {
 
         {/* Transactions list */}
         {accountTransactions.length === 0 ? (
-          <div className="py-12 text-center text-xs text-slate-400">
+          <div className="py-12 text-center text-xs text-secondary-text font-medium">
             No transactions found for this account.
           </div>
         ) : (
@@ -214,14 +214,14 @@ export const AccountDetailPage: React.FC = () => {
               return (
                 <div
                   key={tx.id}
-                  className="p-3.5 rounded-xl glass-surface border border-white/60 dark:border-white/5 flex items-center justify-between gap-3 hover:border-spendx-blue-primary/30 transition-all text-xs"
+                  className="p-3.5 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border flex items-center justify-between gap-3 hover:border-primary/40 transition-all text-xs"
                 >
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                         isIncome
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                          : 'bg-rose-500/10 text-rose-600 dark:text-rose-400'
+                          ? 'bg-income/10 text-income'
+                          : 'bg-expense/10 text-expense'
                       }`}
                     >
                       {isIncome ? (
@@ -231,10 +231,10 @@ export const AccountDetailPage: React.FC = () => {
                       )}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-800 dark:text-slate-100">
+                      <h3 className="font-bold text-foreground">
                         {tx.description}
                       </h3>
-                      <p className="text-[11px] text-slate-400">
+                      <p className="text-[11px] text-secondary-text font-medium">
                         {tx.category} • {new Date(tx.date).toLocaleDateString('en-IN')}
                       </p>
                     </div>
@@ -243,7 +243,7 @@ export const AccountDetailPage: React.FC = () => {
                   <div className="text-right">
                     <span
                       className={`font-bold text-sm tabular-nums ${
-                        isIncome ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-800 dark:text-slate-100'
+                        isIncome ? 'text-income' : 'text-foreground'
                       }`}
                     >
                       {isIncome ? '+' : '-'}

@@ -22,7 +22,7 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card flex flex-col justify-between h-full">
+    <div className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:shadow-card transition-all duration-200 flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-4">
         <div>
@@ -36,7 +36,7 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
 
         <Link
           to="/recurring"
-          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors cursor-pointer group"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-foreground hover:text-primary transition-colors cursor-pointer group"
         >
           View Recurring
           <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -44,7 +44,7 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
       </div>
 
       {payments.length === 0 ? (
-        <div className="py-8 text-center text-xs text-secondary-text">
+        <div className="py-8 text-center text-xs text-secondary-text font-medium">
           No upcoming scheduled payments for this period.
         </div>
       ) : (
@@ -52,20 +52,20 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
           {payments.map((payment) => (
             <div
               key={payment.id}
-              className="p-3.5 rounded-xl bg-surface-elevated border border-border flex items-center justify-between gap-3 hover:border-primary/40 transition-all shadow-xs"
+              className="p-4 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border/80 flex items-center justify-between gap-3 hover:border-primary/40 transition-all shadow-xs"
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="w-10 h-10 rounded-full bg-warning/10 text-warning flex items-center justify-center shrink-0 shadow-xs">
+                <div className="w-10 h-10 rounded-xl bg-card dark:bg-[#1B211B] border border-border text-foreground flex items-center justify-center shrink-0 shadow-xs">
                   {getIcon(payment.iconName)}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-semibold text-sm text-foreground truncate">
+                  <h3 className="font-bold text-sm text-foreground truncate">
                     {payment.name}
                   </h3>
-                  <div className="flex items-center gap-1 text-xs text-secondary-text mt-0.5">
-                    <Clock className="w-3 h-3 text-muted-foreground" />
-                    <span>{payment.dueDate}</span>
-                    <span className="text-[11px] text-warning font-medium ml-1">
+                  <div className="flex items-center gap-1.5 text-xs text-secondary-text mt-0.5">
+                    <Clock className="w-3 h-3 text-secondary-text" />
+                    <span className="font-medium">{payment.dueDate}</span>
+                    <span className="text-[11px] text-primary font-bold ml-1">
                       ({payment.dueDay})
                     </span>
                   </div>
@@ -73,10 +73,10 @@ export const UpcomingPayments: React.FC<UpcomingPaymentsProps> = ({ payments }) 
               </div>
 
               <div className="text-right shrink-0">
-                <span className="font-bold text-sm text-foreground tabular-nums">
+                <span className="font-extrabold text-sm text-foreground tabular-nums">
                   {dashboardService.formatINR(payment.amount)}
                 </span>
-                <span className="block text-[10px] text-muted-foreground">Autopay active</span>
+                <span className="block text-[10px] text-secondary-text font-medium">Autopay active</span>
               </div>
             </div>
           ))}

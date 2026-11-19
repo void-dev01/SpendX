@@ -107,10 +107,10 @@ export const DesktopSidebar: React.FC = () => {
                           `flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-150 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                             isSidebarCollapsed
                               ? 'justify-center w-10 h-10 mx-auto'
-                              : 'px-3 py-1.5 w-full'
+                              : 'px-3 py-2 w-full'
                           } ${
                             isActive
-                              ? 'bg-primary/10 text-primary shadow-xs border border-primary/25 font-bold'
+                              ? 'bg-primary/20 text-foreground border border-primary/40 font-bold'
                               : 'text-secondary-text hover:text-foreground hover:bg-surface-elevated'
                           }`
                         }
@@ -121,7 +121,7 @@ export const DesktopSidebar: React.FC = () => {
                               weight={isActive ? 'fill' : 'duotone'}
                               className={`shrink-0 transition-transform duration-200 ${
                                 isSidebarCollapsed ? 'w-5 h-5' : 'w-4 h-4'
-                              } ${isActive ? 'scale-105 text-primary' : ''}`}
+                              } ${isActive ? 'scale-105 text-foreground' : ''}`}
                             />
 
                             {!isSidebarCollapsed && (
@@ -129,11 +129,7 @@ export const DesktopSidebar: React.FC = () => {
                                 <span className="truncate">{item.name}</span>
                                 {item.badge && (
                                   <span
-                                    className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${
-                                      item.isAiAccent
-                                        ? 'bg-secondary text-white'
-                                        : 'bg-primary text-white'
-                                    }`}
+                                    className="text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-primary text-primary-foreground"
                                   >
                                     {item.badge}
                                   </span>
@@ -153,7 +149,7 @@ export const DesktopSidebar: React.FC = () => {
                           <div className="flex items-center gap-1.5">
                             <span>{item.name}</span>
                             {item.badge && (
-                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary text-white font-bold">
+                              <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-bold">
                                 {item.badge}
                               </span>
                             )}
@@ -176,9 +172,9 @@ export const DesktopSidebar: React.FC = () => {
           <div className="space-y-1.5">
             <button
               onClick={() => navigate('/transactions')}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold text-xs shadow-xs transition-colors cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-semibold text-xs shadow-xs transition-colors cursor-pointer"
             >
-              <Plus weight="bold" className="w-3.5 h-3.5 text-white" />
+              <Plus weight="bold" className="w-3.5 h-3.5 text-primary-foreground" />
               <span>Record Transaction</span>
             </button>
             <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-surface-elevated text-[10px] text-muted-foreground border border-border-subtle">

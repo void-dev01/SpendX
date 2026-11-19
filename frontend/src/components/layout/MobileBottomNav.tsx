@@ -45,7 +45,7 @@ export const MobileBottomNav: React.FC = () => {
           <>
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                isActive ? 'bg-primary text-white shadow-xs' : ''
+                isActive ? 'bg-primary text-primary-foreground shadow-xs' : ''
               }`}
             >
               <House className="w-4 h-4" />
@@ -70,7 +70,7 @@ export const MobileBottomNav: React.FC = () => {
           <>
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                isActive ? 'bg-primary text-white shadow-xs' : ''
+                isActive ? 'bg-primary text-primary-foreground shadow-xs' : ''
               }`}
             >
               <ArrowLeftRight className="w-4 h-4" />
@@ -86,7 +86,7 @@ export const MobileBottomNav: React.FC = () => {
         className={({ isActive }) =>
           `flex flex-col items-center justify-center min-w-[56px] h-12 rounded-2xl transition-all duration-150 active:scale-95 ${
             isActive
-              ? 'text-secondary font-bold'
+              ? 'text-primary font-bold'
               : 'text-secondary-text hover:text-foreground'
           }`
         }
@@ -96,8 +96,8 @@ export const MobileBottomNav: React.FC = () => {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                 isActive
-                  ? 'bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white shadow-xs'
-                  : 'text-secondary'
+                  ? 'bg-primary text-primary-foreground shadow-xs'
+                  : 'text-secondary-text hover:text-foreground'
               }`}
             >
               <Sparkles className="w-4 h-4" />
@@ -122,7 +122,7 @@ export const MobileBottomNav: React.FC = () => {
           <>
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                isActive ? 'bg-primary text-white shadow-xs' : ''
+                isActive ? 'bg-primary text-primary-foreground shadow-xs' : ''
               }`}
             >
               <Wallet className="w-4 h-4" />

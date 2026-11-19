@@ -91,15 +91,15 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
   };
 
   return (
-    <div className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between relative group transition-all">
+    <div className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:border-primary/40 hover:shadow-card flex flex-col justify-between relative group transition-all">
       {/* Top Header */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-surface-elevated border border-border flex items-center justify-center shrink-0 shadow-xs">
+          <div className="w-12 h-12 rounded-xl bg-surface-subtle dark:bg-[#242C23] border border-border flex items-center justify-center shrink-0 shadow-xs">
             {getCategoryIcon(budget.category)}
           </div>
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-secondary-text block">
               {budget.category}
             </span>
             <h3
@@ -116,7 +116,7 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
           <button
             type="button"
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-1.5 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-subtle dark:hover:bg-[#242C23] transition-colors cursor-pointer"
             aria-label="Budget actions"
           >
             <MoreVertical className="w-4 h-4" />
@@ -125,14 +125,14 @@ export const CategoryBudgetCard: React.FC<CategoryBudgetCardProps> = ({
           {menuOpen && (
             <>
               <div className="fixed inset-0 z-20" onClick={() => setMenuOpen(false)} />
-              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl bg-surface border border-border p-1.5 shadow-elevated text-left">
+              <div className="absolute right-0 top-8 z-30 w-36 rounded-xl bg-card dark:bg-[#1B211B] border border-border p-1.5 shadow-elevated text-left">
                 <button
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
                     navigate(`/budgets/${budget.id}`);
                   }}
-                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-elevated cursor-pointer"
+                  className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-foreground hover:bg-surface-subtle dark:hover:bg-[#242C23] cursor-pointer"
                 >
                   <ArrowUpRight className="w-3.5 h-3.5" />
                   <span>View Details</span>

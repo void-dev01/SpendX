@@ -6,153 +6,133 @@
 
 @layer base {
   :root {
-    /* SPENDX Horizon-Inspired Premium FinTech Design System */
+    /* SPENDX Minimal White × Neon Lime FinTech Design System */
     /* Light Mode Tokens */
-    --background: #F4F7FE;
-    --foreground: #1B2559;
+    --background: #F5F6F4;
+    --foreground: #202420;
     --surface: #FFFFFF;
-    --surface-elevated: #F8FAFF;
+    --surface-elevated: #F0F2ED;
     --card: #FFFFFF;
-    --card-foreground: #1B2559;
-    --card-elevated: #F8FAFF;
+    --card-foreground: #202420;
+    --card-elevated: #F0F2ED;
     --popover: #FFFFFF;
-    --popover-foreground: #1B2559;
+    --popover-foreground: #202420;
 
-    --primary: #4318FF;
-    --primary-hover: #3311CC;
-    --primary-foreground: #FFFFFF;
-    --secondary: #7551E9;
-    --secondary-hover: #5F3DC4;
+    --primary: #A5F12B;
+    --primary-hover: #93DE22;
+    --primary-foreground: #111711;
+    --secondary: #202420;
+    --secondary-hover: #111711;
     --secondary-foreground: #FFFFFF;
-    --accent: #3965FF;
-    --accent-foreground: #FFFFFF;
+    --accent: #A5F12B;
+    --accent-foreground: #111711;
 
-    --main-text: #1B2559;
-    --secondary-text: #707EAE;
-    --muted-text: #A3AED0;
+    --main-text: #202420;
+    --secondary-text: #747B74;
+    --muted-text: #A0A69F;
 
-    --muted: #F8FAFF;
-    --muted-foreground: #A3AED0;
-    --border: #E9EDF7;
-    --border-subtle: #F0F4FC;
-    --input: #E9EDF7;
-    --ring: #4318FF;
+    --muted: #F0F2ED;
+    --muted-foreground: #747B74;
+    --border: #E8EBE6;
+    --border-subtle: #F0F2ED;
+    --input: #E8EBE6;
+    --ring: #A5F12B;
     --radius: 1.25rem;
 
     /* Semantic Financial Indicators */
-    --income: #05CD99;
-    --expense: #EE5D50;
-    --warning: #FFCE20;
-    --info: #3965FF;
-    --success: #05CD99;
-    --error: #EE5D50;
-    --ai-accent: #7551E9;
+    --income: #16A34A;
+    --expense: #DC2626;
+    --warning: #D97706;
+    --info: #2563EB;
+    --success: #16A34A;
+    --error: #DC2626;
+    --ai-accent: #A5F12B;
 
     /* Legacy Brand Aliases */
-    --brand-primary: #4318FF;
-    --brand-secondary: #7551E9;
-    --brand-ai: #7551E9;
-    --brand-ice: #F8FAFF;
-    --brand-sky: #E9EDF7;
-    --brand-lavender: #F8FAFF;
-    --brand-soft-purple: #F8FAFF;
-    --brand-deep-indigo: #1B2559;
+    --brand-primary: #A5F12B;
+    --brand-secondary: #202420;
+    --brand-ai: #A5F12B;
+    --brand-ice: #F5F6F4;
+    --brand-sky: #F0F2ED;
+    --brand-lavender: #FFFFFF;
+    --brand-soft-purple: #F0F2ED;
+    --brand-deep-indigo: #202420;
 
-    --spendx-indigo: #707EAE;
-    --spendx-deep-indigo: #1B2559;
-    --spendx-soft-purple: #7551E9;
-    --spendx-text-primary: #1B2559;
+    --spendx-indigo: #747B74;
+    --spendx-deep-indigo: #202420;
+    --spendx-soft-purple: #A5F12B;
+    --spendx-text-primary: #202420;
 
-    /* Solid Surfaces Replacement for Glass */
-    --glass-bg: #FFFFFF;
-    --glass-border: #E9EDF7;
-    --glass-nav-bg: #FFFFFF;
-    --glass-nav-border: #E9EDF7;
-    --glass-modal-bg: #FFFFFF;
-    --glass-modal-border: #E9EDF7;
-    --glass-surface-bg: #F8FAFF;
-    --glass-surface-border: #F0F4FC;
-
-    /* Horizon Soft Micro-Shadows */
-    --shadow-card: 0px 18px 40px rgba(112, 144, 176, 0.12);
-    --shadow-elevated: 0px 24px 48px rgba(112, 144, 176, 0.18);
-    --shadow-nav: 0px 4px 20px rgba(112, 144, 176, 0.08);
-    --shadow-glass: 0px 18px 40px rgba(112, 144, 176, 0.12);
-    --shadow-glass-elevated: 0px 24px 48px rgba(112, 144, 176, 0.18);
+    /* Minimal Floating Card Shadows (Soft & Delicate) */
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+    --shadow-nav: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --shadow-glass: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+    --shadow-glass-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
   }
 
   .dark {
-    /* Dark Mode (Horizon Navy) Tokens */
-    --background: #0B1437;
-    --foreground: #FFFFFF;
-    --surface: #111C44;
-    --surface-elevated: #172554;
-    --card: #111C44;
-    --card-foreground: #FFFFFF;
-    --card-elevated: #172554;
-    --popover: #111C44;
-    --popover-foreground: #FFFFFF;
+    /* Dark Mode (Minimal Dark Lime) Tokens */
+    --background: #121612;
+    --foreground: #F3F6F0;
+    --surface: #1B211B;
+    --surface-elevated: #242C23;
+    --card: #1B211B;
+    --card-foreground: #F3F6F0;
+    --card-elevated: #242C23;
+    --popover: #1B211B;
+    --popover-foreground: #F3F6F0;
 
-    --primary: #7551FF;
-    --primary-hover: #8C6DFF;
-    --primary-foreground: #FFFFFF;
-    --secondary: #A78BFA;
-    --secondary-hover: #BCA4FD;
-    --secondary-foreground: #0B1437;
-    --accent: #5B8CFF;
-    --accent-foreground: #FFFFFF;
+    --primary: #A5F12B;
+    --primary-hover: #93DE22;
+    --primary-foreground: #111711;
+    --secondary: #F3F6F0;
+    --secondary-hover: #E8EBE6;
+    --secondary-foreground: #111711;
+    --accent: #A5F12B;
+    --accent-foreground: #111711;
 
-    --main-text: #FFFFFF;
-    --secondary-text: #A3AED0;
-    --muted-text: #707EAE;
+    --main-text: #F3F6F0;
+    --secondary-text: #ADB6A8;
+    --muted-text: #747B74;
 
-    --muted: #172554;
-    --muted-foreground: #707EAE;
-    --border: #26345E;
-    --border-subtle: #1F2C52;
-    --input: #26345E;
-    --ring: #7551FF;
+    --muted: #242C23;
+    --muted-foreground: #ADB6A8;
+    --border: #303A2D;
+    --border-subtle: #242C23;
+    --input: #303A2D;
+    --ring: #A5F12B;
 
     /* Semantic Financial Indicators */
-    --income: #05CD99;
-    --expense: #FF6B75;
-    --warning: #FFCE70;
-    --info: #5B8CFF;
-    --success: #05CD99;
-    --error: #FF6B75;
-    --ai-accent: #A78BFA;
+    --income: #4ADE80;
+    --expense: #F87171;
+    --warning: #FBBF24;
+    --info: #60A5FA;
+    --success: #4ADE80;
+    --error: #F87171;
+    --ai-accent: #A5F12B;
 
     /* Legacy Brand Aliases */
-    --brand-primary: #7551FF;
-    --brand-secondary: #A78BFA;
-    --brand-ai: #A78BFA;
-    --brand-ice: #0B1437;
-    --brand-sky: #111C44;
-    --brand-lavender: #172554;
-    --brand-soft-purple: #172554;
-    --brand-deep-indigo: #FFFFFF;
+    --brand-primary: #A5F12B;
+    --brand-secondary: #F3F6F0;
+    --brand-ai: #A5F12B;
+    --brand-ice: #121612;
+    --brand-sky: #1B211B;
+    --brand-lavender: #242C23;
+    --brand-soft-purple: #242C23;
+    --brand-deep-indigo: #F3F6F0;
 
-    --spendx-indigo: #A3AED0;
-    --spendx-deep-indigo: #FFFFFF;
-    --spendx-soft-purple: #A78BFA;
-    --spendx-text-primary: #FFFFFF;
-
-    /* Solid Surfaces in Dark Mode */
-    --glass-bg: #111C44;
-    --glass-border: #26345E;
-    --glass-nav-bg: #111C44;
-    --glass-nav-border: #26345E;
-    --glass-modal-bg: #111C44;
-    --glass-modal-border: #26345E;
-    --glass-surface-bg: #172554;
-    --glass-surface-border: #1F2C52;
+    --spendx-indigo: #ADB6A8;
+    --spendx-deep-indigo: #F3F6F0;
+    --spendx-soft-purple: #A5F12B;
+    --spendx-text-primary: #F3F6F0;
 
     /* Controlled Dark Shadows */
-    --shadow-card: 0px 18px 40px rgba(0, 0, 0, 0.35);
-    --shadow-elevated: 0px 24px 48px rgba(0, 0, 0, 0.50);
-    --shadow-nav: 0px 4px 20px rgba(0, 0, 0, 0.30);
-    --shadow-glass: 0px 18px 40px rgba(0, 0, 0, 0.35);
-    --shadow-glass-elevated: 0px 24px 48px rgba(0, 0, 0, 0.50);
+    --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+    --shadow-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.50);
+    --shadow-nav: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    --shadow-glass: 0 1px 3px 0 rgba(0, 0, 0, 0.35);
+    --shadow-glass-elevated: 0 10px 25px -5px rgba(0, 0, 0, 0.50);
   }
 
   h1, h2, h3, h4 {

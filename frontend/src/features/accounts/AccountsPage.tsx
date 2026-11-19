@@ -179,16 +179,16 @@ export const AccountsPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6 animate-pulse">
-        <div className="h-10 w-48 bg-slate-200/70 dark:bg-slate-800 rounded-xl" />
+        <div className="h-10 w-48 bg-border/80 dark:bg-[#242C23] rounded-xl" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="glass-panel p-5 rounded-2xl h-32" />
+            <div key={i} className="bg-card dark:bg-[#1B211B] border border-border p-5 rounded-[22px] h-32 shadow-xs" />
           ))}
         </div>
-        <div className="glass-panel p-4 rounded-2xl h-16" />
+        <div className="bg-card dark:bg-[#1B211B] border border-border p-4 rounded-[20px] h-16 shadow-xs" />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="glass-panel rounded-3xl p-5 h-48" />
+            <div key={i} className="bg-card dark:bg-[#1B211B] border border-border rounded-[22px] p-5 h-48 shadow-xs" />
           ))}
         </div>
       </div>
@@ -197,7 +197,7 @@ export const AccountsPage: React.FC = () => {
 
   if (isError) {
     return (
-      <div className="bg-surface p-8 rounded-2xl max-w-xl mx-auto my-12 text-center space-y-4 border border-border shadow-elevated">
+      <div className="bg-card dark:bg-[#1B211B] p-8 rounded-[22px] max-w-xl mx-auto my-12 text-center space-y-4 border border-border shadow-xs">
         <div className="w-12 h-12 mx-auto rounded-xl bg-expense/10 text-expense flex items-center justify-center">
           <AlertTriangle className="w-6 h-6" />
         </div>
@@ -210,7 +210,7 @@ export const AccountsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => refetch()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-primary hover:bg-primary-hover transition-colors cursor-pointer shadow-xs"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-primary-foreground bg-primary hover:bg-primary-hover transition-colors cursor-pointer shadow-xs"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           Retry Connection

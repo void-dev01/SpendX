@@ -192,7 +192,7 @@ export const SavingsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsCreateOpen(true)}
-          className="self-start sm:self-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-medium text-xs shadow-xs transition-all cursor-pointer"
+          className="self-start sm:self-auto flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-primary-foreground font-bold text-xs shadow-xs transition-all cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Goal</span>
@@ -212,14 +212,14 @@ export const SavingsPage: React.FC = () => {
 
       {/* 4. Main Goals Content */}
       {isLoading ? (
-        <div className="bg-surface border border-border p-12 rounded-2xl shadow-card flex flex-col items-center justify-center text-center">
+        <div className="bg-card dark:bg-[#1B211B] border border-border p-12 rounded-[22px] shadow-xs flex flex-col items-center justify-center text-center">
           <Loader2 className="w-8 h-8 text-primary animate-spin mb-3" />
           <p className="text-xs text-secondary-text font-medium">
             Loading savings milestones...
           </p>
         </div>
       ) : isError ? (
-        <div className="bg-surface border border-destructive/20 p-10 rounded-2xl text-center text-destructive text-xs shadow-card">
+        <div className="bg-card dark:bg-[#1B211B] border border-destructive/20 p-10 rounded-[22px] text-center text-destructive text-xs shadow-xs">
           Failed to load savings goals. Please reload or check your connection.
         </div>
       ) : filteredGoals.length > 0 ? (

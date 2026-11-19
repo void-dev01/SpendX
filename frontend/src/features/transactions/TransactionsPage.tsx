@@ -373,7 +373,7 @@ export const TransactionsPage: React.FC = () => {
   // Error State
   if (isError) {
     return (
-      <div className="bg-surface border border-border p-8 rounded-2xl max-w-xl mx-auto my-12 text-center space-y-4 shadow-elevated">
+      <div className="bg-card dark:bg-[#1B211B] border border-border p-8 rounded-[22px] max-w-xl mx-auto my-12 text-center space-y-4 shadow-xs">
         <div className="w-12 h-12 mx-auto rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
           <AlertTriangle className="w-6 h-6" />
         </div>
@@ -386,7 +386,7 @@ export const TransactionsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => refetch()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 transition-all cursor-pointer shadow-xs"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-primary-foreground bg-primary hover:bg-primary-hover transition-all cursor-pointer shadow-xs"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isFetching ? 'animate-spin' : ''}`} />
           Retry Connection

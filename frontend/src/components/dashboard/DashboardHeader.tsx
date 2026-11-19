@@ -80,7 +80,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       </div>
 
       {/* Right: Date-range selector */}
-      <div className="flex items-center gap-1 p-1 rounded-xl bg-surface-elevated border border-border self-start md:self-auto shadow-xs">
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-card dark:bg-[#1B211B] border border-border self-start md:self-auto shadow-xs">
         {periodOptions.map((opt) => {
           const isActive = selectedPeriod === opt.value;
           return (
@@ -88,10 +88,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               key={opt.value}
               type="button"
               onClick={() => onPeriodChange(opt.value)}
-              className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-150 cursor-pointer ${
+              className={`px-3 py-1.5 text-xs rounded-lg transition-all duration-150 cursor-pointer ${
                 isActive
-                  ? 'bg-primary text-white shadow-xs font-semibold'
-                  : 'text-secondary-text hover:text-foreground hover:bg-surface'
+                  ? 'bg-primary text-primary-foreground font-bold shadow-xs'
+                  : 'text-secondary-text hover:text-foreground hover:bg-surface-subtle font-medium'
               }`}
             >
               {opt.label}

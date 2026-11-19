@@ -88,14 +88,14 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
   return (
     <div
       onClick={() => navigate(`/recurring/${payment.id}`)}
-      className="bg-surface p-5 sm:p-6 rounded-[20px] border border-border shadow-card hover:shadow-elevated flex flex-col justify-between group cursor-pointer transition-all duration-300 relative hover:border-primary/40"
+      className="bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs hover:border-primary/40 hover:shadow-card flex flex-col justify-between group cursor-pointer transition-all duration-300 relative"
     >
       {/* Top Header: Merchant, Title, and Action Menu */}
       <div>
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-primary bg-primary/10 px-2 py-0.5 rounded-md">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-foreground bg-primary/20 border border-primary/40 px-2 py-0.5 rounded-full">
                 {payment.category}
               </span>
               <span className="text-[11px] text-secondary-text font-medium">
@@ -122,7 +122,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                   setShowMenu(!showMenu);
                 }}
                 aria-label="Payment options"
-                className="p-1 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors cursor-pointer"
+                className="p-1 rounded-lg text-secondary-text hover:text-foreground hover:bg-surface-subtle dark:hover:bg-[#242C23] transition-colors cursor-pointer"
               >
                 <MoreVertical className="w-4 h-4" />
               </button>
@@ -130,7 +130,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
               {showMenu && (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute right-0 top-full mt-1 w-44 rounded-xl bg-surface py-1.5 shadow-elevated border border-border z-20 text-xs"
+                  className="absolute right-0 top-full mt-1 w-44 rounded-xl bg-card dark:bg-[#1B211B] py-1.5 shadow-elevated border border-border z-20 text-xs"
                 >
                   <button
                     type="button"

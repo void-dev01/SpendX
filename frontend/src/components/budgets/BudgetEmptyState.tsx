@@ -35,8 +35,8 @@ export const BudgetEmptyState: React.FC<BudgetEmptyStateProps> = ({
   }
 
   return (
-    <div className="bg-surface p-10 sm:p-14 rounded-2xl text-center max-w-xl mx-auto my-8 border border-border shadow-elevated">
-      <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5">
+    <div className="bg-card dark:bg-[#1B211B] p-10 sm:p-14 rounded-[22px] text-center max-w-xl mx-auto my-8 border border-border shadow-xs">
+      <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/20 text-foreground border border-primary/40 flex items-center justify-center mb-5">
         <Target className="w-8 h-8" />
       </div>
 
@@ -51,7 +51,7 @@ export const BudgetEmptyState: React.FC<BudgetEmptyStateProps> = ({
       <button
         type="button"
         onClick={onActionClick}
-        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 shadow-xs transition-all cursor-pointer"
+        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-all cursor-pointer"
       >
         <Plus className="w-4 h-4" />
         <span>Create Your First Budget</span>

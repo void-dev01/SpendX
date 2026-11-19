@@ -304,7 +304,7 @@ export const SignupPage: React.FC = () => {
           aria-modal="true"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-200"
         >
-          <div className="bg-surface rounded-2xl p-6 sm:p-8 max-w-md w-full border border-border shadow-elevated space-y-4">
+          <div className="bg-card dark:bg-[#1B211B] rounded-[22px] p-6 sm:p-8 max-w-md w-full border border-border shadow-xs space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-primary" />

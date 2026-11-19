@@ -423,7 +423,7 @@ export const SavingsDetailPage: React.FC = () => {
           role="dialog"
           aria-modal="true"
         >
-          <div className="w-full max-w-sm bg-surface p-6 rounded-2xl border border-border shadow-elevated space-y-4">
+          <div className="w-full max-w-sm bg-card dark:bg-[#1B211B] p-6 rounded-[22px] border border-border shadow-xs space-y-4">
             <h3 className="text-base font-display font-bold text-foreground">
               Delete Savings Goal?
             </h3>

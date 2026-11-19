@@ -12,7 +12,7 @@ export const AccountEmptyState: React.FC<AccountEmptyStateProps> = ({
 }) => {
   if (type === 'NO_RESULTS') {
     return (
-      <div className="bg-surface p-10 rounded-2xl text-center max-w-lg mx-auto my-8 border border-border shadow-card">
+      <div className="bg-card dark:bg-[#1B211B] p-10 rounded-[22px] text-center max-w-lg mx-auto my-8 border border-border shadow-xs">
         <div className="w-14 h-14 mx-auto rounded-2xl bg-warning/10 text-warning flex items-center justify-center mb-4">
           <SearchX className="w-7 h-7" />
         </div>
@@ -25,7 +25,7 @@ export const AccountEmptyState: React.FC<AccountEmptyStateProps> = ({
         <button
           type="button"
           onClick={onActionClick}
-          className="mt-6 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-primary bg-surface-elevated border border-border hover:bg-surface transition-colors cursor-pointer shadow-xs"
+          className="mt-6 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-foreground bg-surface-subtle dark:bg-[#242C23] border border-border hover:bg-card transition-colors cursor-pointer shadow-xs"
         >
           <RotateCcw className="w-3.5 h-3.5" />
           <span>Reset Filters</span>
@@ -35,8 +35,8 @@ export const AccountEmptyState: React.FC<AccountEmptyStateProps> = ({
   }
 
   return (
-    <div className="bg-surface p-10 sm:p-14 rounded-2xl text-center max-w-xl mx-auto my-8 border border-border shadow-elevated">
-      <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5 shadow-xs">
+    <div className="bg-card dark:bg-[#1B211B] p-10 sm:p-14 rounded-[22px] text-center max-w-xl mx-auto my-8 border border-border shadow-xs">
+      <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/20 text-foreground border border-primary/40 flex items-center justify-center mb-5 shadow-xs">
         <Wallet className="w-8 h-8" />
       </div>
 
@@ -51,7 +51,7 @@ export const AccountEmptyState: React.FC<AccountEmptyStateProps> = ({
       <button
         type="button"
         onClick={onActionClick}
-        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-xs text-white bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
+        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
       >
         <Plus className="w-4 h-4" />
         <span>Add Your First Account</span>

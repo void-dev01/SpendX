@@ -36,7 +36,7 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
   return (
     <div className="space-y-3">
       {/* Search & Top Controls */}
-      <div className="p-4 rounded-xl bg-surface border border-border shadow-card flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <div className="p-4 rounded-[20px] bg-card dark:bg-[#1B211B] border border-border shadow-xs flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         {/* Search Input */}
         <div className="relative flex-1 min-w-[220px]">
           <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -102,10 +102,10 @@ export const InsightsFilterToolbar: React.FC<InsightsFilterToolbarProps> = ({
             key={pill.value}
             type="button"
             onClick={() => onTypeChange(pill.value)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition-all ${
               selectedType === pill.value
-                ? 'bg-primary bg-spendx-blue-primary text-primary-foreground shadow-xs'
-                : 'bg-surface-elevated border border-border text-secondary-text hover:text-foreground'
+                ? 'bg-primary bg-spendx-blue-primary text-primary-foreground font-bold shadow-xs'
+                : 'bg-card dark:bg-[#1B211B] border border-border text-secondary-text hover:text-foreground'
             }`}
           >
             {pill.label}

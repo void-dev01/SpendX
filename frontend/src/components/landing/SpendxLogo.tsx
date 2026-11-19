@@ -25,76 +25,65 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
 
   return (
     <div className={`flex items-center gap-2.5 select-none ${className}`}>
-      {/* Geometric Symbol: Finance Vector + Neural Intelligence Hexagon */}
+      {/* Geometric Symbol: Minimal Dark Slate with Neon Lime Accent Vector */}
       <div className={`relative flex items-center justify-center ${iconSizes[size]}`}>
         <svg
           viewBox="0 0 36 36"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full drop-shadow-[0_4px_12px_rgba(73,107,219,0.30)]"
+          className="w-full h-full"
         >
-          <defs>
-            <linearGradient id="spendxGrad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#496BDB" />
-              <stop offset="50%" stopColor="#5F42C7" />
-              <stop offset="100%" stopColor="#7256D9" />
-            </linearGradient>
-            <linearGradient id="facetGrad" x1="6" y1="6" x2="30" y2="30" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.1" />
-            </linearGradient>
-          </defs>
-
-          {/* Outer Rounded Hexagonal Crystal */}
+          {/* Outer Rounded Dark Icon Tile */}
           <rect
             x="3"
             y="3"
             width="30"
             height="30"
-            rx="9"
-            fill="url(#spendxGrad)"
+            rx="10"
+            className="fill-[#111711] dark:fill-[#202420]"
           />
-          {/* Inner Geometric Specular Highlight */}
+          {/* Delicate Border */}
           <rect
-            x="4"
-            y="4"
-            width="28"
-            height="28"
-            rx="8"
-            stroke="url(#facetGrad)"
-            strokeWidth="1.5"
+            x="3"
+            y="3"
+            width="30"
+            height="30"
+            rx="10"
+            stroke="#A5F12B"
+            strokeOpacity="0.3"
+            strokeWidth="1"
           />
 
-          {/* Intersecting Financial Growth Vector & Intelligence Spark */}
+          {/* Intersecting Neon Lime Growth Vector & Spark */}
           <path
             d="M10 24L16 17.5L20 21L26 12"
-            stroke="#FFFFFF"
+            stroke="#A5F12B"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M21.5 12H26V16.5"
-            stroke="#FFFFFF"
+            stroke="#A5F12B"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          {/* Small Intelligence Spark Node */}
-          <circle cx="16" cy="17.5" r="1.5" fill="#FFFFFF" />
-          <circle cx="20" cy="21" r="1.5" fill="#FFFFFF" />
+          {/* Intelligence Node */}
+          <circle cx="16" cy="17.5" r="1.5" fill="#A5F12B" />
+          <circle cx="20" cy="21" r="1.5" fill="#A5F12B" />
         </svg>
       </div>
 
       <div className="flex flex-col">
-        <div className="flex items-center gap-1">
-          <span className={`font-extrabold tracking-tight text-gradient-brand ${textSizes[size]}`}>
+        <div className="flex items-center gap-1.5">
+          <span className={`font-display font-extrabold tracking-tight text-foreground ${textSizes[size]}`}>
             SPENDX
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
         </div>
         {showTagline && (
-          <span className="text-[10px] tracking-wider text-muted-foreground uppercase font-medium">
+          <span className="text-[10px] tracking-wider text-secondary-text uppercase font-medium">
             AI Financial Platform
           </span>
         )}

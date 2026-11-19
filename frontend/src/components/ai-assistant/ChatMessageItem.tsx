@@ -204,7 +204,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
             ? 'bg-primary text-primary-foreground rounded-tr-xs shadow-xs'
             : message.isError
             ? 'bg-destructive/10 border border-destructive/20 text-destructive rounded-tl-xs'
-            : 'bg-surface border border-border text-foreground rounded-tl-xs shadow-card'
+            : 'bg-card dark:bg-[#1B211B] border border-border text-foreground rounded-tl-xs shadow-xs'
         }`}
       >
         {renderFormattedContent(message.content)}

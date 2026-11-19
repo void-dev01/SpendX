@@ -306,7 +306,7 @@ export const TopNavbar: React.FC = () => {
               aria-expanded={isProfileMenuOpen}
               className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow-xs">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs shadow-xs">
                 {initials}
               </div>
               <div className="hidden xl:block text-left text-xs">
