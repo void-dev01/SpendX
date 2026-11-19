@@ -9,6 +9,9 @@ import { supabase } from './supabase';
 import { apiClient } from './api';
 import { transactionService } from './transactionService';
 import { accountService } from './accountService';
+import { budgetService } from './budgetService';
+import { savingsService } from './savingsService';
+import { recurringService } from './recurringService';
 
 export type DateRangePeriod = 'this_month' | 'last_month' | 'last_3_months' | 'this_year';
 
@@ -942,24 +945,145 @@ export const dashboardService = {
       };
     }
 
-    // Return deterministic demo data with clear identification only for unauthenticated/demo mode
-    const periodData = DEMO_DASHBOARD_DATA[period];
+    // Real financial computation from local verified ledger records
+    const localTx = transactionService.getStoredTransactions();
+    const localAccounts = accountService.getStoredAccounts();
+    const localBudgets = budgetService.getStoredBudgets();
+    const localGoals = savingsService.getStoredGoals();
+    const localRecurring = recurringService.getStoredPayments();
+
+    let income = 0;
+    let expenses = 0;
+    localTx.forEach((t) => {
+      if (t.type === 'INCOME') {
+        income += t.amount;
+      } else if (t.type === 'EXPENSE') {
+        expenses += t.amount;
+      }
+    });
+
+    const totalBalance = localAccounts.length > 0
+      ? localAccounts.reduce((acc, a) => acc + (a.balance || 0), 0)
+      : income - expenses;
+
+    const catMap: Record<string, number> = {};
+    localTx.filter((t) => t.type === 'EXPENSE').forEach((t) => {
+      catMap[t.category] = (catMap[t.category] || 0) + t.amount;
+    });
+    const categoryEntries: SpendingCategory[] = Object.entries(catMap).map(([category, amount], idx) => ({
+      id: `cat_${idx}`,
+      name: category,
+      amount,
+      percentage: expenses > 0 ? Math.round((amount / expenses) * 100) : 0,
+      color: '#A5F12B',
+      iconName: 'Tag',
+    }));
+
     return {
-      isDemo: true,
+      isDemo: false,
       userDisplayName,
       period,
-      ...periodData,
+      overview: {
+        totalBalance: {
+          value: totalBalance,
+          label: 'Total Balance',
+          description: localAccounts.length > 0 ? `${localAccounts.length} accounts connected` : 'Net balance recorded',
+          trendPercentage: 0,
+          trendIsPositive: true,
+        },
+        totalIncome: {
+          value: income,
+          label: 'Total Income',
+          description: income > 0 ? 'Total credited inflows' : 'Zero income recorded this period',
+        },
+        totalExpenses: {
+          value: expenses,
+          label: 'Total Expenses',
+          description: expenses > 0 ? 'Total debited outflows' : 'Zero expenses recorded this period',
+        },
+        availableBalance: {
+          value: Math.max(0, totalBalance),
+          label: 'Available Balance',
+          description: 'Ready for allocation',
+        },
+      },
+      incomeVsExpense: income > 0 || expenses > 0 ? [{ period: 'Current', income, expenses }] : [],
+      spendingAnalytics: {
+        totalSpent: expenses,
+        categories: categoryEntries,
+      },
+      budgets: localBudgets.map((b) => {
+        const spent = localTx
+          .filter((t) => t.type === 'EXPENSE' && t.category === b.category)
+          .reduce((sum, t) => sum + t.amount, 0);
+        return {
+          id: b.id,
+          category: b.category,
+          iconName: 'PieChart',
+          limit: b.allocatedAmount,
+          spent,
+          remaining: Math.max(0, b.allocatedAmount - spent),
+          percentage: Math.min(100, Math.round((spent / (b.allocatedAmount || 1)) * 100)),
+          status: (spent > b.allocatedAmount
+            ? 'danger'
+            : spent > b.allocatedAmount * 0.8
+            ? 'warning'
+            : 'normal') as 'normal' | 'warning' | 'danger',
+        };
+      }),
+      recentTransactions: localTx.slice(0, 8).map((t) => ({
+        id: t.id,
+        title: t.description || 'Transaction',
+        merchant: t.merchantName || t.description || 'Merchant',
+        category: t.category || 'General',
+        date: t.date || new Date().toISOString().split('T')[0],
+        amount: t.amount,
+        type: (t.type === 'INCOME' ? 'income' : 'expense') as 'income' | 'expense',
+        iconName: 'Receipt',
+      })),
+      savingsGoals: localGoals.map((g) => ({
+        id: g.id,
+        name: g.name,
+        targetAmount: g.targetAmount,
+        savedAmount: g.currentAmount,
+        progressPercentage: Math.min(100, Math.round((g.currentAmount / (g.targetAmount || 1)) * 100)),
+        remainingAmount: Math.max(0, g.targetAmount - g.currentAmount),
+        iconName: 'Target',
+        targetDate: g.targetDate,
+      })),
+      aiInsights: [],
+      upcomingPayments: localRecurring.slice(0, 5).map((r) => ({
+        id: r.id,
+        name: r.name,
+        amount: r.amount,
+        dueDate: r.nextDueDate,
+        dueDay: new Date(r.nextDueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }),
+        category: r.category,
+        iconName: 'Calendar',
+      })),
     };
   },
 
   /**
-   * Currency formatter in Indian Rupee format (INR ₹)
+   * Currency formatter using user's active currency
    */
   formatINR(value: number): string {
-    return new Intl.NumberFormat('en-IN', {
+    const userCurrency = authService.getUser()?.currency || 'INR';
+    const currencyLocaleMap: Record<string, string> = {
+      INR: 'en-IN',
+      USD: 'en-US',
+      EUR: 'de-DE',
+      GBP: 'en-GB',
+      AED: 'ar-AE',
+      JPY: 'ja-JP',
+      CAD: 'en-CA',
+      AUD: 'en-AU',
+    };
+    const locale = currencyLocaleMap[userCurrency] || 'en-US';
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 2,
+      currency: userCurrency,
+      maximumFractionDigits: userCurrency === 'JPY' ? 0 : 2,
     }).format(value);
   },
 

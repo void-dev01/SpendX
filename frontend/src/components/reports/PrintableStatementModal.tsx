@@ -49,7 +49,7 @@ export const PrintableStatementModal: React.FC<PrintableStatementModalProps> = (
             <button
               type="button"
               onClick={handlePrint}
-              className="px-4 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors"
+              className="px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 bg-primary text-[#111711] hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5" />
               <span>Print / Save PDF</span>

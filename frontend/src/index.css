@@ -471,20 +471,41 @@ body,
 }
 
 .dark label {
-  color: #E2E8F0 !important;
+  color: var(--secondary-text);
 }
 
 .dark input,
 .dark select,
 .dark textarea {
-  color: #F5F7FF !important;
-  background-color: #1D293B !important;
-  border-color: #344258 !important;
+  color: var(--foreground);
+  background-color: var(--surface-elevated);
+  border-color: var(--border);
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: var(--primary);
+  outline: none;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #8492AA !important;
+  color: var(--muted-foreground);
+}
+
+.dark select option {
+  background-color: var(--surface);
+  color: var(--foreground);
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
 }
 
 /* Animations */

@@ -44,15 +44,15 @@ export const DesktopSidebar: React.FC = () => {
       }`}
     >
       {/* 1. Brand Header */}
-      <div className="flex items-center justify-between pb-3 border-b border-border">
+      <div className={`flex items-center pb-3 border-b border-border ${isSidebarCollapsed ? 'justify-center flex-col gap-2' : 'justify-between'}`}>
         <NavLink
           to="/dashboard"
-          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl flex items-center gap-2 overflow-hidden"
+          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-xl flex items-center justify-center overflow-hidden"
           title="SPENDX Dashboard"
         >
           {isSidebarCollapsed ? (
             <div className="w-10 h-10 flex items-center justify-center">
-              <SpendxLogo size="sm" />
+              <SpendxLogo size="md" iconOnly />
             </div>
           ) : (
             <SpendxLogo size="md" />

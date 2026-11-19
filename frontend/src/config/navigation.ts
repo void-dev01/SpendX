@@ -10,7 +10,6 @@ import {
   Sparkle,
   Lightbulb,
   FileText,
-  Bell,
   User,
   Gear,
   House,
@@ -130,13 +129,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
   },
 
   // GROUP 5 — PERSONAL
-  {
-    id: 'notifications',
-    name: 'Notifications',
-    path: '/notifications',
-    icon: Bell,
-    group: 'Personal',
-  },
   {
     id: 'profile',
     name: 'Profile',

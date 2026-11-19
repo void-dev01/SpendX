@@ -406,13 +406,25 @@ export const accountService = {
   },
 
   /**
-   * Format Indian Rupee currency
+   * Format currency with active user currency symbol and formatting
    */
   formatINR(amount: number): string {
-    return new Intl.NumberFormat('en-IN', {
+    const userCurrency = authService.getUser()?.currency || 'INR';
+    const currencyLocaleMap: Record<string, string> = {
+      INR: 'en-IN',
+      USD: 'en-US',
+      EUR: 'de-DE',
+      GBP: 'en-GB',
+      AED: 'ar-AE',
+      JPY: 'ja-JP',
+      CAD: 'en-CA',
+      AUD: 'en-AU',
+    };
+    const locale = currencyLocaleMap[userCurrency] || 'en-US';
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
-      currency: 'INR',
-      maximumFractionDigits: 2,
+      currency: userCurrency,
+      maximumFractionDigits: userCurrency === 'JPY' ? 0 : 2,
     }).format(amount);
   },
 };

@@ -64,7 +64,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
       <button
         type="submit"
         disabled={!text.trim() || isLoading || disabled}
-        className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover flex items-center justify-center shrink-0 shadow-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-primary text-[#111711] font-bold hover:bg-primary-hover flex items-center justify-center shrink-0 shadow-xs transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
         aria-label="Send message"
       >
         {isLoading ? (

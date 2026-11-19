@@ -192,7 +192,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
     >
       {/* Assistant Avatar */}
       {!isUser && (
-        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-xs mt-0.5">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-primary text-[#111711] flex items-center justify-center shrink-0 shadow-xs mt-0.5">
           <Sparkles className="w-4 h-4" />
         </div>
       )}
@@ -201,7 +201,7 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
       <div
         className={`max-w-[90%] xs:max-w-[85%] sm:max-w-[75%] rounded-2xl p-3.5 sm:p-5 shadow-xs transition-all break-words [overflow-wrap:anywhere] min-w-0 ${
           isUser
-            ? 'bg-primary text-primary-foreground rounded-tr-xs shadow-xs'
+            ? 'bg-primary text-[#111711] font-semibold rounded-tr-xs shadow-xs'
             : message.isError
             ? 'bg-destructive/10 border border-destructive/20 text-destructive rounded-tl-xs'
             : 'bg-card dark:bg-[#1B211B] border border-border text-foreground rounded-tl-xs shadow-xs'

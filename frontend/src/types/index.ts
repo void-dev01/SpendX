@@ -7,6 +7,10 @@ export interface UserProfile {
   avatarUrl?: string;
   currency: string;
   monthlyIncomeTarget?: number;
+  phone?: string;
+  bio?: string;
+  country?: string;
+  goalHorizon?: string;
 }
 
 export interface Transaction {

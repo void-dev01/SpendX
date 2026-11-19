@@ -9,7 +9,6 @@ import {
   ChartNoAxesCombined,
   Lightbulb,
   FileText,
-  Bell,
   UserRound,
   Settings,
   LogOut,
@@ -26,7 +25,6 @@ const secondaryItems = [
   { name: 'Analytics Telemetry', path: '/analytics', icon: ChartNoAxesCombined, group: 'Intelligence' },
   { name: 'Financial Insights', path: '/insights', icon: Lightbulb, group: 'Intelligence' },
   { name: 'Monthly Reports', path: '/reports', icon: FileText, group: 'Reporting' },
-  { name: 'Notifications', path: '/notifications', icon: Bell, group: 'Personal' },
   { name: 'Profile', path: '/profile', icon: UserRound, group: 'Personal' },
   { name: 'Settings & Security', path: '/settings', icon: Settings, group: 'Personal' },
 ];

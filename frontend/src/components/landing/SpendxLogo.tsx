@@ -4,12 +4,14 @@ interface SpendxLogoProps {
   className?: string;
   size?: 'sm' | 'md' | 'lg';
   showTagline?: boolean;
+  iconOnly?: boolean;
 }
 
 export const SpendxLogo: React.FC<SpendxLogoProps> = ({
   className = '',
   size = 'md',
   showTagline = false,
+  iconOnly = false,
 }) => {
   const iconSizes = {
     sm: 'w-7 h-7',
@@ -26,7 +28,7 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
   return (
     <div className={`flex items-center gap-2.5 select-none ${className}`}>
       {/* Geometric Symbol: Minimal Dark Slate with Neon Lime Accent Vector */}
-      <div className={`relative flex items-center justify-center ${iconSizes[size]}`}>
+      <div className={`relative flex items-center justify-center shrink-0 ${iconSizes[size]}`}>
         <svg
           viewBox="0 0 36 36"
           fill="none"
@@ -75,19 +77,21 @@ export const SpendxLogo: React.FC<SpendxLogoProps> = ({
         </svg>
       </div>
 
-      <div className="flex flex-col">
-        <div className="flex items-center gap-1.5">
-          <span className={`font-display font-extrabold tracking-tight text-foreground ${textSizes[size]}`}>
-            SPENDX
-          </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+      {!iconOnly && (
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1.5">
+            <span className={`font-display font-extrabold tracking-tight text-foreground ${textSizes[size]}`}>
+              SPENDX
+            </span>
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+          </div>
+          {showTagline && (
+            <span className="text-[10px] tracking-wider text-secondary-text uppercase font-medium">
+              AI Financial Platform
+            </span>
+          )}
         </div>
-        {showTagline && (
-          <span className="text-[10px] tracking-wider text-secondary-text uppercase font-medium">
-            AI Financial Platform
-          </span>
-        )}
-      </div>
+      )}
     </div>
   );
 };

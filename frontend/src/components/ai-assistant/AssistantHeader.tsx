@@ -40,7 +40,7 @@ export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
         <button
           type="button"
           onClick={onNewChat}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary-hover shadow-xs transition-colors cursor-pointer min-h-[36px]"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-primary text-[#111711] hover:bg-primary-hover shadow-xs transition-colors cursor-pointer min-h-[36px]"
         >
           <Plus className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">New Chat</span>
