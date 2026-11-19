@@ -1,4 +1,4 @@
-import { supabaseClient } from '../config/supabase.js';
+import { getDbClient } from '../config/supabase.js';
 import { TransactionService } from './transaction.service.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { Transaction } from '../types/index.js';
@@ -82,10 +82,11 @@ export class ImportService {
       createdAt: new Date().toISOString(),
     };
 
-    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
+    const db = getDbClient();
+    if (process.env.NODE_ENV === 'test' || !db) {
       inMemoryCaptureEvents.unshift(eventRecord);
     } else {
-      const { error } = await supabaseClient.from('capture_events').insert({
+      const { error } = await db.from('capture_events').insert({
         user_id: userId,
         source,
         file_name: fileName,
@@ -108,11 +109,12 @@ export class ImportService {
   }
 
   public static async getHistory(userId: string): Promise<CaptureEventRecord[]> {
-    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
+    const db = getDbClient();
+    if (process.env.NODE_ENV === 'test' || !db) {
       return inMemoryCaptureEvents.filter((e) => e.userId === userId);
     }
 
-    const { data, error } = await supabaseClient
+    const { data, error } = await db
       .from('capture_events')
       .select('*')
       .eq('user_id', userId)

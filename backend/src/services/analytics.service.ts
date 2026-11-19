@@ -1,4 +1,5 @@
 import { TransactionService } from './transaction.service.js';
+import { AccountService } from './account.service.js';
 import { BudgetService } from './budget.service.js';
 import { SavingsService } from './savings.service.js';
 
@@ -47,15 +48,13 @@ export class AnalyticsService {
       else if (t.type === 'EXPENSE') totalExpenses += t.amount;
     }
 
-    // Fallback baseline for demo/test if ledger has no entries yet
-    if (totalIncome === 0 && totalExpenses === 0) {
-      totalIncome = 125000;
-      totalExpenses = 78000;
-    }
-
     const netCashFlow = totalIncome - totalExpenses;
     const savingsRate = totalIncome > 0 ? Math.max(0, Math.round((netCashFlow / totalIncome) * 100)) : 0;
-    const netWorth = 850000 + netCashFlow;
+    
+    const accounts = await AccountService.getAccounts(userId);
+    const netWorth = accounts.reduce((sum, a) => {
+      return a.type === 'CREDIT_CARD' ? sum - a.balance : sum + a.balance;
+    }, 0);
 
     return {
       totalIncome,

@@ -1,5 +1,6 @@
 import { Response, NextFunction } from 'express';
 import { AuthenticatedRequest, ApiResponse } from '../types/index.js';
+import { AppError } from '../middleware/errorHandler.js';
 import { AIService } from '../services/ai.service.js';
 import { AIModelRegistry } from '../services/ai/ai.registry.js';
 import { supabaseAdminClient } from '../config/supabase.js';
@@ -57,7 +58,10 @@ export const getInsights = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const userId = req.user?.id || 'demo-user-id';
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(new AppError('Unauthorized', 401));
+    }
     const insights = await AIService.generateInsights(userId);
 
     // Also fetch any existing active insights from Supabase DB
@@ -136,7 +140,10 @@ export const askCoach = async (
 ): Promise<void> => {
   try {
     const validated = askCoachSchema.parse(req.body);
-    const userId = req.user?.id || 'demo-user-id';
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(new AppError('Unauthorized', 401));
+    }
 
     const response = await AIService.askCoach(
       userId,

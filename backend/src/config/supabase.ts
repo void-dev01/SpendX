@@ -27,4 +27,8 @@ if (isConfigured.supabase && env.SUPABASE_URL && env.SUPABASE_SERVICE_ROLE_KEY) 
   logger.info('Supabase admin client initialized with service role key.');
 }
 
+export const getDbClient = (): SupabaseClient | null => {
+  return supabaseAdminClient || supabaseClient;
+};
+
 export { supabaseClient, supabaseAdminClient };

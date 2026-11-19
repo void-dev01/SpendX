@@ -69,11 +69,6 @@ export const DashboardPage: React.FC = () => {
     refetch();
   };
 
-  const handleLoadSampleData = () => {
-    dashboardService.loadDemoData();
-    refetch();
-  };
-
   if (isCompletelyEmpty) {
     return (
       <div className="space-y-6">
@@ -83,7 +78,7 @@ export const DashboardPage: React.FC = () => {
           selectedPeriod={selectedPeriod}
           onPeriodChange={setSelectedPeriod}
         />
-        <DashboardEmptyState onLoadSampleData={handleLoadSampleData} />
+        <DashboardEmptyState />
       </div>
     );
   }

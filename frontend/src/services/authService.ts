@@ -1,6 +1,7 @@
 import { supabase } from './supabase';
 import { useAuthStore } from '../stores/authStore';
 import { UserProfile } from '../types';
+import { apiClient } from './api';
 
 export interface AuthResponse {
   success: boolean;
@@ -244,5 +245,19 @@ export const authService = {
    */
   getUser(): UserProfile | null {
     return useAuthStore.getState().user;
+  },
+
+  /**
+   * Delete User Account and all associated financial records
+   */
+  async deleteAccount(): Promise<{ success: boolean; error?: string }> {
+    try {
+      await apiClient.delete('/auth/me');
+      await this.logout();
+      return { success: true };
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to delete account';
+      return { success: false, error: message };
+    }
   },
 };

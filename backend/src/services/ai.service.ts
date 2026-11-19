@@ -111,7 +111,7 @@ export class AIService {
   ): Promise<AskCoachResponse> {
     // 1. Resolve or initialize persistent chat session in Supabase
     let sessionId = clientSessionId;
-    if (supabaseAdminClient && userId && userId !== 'demo-user-id') {
+    if (supabaseAdminClient && userId) {
       try {
         if (!sessionId) {
           const { data: session } = await supabaseAdminClient
@@ -185,7 +185,7 @@ ${JSON.stringify({ toolResults, clientContext: context || {} }, null, 2)}
     const card = this.detectAnswerCard(query, context, toolResults);
 
     // 5. Persist Assistant message to Supabase
-    if (supabaseAdminClient && sessionId && userId && userId !== 'demo-user-id') {
+    if (supabaseAdminClient && sessionId && userId) {
       try {
         await supabaseAdminClient.from('chat_messages').insert({
           session_id: sessionId,

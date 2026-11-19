@@ -148,6 +148,16 @@ export class StorageService {
     this.validateFileType(fileType);
     this.validateFileSize(fileSizeBytes);
 
+    let downloadUrl = `https://storage.spendx.local/download/${filePath}`;
+    if (supabaseClient && process.env.NODE_ENV !== 'test') {
+      try {
+        const signed = await this.generateDownloadUrl(userId, filePath);
+        downloadUrl = signed.downloadUrl;
+      } catch {
+        // fallback
+      }
+    }
+
     const doc: StoredDocument = {
       id: `doc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       userId,
@@ -155,7 +165,7 @@ export class StorageService {
       filePath,
       fileType,
       fileSizeBytes,
-      downloadUrl: `https://storage.spendx.local/download/${filePath}?token=demo_token`,
+      downloadUrl,
       uploadedAt: new Date().toISOString(),
     };
 

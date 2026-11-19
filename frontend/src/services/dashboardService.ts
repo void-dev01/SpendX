@@ -899,6 +899,47 @@ export const dashboardService = {
       } catch (e) {
         console.warn('Could not load remote Supabase dashboard data', e);
       }
+
+      // If authenticated user has no remote records or an error occurred, return clean zero-state
+      return {
+        isDemo: false,
+        userDisplayName,
+        period,
+        overview: {
+          totalBalance: {
+            value: 0,
+            label: 'Total Balance',
+            description: 'No accounts connected',
+            trendPercentage: 0,
+            trendIsPositive: true,
+          },
+          totalIncome: {
+            value: 0,
+            label: 'Total Income',
+            description: 'Zero income recorded this period',
+          },
+          totalExpenses: {
+            value: 0,
+            label: 'Total Expenses',
+            description: 'Zero expenses recorded this period',
+          },
+          availableBalance: {
+            value: 0,
+            label: 'Available Balance',
+            description: 'Net balance remaining',
+          },
+        },
+        incomeVsExpense: [],
+        spendingAnalytics: {
+          totalSpent: 0,
+          categories: [],
+        },
+        budgets: [],
+        recentTransactions: [],
+        savingsGoals: [],
+        aiInsights: [],
+        upcomingPayments: [],
+      };
     }
 
     // Return deterministic demo data with clear identification only for unauthenticated/demo mode

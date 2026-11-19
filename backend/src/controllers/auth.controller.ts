@@ -99,3 +99,29 @@ export const updateMe = async (req: AuthenticatedRequest, res: Response, next: N
     next(err);
   }
 };
+
+export const deleteMe = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return next(new AppError('Unauthorized', 401));
+    }
+
+    if (supabaseAdminClient) {
+      // 1. Delete user profile and let cascade delete accounts, transactions, budgets, goals, etc.
+      await supabaseAdminClient.from('profiles').delete().eq('id', userId);
+      // 2. Delete Supabase Auth record
+      const { error } = await supabaseAdminClient.auth.admin.deleteUser(userId);
+      if (error) {
+        return next(new AppError('Failed to delete account: ' + error.message, 500));
+      }
+    }
+
+    res.json({
+      success: true,
+      message: 'Account and all associated financial records permanently deleted',
+    });
+  } catch (err) {
+    next(err);
+  }
+};

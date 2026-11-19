@@ -5,7 +5,9 @@ import { env } from '@/config/env';
 import { useAuthStore } from '@/stores/authStore';
 import { accountService } from '@/services/accountService';
 import { transactionService } from '@/services/transactionService';
-import { Download, Upload, Check, User, Shield, Wallet, Trash2 } from 'lucide-react';
+import { authService } from '@/services/authService';
+import { apiClient } from '@/services/api';
+import { Download, Upload, Check, User, Shield, Wallet, Trash2, AlertOctagon } from 'lucide-react';
 
 export const SettingsPage: React.FC = () => {
   const { user, setUser } = useAuthStore();
@@ -16,10 +18,18 @@ export const SettingsPage: React.FC = () => {
   });
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [backupMessage, setBackupMessage] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
+    try {
+      await apiClient.patch('/auth/me', {
+        fullName: fullName.trim(),
+      });
+    } catch (err) {
+      console.warn('Backend patch profile failed, updating local state', err);
+    }
     const updated = {
       ...user,
       fullName: fullName.trim(),
@@ -29,6 +39,25 @@ export const SettingsPage: React.FC = () => {
     localStorage.setItem('spendx_monthly_income_target', incomeTarget);
     setSavedSuccess(true);
     setTimeout(() => setSavedSuccess(false), 3000);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (window.confirm('Are you sure you want to permanently delete your SPENDX account? All your accounts, transactions, budgets, goals, and history will be permanently deleted from the database. This action is irreversible.')) {
+      setIsDeleting(true);
+      try {
+        const res = await authService.deleteAccount();
+        if (!res.success) {
+          alert(res.error || 'Failed to delete account');
+          setIsDeleting(false);
+          return;
+        }
+        localStorage.clear();
+        window.location.href = '/login';
+      } catch (err) {
+        alert('Failed to delete account');
+        setIsDeleting(false);
+      }
+    }
   };
 
   const handleExportJsonBackup = () => {
@@ -300,6 +329,24 @@ export const SettingsPage: React.FC = () => {
             <Trash2 className="w-4 h-4" />
             <span>Reset All Local Data (Start Fresh)</span>
           </button>
+
+          <div className="pt-4 border-t border-border space-y-2">
+            <p className="text-xs font-semibold text-destructive">
+              Permanently Delete Account & Financial Data
+            </p>
+            <p className="text-xs text-secondary-text leading-relaxed">
+              Permanently delete your user profile, linked accounts, transactions, budgets, goals, and history from our secure servers. This operation cannot be reversed.
+            </p>
+            <button
+              type="button"
+              disabled={isDeleting}
+              onClick={handleDeleteAccount}
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-destructive hover:bg-destructive/90 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] disabled:opacity-50"
+            >
+              <AlertOctagon className="w-4 h-4" />
+              <span>{isDeleting ? 'Deleting Account...' : 'Permanently Delete SPENDX Account'}</span>
+            </button>
+          </div>
         </CardContent>
       </Card>
     </div>

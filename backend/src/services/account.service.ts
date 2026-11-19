@@ -1,4 +1,5 @@
-import { supabaseClient } from '../config/supabase.js';
+import crypto from 'crypto';
+import { getDbClient } from '../config/supabase.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { logger } from '../utils/logger.js';
 import { AccountRecord } from '../types/index.js';
@@ -6,96 +7,96 @@ import { CreateAccountInput, UpdateAccountInput, TransferFundsInput } from '../v
 import { TransactionService } from './transaction.service.js';
 import { localStore } from '../db/localStore.js';
 
-const INITIAL_SEED_ACCOUNTS: AccountRecord[] = [
-  {
-    id: 'acc-hdfc-01',
-    userId: 'usr_dev_local_spendx',
-    name: 'HDFC Bank - Salary',
-    institution: 'HDFC Bank Ltd',
-    type: 'BANK',
-    balance: 84200,
-    currency: 'INR',
-    lastFourDigits: '4092',
-    notes: 'Primary salary credit and day-to-day checking account',
-    status: 'ACTIVE',
-    createdAt: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'acc-sbi-02',
-    userId: 'usr_dev_local_spendx',
-    name: 'SBI Savings Vault',
-    institution: 'State Bank of India',
-    type: 'SAVINGS',
-    balance: 27930,
-    currency: 'INR',
-    lastFourDigits: '8114',
-    notes: 'High-yield emergency savings reserve',
-    status: 'ACTIVE',
-    createdAt: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 'acc-icici-cc',
-    userId: 'usr_dev_local_spendx',
-    name: 'ICICI Sapphiro Credit Card',
-    institution: 'ICICI Bank',
-    type: 'CREDIT_CARD',
-    balance: 12450,
-    currency: 'INR',
-    lastFourDigits: '9012',
-    notes: 'Primary cashback card for online transactions and travel',
-    status: 'ACTIVE',
-    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
-
 export class AccountService {
   public static async getAccounts(userId: string): Promise<AccountRecord[]> {
-    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
-      let accounts = localStore.getAccounts();
-      if (accounts.length === 0) {
-        accounts = INITIAL_SEED_ACCOUNTS;
-        localStore.saveAccounts(accounts);
-      }
-      return accounts.filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
+    if (process.env.NODE_ENV === 'test') {
+      const accounts = localStore.getAccounts();
+      return accounts.filter((a) => a.userId === userId || userId === 'usr_dev_local_spendx');
     }
 
-    try {
-      const { data, error } = await supabaseClient
-        .from('accounts')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+    const db = getDbClient();
+    if (db) {
+      try {
+        const { data, error } = await db
+          .from('accounts')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('status', 'ACTIVE')
+          .order('created_at', { ascending: false });
 
-      if (error) {
-        logger.error({ error }, 'Failed to fetch accounts from Supabase');
-        return localStore.getAccounts().filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
+        if (error) {
+          logger.error({ error }, 'Failed to fetch accounts from Supabase');
+          if (process.env.NODE_ENV === 'test') {
+            return localStore.getAccounts().filter((a) => a.userId === userId);
+          }
+          throw new AppError('Failed to fetch accounts', 500);
+        }
+
+        return (data || []).map((row) => ({
+          id: row.id,
+          userId: row.user_id,
+          name: row.name,
+          institution: row.institution || '',
+          type: row.type,
+          balance: Number(row.balance),
+          currency: row.currency || 'INR',
+          lastFourDigits: row.last_four_digits || undefined,
+          notes: row.notes || undefined,
+          status: row.status,
+          createdAt: row.created_at,
+          updatedAt: row.updated_at,
+        }));
+      } catch (err) {
+        if (err instanceof AppError) throw err;
+        logger.error({ err }, 'Error querying accounts');
+        return [];
       }
-
-      return (data || []).map((row) => ({
-        id: row.id,
-        userId: row.user_id,
-        name: row.name,
-        institution: row.institution,
-        type: row.type,
-        balance: Number(row.balance),
-        currency: row.currency,
-        lastFourDigits: row.last_four_digits,
-        notes: row.notes,
-        status: row.status,
-        createdAt: row.created_at,
-        updatedAt: row.updated_at,
-      }));
-    } catch {
-      return localStore.getAccounts().filter((a) => a.userId === userId || userId.startsWith('test-token-') || userId === 'usr_dev_local_spendx');
     }
+
+    return localStore.getAccounts().filter((a) => a.userId === userId);
   }
 
   public static async getAccountById(userId: string, accountId: string): Promise<AccountRecord> {
-    const accounts = await this.getAccounts(userId);
-    const account = accounts.find((a) => a.id === accountId);
+    if (process.env.NODE_ENV === 'test') {
+      const accounts = localStore.getAccounts();
+      const account = accounts.find((a) => a.id === accountId && (a.userId === userId || userId === 'usr_dev_local_spendx'));
+      if (!account) {
+        throw new AppError('Account not found', 404);
+      }
+      return account;
+    }
+
+    const db = getDbClient();
+    if (db) {
+      const { data, error } = await db
+        .from('accounts')
+        .select('*')
+        .eq('id', accountId)
+        .eq('user_id', userId)
+        .single();
+
+      if (error || !data) {
+        throw new AppError('Account not found', 404);
+      }
+
+      return {
+        id: data.id,
+        userId: data.user_id,
+        name: data.name,
+        institution: data.institution || '',
+        type: data.type,
+        balance: Number(data.balance),
+        currency: data.currency || 'INR',
+        lastFourDigits: data.last_four_digits || undefined,
+        notes: data.notes || undefined,
+        status: data.status,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
+      };
+    }
+
+    const accounts = localStore.getAccounts();
+    const account = accounts.find((a) => a.id === accountId && a.userId === userId);
     if (!account) {
       throw new AppError('Account not found', 404);
     }
@@ -103,13 +104,14 @@ export class AccountService {
   }
 
   public static async createAccount(userId: string, data: CreateAccountInput): Promise<AccountRecord> {
+    const accountId = crypto.randomUUID();
     const newAccount: AccountRecord = {
-      id: `acc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      id: accountId,
       userId,
       name: data.name,
-      institution: data.institution,
+      institution: data.institution || '',
       type: data.type,
-      balance: data.balance,
+      balance: Number(data.balance) || 0,
       currency: data.currency || 'INR',
       lastFourDigits: data.lastFourDigits,
       notes: data.notes,
@@ -118,61 +120,66 @@ export class AccountService {
       updatedAt: new Date().toISOString(),
     };
 
-    if (process.env.NODE_ENV === 'test' || !supabaseClient) {
+    const db = getDbClient();
+
+    if (process.env.NODE_ENV === 'test') {
       const accounts = localStore.getAccounts();
       accounts.unshift(newAccount);
       localStore.saveAccounts(accounts);
       return newAccount;
     }
 
-    try {
-      const { data: inserted, error } = await supabaseClient
-        .from('accounts')
-        .insert({
-          id: newAccount.id,
-          user_id: userId,
-          name: newAccount.name,
-          institution: newAccount.institution,
-          type: newAccount.type,
-          balance: newAccount.balance,
-          currency: newAccount.currency,
-          last_four_digits: newAccount.lastFourDigits,
-          notes: newAccount.notes,
-          status: newAccount.status,
-          created_at: newAccount.createdAt,
-          updated_at: newAccount.updatedAt,
-        })
-        .select()
-        .single();
+    if (db) {
+      try {
+        const { data: inserted, error } = await db
+          .from('accounts')
+          .insert({
+            id: newAccount.id,
+            user_id: userId,
+            name: newAccount.name,
+            institution: newAccount.institution || null,
+            type: newAccount.type,
+            balance: newAccount.balance,
+            currency: newAccount.currency,
+            last_four_digits: newAccount.lastFourDigits || null,
+            notes: newAccount.notes || null,
+            status: newAccount.status,
+            created_at: newAccount.createdAt,
+            updated_at: newAccount.updatedAt,
+          })
+          .select()
+          .single();
 
-      if (error) {
-        logger.warn({ error }, 'Supabase insert account failed, falling back to localStore');
-        const accounts = localStore.getAccounts();
-        accounts.unshift(newAccount);
-        localStore.saveAccounts(accounts);
-        return newAccount;
+        if (error || !inserted) {
+          logger.error({ error }, 'Supabase insert account failed');
+          throw new AppError('Failed to create account in database', 500);
+        }
+
+        return {
+          id: inserted.id,
+          userId: inserted.user_id,
+          name: inserted.name,
+          institution: inserted.institution || '',
+          type: inserted.type,
+          balance: Number(inserted.balance),
+          currency: inserted.currency || 'INR',
+          lastFourDigits: inserted.last_four_digits || undefined,
+          notes: inserted.notes || undefined,
+          status: inserted.status,
+          createdAt: inserted.created_at,
+          updatedAt: inserted.updated_at,
+        };
+      } catch (err) {
+        if (err instanceof AppError) throw err;
+        logger.error({ err }, 'Exception creating account');
+        throw new AppError('Failed to create account', 500);
       }
-
-      return {
-        id: inserted.id,
-        userId: inserted.user_id,
-        name: inserted.name,
-        institution: inserted.institution,
-        type: inserted.type,
-        balance: Number(inserted.balance),
-        currency: inserted.currency,
-        lastFourDigits: inserted.last_four_digits,
-        notes: inserted.notes,
-        status: inserted.status,
-        createdAt: inserted.created_at,
-        updatedAt: inserted.updated_at,
-      };
-    } catch {
-      const accounts = localStore.getAccounts();
-      accounts.unshift(newAccount);
-      localStore.saveAccounts(accounts);
-      return newAccount;
     }
+
+    const accounts = localStore.getAccounts();
+    accounts.unshift(newAccount);
+    localStore.saveAccounts(accounts);
+    return newAccount;
   }
 
   public static async updateAccount(
@@ -185,8 +192,67 @@ export class AccountService {
     const updated: AccountRecord = {
       ...existing,
       ...data,
+      balance: data.balance !== undefined ? Number(data.balance) : existing.balance,
       updatedAt: new Date().toISOString(),
     };
+
+    const db = getDbClient();
+
+    if (process.env.NODE_ENV === 'test') {
+      const accounts = localStore.getAccounts();
+      const inMemIdx = accounts.findIndex((a) => a.id === accountId);
+      if (inMemIdx !== -1) {
+        accounts[inMemIdx] = updated;
+        localStore.saveAccounts(accounts);
+      }
+      return updated;
+    }
+
+    if (db) {
+      try {
+        const updatePayload: Record<string, any> = { updated_at: updated.updatedAt };
+        if (data.name !== undefined) updatePayload.name = data.name;
+        if (data.institution !== undefined) updatePayload.institution = data.institution;
+        if (data.type !== undefined) updatePayload.type = data.type;
+        if (data.balance !== undefined) updatePayload.balance = Number(data.balance);
+        if (data.currency !== undefined) updatePayload.currency = data.currency;
+        if (data.lastFourDigits !== undefined) updatePayload.last_four_digits = data.lastFourDigits;
+        if (data.notes !== undefined) updatePayload.notes = data.notes;
+        if (data.status !== undefined) updatePayload.status = data.status;
+
+        const { data: result, error } = await db
+          .from('accounts')
+          .update(updatePayload)
+          .eq('id', accountId)
+          .eq('user_id', userId)
+          .select()
+          .single();
+
+        if (error || !result) {
+          logger.error({ error }, 'Supabase update account failed');
+          throw new AppError('Failed to update account in database', 500);
+        }
+
+        return {
+          id: result.id,
+          userId: result.user_id,
+          name: result.name,
+          institution: result.institution || '',
+          type: result.type,
+          balance: Number(result.balance),
+          currency: result.currency || 'INR',
+          lastFourDigits: result.last_four_digits || undefined,
+          notes: result.notes || undefined,
+          status: result.status,
+          createdAt: result.created_at,
+          updatedAt: result.updated_at,
+        };
+      } catch (err) {
+        if (err instanceof AppError) throw err;
+        logger.error({ err }, 'Exception updating account');
+        throw new AppError('Failed to update account', 500);
+      }
+    }
 
     const accounts = localStore.getAccounts();
     const inMemIdx = accounts.findIndex((a) => a.id === accountId);
@@ -194,47 +260,44 @@ export class AccountService {
       accounts[inMemIdx] = updated;
       localStore.saveAccounts(accounts);
     }
-
-    if (supabaseClient && process.env.NODE_ENV !== 'test') {
-      try {
-        await supabaseClient
-          .from('accounts')
-          .update({
-            name: updated.name,
-            institution: updated.institution,
-            type: updated.type,
-            balance: updated.balance,
-            currency: updated.currency,
-            last_four_digits: updated.lastFourDigits,
-            notes: updated.notes,
-            status: updated.status,
-            updated_at: updated.updatedAt,
-          })
-          .eq('id', accountId)
-          .eq('user_id', userId);
-      } catch (err) {
-        logger.warn({ err }, 'Supabase update account failed');
-      }
-    }
-
     return updated;
   }
 
   public static async deleteAccount(userId: string, accountId: string): Promise<boolean> {
     await this.getAccountById(userId, accountId);
 
-    const accounts = localStore.getAccounts();
-    const filtered = accounts.filter((a) => a.id !== accountId);
-    localStore.saveAccounts(filtered);
+    const db = getDbClient();
 
-    if (supabaseClient && process.env.NODE_ENV !== 'test') {
+    if (process.env.NODE_ENV === 'test') {
+      const accounts = localStore.getAccounts();
+      const filtered = accounts.filter((a) => a.id !== accountId);
+      localStore.saveAccounts(filtered);
+      return true;
+    }
+
+    if (db) {
       try {
-        await supabaseClient.from('accounts').delete().eq('id', accountId).eq('user_id', userId);
+        const { error } = await db
+          .from('accounts')
+          .delete()
+          .eq('id', accountId)
+          .eq('user_id', userId);
+
+        if (error) {
+          logger.error({ error }, 'Supabase delete account failed');
+          throw new AppError('Failed to delete account: ' + error.message, 500);
+        }
+        return true;
       } catch (err) {
-        logger.warn({ err }, 'Supabase delete account failed');
+        if (err instanceof AppError) throw err;
+        logger.error({ err }, 'Exception deleting account');
+        throw new AppError('Failed to delete account', 500);
       }
     }
 
+    const accounts = localStore.getAccounts();
+    const filtered = accounts.filter((a) => a.id !== accountId);
+    localStore.saveAccounts(filtered);
     return true;
   }
 
@@ -249,13 +312,18 @@ export class AccountService {
       throw new AppError('Source and destination accounts must be different', 400);
     }
 
+    const transferAmount = Math.abs(Number(input.amount));
+    if (transferAmount <= 0) {
+      throw new AppError('Transfer amount must be positive', 400);
+    }
+
     const newFromBalance = fromAcc.type === 'CREDIT_CARD' 
-      ? fromAcc.balance + input.amount 
-      : fromAcc.balance - input.amount;
+      ? fromAcc.balance + transferAmount 
+      : fromAcc.balance - transferAmount;
 
     const newToBalance = toAcc.type === 'CREDIT_CARD'
-      ? toAcc.balance - input.amount
-      : toAcc.balance + input.amount;
+      ? toAcc.balance - transferAmount
+      : toAcc.balance + transferAmount;
 
     const updatedFrom = await this.updateAccount(userId, fromAcc.id, { balance: newFromBalance });
     const updatedTo = await this.updateAccount(userId, toAcc.id, { balance: newToBalance });
@@ -263,11 +331,12 @@ export class AccountService {
     const date = input.date || new Date().toISOString();
     await TransactionService.createTransaction(userId, {
       accountId: fromAcc.id,
-      amount: input.amount,
+      amount: transferAmount,
       type: 'TRANSFER',
-      category: 'Transfer',
+      category: 'Account Transfer',
       description: input.description || `Transfer to ${toAcc.name}`,
       date,
+      paymentMethod: 'Net Banking',
       isRecurring: false,
     });
 

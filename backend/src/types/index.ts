@@ -29,6 +29,7 @@ export interface Transaction {
   id: string;
   userId: string;
   accountId: string;
+  accountName?: string;
   amount: number;
   type: TransactionType;
   category: string;
