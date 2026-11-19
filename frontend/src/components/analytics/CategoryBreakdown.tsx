@@ -94,6 +94,7 @@ export const CategoryBreakdown: React.FC<CategoryBreakdownProps> = ({
               paddingAngle={2}
               dataKey="amount"
               cursor="pointer"
+              isAnimationActive={false}
               onClick={(entry: any) => {
                 if (entry && entry.category) {
                   onSelectCategory(entry.category);

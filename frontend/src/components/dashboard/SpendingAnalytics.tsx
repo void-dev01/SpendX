@@ -90,6 +90,7 @@ export const SpendingAnalytics: React.FC<SpendingAnalyticsProps> = ({
               paddingAngle={3}
               dataKey="amount"
               stroke="none"
+              isAnimationActive={false}
             >
               {categories.map((entry) => (
                 <Cell key={`cell-${entry.id}`} fill={entry.color} stroke="none" />

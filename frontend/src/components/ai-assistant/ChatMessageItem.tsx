@@ -10,6 +10,8 @@ import {
   Wallet,
   Target,
   PieChart,
+  CheckCircle2,
+  AlertTriangle,
 } from 'lucide-react';
 import { ChatMessage } from '@/services/aiAssistantService';
 import { transactionService } from '@/services/transactionService';
@@ -45,10 +47,29 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
           // Check for bullet list
           if (line.trim().startsWith('- ') || line.trim().startsWith('• ')) {
             const itemText = line.trim().replace(/^[-•]\s*/, '');
+            const isOnTrack = itemText.includes('On Track');
+            const isOverBudget = itemText.includes('Over Budget');
+
             return (
               <div key={idx} className="flex items-start gap-2 pl-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
+                {isOnTrack ? (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-income shrink-0 mt-0.5" strokeWidth={1.75} />
+                ) : isOverBudget ? (
+                  <AlertTriangle className="w-3.5 h-3.5 text-warning shrink-0 mt-0.5" strokeWidth={1.75} />
+                ) : (
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
+                )}
                 <span>{parseBold(itemText)}</span>
+              </div>
+            );
+          }
+
+          // Check for recommendation callout
+          if (line.trim().startsWith('**Recommendation**:')) {
+            return (
+              <div key={idx} className="flex items-start gap-2 p-2 rounded-xl bg-primary/10 border border-primary/20 text-foreground">
+                <Sparkles className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" strokeWidth={1.75} />
+                <span>{parseBold(line)}</span>
               </div>
             );
           }

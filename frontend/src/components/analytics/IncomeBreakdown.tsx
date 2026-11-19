@@ -73,6 +73,7 @@ export const IncomeBreakdown: React.FC<IncomeBreakdownProps> = ({ items }) => {
               paddingAngle={2}
               dataKey="amount"
               stroke="none"
+              isAnimationActive={false}
             >
               {items.map((entry) => (
                 <Cell key={`income-${entry.category}`} fill={entry.color} stroke="none" />

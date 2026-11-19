@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
 import { dashboardService, DateRangePeriod } from '@/services/dashboardService';
@@ -30,6 +30,16 @@ export const DashboardPage: React.FC = () => {
     queryFn: () => dashboardService.getDashboardData(selectedPeriod),
   });
 
+  // Check if completely empty (new user with 0 balance, 0 transactions)
+  const isCompletelyEmpty = useMemo(() => {
+    if (!data) return false;
+    return (
+      !data.isDemo &&
+      data.overview?.totalBalance?.value === 0 &&
+      data.recentTransactions?.length === 0
+    );
+  }, [data]);
+
   if (isLoading) {
     return <DashboardSkeleton />;
   }
@@ -57,12 +67,6 @@ export const DashboardPage: React.FC = () => {
       </div>
     );
   }
-
-  // Check if completely empty (new user with 0 balance, 0 transactions)
-  const isCompletelyEmpty =
-    !data.isDemo &&
-    data.overview.totalBalance.value === 0 &&
-    data.recentTransactions.length === 0;
 
   const handleClearSampleData = () => {
     dashboardService.clearDemoData();

@@ -162,6 +162,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
                 activeBar={false}
+                isAnimationActive={false}
               />
               <Bar
                 dataKey="saved"
@@ -170,6 +171,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                 radius={[6, 6, 0, 0]}
                 maxBarSize={32}
                 activeBar={false}
+                isAnimationActive={false}
               />
             </BarChart>
           </ResponsiveContainer>
@@ -199,6 +201,7 @@ export const SavingsProgressChart: React.FC<SavingsProgressChartProps> = ({ goal
                     outerRadius={68}
                     paddingAngle={3}
                     dataKey="value"
+                    isAnimationActive={false}
                   >
                     {pieData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />

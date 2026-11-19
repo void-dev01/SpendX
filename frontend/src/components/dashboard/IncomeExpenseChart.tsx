@@ -137,6 +137,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
               fillOpacity={1}
               fill="url(#incomeGradient)"
               activeDot={{ r: 5, stroke: '#10B981', strokeWidth: 2, fill: '#FFFFFF' }}
+              isAnimationActive={false}
             />
 
             <Area
@@ -148,6 +149,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
               fillOpacity={1}
               fill="url(#expenseGradient)"
               activeDot={{ r: 5, stroke: '#EF4444', strokeWidth: 2, fill: '#FFFFFF' }}
+              isAnimationActive={false}
             />
           </AreaChart>
         </ResponsiveContainer>

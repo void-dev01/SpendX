@@ -156,6 +156,7 @@ export const SpendingTrends: React.FC<SpendingTrendsProps> = ({ timelineData }) 
               strokeWidth={2.5}
               fillOpacity={1}
               fill={`url(#${config.gradientId})`}
+              isAnimationActive={false}
             />
           </AreaChart>
         </ResponsiveContainer>

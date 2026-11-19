@@ -105,7 +105,7 @@ export const TopNavbar: React.FC = () => {
             aria-label="Open navigation menu"
             className="md:hidden w-9 h-9 rounded-xl flex items-center justify-center text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer shrink-0"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5" strokeWidth={1.75} />
           </button>
 
           {/* Clean Active Page Indicator */}
@@ -125,7 +125,7 @@ export const TopNavbar: React.FC = () => {
             className="w-full h-10 flex items-center justify-between px-3.5 rounded-xl bg-surface-elevated border border-border text-xs text-secondary-text hover:text-foreground hover:border-primary/50 transition-colors cursor-pointer group shadow-xs"
           >
             <div className="flex items-center gap-2">
-              <Search className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              <Search className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" strokeWidth={1.75} />
               <span>Search transactions, accounts, insights...</span>
             </div>
             <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 rounded-md bg-surface border border-border text-[10px] font-mono text-muted-foreground">
@@ -143,7 +143,7 @@ export const TopNavbar: React.FC = () => {
             aria-label="Open search command palette"
             className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-4 h-4" strokeWidth={1.75} />
           </button>
 
           {/* 1. Notifications Flyout Popup */}
@@ -157,7 +157,7 @@ export const TopNavbar: React.FC = () => {
               aria-expanded={isNotificationsOpen}
               className="relative w-9 h-9 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
             >
-              <Bell className="w-4 h-4" />
+              <Bell className="w-4 h-4" strokeWidth={1.75} />
               {unreadCount > 0 && (
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-expense animate-pulse" />
               )}
@@ -198,7 +198,7 @@ export const TopNavbar: React.FC = () => {
                   <div className="max-h-72 overflow-y-auto no-scrollbar space-y-2">
                     {notifications.length === 0 ? (
                       <div className="py-8 text-center text-xs text-secondary-text space-y-1">
-                        <CheckCheck className="w-7 h-7 mx-auto text-income/70" />
+                        <CheckCheck className="w-7 h-7 mx-auto text-income/70" strokeWidth={1.75} />
                         <p className="font-semibold text-foreground">All caught up!</p>
                         <p className="text-[11px]">No active notifications</p>
                       </div>
@@ -223,11 +223,11 @@ export const TopNavbar: React.FC = () => {
                             }`}
                           >
                             {item.type === 'success' ? (
-                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.75} />
                             ) : item.type === 'warning' ? (
-                              <AlertCircle className="w-3.5 h-3.5" />
+                              <AlertCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
                             ) : (
-                              <Info className="w-3.5 h-3.5" />
+                              <Info className="w-3.5 h-3.5" strokeWidth={1.75} />
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -272,9 +272,9 @@ export const TopNavbar: React.FC = () => {
             className="w-9 h-9 rounded-xl flex items-center justify-center text-secondary-text hover:text-foreground hover:bg-surface-elevated transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer active:scale-95"
           >
             {theme === 'dark' ? (
-              <Sun className="w-4 h-4 text-warning" />
+              <Sun className="w-4 h-4 text-warning" strokeWidth={1.75} />
             ) : (
-              <Moon className="w-4 h-4" />
+              <Moon className="w-4 h-4" strokeWidth={1.75} />
             )}
           </button>
 

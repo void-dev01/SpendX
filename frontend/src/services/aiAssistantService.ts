@@ -330,7 +330,7 @@ Once you record your financial data, I will provide real-time budget utilization
 ${topCat ? `- **Primary Category**: Your highest outflow is **${cat}** (${catPercent}% of total expenses).` : '- **Primary Category**: No categorized expenses recorded yet.'}
 - **Net Cash Flow**: **₹${netCashFlow.toLocaleString('en-IN')}** retained.
 
-💡 **Recommendation**: Track your daily purchases to ensure expenditures remain aligned with your financial targets.`,
+**Recommendation**: Track your daily purchases to ensure expenditures remain aligned with your financial targets.`,
         card: {
           type: 'SPENDING',
           title: 'Spending Breakdown',
@@ -359,7 +359,7 @@ ${topCat ? `- **Primary Category**: Your highest outflow is **${cat}** (${catPer
         answer: `Here is your current budget adherence analysis:
 
 - **Active Budgets**: You have **${budgets.length}** active category limits configured.
-${overBudget.length > 0 ? `- ⚠️ **Over Budget**: ${overBudget.map((b: any) => b.name || b.category).join(', ')}` : '- ✅ **On Track**: All active category budgets are operating within healthy limits.'}
+${overBudget.length > 0 ? `- **Over Budget**: ${overBudget.map((b: any) => b.name || b.category).join(', ')}` : '- **On Track**: All active category budgets are operating within healthy limits.'}
 
 Keep discretionary spending steady over the remaining days of the cycle.`,
         card: {

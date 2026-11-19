@@ -154,6 +154,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 radius={[4, 4, 0, 0]}
                 maxBarSize={30}
                 activeBar={false}
+                isAnimationActive={false}
               />
               <Bar
                 dataKey="expense"
@@ -162,6 +163,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 radius={[4, 4, 0, 0]}
                 maxBarSize={30}
                 activeBar={false}
+                isAnimationActive={false}
               />
             </BarChart>
           ) : (
@@ -201,6 +203,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 strokeWidth={2.5}
                 dot={{ r: 3, fill: '#12866E' }}
                 activeDot={{ r: 5 }}
+                isAnimationActive={false}
               />
               <Line
                 type="monotone"
@@ -210,6 +213,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ data }) 
                 strokeWidth={2.5}
                 dot={{ r: 3, fill: '#DC5579' }}
                 activeDot={{ r: 5 }}
+                isAnimationActive={false}
               />
             </LineChart>
           )}

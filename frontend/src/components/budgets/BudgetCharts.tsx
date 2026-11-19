@@ -127,6 +127,7 @@ export const BudgetCharts: React.FC<BudgetChartsProps> = ({ budgetMetrics }) => 
                   paddingAngle={3}
                   dataKey="value"
                   stroke="none"
+                  isAnimationActive={false}
                 >
                   {donutData.map((entry, idx) => (
                     <Cell key={`donut-${idx}`} fill={entry.color} />
@@ -203,8 +204,8 @@ export const BudgetCharts: React.FC<BudgetChartsProps> = ({ budgetMetrics }) => 
                 dx={-4}
               />
               <Tooltip content={renderBarTooltip} cursor={false} />
-              <Bar dataKey="budget" name="Allocated" fill="#10B981" radius={[4, 4, 0, 0]} activeBar={false} />
-              <Bar dataKey="spent" name="Spent" fill="#EF4444" radius={[4, 4, 0, 0]} activeBar={false} />
+              <Bar dataKey="budget" name="Allocated" fill="#10B981" radius={[4, 4, 0, 0]} activeBar={false} isAnimationActive={false} />
+              <Bar dataKey="spent" name="Spent" fill="#EF4444" radius={[4, 4, 0, 0]} activeBar={false} isAnimationActive={false} />
             </BarChart>
           </ResponsiveContainer>
         </div>
