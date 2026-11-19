@@ -31,7 +31,7 @@ export const AppLayout: React.FC = () => {
 
       {/* 2. Main Workspace Column */}
       <div
-        className={`flex-1 flex flex-col min-w-0 min-h-screen min-h-dvh px-3 sm:px-6 lg:pr-6 transition-all duration-300 ease-in-out ${
+        className={`flex-1 flex flex-col min-w-0 min-h-screen min-h-dvh px-3 sm:px-6 lg:pr-6 transition-[padding] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
           isSidebarCollapsed ? 'md:pl-28' : 'md:pl-72'
         }`}
       >
@@ -42,9 +42,9 @@ export const AppLayout: React.FC = () => {
         <main className="flex-1 pb-24 md:pb-8">
           <motion.div
             key={location.pathname}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
             className="max-w-7xl 2xl:max-w-[1600px] mx-auto w-full"
           >
             <Outlet />

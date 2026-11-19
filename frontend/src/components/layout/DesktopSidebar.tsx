@@ -39,7 +39,7 @@ export const DesktopSidebar: React.FC = () => {
   return (
     <aside
       aria-label="Desktop Sidebar Navigation"
-      className={`hidden md:flex flex-col justify-between shrink-0 transition-all duration-300 ease-in-out bg-surface rounded-2xl border border-border shadow-card fixed left-4 top-4 bottom-4 h-[calc(100vh-2rem)] select-none z-30 ${
+      className={`hidden md:flex flex-col justify-between shrink-0 transition-[width,padding] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] bg-surface rounded-2xl border border-border shadow-card fixed left-4 top-4 bottom-4 h-[calc(100vh-2rem)] select-none z-30 ${
         isSidebarCollapsed ? 'w-20 p-3' : 'w-64 p-4'
       }`}
     >
@@ -104,7 +104,7 @@ export const DesktopSidebar: React.FC = () => {
                       <NavLink
                         to={item.path}
                         className={({ isActive }) =>
-                          `flex items-center gap-3 rounded-xl text-xs font-semibold transition-all duration-150 active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                          `flex items-center gap-3 rounded-xl text-xs font-semibold transition-colors duration-200 ease-out active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                             isSidebarCollapsed
                               ? 'justify-center w-10 h-10 mx-auto'
                               : 'px-3 py-2 w-full'

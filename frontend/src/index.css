@@ -508,6 +508,17 @@ body,
   }
 }
 
+/* Global Smooth Transition & Interactions */
+html {
+  scroll-behavior: smooth;
+}
+
+button, a, input, select, textarea {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -520,17 +531,17 @@ body,
 }
 
 @keyframes zoomIn95 {
-  from { opacity: 0; transform: scale3d(0.95, 0.95, 1); }
+  from { opacity: 0; transform: scale3d(0.97, 0.97, 1); }
   to { opacity: 1; transform: scale3d(1, 1, 1); }
 }
 
 @keyframes zoomOut95 {
   from { opacity: 1; transform: scale3d(1, 1, 1); }
-  to { opacity: 0; transform: scale3d(0.95, 0.95, 1); }
+  to { opacity: 0; transform: scale3d(0.97, 0.97, 1); }
 }
 
 .animate-in {
-  animation-duration: 200ms;
+  animation-duration: 180ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
 }
