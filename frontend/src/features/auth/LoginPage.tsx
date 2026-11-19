@@ -114,7 +114,7 @@ export const LoginPage: React.FC = () => {
       )}
 
       {/* Main Login Form */}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3" noValidate>
         {/* Email Address */}
         <AuthInput
           id="login-email"
@@ -140,7 +140,7 @@ export const LoginPage: React.FC = () => {
         />
 
         {/* Remember Me & Forgot Password */}
-        <div className="flex items-center justify-between text-xs pt-1">
+        <div className="flex items-center justify-between text-xs pt-0.5">
           <label className="flex items-center gap-2 cursor-pointer select-none text-muted-foreground hover:text-foreground">
             <input
               type="checkbox"
@@ -163,11 +163,11 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Primary Submit Button */}
-        <div className="pt-2">
+        <div className="pt-1.5">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className="w-full min-h-[42px] sm:min-h-[44px] rounded-xl text-xs sm:text-sm font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
             {isSubmitting ? (
               <>
@@ -185,7 +185,7 @@ export const LoginPage: React.FC = () => {
       </form>
 
       {/* Navigation to Signup */}
-      <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
+      <div className="pt-3 border-t border-border text-center text-xs text-muted-foreground">
         Don&apos;t have an account?{' '}
         <Link
           to="/signup"

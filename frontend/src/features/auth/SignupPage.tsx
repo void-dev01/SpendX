@@ -161,7 +161,7 @@ export const SignupPage: React.FC = () => {
           )}
 
           {/* Main Registration Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-2.5 sm:space-y-3" noValidate>
             {/* Full Name */}
             <AuthInput
               id="signup-fullname"
@@ -215,15 +215,15 @@ export const SignupPage: React.FC = () => {
             />
 
             {/* Terms and Privacy Agreement */}
-            <div className="space-y-1 pt-1">
-              <label className="flex items-start gap-2.5 cursor-pointer select-none text-xs text-secondary-text hover:text-foreground">
+            <div className="space-y-1 pt-0.5">
+              <label className="flex items-start gap-2 cursor-pointer select-none text-[11px] text-secondary-text hover:text-foreground">
                 <input
                   type="checkbox"
                   className="w-4 h-4 rounded border-border text-primary focus:ring-primary focus:ring-offset-0 bg-surface-elevated mt-0.5"
                   disabled={isSubmitting}
                   {...register('agreeTerms')}
                 />
-                <span className="leading-snug">
+                <span className="leading-tight">
                   I agree to the{' '}
                   <button
                     type="button"
@@ -255,7 +255,7 @@ export const SignupPage: React.FC = () => {
               </label>
 
               {errors.agreeTerms?.message && (
-                <p className="flex items-center gap-1.5 text-xs text-destructive font-medium pl-6">
+                <p className="flex items-center gap-1.5 text-[11px] text-destructive font-medium pl-6">
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                   <span>{errors.agreeTerms.message}</span>
                 </p>
@@ -263,11 +263,11 @@ export const SignupPage: React.FC = () => {
             </div>
 
             {/* Primary Submit Button */}
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full min-h-[48px] rounded-xl text-sm font-semibold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="w-full min-h-[42px] sm:min-h-[44px] rounded-xl text-xs sm:text-sm font-bold text-primary-foreground bg-primary hover:bg-primary-hover shadow-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
                 {isSubmitting ? (
                   <>
@@ -285,7 +285,7 @@ export const SignupPage: React.FC = () => {
           </form>
 
           {/* Navigation to Login */}
-          <div className="pt-4 border-t border-border text-center text-xs text-muted-foreground">
+          <div className="pt-2.5 border-t border-border text-center text-xs text-muted-foreground">
             Already have an account?{' '}
             <Link
               to="/login"

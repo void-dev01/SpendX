@@ -13,10 +13,10 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-      <div className="space-y-1.5 w-full text-left">
+      <div className="space-y-1 w-full text-left">
         <label
           htmlFor={id}
-          className="block text-xs font-semibold text-foreground tracking-wide uppercase"
+          className="block text-[11px] font-semibold text-secondary-text tracking-wide"
         >
           {label}
         </label>
@@ -33,7 +33,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             disabled={disabled}
             aria-invalid={Boolean(error)}
             aria-describedby={error ? `${id}-error` : helperText ? `${id}-helper` : undefined}
-            className={`w-full min-h-[48px] rounded-xl text-sm font-medium transition-all duration-200 outline-none pl-10 pr-11 ${
+            className={`w-full h-10 sm:h-10.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 outline-none pl-10 pr-10 ${
               error
                 ? 'border-destructive bg-destructive/5 focus:ring-2 focus:ring-destructive/30'
                 : 'border-border bg-surface-elevated focus:border-primary focus:ring-2 focus:ring-primary/25'
