@@ -517,7 +517,7 @@ export const transactionService = {
 
     if (user && user.id !== 'demo-user-id') {
       try {
-        const res = await apiClient.put(`/transactions/${id}`, updates);
+        const res = await apiClient.patch(`/transactions/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const t = res.data.data;
           return {

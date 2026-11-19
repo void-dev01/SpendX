@@ -1,4 +1,5 @@
 import { supabaseAdminClient } from '../config/supabase.js';
+import { localStore } from '../db/localStore.js';
 import { logger } from '../utils/logger.js';
 
 export interface FinancialOverview {
@@ -67,21 +68,60 @@ export class FinancialCalculationService {
     userId: string,
     period: 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all' = 'this_month'
   ): Promise<FinancialOverview> {
+    const { start, end } = this.getDateRange(period);
+
     if (!supabaseAdminClient) {
+      const accounts = localStore.getAccounts().filter((a) => a.userId === userId || userId === 'usr_dev_local_spendx');
+      let totalAssets = 0;
+      let totalLiabilities = 0;
+
+      accounts.forEach((acc) => {
+        if (acc.status === 'ARCHIVED') return;
+        const bal = Number(acc.balance) || 0;
+        if (acc.type === 'CREDIT_CARD') {
+          totalLiabilities += Math.abs(bal);
+        } else {
+          totalAssets += bal;
+        }
+      });
+
+      const txns = localStore.getTransactions().filter((t) => {
+        if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+        const tDate = new Date(t.date);
+        return tDate >= start && tDate <= end;
+      });
+
+      let totalIncome = 0;
+      let totalExpenses = 0;
+
+      txns.forEach((t) => {
+        if (t.status === 'FAILED') return;
+        const amt = Number(t.amount) || 0;
+        const tType = String(t.type).toUpperCase();
+
+        if (tType === 'INCOME') {
+          totalIncome += amt;
+        } else if (tType === 'EXPENSE') {
+          totalExpenses += amt;
+        }
+      });
+
+      const netWorth = totalAssets - totalLiabilities;
+      const netCashFlow = totalIncome - totalExpenses;
+      const savingsRate = totalIncome > 0 ? Math.max(0, Math.round(((totalIncome - totalExpenses) / totalIncome) * 100)) : 0;
+
       return {
-        totalAssets: 0,
-        totalLiabilities: 0,
-        netWorth: 0,
-        totalIncome: 0,
-        totalExpenses: 0,
-        netCashFlow: 0,
-        savingsRate: 0,
-        periodStart: new Date().toISOString(),
-        periodEnd: new Date().toISOString(),
+        totalAssets,
+        totalLiabilities,
+        netWorth,
+        totalIncome,
+        totalExpenses,
+        netCashFlow,
+        savingsRate,
+        periodStart: start.toISOString(),
+        periodEnd: end.toISOString(),
       };
     }
-
-    const { start, end } = this.getDateRange(period);
 
     // 1. Fetch live Accounts to determine Total Assets & Liabilities
     const { data: accounts, error: accError } = await supabaseAdminClient
@@ -159,9 +199,41 @@ export class FinancialCalculationService {
     userId: string,
     period: 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all' = 'this_month'
   ): Promise<CategorySpendingSummary[]> {
-    if (!supabaseAdminClient) return [];
-
     const { start, end } = this.getDateRange(period);
+
+    if (!supabaseAdminClient) {
+      const txns = localStore.getTransactions().filter((t) => {
+        if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+        if (String(t.type).toUpperCase() !== 'EXPENSE') return false;
+        const tDate = new Date(t.date);
+        return tDate >= start && tDate <= end;
+      });
+
+      const categoryMap: Record<string, { amount: number; count: number }> = {};
+      let totalSpent = 0;
+
+      txns.forEach((t) => {
+        if (t.status === 'FAILED') return;
+        const amt = Number(t.amount) || 0;
+        const cat = t.category || 'Uncategorized';
+
+        if (!categoryMap[cat]) {
+          categoryMap[cat] = { amount: 0, count: 0 };
+        }
+        categoryMap[cat].amount += amt;
+        categoryMap[cat].count += 1;
+        totalSpent += amt;
+      });
+
+      return Object.entries(categoryMap)
+        .map(([category, info]) => ({
+          category,
+          amount: Math.round(info.amount * 100) / 100,
+          percentage: totalSpent > 0 ? Math.round((info.amount / totalSpent) * 1000) / 10 : 0,
+          transactionCount: info.count,
+        }))
+        .sort((a, b) => b.amount - a.amount);
+    }
 
     const { data: txns, error } = await supabaseAdminClient
       .from('transactions')

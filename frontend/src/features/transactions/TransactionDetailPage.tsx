@@ -29,8 +29,46 @@ export const TransactionDetailPage: React.FC = () => {
     );
   }
 
-  const isIncome = transaction?.type === 'INCOME';
-  const isTransfer = transaction?.type === 'TRANSFER';
+  if (!transaction) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <Link
+            to="/transactions"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline transition-colors cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Transactions Ledger</span>
+          </Link>
+        </div>
+
+        <div className="bg-surface rounded-2xl p-8 border border-border shadow-card text-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-surface-elevated border border-border flex items-center justify-center mx-auto text-secondary-text">
+            <FileText className="w-6 h-6" />
+          </div>
+          <div className="space-y-1">
+            <h1 className="text-xl font-display font-bold text-foreground">
+              Transaction Not Found
+            </h1>
+            <p className="text-xs text-secondary-text max-w-sm mx-auto">
+              The requested transaction identifier <span className="font-mono font-medium text-foreground">{id}</span> does not exist or has been removed.
+            </p>
+          </div>
+          <div>
+            <Link
+              to="/transactions"
+              className="inline-flex items-center justify-center px-4 py-2 text-xs font-medium rounded-xl bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+            >
+              Return to Ledger
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const isIncome = transaction.type === 'INCOME';
+  const isTransfer = transaction.type === 'TRANSFER';
 
   return (
     <div className="space-y-6">
@@ -58,7 +96,7 @@ export const TransactionDetailPage: React.FC = () => {
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl font-display font-bold text-foreground mt-1">
-              {transaction ? transaction.description : `Transaction #${id}`}
+              {transaction.description}
             </h1>
           </div>
 
@@ -75,7 +113,7 @@ export const TransactionDetailPage: React.FC = () => {
         {/* Hero Amount Banner */}
         <div className="p-6 rounded-xl bg-surface-elevated border border-border text-center space-y-1">
           <span className="text-xs text-secondary-text uppercase font-medium tracking-wider">
-            {transaction ? transaction.type : 'Transaction'} Value
+            {transaction.type} Value
           </span>
           <div
             className={`text-3xl sm:text-4xl font-display font-extrabold tracking-tight tabular-nums ${
@@ -87,9 +125,9 @@ export const TransactionDetailPage: React.FC = () => {
             }`}
           >
             {isIncome ? '+' : isTransfer ? '' : '-'}
-            {transactionService.formatINR(transaction?.amount || 850)}
+            {transactionService.formatINR(transaction.amount)}
           </div>
-          {transaction?.merchantName && (
+          {transaction.merchantName && (
             <p className="text-xs text-secondary-text">
               at {transaction.merchantName}
             </p>
@@ -104,7 +142,7 @@ export const TransactionDetailPage: React.FC = () => {
               <span>Category</span>
             </div>
             <p className="text-sm font-semibold text-foreground">
-              {transaction?.category || 'Shopping'}
+              {transaction.category}
             </p>
           </div>
 
@@ -114,7 +152,7 @@ export const TransactionDetailPage: React.FC = () => {
               <span>Linked Account</span>
             </div>
             <p className="text-sm font-semibold text-foreground">
-              {transaction?.accountName || 'HDFC Bank - Salary'}
+              {transaction.accountName || 'Primary Account'}
             </p>
           </div>
 
@@ -124,7 +162,7 @@ export const TransactionDetailPage: React.FC = () => {
               <span>Channel / Method</span>
             </div>
             <p className="text-sm font-semibold text-foreground">
-              {transaction?.paymentMethod || 'UPI'}
+              {transaction.paymentMethod || 'Direct / UPI'}
             </p>
           </div>
 
@@ -134,7 +172,7 @@ export const TransactionDetailPage: React.FC = () => {
               <span>Date & Time</span>
             </div>
             <p className="text-sm font-semibold text-foreground">
-              {transaction ? new Date(transaction.date).toLocaleDateString('en-IN') : 'Today'}
+              {new Date(transaction.date).toLocaleDateString('en-IN')}
             </p>
           </div>
         </div>

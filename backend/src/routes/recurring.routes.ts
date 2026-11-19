@@ -16,6 +16,7 @@ router.post('/', requireAuth, createRecurring);
 router.post('/detect-patterns', requireAuth, detectPatterns);
 router.get('/:id', requireAuth, getRecurringById);
 router.patch('/:id', requireAuth, updateRecurring);
+router.put('/:id', requireAuth, updateRecurring);
 router.delete('/:id', requireAuth, deleteRecurring);
 
 export default router;

@@ -7,8 +7,8 @@ const JS_PROTOCOL_REGEX = /javascript\s*:/gi;
 const DANGEROUS_ATTRIBUTES_REGEX = /\s*(on\w+)\s*=\s*["'][^"']*["']/gi;
 const DANGEROUS_TAGS_REGEX = /<(iframe|embed|object|applet)\b[^>]*>(?:.*?<\/\1>)?/gi;
 
-// SQL injection heuristics
-const SQL_INJECTION_REGEX = /(\b(SELECT|UNION|INSERT|DELETE|UPDATE|DROP|ALTER|CREATE|TRUNCATE)\b\s+.*\b(FROM|INTO|TABLE|DATABASE|WHERE)\b)|(\bOR\b\s+["']?1["']?\s*=\s*["']?1)|(--\s*$)|(\/\*.*\*\/)/i;
+// SQL injection heuristics (flagging syntax patterns like stacked queries with ;, comments, tautologies, or UNION SELECT)
+const SQL_INJECTION_REGEX = /(;\s*(SELECT|UNION|INSERT|DELETE|UPDATE|DROP|ALTER|CREATE|TRUNCATE)\b)|(\bUNION\s+(ALL\s+)?SELECT\b)|(\bOR\b\s+["']?1["']?\s*=\s*["']?1)|(--\s*($|\r|\n))|(\/\*[\s\S]*?\*\/)/i;
 
 /**
  * Clean a string value by removing XSS payloads and null bytes

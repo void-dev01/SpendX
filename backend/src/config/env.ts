@@ -7,13 +7,13 @@ const envSchema = z.object({
   PORT: z.string().default('5000').transform((val) => parseInt(val, 10)),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
-  SUPABASE_URL: z.string().url().optional(),
-  SUPABASE_ANON_KEY: z.string().optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  GEMINI_API_KEY: z.string().optional(),
-  OPENROUTER_API_KEY: z.string().optional(),
+  SUPABASE_URL: z.preprocess((val) => (val === '' ? undefined : val), z.string().url().optional()),
+  SUPABASE_ANON_KEY: z.preprocess((val) => (val === '' ? undefined : val), z.string().optional()),
+  SUPABASE_SERVICE_ROLE_KEY: z.preprocess((val) => (val === '' ? undefined : val), z.string().optional()),
+  GEMINI_API_KEY: z.preprocess((val) => (val === '' ? undefined : val), z.string().optional()),
+  OPENROUTER_API_KEY: z.preprocess((val) => (val === '' ? undefined : val), z.string().optional()),
   OPENROUTER_MODEL: z.string().default('nvidia/nemotron-3.5-lightning:free'),
-  SENTRY_DSN: z.string().optional(),
+  SENTRY_DSN: z.preprocess((val) => (val === '' ? undefined : val), z.string().url().optional()),
 });
 
 const parsed = envSchema.safeParse(process.env);

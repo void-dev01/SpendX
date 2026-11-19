@@ -16,6 +16,7 @@ router.post('/', requireAuth, createAccount);
 router.post('/transfer', requireAuth, transferFunds);
 router.get('/:id', requireAuth, getAccountById);
 router.patch('/:id', requireAuth, updateAccount);
+router.put('/:id', requireAuth, updateAccount);
 router.delete('/:id', requireAuth, deleteAccount);
 
 export default router;

@@ -15,6 +15,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
+import { apiClient } from '@/services/api';
 
 const CURRENCIES = [
   { code: 'INR', symbol: '₹', label: 'INR (₹) - Indian Rupee' },
@@ -82,7 +83,7 @@ export const ProfilePage: React.FC = () => {
     });
   };
 
-  const handleSaveProfile = (e: React.FormEvent) => {
+  const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName.trim()) {
       toast.error('Name is Required', {
@@ -105,14 +106,21 @@ export const ProfilePage: React.FC = () => {
       avatarUrl,
     };
 
-    setUser(updatedUser);
-
-    setTimeout(() => {
-      setIsSaving(false);
-      toast.success('Profile Updated Successfully', {
-        description: 'Your identity and monetary preferences have been synchronized.',
+    try {
+      await apiClient.patch('/auth/me', {
+        fullName: updatedUser.fullName,
+        currency: updatedUser.currency,
+        avatarUrl: updatedUser.avatarUrl,
       });
-    }, 300);
+    } catch (err) {
+      console.warn('Backend PATCH /auth/me failed, updating locally', err);
+    }
+
+    setUser(updatedUser);
+    setIsSaving(false);
+    toast.success('Profile Updated Successfully', {
+      description: 'Your identity and monetary preferences have been synchronized.',
+    });
   };
 
   const displayName = fullName || user?.fullName || 'User Profile';

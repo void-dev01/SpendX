@@ -23,14 +23,26 @@ export default defineConfig({
             if (id.includes('recharts')) {
               return 'vendor-charts';
             }
-            if (id.includes('motion')) {
-              return 'vendor-motion';
-            }
             if (id.includes('lucide-react')) {
               return 'vendor-icons';
             }
+            if (id.includes('@phosphor-icons')) {
+              return 'vendor-phosphor';
+            }
+            if (id.includes('pdfjs-dist')) {
+              return 'vendor-pdf';
+            }
+            if (id.includes('motion')) {
+              return 'vendor-motion';
+            }
+            if (id.includes('@supabase')) {
+              return 'vendor-supabase';
+            }
             if (id.includes('@tanstack/react-query') || id.includes('axios') || id.includes('zustand')) {
               return 'vendor-data';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
             }
             if (id.includes('date-fns') || id.includes('zod') || id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) {
               return 'vendor-utils';

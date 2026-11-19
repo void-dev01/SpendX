@@ -331,7 +331,7 @@ export const accountService = {
 
     if (user && user.id !== 'demo-user-id') {
       try {
-        const res = await apiClient.put(`/accounts/${id}`, updates);
+        const res = await apiClient.patch(`/accounts/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const a = res.data.data;
           return {

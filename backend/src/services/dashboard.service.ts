@@ -1,52 +1,75 @@
 import { FinancialCalculationService } from './financial.service.js';
 import { supabaseAdminClient } from '../config/supabase.js';
+import { localStore } from '../db/localStore.js';
 import { BudgetService } from './budget.service.js';
 import { SavingsService } from './savings.service.js';
 import { RecurringService } from './recurring.service.js';
-import { AppError } from '../middleware/errorHandler.js';
 
 export class DashboardService {
   public static async getDashboardMetrics(
     userId: string,
     period: 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all' = 'this_month'
   ) {
-    if (!supabaseAdminClient) throw new AppError('Database service unavailable', 503);
-
-    // 1. Authoritative Financial Overview & Categories
+    // 1. Authoritative Financial Overview & Categories (with localStore offline fallback)
     const overview = await FinancialCalculationService.calculateFinancialOverview(userId, period);
     const categoryBreakdown = await FinancialCalculationService.calculateCategoryBreakdown(userId, period);
 
     // 2. Fetch User Profile
-    const { data: profile } = await supabaseAdminClient
-      .from('profiles')
-      .select('full_name, currency')
-      .eq('id', userId)
-      .single();
-
-    const userDisplayName = profile?.full_name || 'Member';
+    let userDisplayName = 'Member';
+    if (supabaseAdminClient) {
+      const { data: profile } = await supabaseAdminClient
+        .from('profiles')
+        .select('full_name, currency')
+        .eq('id', userId)
+        .single();
+      userDisplayName = profile?.full_name || 'Member';
+    } else {
+      const user = localStore.getUserProfile(userId);
+      userDisplayName = user?.fullName || 'SpendX Member';
+    }
 
     // 3. Budgets & Savings
     const budgets = await BudgetService.getBudgets(userId);
     const savingsGoals = await SavingsService.getGoals(userId);
 
     // 4. Recent Transactions (latest 6)
-    const { data: recentTxns } = await supabaseAdminClient
-      .from('transactions')
-      .select('id, amount, type, category, description, merchant_name, date, status')
-      .eq('user_id', userId)
-      .order('date', { ascending: false })
-      .limit(6);
+    let formattedRecentTxns: any[] = [];
+    if (supabaseAdminClient) {
+      const { data: recentTxns } = await supabaseAdminClient
+        .from('transactions')
+        .select('id, amount, type, category, description, merchant_name, date, status')
+        .eq('user_id', userId)
+        .order('date', { ascending: false })
+        .limit(6);
 
-    const formattedRecentTxns = (recentTxns || []).map((t: any) => ({
-      id: t.id,
-      title: t.description,
-      merchant: t.merchant_name || t.description,
-      category: t.category,
-      date: t.date,
-      amount: Number(t.amount),
-      type: String(t.type).toLowerCase() === 'income' ? 'income' : 'expense',
-      iconName: t.category || 'Receipt',
-    }));
+      formattedRecentTxns = (recentTxns || []).map((t: any) => ({
+        id: t.id,
+        title: t.description,
+        merchant: t.merchant_name || t.description,
+        category: t.category,
+        date: t.date,
+        amount: Number(t.amount),
+        type: String(t.type).toLowerCase() === 'income' ? 'income' : 'expense',
+        iconName: t.category || 'Receipt',
+      }));
+    } else {
+      const localTxns = localStore
+        .getTransactions()
+        .filter((t) => t.userId === userId || userId === 'usr_dev_local_spendx')
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, 6);
+
+      formattedRecentTxns = localTxns.map((t: any) => ({
+        id: t.id,
+        title: t.description,
+        merchant: t.merchantName || t.description,
+        category: t.category,
+        date: t.date,
+        amount: Number(t.amount),
+        type: String(t.type).toLowerCase() === 'income' ? 'income' : 'expense',
+        iconName: t.category || 'Receipt',
+      }));
+    }
 
     // 5. Upcoming recurring bills (next 30 days)
     const recurringAll = await RecurringService.getRecurringPayments(userId);
@@ -69,33 +92,54 @@ export class DashboardService {
       }));
 
     // 6. Active Financial Insights from Database
-    const { data: dbInsights } = await supabaseAdminClient
-      .from('financial_insights')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('is_dismissed', false)
-      .order('generated_at', { ascending: false })
-      .limit(3);
+    let aiInsights: any[] = [];
+    if (supabaseAdminClient) {
+      const { data: dbInsights } = await supabaseAdminClient
+        .from('financial_insights')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('is_dismissed', false)
+        .order('generated_at', { ascending: false })
+        .limit(3);
 
-    const aiInsights = (dbInsights || []).map((ins: any) => ({
-      id: ins.id,
-      title: ins.title,
-      description: ins.description,
-      category: ins.category || 'Financial Alert',
-      impact: ins.impact ? ins.impact.toLowerCase() : 'neutral',
-      actionLabel: ins.action_label || 'View Details',
-      actionUrl: ins.action_route || '/insights',
-      isDeterministic: true,
-    }));
+      aiInsights = (dbInsights || []).map((ins: any) => ({
+        id: ins.id,
+        title: ins.title,
+        description: ins.description,
+        category: ins.category || 'Financial Alert',
+        impact: ins.impact ? ins.impact.toLowerCase() : 'neutral',
+        actionLabel: ins.action_label || 'View Details',
+        actionUrl: ins.action_route || '/insights',
+        isDeterministic: true,
+      }));
+    }
 
     // 7. Income vs Expense Trend datapoints
     const { start, end } = FinancialCalculationService.getDateRange(period);
-    const { data: periodTxns } = await supabaseAdminClient
-      .from('transactions')
-      .select('amount, type, date, status')
-      .eq('user_id', userId)
-      .gte('date', start.toISOString())
-      .lte('date', end.toISOString());
+    let periodTxns: any[] = [];
+    if (supabaseAdminClient) {
+      const { data } = await supabaseAdminClient
+        .from('transactions')
+        .select('amount, type, date, status')
+        .eq('user_id', userId)
+        .gte('date', start.toISOString())
+        .lte('date', end.toISOString());
+      periodTxns = data || [];
+    } else {
+      periodTxns = localStore
+        .getTransactions()
+        .filter((t) => {
+          if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+          const d = new Date(t.date);
+          return d >= start && d <= end;
+        })
+        .map((t) => ({
+          amount: t.amount,
+          type: t.type,
+          date: t.date,
+          status: t.status,
+        }));
+    }
 
     // Group into 4 weekly or monthly buckets
     const incomeVsExpense: Array<{ period: string; income: number; expenses: number }> = [];

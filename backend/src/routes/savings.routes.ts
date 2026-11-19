@@ -13,6 +13,7 @@ const router = Router();
 router.get('/', requireAuth, getSavingsGoals);
 router.post('/', requireAuth, createSavingsGoal);
 router.patch('/:id', requireAuth, updateSavingsGoal);
+router.put('/:id', requireAuth, updateSavingsGoal);
 router.delete('/:id', requireAuth, deleteSavingsGoal);
 router.post('/:id/contributions', requireAuth, recordContribution);
 

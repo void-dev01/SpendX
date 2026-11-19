@@ -454,6 +454,50 @@ export const savingsService = {
     id: string,
     updates: Partial<Omit<SavingsGoalRecord, 'id' | 'userId' | 'createdAt'>>
   ): Promise<SavingsGoalRecord> {
+    const user = authService.getUser();
+
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const payload: Record<string, unknown> = {};
+        if (updates.name !== undefined) payload.name = updates.name;
+        if (updates.category !== undefined) payload.category = updates.category;
+        if (updates.targetAmount !== undefined) payload.targetAmount = updates.targetAmount;
+        if (updates.currentAmount !== undefined) payload.currentAmount = updates.currentAmount;
+        if (updates.targetDate !== undefined) payload.targetDate = updates.targetDate;
+        if (updates.status !== undefined) payload.status = updates.status;
+        if (updates.notes !== undefined) payload.notes = updates.notes;
+
+        const res = await apiClient.patch(`/savings/${id}`, payload);
+        if (res.data?.success && res.data?.data) {
+          const record = res.data.data;
+          const mapped: SavingsGoalRecord = {
+            id: record.id,
+            userId: record.user_id || record.userId || user.id,
+            name: record.name,
+            category: (record.category as GoalCategory) || updates.category || 'Other',
+            targetAmount: Number(record.target_amount ?? record.targetAmount ?? updates.targetAmount ?? 0),
+            currentAmount: Number(record.current_amount ?? record.currentAmount ?? updates.currentAmount ?? 0),
+            targetDate: record.target_date || record.targetDate || updates.targetDate || '',
+            status: (record.status as GoalStatus) || updates.status || 'ACTIVE',
+            notes: record.notes || updates.notes,
+            createdAt: record.created_at || record.createdAt || new Date().toISOString(),
+            updatedAt: record.updated_at || record.updatedAt || new Date().toISOString(),
+          };
+          const current = this.getStoredGoals();
+          const idx = current.findIndex((g) => g.id === id);
+          if (idx !== -1) {
+            current[idx] = mapped;
+          } else {
+            current.unshift(mapped);
+          }
+          this.saveStoredGoals(current);
+          return mapped;
+        }
+      } catch (err) {
+        console.warn(`Backend PATCH /savings/${id} failed, falling back to local storage`, err);
+      }
+    }
+
     const current = this.getStoredGoals();
     const index = current.findIndex((g) => g.id === id);
 
@@ -611,6 +655,14 @@ export const savingsService = {
    * Delete savings goal safely
    */
   async deleteGoal(id: string): Promise<void> {
+    const user = authService.getUser();
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        await apiClient.delete(`/savings/${id}`);
+      } catch (err) {
+        console.warn(`Backend DELETE /savings/${id} failed, falling back to local deletion`, err);
+      }
+    }
     const current = this.getStoredGoals();
     const filtered = current.filter((g) => g.id !== id);
     this.saveStoredGoals(filtered);

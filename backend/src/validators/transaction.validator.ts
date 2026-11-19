@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 
 export const createTransactionSchema = z.object({
-  accountId: z.string().uuid({ message: 'Invalid account ID format' }),
+  accountId: z.string().trim().min(1).regex(/^([0-9a-fA-F-]{36}|acc-[a-zA-Z0-9-]+)$/, { message: 'Invalid account ID format' }),
   amount: z.number().positive({ message: 'Amount must be greater than zero' }),
   type: z.enum(['INCOME', 'EXPENSE', 'TRANSFER'], { message: 'Invalid transaction type' }),
   category: z.string().min(1, { message: 'Category is required' }).max(50),

@@ -504,7 +504,7 @@ export const budgetService = {
 
     if (user && user.id !== 'demo-user-id') {
       try {
-        const res = await apiClient.put(`/budgets/${id}`, updates);
+        const res = await apiClient.patch(`/budgets/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const b = res.data.data;
           return {

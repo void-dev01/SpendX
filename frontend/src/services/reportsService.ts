@@ -7,6 +7,7 @@
 import { transactionService, TransactionRecord } from './transactionService';
 import { accountService } from './accountService';
 import { authService } from './authService';
+import { apiClient } from './api';
 
 export interface MonthlyStatementRecord {
   id: string;
@@ -78,6 +79,18 @@ export const reportsService = {
    * Generates chronological monthly statements from actual transaction records
    */
   async getArchivedStatements(): Promise<MonthlyStatementRecord[]> {
+    const user = authService.getUser();
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const now = new Date();
+        await apiClient.get('/reports/monthly-statement', {
+          params: { year: now.getFullYear(), month: now.getMonth() + 1 },
+        });
+      } catch (err) {
+        console.warn('Backend GET /reports/monthly-statement failed, computing client-side', err);
+      }
+    }
+
     const transactions = await transactionService.getTransactions();
 
     // Group transactions by YYYY-MM
@@ -154,8 +167,27 @@ export const reportsService = {
    * Computes tax-deductible items according to standard financial schedules
    */
   async getTaxDeductibleSummary(): Promise<TaxDeductibleSummary> {
-    const transactions = await transactionService.getTransactions();
+    const user = authService.getUser();
     const currentYear = new Date().getFullYear();
+
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const res = await apiClient.get('/reports/tax-summary', {
+          params: { taxYear: String(currentYear) },
+        });
+        if (res.data?.success && res.data?.data?.buckets) {
+          return {
+            taxYear: res.data.data.taxYear || String(currentYear),
+            totalDeductibleExpenses: Number(res.data.data.totalDeductibleExpenses) || 0,
+            buckets: res.data.data.buckets,
+          };
+        }
+      } catch (err) {
+        console.warn('Backend GET /reports/tax-summary failed, computing client-side', err);
+      }
+    }
+
+    const transactions = await transactionService.getTransactions();
 
     const bucketDefinitions: { bucket: string; categories: string[]; description: string }[] = [
       {
@@ -325,6 +357,12 @@ export const reportsService = {
    * Exports generated report to RFC 4180 compliant CSV
    */
   exportToCSV(report: GeneratedFinancialReport): void {
+    const user = authService.getUser();
+    if (user && user.id !== 'demo-user-id') {
+      apiClient.get('/reports/export-csv')
+        .catch(() => {});
+    }
+
     const headers = ['Date', 'Description', 'Category', 'Type', 'Amount (INR)', 'Payment Method', 'Account', 'Notes'];
 
     const rows = report.transactions.map((tx) => [

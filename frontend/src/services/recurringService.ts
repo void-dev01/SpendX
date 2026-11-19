@@ -373,6 +373,51 @@ export const recurringService = {
     const user = authService.getUser();
     const userId = user?.id || 'demo-user-id';
 
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const res = await apiClient.post('/recurring', {
+          name: data.name,
+          merchant: data.merchant || data.name,
+          category: data.category,
+          amount: data.amount,
+          frequency: data.frequency,
+          startDate: data.startDate,
+          nextDueDate: data.nextDueDate,
+          linkedAccountId: data.linkedAccountId,
+          linkedAccountName: data.linkedAccountName,
+          status: data.status,
+          notes: data.notes,
+        });
+
+        if (res.data?.success && res.data?.data) {
+          const r = res.data.data;
+          const created: RecurringRecord = {
+            id: r.id,
+            userId: r.userId || r.user_id || userId,
+            name: r.name,
+            merchant: r.merchant || r.name,
+            category: (r.category as RecurringCategory) || 'Other',
+            amount: Number(r.amount) || 0,
+            frequency: (r.frequency as RecurringFrequency) || 'MONTHLY',
+            startDate: r.startDate || r.start_date || data.startDate,
+            nextDueDate: r.nextDueDate || r.next_due_date || data.nextDueDate,
+            linkedAccountId: r.linkedAccountId || r.linked_account_id,
+            linkedAccountName: r.linkedAccountName || data.linkedAccountName,
+            status: this.evaluateStatus(r.nextDueDate || r.next_due_date, r.status),
+            notes: r.notes,
+            lastPaidDate: r.lastPaidDate || r.last_paid_date,
+            createdAt: r.createdAt || r.created_at || new Date().toISOString(),
+            updatedAt: r.updatedAt || r.updated_at || new Date().toISOString(),
+          };
+          const current = this.getStoredPayments();
+          this.saveStoredPayments([created, ...current]);
+          return created;
+        }
+      } catch (err) {
+        console.warn('Backend POST /recurring failed, falling back to local storage', err);
+      }
+    }
+
     const newRecord: RecurringRecord = {
       ...data,
       id: `rec_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -395,6 +440,46 @@ export const recurringService = {
     id: string,
     updates: Partial<Omit<RecurringRecord, 'id' | 'userId' | 'createdAt'>>
   ): Promise<RecurringRecord> {
+    const user = authService.getUser();
+
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const res = await apiClient.patch(`/recurring/${id}`, updates);
+        if (res.data?.success && res.data?.data) {
+          const r = res.data.data;
+          const updatedRecord: RecurringRecord = {
+            id: r.id,
+            userId: r.userId || r.user_id || user.id,
+            name: r.name,
+            merchant: r.merchant || r.name,
+            category: (r.category as RecurringCategory) || 'Other',
+            amount: Number(r.amount) || 0,
+            frequency: (r.frequency as RecurringFrequency) || 'MONTHLY',
+            startDate: r.startDate || r.start_date,
+            nextDueDate: r.nextDueDate || r.next_due_date,
+            linkedAccountId: r.linkedAccountId || r.linked_account_id,
+            linkedAccountName: r.linkedAccountName,
+            status: this.evaluateStatus(r.nextDueDate || r.next_due_date, r.status),
+            notes: r.notes,
+            lastPaidDate: r.lastPaidDate || r.last_paid_date,
+            createdAt: r.createdAt || r.created_at || new Date().toISOString(),
+            updatedAt: r.updatedAt || r.updated_at || new Date().toISOString(),
+          };
+          const current = this.getStoredPayments();
+          const index = current.findIndex((item) => item.id === id);
+          if (index !== -1) {
+            current[index] = updatedRecord;
+          } else {
+            current.unshift(updatedRecord);
+          }
+          this.saveStoredPayments(current);
+          return updatedRecord;
+        }
+      } catch (err) {
+        console.warn(`Backend PATCH /recurring/${id} failed, falling back to local storage`, err);
+      }
+    }
+
     const current = this.getStoredPayments();
     const index = current.findIndex((r) => r.id === id);
 
@@ -515,6 +600,14 @@ export const recurringService = {
    * Delete recurring schedule
    */
   async deleteRecurringPayment(id: string): Promise<void> {
+    const user = authService.getUser();
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        await apiClient.delete(`/recurring/${id}`);
+      } catch (err) {
+        console.warn(`Backend DELETE /recurring/${id} failed, falling back to local deletion`, err);
+      }
+    }
     const current = this.getStoredPayments();
     const filtered = current.filter((r) => r.id !== id);
     this.saveStoredPayments(filtered);

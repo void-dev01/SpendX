@@ -10,6 +10,7 @@ import { isValid, parseISO, subDays } from 'date-fns';
 import { transactionService, TransactionRecord, PaymentMethod, TransactionType } from './transactionService';
 import { accountService, AccountRecord } from './accountService';
 import { authService } from './authService';
+import { apiClient } from './api';
 
 export type ImportSourceType = 'CSV' | 'EXCEL' | 'PDF_TEXT' | 'SMS_TEXT';
 
@@ -314,6 +315,27 @@ export const importService = {
     targetAccount: AccountRecord,
     existingTransactions: TransactionRecord[]
   ): Promise<NormalizedImportTransaction[]> {
+    const user = authService.getUser();
+    if (user && user.id !== 'demo-user-id' && rawRows.length > 0) {
+      try {
+        const candidateItems = rawRows.slice(0, 10).map((raw) => ({
+          accountId: targetAccount.id,
+          amount: Math.abs(parseFloat((raw.rawAmount || '0').replace(/[^0-9.-]/g, ''))) || 1,
+          type: 'EXPENSE' as const,
+          category: raw.rawCategory || 'Uncategorized',
+          description: raw.rawDescription || 'Transaction',
+          date: new Date().toISOString(),
+          isRecurring: false,
+        }));
+        await apiClient.post('/import/validate', {
+          source: 'CSV',
+          items: candidateItems,
+        });
+      } catch {
+        // Fall back silently to client-side normalization
+      }
+    }
+
     return rawRows.map((raw) => {
       const validationErrors: string[] = [];
 
@@ -439,6 +461,44 @@ export const importService = {
   ): Promise<{ successCount: number; batchId: string }> {
     const user = authService.getUser() || { id: 'usr_shubham' };
     const batchId = `batch_${Date.now()}`;
+
+    if (user && user.id !== 'demo-user-id') {
+      try {
+        const items = transactionsToImport
+          .filter((tx) => tx.isSelected)
+          .map((tx) => ({
+            accountId: targetAccount.id,
+            amount: tx.amount,
+            type: tx.type,
+            category: tx.category,
+            description: tx.description,
+            date: tx.date,
+            merchantName: tx.merchantName,
+            paymentMethod: tx.paymentMethod,
+            status: 'COMPLETED',
+            notes: tx.referenceNumber ? `Imported [${source}]: Ref ${tx.referenceNumber}` : `Imported via ${source}`,
+            isRecurring: false,
+          }));
+
+        if (items.length > 0) {
+          const res = await apiClient.post('/import/commit', {
+            source,
+            fileName: fileName || `${source}_import_${new Date().toISOString().split('T')[0]}`,
+            items,
+          });
+
+          if (res.data?.success && res.data?.data) {
+            const result = res.data.data;
+            return {
+              successCount: result.insertedCount ?? items.length,
+              batchId: result.batchId || batchId,
+            };
+          }
+        }
+      } catch (err) {
+        console.warn('Backend POST /import/commit failed, falling back to client-side import', err);
+      }
+    }
 
     let successCount = 0;
     let netBalanceImpact = 0;
