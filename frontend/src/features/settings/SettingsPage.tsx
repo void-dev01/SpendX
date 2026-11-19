@@ -9,10 +9,22 @@ import { authService } from '@/services/authService';
 import { apiClient } from '@/services/api';
 import { Download, Upload, Check, User, Shield, Wallet, Trash2, AlertOctagon } from 'lucide-react';
 
+const AVAILABLE_CURRENCIES = [
+  { code: 'INR', symbol: '₹', label: 'INR (₹) - Indian Rupee' },
+  { code: 'USD', symbol: '$', label: 'USD ($) - US Dollar' },
+  { code: 'EUR', symbol: '€', label: 'EUR (€) - Euro' },
+  { code: 'GBP', symbol: '£', label: 'GBP (£) - British Pound' },
+  { code: 'AED', symbol: 'د.إ', label: 'AED (د.إ) - UAE Dirham' },
+  { code: 'JPY', symbol: '¥', label: 'JPY (¥) - Japanese Yen' },
+  { code: 'CAD', symbol: 'CA$', label: 'CAD ($) - Canadian Dollar' },
+  { code: 'AUD', symbol: 'AU$', label: 'AUD ($) - Australian Dollar' },
+];
+
 export const SettingsPage: React.FC = () => {
   const { user, setUser } = useAuthStore();
   const [fullName, setFullName] = useState(user?.fullName || '');
   const [email, setEmail] = useState(user?.email || '');
+  const [currency, setCurrency] = useState(user?.currency || 'INR');
   const [incomeTarget, setIncomeTarget] = useState(() => {
     return localStorage.getItem('spendx_monthly_income_target') || '50000';
   });
@@ -26,6 +38,7 @@ export const SettingsPage: React.FC = () => {
     try {
       await apiClient.patch('/auth/me', {
         fullName: fullName.trim(),
+        currency,
       });
     } catch (err) {
       console.warn('Backend patch profile failed, updating local state', err);
@@ -34,6 +47,7 @@ export const SettingsPage: React.FC = () => {
       ...user,
       fullName: fullName.trim(),
       email: email.trim(),
+      currency,
     };
     setUser(updated);
     localStorage.setItem('spendx_monthly_income_target', incomeTarget);
@@ -187,12 +201,17 @@ export const SettingsPage: React.FC = () => {
 
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-foreground">Default Accounting Currency</label>
-                <input
-                  type="text"
-                  value="INR (₹ Indian Rupee)"
-                  disabled
-                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-muted border border-border text-muted-foreground cursor-not-allowed"
-                />
+                <select
+                  value={currency}
+                  onChange={(e) => setCurrency(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
+                >
+                  {AVAILABLE_CURRENCIES.map((c) => (
+                    <option key={c.code} value={c.code} className="bg-surface text-foreground">
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
@@ -305,15 +324,17 @@ export const SettingsPage: React.FC = () => {
       </Card>
 
       {/* 4. Danger Zone: Reset All Local Data (Start Fresh) */}
-      <Card className="bg-surface border border-destructive/20 shadow-card">
+      <Card className="bg-surface border-2 border-red-500/40 shadow-card">
         <CardHeader>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-destructive/10 text-destructive flex items-center justify-center">
+            <div className="w-9 h-9 rounded-xl bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center">
               <Trash2 className="w-4 h-4" />
             </div>
             <div>
-              <CardTitle className="text-lg text-destructive">Danger Zone</CardTitle>
-              <CardDescription>Reset local databases and cache back to day-zero empty state.</CardDescription>
+              <CardTitle className="text-lg font-bold text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+              <CardDescription className="text-red-600/70 dark:text-red-400/70">
+                Reset local databases and cache back to day-zero empty state.
+              </CardDescription>
             </div>
           </div>
         </CardHeader>
@@ -324,14 +345,14 @@ export const SettingsPage: React.FC = () => {
           <button
             type="button"
             onClick={handleResetAllData}
-            className="px-4 py-2.5 rounded-xl text-xs font-bold text-destructive-foreground bg-destructive hover:bg-destructive/90 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
           >
             <Trash2 className="w-4 h-4" />
             <span>Reset All Local Data (Start Fresh)</span>
           </button>
 
-          <div className="pt-4 border-t border-border space-y-2">
-            <p className="text-xs font-semibold text-destructive">
+          <div className="pt-4 border-t border-red-500/20 space-y-2">
+            <p className="text-xs font-semibold text-red-600 dark:text-red-400">
               Permanently Delete Account & Financial Data
             </p>
             <p className="text-xs text-secondary-text leading-relaxed">
@@ -341,7 +362,7 @@ export const SettingsPage: React.FC = () => {
               type="button"
               disabled={isDeleting}
               onClick={handleDeleteAccount}
-              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-destructive hover:bg-destructive/90 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] disabled:opacity-50"
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] disabled:opacity-50"
             >
               <AlertOctagon className="w-4 h-4" />
               <span>{isDeleting ? 'Deleting Account...' : 'Permanently Delete SPENDX Account'}</span>

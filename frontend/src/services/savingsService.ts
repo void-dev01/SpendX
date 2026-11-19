@@ -204,7 +204,7 @@ export const savingsService = {
       try {
         const res = await apiClient.get('/savings');
         if (res.data?.success && Array.isArray(res.data?.data)) {
-          return res.data.data.map((g: any) => ({
+          const mapped = res.data.data.map((g: any) => ({
             id: g.id,
             userId: g.userId || g.user_id,
             name: g.name,
@@ -217,6 +217,8 @@ export const savingsService = {
             createdAt: g.createdAt || g.created_at || new Date().toISOString(),
             updatedAt: g.updatedAt || g.updated_at || new Date().toISOString(),
           }));
+          this.saveStoredGoals(mapped);
+          return mapped;
         }
       } catch (apiErr) {
         console.warn('API /savings failed, checking direct Supabase', apiErr);
@@ -231,7 +233,7 @@ export const savingsService = {
             .order('created_at', { ascending: true });
 
           if (!error && data) {
-            return data.map((g) => ({
+            const mapped = data.map((g) => ({
               id: g.id,
               userId: g.user_id,
               name: g.name,
@@ -244,13 +246,16 @@ export const savingsService = {
               createdAt: g.created_at || new Date().toISOString(),
               updatedAt: g.updated_at || new Date().toISOString(),
             }));
+            this.saveStoredGoals(mapped);
+            return mapped;
           }
         } catch (err) {
           console.warn('Could not query Supabase savings goals', err);
         }
       }
 
-      return [];
+      // Fallback to locally stored goals if backend/Supabase are offline
+      return this.getStoredGoals();
     }
 
     return this.getStoredGoals();
@@ -380,7 +385,7 @@ export const savingsService = {
         });
         if (res.data?.success && res.data?.data) {
           const g = res.data.data;
-          return {
+          const created: SavingsGoalRecord = {
             id: g.id,
             userId: g.user_id,
             name: g.name,
@@ -393,6 +398,9 @@ export const savingsService = {
             createdAt: g.created_at,
             updatedAt: g.updated_at,
           };
+          const current = this.getStoredGoals();
+          this.saveStoredGoals([...current.filter((x) => x.id !== created.id), created]);
+          return created;
         }
       } catch (err) {
         console.warn('API /savings post failed, attempting Supabase direct insert', err);
@@ -414,7 +422,7 @@ export const savingsService = {
           .single();
 
         if (!error && record) {
-          return {
+          const created: SavingsGoalRecord = {
             id: record.id,
             userId: record.user_id,
             name: record.name,
@@ -427,6 +435,9 @@ export const savingsService = {
             createdAt: record.created_at,
             updatedAt: record.updated_at,
           };
+          const current = this.getStoredGoals();
+          this.saveStoredGoals([...current.filter((x) => x.id !== created.id), created]);
+          return created;
         }
       }
     }

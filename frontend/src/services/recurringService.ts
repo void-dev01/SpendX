@@ -218,7 +218,7 @@ export const recurringService = {
       try {
         const res = await apiClient.get('/recurring');
         if (res.data?.success && Array.isArray(res.data?.data)) {
-          return res.data.data.map((r: any) => ({
+          const mapped = res.data.data.map((r: any) => ({
             id: r.id,
             userId: r.userId || r.user_id,
             name: r.name,
@@ -236,6 +236,8 @@ export const recurringService = {
             createdAt: r.createdAt || r.created_at || new Date().toISOString(),
             updatedAt: r.updatedAt || r.updated_at || new Date().toISOString(),
           }));
+          this.saveStoredPayments(mapped);
+          return mapped;
         }
       } catch (apiErr) {
         console.warn('API /recurring failed, checking direct Supabase', apiErr);
@@ -250,7 +252,7 @@ export const recurringService = {
             .order('next_due_date', { ascending: true });
 
           if (!error && data) {
-            return data.map((r) => ({
+            const mapped = data.map((r) => ({
               id: r.id,
               userId: r.user_id,
               name: r.name,
@@ -268,13 +270,19 @@ export const recurringService = {
               createdAt: r.created_at || new Date().toISOString(),
               updatedAt: r.updated_at || new Date().toISOString(),
             }));
+            this.saveStoredPayments(mapped);
+            return mapped;
           }
         } catch (err) {
           console.warn('Could not query Supabase recurring payments', err);
         }
       }
 
-      return [];
+      const local = this.getStoredPayments();
+      return local.map((r) => ({
+        ...r,
+        status: this.evaluateStatus(r.nextDueDate, r.status),
+      }));
     }
 
     const local = this.getStoredPayments();

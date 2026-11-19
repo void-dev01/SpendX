@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { toast } from 'sonner';
 import {
   Menu,
   Search,
@@ -11,13 +10,11 @@ import {
   User,
   Settings as SettingsIcon,
   LogOut,
-  ChevronDown,
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
   Info,
   CheckCheck,
-  Coins,
 } from 'lucide-react';
 import { getRouteMetadata } from '@/config/navigation';
 import { useLayoutStore } from '@/stores/layoutStore';
@@ -26,29 +23,15 @@ import { useAuthStore } from '@/stores/authStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { authService } from '@/services/authService';
 
-const AVAILABLE_CURRENCIES = [
-  { code: 'INR', symbol: '₹', label: 'INR (₹) - Indian Rupee' },
-  { code: 'USD', symbol: '$', label: 'USD ($) - US Dollar' },
-  { code: 'EUR', symbol: '€', label: 'EUR (€) - Euro' },
-  { code: 'GBP', symbol: '£', label: 'GBP (£) - British Pound' },
-  { code: 'AED', symbol: 'د.إ', label: 'AED (د.إ) - UAE Dirham' },
-  { code: 'JPY', symbol: '¥', label: 'JPY (¥) - Japanese Yen' },
-  { code: 'CAD', symbol: 'CA$', label: 'CAD ($) - Canadian Dollar' },
-  { code: 'AUD', symbol: 'AU$', label: 'AUD ($) - Australian Dollar' },
-];
-
 export const TopNavbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { openMobileDrawer, setGlobalSearchOpen } = useLayoutStore();
   const { theme, toggleTheme } = useThemeStore();
-  const { user, setUser } = useAuthStore();
+  const { user } = useAuthStore();
 
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
-
-  const [isCurrencyMenuOpen, setIsCurrencyMenuOpen] = useState(false);
-  const currencyMenuRef = useRef<HTMLDivElement>(null);
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const notificationsRef = useRef<HTMLDivElement>(null);
@@ -71,9 +54,6 @@ export const TopNavbar: React.FC = () => {
       if (profileMenuRef.current && !profileMenuRef.current.contains(target)) {
         setIsProfileMenuOpen(false);
       }
-      if (currencyMenuRef.current && !currencyMenuRef.current.contains(target)) {
-        setIsCurrencyMenuOpen(false);
-      }
       if (notificationsRef.current && !notificationsRef.current.contains(target)) {
         setIsNotificationsOpen(false);
       }
@@ -82,7 +62,6 @@ export const TopNavbar: React.FC = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsProfileMenuOpen(false);
-        setIsCurrencyMenuOpen(false);
         setIsNotificationsOpen(false);
       }
     };
@@ -101,18 +80,7 @@ export const TopNavbar: React.FC = () => {
     navigate('/login');
   };
 
-  const handleSelectCurrency = (currencyCode: string) => {
-    if (user) {
-      setUser({ ...user, currency: currencyCode });
-      toast.success(`Currency updated to ${currencyCode}`, {
-        description: 'Monetary figures across all pages re-calculated.',
-      });
-    }
-    setIsCurrencyMenuOpen(false);
-  };
-
   const activeCurrencyCode = user?.currency || 'INR';
-  const currentCurrency = AVAILABLE_CURRENCIES.find((c) => c.code === activeCurrencyCode) || AVAILABLE_CURRENCIES[0];
 
   const displayName = user?.fullName || (user?.email ? user.email.split('@')[0] : 'Private Client');
   const displayEmail = user?.email || 'client@spendx.local';
@@ -178,75 +146,12 @@ export const TopNavbar: React.FC = () => {
             <Search className="w-4 h-4" />
           </button>
 
-          {/* 1. Currency Picker Dropdown */}
-          <div className="relative" ref={currencyMenuRef}>
-            <button
-              type="button"
-              onClick={() => {
-                setIsCurrencyMenuOpen(!isCurrencyMenuOpen);
-                setIsProfileMenuOpen(false);
-                setIsNotificationsOpen(false);
-              }}
-              aria-label="Select currency"
-              className="h-9 px-2.5 sm:px-3 rounded-xl flex items-center gap-1.5 bg-surface-elevated hover:bg-surface border border-border text-foreground text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95"
-              title="Change active currency"
-            >
-              <Coins className="w-3.5 h-3.5 text-primary" />
-              <span className="font-mono text-primary font-bold">{currentCurrency.symbol}</span>
-              <span className="text-[11px] hidden xs:inline">{currentCurrency.code}</span>
-              <ChevronDown className="w-3 h-3 text-muted-foreground" />
-            </button>
-
-            <AnimatePresence>
-              {isCurrencyMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: -6 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -6 }}
-                  transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                  role="menu"
-                  className="absolute right-0 top-full mt-2 w-52 rounded-2xl bg-surface border border-border shadow-elevated p-2 space-y-1 z-50"
-                >
-                  <div className="px-2.5 py-1.5 border-b border-border">
-                    <p className="text-[11px] font-bold text-foreground">Select Currency</p>
-                    <p className="text-[10px] text-muted-foreground">Updates all financial ledgers</p>
-                  </div>
-
-                  <div className="py-1 max-h-56 overflow-y-auto no-scrollbar space-y-0.5">
-                    {AVAILABLE_CURRENCIES.map((c) => {
-                      const isSelected = c.code === activeCurrencyCode;
-                      return (
-                        <button
-                          key={c.code}
-                          type="button"
-                          onClick={() => handleSelectCurrency(c.code)}
-                          className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-medium transition-colors cursor-pointer ${
-                            isSelected
-                              ? 'bg-primary text-[#111711] font-bold shadow-xs'
-                              : 'text-foreground hover:bg-surface-elevated'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold w-6">{c.symbol}</span>
-                            <span>{c.code}</span>
-                          </div>
-                          {isSelected && <span className="text-[10px] font-bold">Active</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* 2. Notifications Flyout Popup */}
+          {/* 1. Notifications Flyout Popup */}
           <div className="relative" ref={notificationsRef}>
             <button
               onClick={() => {
                 setIsNotificationsOpen(!isNotificationsOpen);
                 setIsProfileMenuOpen(false);
-                setIsCurrencyMenuOpen(false);
               }}
               aria-label="View notifications"
               aria-expanded={isNotificationsOpen}
@@ -378,7 +283,6 @@ export const TopNavbar: React.FC = () => {
             <button
               onClick={() => {
                 setIsProfileMenuOpen(!isProfileMenuOpen);
-                setIsCurrencyMenuOpen(false);
                 setIsNotificationsOpen(false);
               }}
               aria-label="User account menu"

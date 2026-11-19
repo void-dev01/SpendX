@@ -6,10 +6,10 @@ import { X, Loader2, ArrowDownRight, ArrowUpRight, ArrowLeftRight } from 'lucide
 import {
   TransactionRecord,
   TransactionType,
-  DEFAULT_USER_ACCOUNTS,
   EXPENSE_CATEGORIES,
   INCOME_CATEGORIES,
 } from '@/services/transactionService';
+import { AccountRecord, accountService } from '@/services/accountService';
 
 const transactionFormSchema = z.object({
   type: z.enum(['EXPENSE', 'INCOME', 'TRANSFER']),
@@ -44,6 +44,7 @@ interface TransactionFormDialogProps {
   onSubmit: (data: Omit<TransactionRecord, 'id' | 'userId' | 'createdAt' | 'updatedAt'>) => Promise<void>;
   initialData?: TransactionRecord | null;
   isSubmitting?: boolean;
+  accounts?: AccountRecord[];
 }
 
 export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
@@ -52,12 +53,36 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
   onSubmit,
   initialData,
   isSubmitting = false,
+  accounts: propAccounts,
 }) => {
   // Format current datetime for input
   const getFormattedNow = () => {
     const now = new Date();
     return now.toISOString().slice(0, 16);
   };
+
+  const storedAccounts = accountService.getStoredAccounts();
+  const availableAccounts: AccountRecord[] =
+    propAccounts && propAccounts.length > 0
+      ? propAccounts
+      : storedAccounts.length > 0
+      ? storedAccounts
+      : [
+          {
+            id: 'acc-cash-wallet',
+            userId: 'default',
+            name: 'Cash / Primary Wallet',
+            institution: 'Cash',
+            type: 'CASH',
+            balance: 0,
+            currency: 'INR',
+            status: 'ACTIVE',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          },
+        ];
+
+  const defaultAccountId = availableAccounts[0]?.id || 'acc-cash-wallet';
 
   const {
     register,
@@ -73,7 +98,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
       amount: undefined as unknown as number,
       description: '',
       category: 'Food & Dining',
-      accountId: DEFAULT_USER_ACCOUNTS[0]?.id || '',
+      accountId: defaultAccountId,
       date: getFormattedNow(),
       paymentMethod: 'UPI',
       merchantName: '',
@@ -92,7 +117,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
         amount: initialData.amount,
         description: initialData.description,
         category: initialData.category,
-        accountId: initialData.accountId,
+        accountId: initialData.accountId || defaultAccountId,
         date: initialData.date ? initialData.date.slice(0, 16) : getFormattedNow(),
         paymentMethod: initialData.paymentMethod,
         merchantName: initialData.merchantName || '',
@@ -105,7 +130,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
         amount: undefined as unknown as number,
         description: '',
         category: 'Food & Dining',
-        accountId: DEFAULT_USER_ACCOUNTS[0]?.id || '',
+        accountId: defaultAccountId,
         date: getFormattedNow(),
         paymentMethod: 'UPI',
         merchantName: '',
@@ -113,7 +138,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
         isRecurring: false,
       });
     }
-  }, [initialData, isOpen, reset]);
+  }, [initialData, isOpen, reset, defaultAccountId]);
 
   // Adjust default category when type changes
   const handleTypeSelect = (type: TransactionType) => {
@@ -128,7 +153,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
   };
 
   const onFormSubmit = async (values: TransactionFormValues) => {
-    const selectedAccount = DEFAULT_USER_ACCOUNTS.find((a) => a.id === values.accountId);
+    const selectedAccount = availableAccounts.find((a) => a.id === values.accountId);
     const accountName = selectedAccount?.name || 'Primary Account';
 
     await onSubmit({
@@ -292,7 +317,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                 {...register('accountId')}
                 className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
               >
-                {DEFAULT_USER_ACCOUNTS.map((acc) => (
+                {availableAccounts.map((acc) => (
                   <option key={acc.id} value={acc.id}>
                     {acc.name}
                   </option>

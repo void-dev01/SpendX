@@ -309,7 +309,7 @@ export const transactionService = {
       try {
         const res = await apiClient.get('/transactions', { params: { limit: 100 } });
         if (res.data?.success && res.data?.data?.items) {
-          return res.data.data.items.map((t: any) => ({
+          const mapped = res.data.data.items.map((t: any) => ({
             id: t.id,
             userId: t.userId || t.user_id,
             accountId: t.accountId || t.account_id,
@@ -327,6 +327,8 @@ export const transactionService = {
             createdAt: t.createdAt || t.created_at,
             updatedAt: t.updatedAt || t.updated_at,
           }));
+          this.saveStoredTransactions(mapped);
+          return mapped;
         }
       } catch (apiErr) {
         console.warn('API /transactions failed, checking direct Supabase', apiErr);
@@ -342,7 +344,7 @@ export const transactionService = {
             .order('date', { ascending: false });
 
           if (!error && data) {
-            return data.map((t) => ({
+            const mapped = data.map((t) => ({
               id: t.id,
               userId: t.user_id,
               accountId: t.account_id || 'acc-hdfc-01',
@@ -360,14 +362,16 @@ export const transactionService = {
               createdAt: t.created_at || new Date().toISOString(),
               updatedAt: t.updated_at || new Date().toISOString(),
             }));
+            this.saveStoredTransactions(mapped);
+            return mapped;
           }
         } catch (err) {
           console.warn('Could not query Supabase transactions', err);
         }
       }
 
-      // If user is authenticated and has no transactions, return clean empty list
-      return [];
+      // Fallback to locally stored transactions if backend/Supabase are offline
+      return this.getStoredTransactions();
     }
 
     // 3. Return local session transactions for demo mode
@@ -407,7 +411,7 @@ export const transactionService = {
 
         if (res.data?.success && res.data?.data) {
           const t = res.data.data;
-          return {
+          const created: TransactionRecord = {
             id: t.id,
             userId: t.userId,
             accountId: t.accountId,
@@ -425,6 +429,9 @@ export const transactionService = {
             createdAt: t.createdAt,
             updatedAt: t.updatedAt,
           };
+          const current = this.getStoredTransactions();
+          this.saveStoredTransactions([created, ...current.filter((x) => x.id !== created.id)]);
+          return created;
         }
       } catch (err) {
         console.warn('API transaction post failed, attempting Supabase direct insert', err);
@@ -451,7 +458,7 @@ export const transactionService = {
           .single();
 
         if (!error && record) {
-          return {
+          const created: TransactionRecord = {
             id: record.id,
             userId: record.user_id,
             accountId: record.account_id,
@@ -469,6 +476,9 @@ export const transactionService = {
             createdAt: record.created_at,
             updatedAt: record.updated_at,
           };
+          const current = this.getStoredTransactions();
+          this.saveStoredTransactions([created, ...current.filter((x) => x.id !== created.id)]);
+          return created;
         }
       }
     }
@@ -520,7 +530,7 @@ export const transactionService = {
         const res = await apiClient.patch(`/transactions/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const t = res.data.data;
-          return {
+          const updated: TransactionRecord = {
             id: t.id,
             userId: t.userId || t.user_id,
             accountId: t.accountId || t.account_id,
@@ -538,6 +548,13 @@ export const transactionService = {
             createdAt: t.createdAt || t.created_at,
             updatedAt: t.updatedAt || t.updated_at,
           };
+          const current = this.getStoredTransactions();
+          const idx = current.findIndex((item) => item.id === id);
+          if (idx !== -1) {
+            current[idx] = updated;
+            this.saveStoredTransactions(current);
+          }
+          return updated;
         }
       } catch (err) {
         console.warn('API /transactions update failed', err);

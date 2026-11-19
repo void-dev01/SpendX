@@ -130,7 +130,7 @@ export const accountService = {
       try {
         const res = await apiClient.get('/accounts');
         if (res.data?.success && Array.isArray(res.data?.data)) {
-          return res.data.data.map((a: any) => ({
+          const mapped = res.data.data.map((a: any) => ({
             id: a.id,
             userId: a.user_id || a.userId,
             name: a.name,
@@ -144,9 +144,11 @@ export const accountService = {
             createdAt: a.created_at || a.createdAt || new Date().toISOString(),
             updatedAt: a.updated_at || a.updatedAt || new Date().toISOString(),
           }));
+          this.saveStoredAccounts(mapped);
+          return mapped;
         }
       } catch (apiErr) {
-        console.warn('API /accounts failed, falling back to direct Supabase query', apiErr);
+        console.warn('API /accounts failed, falling back to cached or local accounts', apiErr);
       }
 
       // 2. Direct Supabase Query Fallback
@@ -160,7 +162,7 @@ export const accountService = {
             .order('created_at', { ascending: true });
 
           if (!error && data) {
-            return data.map((a) => ({
+            const mapped = data.map((a) => ({
               id: a.id,
               userId: a.user_id,
               name: a.name,
@@ -174,14 +176,16 @@ export const accountService = {
               createdAt: a.created_at || new Date().toISOString(),
               updatedAt: a.updated_at || new Date().toISOString(),
             }));
+            this.saveStoredAccounts(mapped);
+            return mapped;
           }
         } catch (err) {
           console.warn('Could not query Supabase accounts', err);
         }
       }
 
-      // If user is authenticated and has no accounts, return empty list
-      return [];
+      // Fallback to locally stored accounts if backend/Supabase are offline
+      return this.getStoredAccounts();
     }
 
     return this.getStoredAccounts();
@@ -248,7 +252,7 @@ export const accountService = {
 
         if (res.data?.success && res.data?.data) {
           const a = res.data.data;
-          return {
+          const created: AccountRecord = {
             id: a.id,
             userId: a.user_id,
             name: a.name,
@@ -262,6 +266,9 @@ export const accountService = {
             createdAt: a.created_at,
             updatedAt: a.updated_at,
           };
+          const current = this.getStoredAccounts();
+          this.saveStoredAccounts([...current.filter((acc) => acc.id !== created.id), created]);
+          return created;
         }
       } catch (err) {
         console.warn('API /accounts creation failed, attempting Supabase direct insert', err);
@@ -285,7 +292,7 @@ export const accountService = {
           .single();
 
         if (!error && record) {
-          return {
+          const created: AccountRecord = {
             id: record.id,
             userId: record.user_id,
             name: record.name,
@@ -299,6 +306,9 @@ export const accountService = {
             createdAt: record.created_at,
             updatedAt: record.updated_at,
           };
+          const current = this.getStoredAccounts();
+          this.saveStoredAccounts([...current.filter((acc) => acc.id !== created.id), created]);
+          return created;
         }
       }
     }
@@ -334,7 +344,7 @@ export const accountService = {
         const res = await apiClient.patch(`/accounts/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const a = res.data.data;
-          return {
+          const updated: AccountRecord = {
             id: a.id,
             userId: a.user_id,
             name: a.name,
@@ -348,6 +358,13 @@ export const accountService = {
             createdAt: a.created_at,
             updatedAt: a.updated_at,
           };
+          const current = this.getStoredAccounts();
+          const idx = current.findIndex((acc) => acc.id === id);
+          if (idx !== -1) {
+            current[idx] = updated;
+            this.saveStoredAccounts(current);
+          }
+          return updated;
         }
       } catch (err) {
         console.warn('API /accounts update failed', err);

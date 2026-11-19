@@ -158,7 +158,7 @@ export const budgetService = {
       try {
         const res = await apiClient.get('/budgets');
         if (res.data?.success && Array.isArray(res.data?.data)) {
-          return res.data.data.map((b: any) => ({
+          const mapped = res.data.data.map((b: any) => ({
             id: b.id,
             userId: b.user_id || b.userId,
             name: b.name || `${b.category} Budget`,
@@ -170,6 +170,8 @@ export const budgetService = {
             createdAt: b.createdAt || b.created_at || new Date().toISOString(),
             updatedAt: b.updatedAt || b.updated_at || new Date().toISOString(),
           }));
+          this.saveStoredBudgets(mapped);
+          return mapped;
         }
       } catch (apiErr) {
         console.warn('API /budgets failed, checking direct Supabase', apiErr);
@@ -184,7 +186,7 @@ export const budgetService = {
             .order('created_at', { ascending: true });
 
           if (!error && data) {
-            return data.map((b) => ({
+            const mapped = data.map((b) => ({
               id: b.id,
               userId: b.user_id,
               name: b.name || `${b.category} Budget`,
@@ -196,13 +198,16 @@ export const budgetService = {
               createdAt: b.created_at || new Date().toISOString(),
               updatedAt: b.updated_at || new Date().toISOString(),
             }));
+            this.saveStoredBudgets(mapped);
+            return mapped;
           }
         } catch (err) {
           console.warn('Could not query Supabase budgets', err);
         }
       }
 
-      return [];
+      // Fallback to locally stored budgets if backend/Supabase are offline
+      return this.getStoredBudgets();
     }
 
     return this.getStoredBudgets();
@@ -427,7 +432,7 @@ export const budgetService = {
         });
         if (res.data?.success && res.data?.data) {
           const b = res.data.data;
-          return {
+          const created: BudgetRecord = {
             id: b.id,
             userId: b.user_id,
             name: b.name,
@@ -439,6 +444,9 @@ export const budgetService = {
             createdAt: b.created_at,
             updatedAt: b.updated_at,
           };
+          const current = this.getStoredBudgets();
+          this.saveStoredBudgets([...current.filter((x) => x.id !== created.id), created]);
+          return created;
         }
       } catch (err) {
         console.warn('API /budgets post failed, attempting Supabase direct insert', err);
@@ -461,7 +469,7 @@ export const budgetService = {
           .single();
 
         if (!error && record) {
-          return {
+          const created: BudgetRecord = {
             id: record.id,
             userId: record.user_id,
             name: record.name,
@@ -473,6 +481,9 @@ export const budgetService = {
             createdAt: record.created_at,
             updatedAt: record.updated_at,
           };
+          const current = this.getStoredBudgets();
+          this.saveStoredBudgets([...current.filter((x) => x.id !== created.id), created]);
+          return created;
         }
       }
     }
@@ -507,7 +518,7 @@ export const budgetService = {
         const res = await apiClient.patch(`/budgets/${id}`, updates);
         if (res.data?.success && res.data?.data) {
           const b = res.data.data;
-          return {
+          const updated: BudgetRecord = {
             id: b.id,
             userId: b.user_id,
             name: b.name,
@@ -519,6 +530,13 @@ export const budgetService = {
             createdAt: b.created_at,
             updatedAt: b.updated_at,
           };
+          const current = this.getStoredBudgets();
+          const idx = current.findIndex((item) => item.id === id);
+          if (idx !== -1) {
+            current[idx] = updated;
+            this.saveStoredBudgets(current);
+          }
+          return updated;
         }
       } catch (err) {
         console.warn('API /budgets update failed', err);

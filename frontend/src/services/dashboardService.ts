@@ -729,76 +729,6 @@ export const dashboardService = {
       };
     }
 
-    // Check if user has explicitly cleared demo data to start fresh with real finances
-    const isDemoCleared = typeof window !== 'undefined' && localStorage.getItem('spendx_demo_mode') === 'cleared';
-    if (isDemoCleared) {
-      const localTx = transactionService.getStoredTransactions();
-      const localAccounts = accountService.getStoredAccounts();
-
-      let income = 0;
-      let expenses = 0;
-      localTx.forEach((t) => {
-        if (t.type === 'INCOME') {
-          income += t.amount;
-        } else if (t.type === 'EXPENSE') {
-          expenses += t.amount;
-        }
-      });
-
-      const totalBalance = localAccounts.length > 0
-        ? localAccounts.reduce((acc, a) => acc + (a.balance || 0), 0)
-        : income - expenses;
-
-      return {
-        isDemo: false,
-        userDisplayName,
-        period,
-        overview: {
-          totalBalance: {
-            value: totalBalance,
-            label: 'Total Balance',
-            description: localAccounts.length > 0 ? `${localAccounts.length} accounts connected` : 'Net balance recorded',
-            trendPercentage: 0,
-            trendIsPositive: true,
-          },
-          totalIncome: {
-            value: income,
-            label: 'Total Income',
-            description: income > 0 ? 'Total credited inflows' : 'Zero income recorded this period',
-          },
-          totalExpenses: {
-            value: expenses,
-            label: 'Total Expenses',
-            description: expenses > 0 ? 'Total debited outflows' : 'Zero expenses recorded this period',
-          },
-          availableBalance: {
-            value: Math.max(0, totalBalance),
-            label: 'Available Balance',
-            description: 'Ready for allocation',
-          },
-        },
-        incomeVsExpense: income > 0 || expenses > 0 ? [{ period: 'Current', income, expenses }] : [],
-        spendingAnalytics: {
-          totalSpent: expenses,
-          categories: [],
-        },
-        budgets: [],
-        recentTransactions: localTx.slice(0, 6).map((t) => ({
-          id: t.id,
-          title: t.description || 'Transaction',
-          merchant: t.merchantName || t.description || 'Merchant',
-          category: t.category || 'General',
-          date: t.date || new Date().toISOString().split('T')[0],
-          amount: t.amount,
-          type: (t.type === 'INCOME' ? 'income' : 'expense') as 'income' | 'expense',
-          iconName: 'Receipt',
-        })),
-        savingsGoals: [],
-        aiInsights: [],
-        upcomingPayments: [],
-      };
-    }
-
     // 1. Try Backend API for live database metrics
     if (user && user.id !== 'demo-user-id') {
       try {
@@ -823,7 +753,7 @@ export const dashboardService = {
           };
         }
       } catch (apiErr) {
-        console.warn('Backend API /dashboard/metrics failed, falling back to direct Supabase query', apiErr);
+        console.warn('Backend API /dashboard/metrics failed, falling back to direct Supabase or local ledger', apiErr);
       }
     }
 
@@ -837,10 +767,10 @@ export const dashboardService = {
           .order('date', { ascending: false })
           .limit(20);
 
-        if (!error) {
+        if (!error && transactions && transactions.length > 0) {
           let income = 0;
           let expenses = 0;
-          (transactions || []).forEach((t) => {
+          transactions.forEach((t) => {
             if (t.type === 'INCOME' || (t.type !== 'EXPENSE' && t.amount > 0)) {
               income += Math.abs(t.amount);
             } else if (t.type === 'EXPENSE') {
@@ -884,7 +814,7 @@ export const dashboardService = {
               categories: [],
             },
             budgets: [],
-            recentTransactions: (transactions || []).map((t) => ({
+            recentTransactions: transactions.map((t) => ({
               id: t.id,
               title: t.description || 'Transaction',
               merchant: t.merchant_name || t.merchantName || t.description || 'Merchant',
@@ -902,47 +832,6 @@ export const dashboardService = {
       } catch (e) {
         console.warn('Could not load remote Supabase dashboard data', e);
       }
-
-      // If authenticated user has no remote records or an error occurred, return clean zero-state
-      return {
-        isDemo: false,
-        userDisplayName,
-        period,
-        overview: {
-          totalBalance: {
-            value: 0,
-            label: 'Total Balance',
-            description: 'No accounts connected',
-            trendPercentage: 0,
-            trendIsPositive: true,
-          },
-          totalIncome: {
-            value: 0,
-            label: 'Total Income',
-            description: 'Zero income recorded this period',
-          },
-          totalExpenses: {
-            value: 0,
-            label: 'Total Expenses',
-            description: 'Zero expenses recorded this period',
-          },
-          availableBalance: {
-            value: 0,
-            label: 'Available Balance',
-            description: 'Net balance remaining',
-          },
-        },
-        incomeVsExpense: [],
-        spendingAnalytics: {
-          totalSpent: 0,
-          categories: [],
-        },
-        budgets: [],
-        recentTransactions: [],
-        savingsGoals: [],
-        aiInsights: [],
-        upcomingPayments: [],
-      };
     }
 
     // Real financial computation from local verified ledger records

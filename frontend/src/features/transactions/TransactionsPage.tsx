@@ -490,6 +490,7 @@ export const TransactionsPage: React.FC = () => {
         onSubmit={handleFormSubmit}
         initialData={editingTransaction}
         isSubmitting={createMutation.isPending || updateMutation.isPending}
+        accounts={accounts}
       />
 
       {/* Detailed Transaction Drawer */}
