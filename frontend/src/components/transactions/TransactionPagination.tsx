@@ -79,9 +79,9 @@ export const TransactionPagination: React.FC<TransactionPaginationProps> = ({
               key={pageNum}
               type="button"
               onClick={() => onPageChange(pageNum)}
-              className={`w-7 h-7 rounded-lg text-xs font-semibold transition-all ${
+              className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
                 isActive
-                  ? 'bg-primary text-white shadow-xs'
+                  ? 'bg-primary text-[#111711] shadow-xs'
                   : 'bg-surface-elevated border border-border hover:bg-surface text-foreground'
               }`}
             >

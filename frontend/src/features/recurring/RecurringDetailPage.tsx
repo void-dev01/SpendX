@@ -130,7 +130,7 @@ export const RecurringDetailPage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate('/recurring')}
-          className="px-5 py-2 text-sm rounded-xl font-medium bg-primary text-white shadow-xs hover:bg-primary/90 transition-all cursor-pointer"
+          className="px-5 py-2 text-sm rounded-xl font-bold bg-primary text-[#111711] shadow-xs hover:bg-primary-hover transition-all cursor-pointer"
         >
           Return to Recurring
         </button>
@@ -334,7 +334,7 @@ export const RecurringDetailPage: React.FC = () => {
             type="button"
             onClick={() => markPaidMutation.mutate()}
             disabled={markPaidMutation.isPending}
-            className="px-5 py-2.5 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 transition-all cursor-pointer"
+            className="px-5 py-2.5 text-xs font-bold rounded-xl bg-primary hover:bg-primary-hover text-[#111711] shadow-xs flex items-center justify-center gap-2 shrink-0 disabled:opacity-50 transition-all cursor-pointer"
           >
             <CheckCircle2 className="w-4 h-4" />
             <span>Mark Cycle Paid</span>

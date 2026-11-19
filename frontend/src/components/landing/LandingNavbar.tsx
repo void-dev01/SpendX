@@ -115,7 +115,7 @@ export const LandingNavbar: React.FC = () => {
 
           <button
             onClick={() => navigate('/signup')}
-            className="relative group px-5 py-2.5 text-sm font-semibold text-white rounded-full bg-primary hover:bg-primary-hover shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center gap-1.5 cursor-pointer"
+            className="relative group px-5 py-2.5 text-sm font-semibold text-[#111711] rounded-full bg-primary hover:bg-primary-hover shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center gap-1.5 cursor-pointer"
           >
             <span>Get Started</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -190,7 +190,7 @@ export const LandingNavbar: React.FC = () => {
                   setMobileMenuOpen(false);
                   navigate('/signup');
                 }}
-                className="w-full py-3.5 text-sm font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 text-sm font-semibold text-[#111711] rounded-xl bg-primary hover:bg-primary-hover shadow-sm flex items-center justify-center gap-2 cursor-pointer"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4" />

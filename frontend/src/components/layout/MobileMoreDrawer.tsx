@@ -98,7 +98,7 @@ export const MobileMoreDrawer: React.FC = () => {
         {/* Drawer Header with User Card & Close Button */}
         <div className="flex items-center justify-between pb-3 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+            <div className="w-10 h-10 rounded-2xl bg-primary text-[#111711] flex items-center justify-center font-bold text-sm shadow-xs">
               {initials}
             </div>
             <div>

@@ -299,7 +299,7 @@ export const AddContributionDialog: React.FC<AddContributionDialogProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all disabled:opacity-50 cursor-pointer min-h-[44px]"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 text-xs font-bold rounded-xl bg-primary hover:bg-primary-hover text-[#111711] shadow-xs transition-all disabled:opacity-50 cursor-pointer min-h-[44px]"
             >
               {isSubmitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
               <span>Confirm Contribution</span>

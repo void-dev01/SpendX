@@ -450,7 +450,7 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                 type="button"
                 onClick={handleProceedFromStep1}
                 disabled={isProcessing}
-                className="w-full sm:w-auto justify-center px-5 py-2.5 text-xs font-medium text-white bg-primary hover:bg-primary/90 rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
+                className="w-full sm:w-auto justify-center px-5 py-2.5 text-xs font-bold text-[#111711] bg-primary hover:bg-primary-hover rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-4 h-4" />
@@ -462,7 +462,7 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                 type="button"
                 onClick={handleProceedFromStep2}
                 disabled={isProcessing}
-                className="w-full sm:w-auto justify-center px-5 py-2.5 text-xs font-medium text-white bg-primary hover:bg-primary/90 rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
+                className="w-full sm:w-auto justify-center px-5 py-2.5 text-xs font-bold text-[#111711] bg-primary hover:bg-primary-hover rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
               >
                 <span>Preview Transactions</span>
                 <ArrowRight className="w-4 h-4" />
@@ -474,7 +474,7 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                 type="button"
                 onClick={handleConfirmImport}
                 disabled={isProcessing || normalizedTransactions.filter((t) => t.isSelected).length === 0}
-                className="w-full sm:w-auto justify-center px-6 py-2.5 text-xs font-medium text-white bg-primary hover:bg-primary/90 rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
+                className="w-full sm:w-auto justify-center px-6 py-2.5 text-xs font-bold text-[#111711] bg-primary hover:bg-primary-hover rounded-xl flex items-center gap-1.5 disabled:opacity-50 min-h-[44px] cursor-pointer shadow-xs"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>

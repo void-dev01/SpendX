@@ -201,7 +201,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                 onClick={() => handleTypeSelect('INCOME')}
                 className={`py-2 px-3 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   selectedType === 'INCOME'
-                    ? 'bg-income text-white shadow-xs'
+                    ? 'bg-income text-[#111711] shadow-xs font-bold'
                     : 'text-secondary-text hover:text-foreground'
                 }`}
               >
@@ -214,7 +214,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
                 onClick={() => handleTypeSelect('TRANSFER')}
                 className={`py-2 px-3 rounded-lg font-medium text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   selectedType === 'TRANSFER'
-                    ? 'bg-primary text-white shadow-xs'
+                    ? 'bg-primary text-[#111711] shadow-xs font-bold'
                     : 'text-secondary-text hover:text-foreground'
                 }`}
               >
@@ -393,7 +393,7 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-white bg-primary hover:bg-primary/90 shadow-xs transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-[#111711] bg-primary hover:bg-primary-hover shadow-xs transition-opacity cursor-pointer disabled:opacity-50 min-h-[44px]"
             >
               {isSubmitting ? (
                 <>

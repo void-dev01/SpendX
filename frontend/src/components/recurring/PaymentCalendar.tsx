@@ -146,7 +146,7 @@ export const PaymentCalendar: React.FC<PaymentCalendarProps> = ({ payments, onSe
                 <span
                   className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center ${
                     isToday
-                      ? 'bg-primary text-white shadow-xs'
+                      ? 'bg-primary text-[#111711] shadow-xs'
                       : 'text-foreground'
                   }`}
                 >

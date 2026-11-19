@@ -206,7 +206,7 @@ export const LandingFooter: React.FC = () => {
             <div className="pt-3 flex justify-end">
               <button
                 onClick={() => setLegalModalContent(null)}
-                className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
+                className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-primary text-[#111711] hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
               >
                 Understood
               </button>

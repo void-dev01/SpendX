@@ -54,7 +54,7 @@ export const HeroDashboard: React.FC = () => {
               <Bell className="w-3.5 h-3.5" />
               <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-expense rounded-full" />
             </div>
-            <div className="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold font-display">
+            <div className="w-7 h-7 rounded-full bg-primary text-[#111711] flex items-center justify-center text-xs font-bold font-display">
               SX
             </div>
           </div>

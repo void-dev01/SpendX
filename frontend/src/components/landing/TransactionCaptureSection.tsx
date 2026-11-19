@@ -167,7 +167,7 @@ export const TransactionCaptureSection: React.FC = () => {
                 </div>
                 <div className="rounded-2xl bg-surface-elevated border border-border-subtle p-4 flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-xl bg-primary text-[#111711] flex items-center justify-center">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>

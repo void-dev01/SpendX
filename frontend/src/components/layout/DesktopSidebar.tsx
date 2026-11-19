@@ -196,7 +196,7 @@ export const DesktopSidebar: React.FC = () => {
             title="Account Settings — Click to update name & email"
             aria-label="Open Account Settings to update name and email"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#496BDB] to-[#7256D9] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+            <div className="w-9 h-9 rounded-xl bg-primary text-[#111711] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs group-hover:scale-105 transition-transform">
               {initials}
             </div>
 

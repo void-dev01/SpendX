@@ -199,7 +199,7 @@ export const TransactionDetailsDrawer: React.FC<TransactionDetailsDrawerProps> =
                 onClose();
                 onEdit(transaction);
               }}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 shadow-xs transition-all cursor-pointer"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-bold text-xs text-[#111711] bg-primary hover:bg-primary-hover shadow-xs transition-all cursor-pointer"
             >
               <Edit2 className="w-3.5 h-3.5" />
               <span>Edit Record</span>

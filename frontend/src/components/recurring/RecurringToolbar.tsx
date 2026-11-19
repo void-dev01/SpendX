@@ -117,7 +117,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             aria-label="List view"
             className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               viewMode === 'list'
-                ? 'bg-primary text-white shadow-xs'
+                ? 'bg-primary text-[#111711] shadow-xs font-bold'
                 : 'text-secondary-text hover:text-foreground'
             }`}
           >
@@ -129,7 +129,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
             aria-label="Calendar view"
             className={`p-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
               viewMode === 'calendar'
-                ? 'bg-primary text-white shadow-xs'
+                ? 'bg-primary text-[#111711] shadow-xs font-bold'
                 : 'text-secondary-text hover:text-foreground'
             }`}
           >
@@ -141,7 +141,7 @@ export const RecurringToolbar: React.FC<RecurringToolbarProps> = ({
         <button
           type="button"
           onClick={onOpenCreateDialog}
-          className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all shrink-0 cursor-pointer"
+          className="flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-primary hover:bg-primary-hover text-[#111711] shadow-xs transition-all shrink-0 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Add Payment</span>

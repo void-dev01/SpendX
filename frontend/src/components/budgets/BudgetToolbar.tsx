@@ -40,7 +40,7 @@ export const BudgetToolbar: React.FC<BudgetToolbarProps> = ({
               onClick={() => onChange({ ...filters, period: opt.value })}
               className={`flex-1 sm:flex-initial text-center px-3 py-1.5 text-xs rounded-lg transition-all duration-200 cursor-pointer whitespace-nowrap min-h-[36px] ${
                 isActive
-                  ? 'bg-primary text-white shadow-xs font-medium'
+                  ? 'bg-primary text-[#111711] shadow-xs font-bold'
                   : 'text-secondary-text hover:text-foreground hover:bg-surface'
               }`}
             >

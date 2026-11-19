@@ -40,7 +40,7 @@ export const FinalCTASection: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
             <button
               onClick={() => navigate('/signup')}
-              className="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-white bg-primary hover:bg-primary-hover shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer group"
+              className="w-full sm:w-auto px-8 py-4 rounded-full text-base font-semibold text-[#111711] bg-primary hover:bg-primary-hover shadow-sm transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary flex items-center justify-center gap-2 cursor-pointer group"
             >
               <span>Get Started Free</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />

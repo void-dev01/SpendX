@@ -57,7 +57,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
                 onClick={() => onDateRangeChange(opt.value)}
                 className={`px-3 py-1.5 text-xs rounded-lg transition-all duration-150 cursor-pointer whitespace-nowrap shrink-0 ${
                   isActive
-                    ? 'bg-primary text-white shadow-xs font-semibold'
+                    ? 'bg-primary text-[#111711] shadow-xs font-bold'
                     : 'text-secondary-text hover:text-foreground hover:bg-surface font-medium'
                 }`}
               >
@@ -97,7 +97,7 @@ export const TransactionHeader: React.FC<TransactionHeaderProps> = ({
           <button
             type="button"
             onClick={onAddTransaction}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-[#111711] bg-primary hover:bg-primary-hover shadow-xs transition-colors cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add Transaction</span>

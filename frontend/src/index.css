@@ -41,6 +41,7 @@
 
     /* Semantic Financial Indicators */
     --income: #16A34A;
+    --income-foreground: #111711;
     --expense: #DC2626;
     --warning: #D97706;
     --info: #05CD99;
@@ -105,6 +106,7 @@
 
     /* Semantic Financial Indicators */
     --income: #4ADE80;
+    --income-foreground: #111711;
     --expense: #F87171;
     --warning: #FBBF24;
     --info: #34D399;
@@ -155,6 +157,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-income: var(--income);
+  --color-income-foreground: var(--income-foreground);
   --color-expense: var(--expense);
   --color-warning: var(--warning);
   --color-info: var(--info);
@@ -416,13 +419,13 @@ body,
 .glass-card-interactive:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-elevated);
-  border-color: rgba(73, 107, 219, 0.35);
+  border-color: rgba(165, 241, 43, 0.35);
 }
 
 .dark .surface-interactive:hover,
 .dark .glass-card-interactive:hover {
   transform: translateY(-3px);
-  border-color: rgba(120, 149, 255, 0.35);
+  border-color: rgba(165, 241, 43, 0.35);
 }
 
 /* Primary SpendX CTA Button */
@@ -430,7 +433,7 @@ body,
   background: var(--primary) !important;
   color: var(--primary-foreground) !important;
   font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(73, 107, 219, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(165, 241, 43, 0.25) !important;
   border: 1px solid transparent !important;
   border-radius: 0.75rem !important;
   transition: all 180ms ease !important;
@@ -440,18 +443,18 @@ body,
 .btn-spendx-primary:hover {
   background: var(--primary-hover) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 14px rgba(73, 107, 219, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(165, 241, 43, 0.35) !important;
 }
 
 .dark .btn-spendx-primary {
   background: var(--primary) !important;
   color: var(--primary-foreground) !important;
-  box-shadow: 0 2px 10px rgba(120, 149, 255, 0.30) !important;
+  box-shadow: 0 2px 10px rgba(165, 241, 43, 0.30) !important;
 }
 
 .dark .btn-spendx-primary:hover {
   background: var(--primary-hover) !important;
-  box-shadow: 0 4px 16px rgba(120, 149, 255, 0.45) !important;
+  box-shadow: 0 4px 16px rgba(165, 241, 43, 0.45) !important;
 }
 
 .dark {

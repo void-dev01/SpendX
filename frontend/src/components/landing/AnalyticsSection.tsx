@@ -78,7 +78,7 @@ export const AnalyticsSection: React.FC = () => {
                 onClick={() => setActiveTab('comparison')}
                 className={`flex-1 sm:flex-none px-4 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   activeTab === 'comparison'
-                    ? 'bg-primary text-white shadow-xs'
+                    ? 'bg-primary text-[#111711] shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -88,7 +88,7 @@ export const AnalyticsSection: React.FC = () => {
                 onClick={() => setActiveTab('categories')}
                 className={`flex-1 sm:flex-none px-4 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                   activeTab === 'categories'
-                    ? 'bg-primary text-white shadow-xs'
+                    ? 'bg-primary text-[#111711] shadow-xs'
                     : 'text-muted-foreground hover:text-foreground'
                 }`}
               >

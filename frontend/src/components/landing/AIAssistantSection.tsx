@@ -100,7 +100,7 @@ export const AIAssistantSection: React.FC = () => {
               <div className="space-y-3.5 py-4 text-xs sm:text-sm">
                 {/* User Message 1 */}
                 <div className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-white font-medium p-3.5 shadow-xs">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-[#111711] font-semibold p-3.5 shadow-xs">
                     Where did most of my money go this month?
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export const AIAssistantSection: React.FC = () => {
 
                 {/* User Message 2 */}
                 <div className="flex justify-end">
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-white font-medium p-3.5 shadow-xs">
+                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs bg-primary text-[#111711] font-semibold p-3.5 shadow-xs">
                     How can I reduce my monthly expenses?
                   </div>
                 </div>
@@ -155,7 +155,7 @@ export const AIAssistantSection: React.FC = () => {
                     placeholder="Ask SPENDX AI anything about your money..."
                     className="flex-1 bg-transparent text-xs sm:text-sm text-foreground placeholder:text-muted-foreground outline-none cursor-not-allowed"
                   />
-                  <div className="w-7 h-7 rounded-xl bg-gradient-to-r from-[#718FE8] to-[#8B72D6] text-white flex items-center justify-center shrink-0 opacity-90 shadow-sm">
+                  <div className="w-7 h-7 rounded-xl bg-primary text-[#111711] flex items-center justify-center shrink-0 opacity-90 shadow-sm">
                     <Send className="w-3.5 h-3.5" />
                   </div>
                 </div>

@@ -52,7 +52,7 @@ export const SavingsEmptyState: React.FC<SavingsEmptyStateProps> = ({
       <button
         type="button"
         onClick={onCreateGoal}
-        className="mt-5 flex items-center gap-1.5 px-5 py-2.5 text-xs font-medium rounded-xl bg-primary hover:bg-primary/90 text-white shadow-xs transition-all cursor-pointer"
+        className="mt-5 flex items-center gap-1.5 px-5 py-2.5 text-xs font-bold rounded-xl bg-primary hover:bg-primary-hover text-[#111711] shadow-xs transition-all cursor-pointer"
       >
         <Plus className="w-4 h-4" />
         <span>Create Your First Goal</span>

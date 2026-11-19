@@ -51,7 +51,7 @@ export const TransactionEmptyState: React.FC<TransactionEmptyStateProps> = ({
       <button
         type="button"
         onClick={onActionClick}
-        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-medium text-xs text-white bg-primary hover:bg-primary/90 shadow-xs transition-all cursor-pointer"
+        className="mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-xs text-[#111711] bg-primary hover:bg-primary-hover shadow-xs transition-all cursor-pointer"
       >
         <Plus className="w-4 h-4" />
         <span>Add Your First Transaction</span>

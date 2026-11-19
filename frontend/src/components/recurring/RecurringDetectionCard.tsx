@@ -68,7 +68,7 @@ export const RecurringDetectionCard: React.FC<RecurringDetectionCardProps> = ({
               <button
                 type="button"
                 onClick={() => onConfirm(item)}
-                className="px-3 py-1 text-xs font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-all shadow-xs flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1 text-xs font-bold bg-primary text-[#111711] rounded-lg hover:bg-primary-hover transition-all shadow-xs flex items-center gap-1 cursor-pointer"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Track</span>

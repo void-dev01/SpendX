@@ -69,16 +69,16 @@ export const ImportSourceSelector: React.FC<ImportSourceSelectorProps> = ({
               <div
                 className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                   isSelected
-                    ? 'bg-primary text-white shadow-xs'
+                    ? 'bg-primary text-[#111711] shadow-xs'
                     : 'bg-surface border border-border text-secondary-text group-hover:text-primary'
                 }`}
               >
                 <Icon className="w-4 h-4" />
               </div>
               <span
-                className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
                   isSelected
-                    ? 'bg-primary text-white'
+                    ? 'bg-primary text-[#111711]'
                     : 'bg-surface border border-border text-secondary-text'
                 }`}
               >
