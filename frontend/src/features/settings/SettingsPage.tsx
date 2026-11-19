@@ -53,7 +53,7 @@ export const SettingsPage: React.FC = () => {
         }
         localStorage.clear();
         window.location.href = '/login';
-      } catch (err) {
+      } catch {
         alert('Failed to delete account');
         setIsDeleting(false);
       }

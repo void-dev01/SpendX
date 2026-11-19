@@ -89,7 +89,7 @@ export const createApp = (): Express => {
         if (env.FRONTEND_URL && origin === env.FRONTEND_URL) {
           return callback(null, true);
         }
-        return callback(null, true);
+        return callback(new Error('Not allowed by CORS'), false);
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

@@ -83,7 +83,7 @@ export const AddContributionDialog: React.FC<AddContributionDialogProps> = ({
         })
         .finally(() => setIsLoadingAccounts(false));
     }
-  }, [isOpen, reset, todayStr]);
+  }, [isOpen, reset, todayStr, selectedAccountId]);
 
   if (!isOpen || !goal) return null;
 
