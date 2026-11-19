@@ -175,4 +175,57 @@ describe('Security, Authentication & Data Integrity Tests', () => {
       expect(res.body.data.userId).toBe('secure-user-1');
     });
   });
+
+  describe('Enterprise FinTech Security Hardening & Defenses', () => {
+    it('does not leak server technology header (x-powered-by is disabled)', async () => {
+      const res = await request(app).get('/health');
+      expect(res.headers['x-powered-by']).toBeUndefined();
+    });
+
+    it('sets strict HTTP Security Headers (Helmet, HSTS, CSP, Frameguard)', async () => {
+      const res = await request(app).get('/health');
+
+      // Clickjacking defense
+      expect(res.headers['x-frame-options']).toBe('DENY');
+      // MIME-sniffing prevention
+      expect(res.headers['x-content-type-options']).toBe('nosniff');
+      // Content Security Policy
+      expect(res.headers['content-security-policy']).toBeDefined();
+      expect(res.headers['content-security-policy']).toContain("default-src 'self'");
+      // Device Permissions Policy
+      expect(res.headers['permissions-policy']).toContain('camera=()');
+      // Cross-domain policies
+      expect(res.headers['x-permitted-cross-domain-policies']).toBe('none');
+    });
+
+    it('automatically sanitizes XSS scripts from request payload', async () => {
+      const res = await request(app)
+        .post('/api/v1/transactions')
+        .set('Authorization', testAuthHeader)
+        .send({
+          accountId: validAccountId,
+          amount: 99.99,
+          type: 'EXPENSE',
+          category: 'Dining',
+          description: '<script>alert("xss")</script>Coffee & Snack',
+          date: new Date().toISOString(),
+        });
+
+      expect(res.status).toBe(201);
+      expect(res.body.success).toBe(true);
+      // Description should have script tag stripped
+      expect(res.body.data.description).toBe('Coffee & Snack');
+      expect(res.body.data.description).not.toContain('<script>');
+    });
+
+    it('blocks malicious SQL injection signatures in query parameters', async () => {
+      const res = await request(app)
+        .get('/api/v1/transactions?search=UNION SELECT * FROM users')
+        .set('Authorization', testAuthHeader);
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('Malicious input pattern detected');
+    });
+  });
 });

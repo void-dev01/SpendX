@@ -5,11 +5,12 @@ import { BudgetService } from '../budget.service.js';
 import { SavingsService } from '../savings.service.js';
 import { RecurringService } from '../recurring.service.js';
 import { logger } from '../../utils/logger.js';
+import { AccountRecord, Transaction, TransactionType, RecurringRecord } from '../../types/index.js';
 
 export interface FinancialToolDefinition {
   name: string;
   description: string;
-  execute: (userId: string, args: Record<string, any>) => Promise<any>;
+  execute: (userId: string, args: Record<string, unknown>) => Promise<unknown>;
 }
 
 export class FinancialToolsService {
@@ -20,7 +21,7 @@ export class FinancialToolsService {
         name: 'get_financial_overview',
         description: 'Retrieves current authoritative net worth, assets, liabilities, total income, expenses, and cash flow',
         execute: async (userId, args) => {
-          const period = args.period || 'this_month';
+          const period = (args.period as 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all') || 'this_month';
           return await FinancialCalculationService.calculateFinancialOverview(userId, period);
         },
       },
@@ -32,7 +33,7 @@ export class FinancialToolsService {
         description: 'Retrieves active linked bank, savings, cash, and credit card accounts with current balances',
         execute: async (userId) => {
           const accounts = await AccountService.getAccounts(userId);
-          return accounts.map((a: any) => ({
+          return accounts.map((a: AccountRecord) => ({
             name: a.name,
             type: a.type,
             balance: Number(a.balance),
@@ -48,13 +49,13 @@ export class FinancialToolsService {
         description: 'Searches and retrieves recent transactions with category, amount, and date filters',
         execute: async (userId, args) => {
           const res = await TransactionService.getTransactions(userId, {
-            limit: args.limit || 8,
-            type: args.type,
-            category: args.category,
-            search: args.search,
+            limit: (args.limit as number) || 8,
+            type: args.type as TransactionType | undefined,
+            category: args.category as string | undefined,
+            search: args.search as string | undefined,
           });
-          const txns = Array.isArray(res) ? res : (res.transactions || (res as any).items || []);
-          return txns.map((t: any) => ({
+          const txns = Array.isArray(res) ? res : (res.transactions || []);
+          return txns.map((t: Transaction) => ({
             description: t.description,
             amount: t.amount,
             type: t.type,
@@ -70,7 +71,7 @@ export class FinancialToolsService {
         name: 'get_category_spending',
         description: 'Calculates breakdown of expenses grouped by category with amounts and percentages',
         execute: async (userId, args) => {
-          const period = args.period || 'this_month';
+          const period = (args.period as 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all') || 'this_month';
           return await FinancialCalculationService.calculateCategoryBreakdown(userId, period);
         },
       },
@@ -117,7 +118,7 @@ export class FinancialToolsService {
         description: 'Lists upcoming recurring subscriptions and bills with due dates',
         execute: async (userId) => {
           const rec = await RecurringService.getRecurringPayments(userId);
-          return rec.map((r: any) => ({
+          return rec.map((r: RecurringRecord) => ({
             name: r.name,
             merchant: r.merchant,
             amount: r.amount,
@@ -158,7 +159,7 @@ export class FinancialToolsService {
         name: 'get_cash_flow_summary',
         description: 'Retrieves net cash flow surplus or deficit analysis for the user',
         execute: async (userId, args) => {
-          const period = args.period || 'this_month';
+          const period = (args.period as 'this_month' | 'last_month' | 'last_3_months' | 'this_year' | 'all') || 'this_month';
           const ov = await FinancialCalculationService.calculateFinancialOverview(userId, period);
           return {
             period,
@@ -173,7 +174,7 @@ export class FinancialToolsService {
     ],
   ]);
 
-  public static async executeTool(toolName: string, userId: string, args: Record<string, any> = {}): Promise<any> {
+  public static async executeTool(toolName: string, userId: string, args: Record<string, unknown> = {}): Promise<unknown> {
     const tool = this.tools.get(toolName);
     if (!tool) {
       logger.warn({ toolName }, 'Requested tool not recognized');
