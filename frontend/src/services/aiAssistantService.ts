@@ -353,7 +353,9 @@ export const aiAssistantService = {
           return parsed.filter((m: any) => m.status === 'QUEUED');
         }
       }
-    } catch {}
+    } catch (err) {
+      void err;
+    }
 
     return [];
   },
@@ -364,7 +366,9 @@ export const aiAssistantService = {
   async updateQueuedMessage(id: string, newQuery: string): Promise<void> {
     try {
       await apiClient.patch(`/ai/queue/${id}`, { query: newQuery });
-    } catch {}
+    } catch (err) {
+      void err;
+    }
 
     try {
       const stored = localStorage.getItem('spendx_ai_queued_messages');
@@ -377,7 +381,9 @@ export const aiAssistantService = {
           localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(parsed));
         }
       }
-    } catch {}
+    } catch (err) {
+      void err;
+    }
   },
 
   /**
@@ -386,7 +392,9 @@ export const aiAssistantService = {
   async cancelQueuedMessage(id: string): Promise<void> {
     try {
       await apiClient.delete(`/ai/queue/${id}`);
-    } catch {}
+    } catch (err) {
+      void err;
+    }
 
     try {
       const stored = localStorage.getItem('spendx_ai_queued_messages');
@@ -395,7 +403,9 @@ export const aiAssistantService = {
         const filtered = parsed.filter((m) => m.id !== id);
         localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(filtered));
       }
-    } catch {}
+    } catch (err) {
+      void err;
+    }
   },
 
   saveQueuedMessageLocally(record: QueuedMessageRecord): void {
@@ -404,7 +414,9 @@ export const aiAssistantService = {
       const list: QueuedMessageRecord[] = stored ? JSON.parse(stored) : [];
       list.push(record);
       localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(list));
-    } catch {}
+    } catch (err) {
+      void err;
+    }
   },
 
   incrementLocalUsage(): void {
