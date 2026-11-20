@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { LoginPage } from '../features/auth/LoginPage';
 import { SignupPage } from '../features/auth/SignupPage';
+import { authService } from '../services/authService';
 
 describe('SPENDX Authentication Pages', () => {
   it('renders LoginPage with all required form controls', () => {
@@ -85,5 +86,34 @@ describe('SPENDX Authentication Pages', () => {
 
     fireEvent.click(toggleBtn);
     expect(passwordInput).toHaveAttribute('type', 'password');
+  });
+
+  it('rejects login when user has not created an account', async () => {
+    localStorage.clear();
+    const result = await authService.login('unregistered@spendx.local', 'Password123');
+    expect(result.success).toBe(false);
+    expect(result.error).toMatch(/no account found/i);
+  });
+
+  it('registers a new user, rejects wrong password, and logs in with correct password', async () => {
+    localStorage.clear();
+    const signupRes = await authService.signup('Priyam Test', 'priyam@test.local', 'Secret123!');
+    expect(signupRes.success).toBe(true);
+    expect(signupRes.user?.email).toBe('priyam@test.local');
+
+    // Reject wrong password
+    const wrongPassRes = await authService.login('priyam@test.local', 'WrongPass999!');
+    expect(wrongPassRes.success).toBe(false);
+    expect(wrongPassRes.error).toMatch(/invalid password/i);
+
+    // Reject duplicate signup
+    const dupSignupRes = await authService.signup('Priyam Other', 'priyam@test.local', 'AnotherPass123!');
+    expect(dupSignupRes.success).toBe(false);
+    expect(dupSignupRes.error).toMatch(/already exists/i);
+
+    // Succeed with correct password
+    const successLoginRes = await authService.login('priyam@test.local', 'Secret123!');
+    expect(successLoginRes.success).toBe(true);
+    expect(successLoginRes.user?.fullName).toBe('Priyam Test');
   });
 });

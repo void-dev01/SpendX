@@ -7,6 +7,9 @@ export interface UserProfileRecord {
   email: string;
   fullName: string;
   currency: string;
+  passwordHash?: string;
+  salt?: string;
+  createdAt?: string;
   updatedAt: string;
 }
 

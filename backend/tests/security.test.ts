@@ -65,6 +65,63 @@ describe('Security, Authentication & Data Integrity Tests', () => {
       expect(res.body.data).toHaveProperty('model');
       expect(res.body.data).toHaveProperty('isConfigured');
     });
+
+    it('rejects login with unregistered email with 401', async () => {
+      const res = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: 'nonexistent-user-123@spendx.local',
+          password: 'Password123!',
+        });
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBe(false);
+      expect(res.body.message).toContain('No account found');
+    });
+
+    it('registers a new user and allows login with exact credentials', async () => {
+      const uniqueEmail = `testuser_${Date.now()}@spendx.local`;
+      const regRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          fullName: 'Test User',
+          email: uniqueEmail,
+          password: 'StrongPassword123!',
+        });
+      expect(regRes.status).toBe(201);
+      expect(regRes.body.success).toBe(true);
+      expect(regRes.body.user.email).toBe(uniqueEmail);
+
+      // Rejects duplicate registration with 409
+      const dupRes = await request(app)
+        .post('/api/v1/auth/register')
+        .send({
+          fullName: 'Duplicate User',
+          email: uniqueEmail,
+          password: 'StrongPassword123!',
+        });
+      expect(dupRes.status).toBe(409);
+
+      // Rejects login with wrong password
+      const wrongPassRes = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: uniqueEmail,
+          password: 'WrongPassword999!',
+        });
+      expect(wrongPassRes.status).toBe(401);
+      expect(wrongPassRes.body.message).toContain('Invalid password');
+
+      // Succeeds login with correct password
+      const loginRes = await request(app)
+        .post('/api/v1/auth/login')
+        .send({
+          email: uniqueEmail,
+          password: 'StrongPassword123!',
+        });
+      expect(loginRes.status).toBe(200);
+      expect(loginRes.body.success).toBe(true);
+      expect(loginRes.body.token).toBeDefined();
+    });
   });
 
   describe('Input Validation & Data Sanitization', () => {

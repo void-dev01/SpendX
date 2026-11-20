@@ -34,9 +34,27 @@ export const requireAuth = async (
   if (!supabaseClient) {
     // In local development mode without live Supabase keys, allow explicit dev tokens or frontend demo session tokens
     if (process.env.NODE_ENV !== 'production' && (token === 'spendx-dev-token' || token.startsWith('spendx_session_'))) {
+      let resolvedId = 'usr_dev_local_spendx';
+      let resolvedEmail = 'developer@spendx.local';
+
+      const parts = token.split('_');
+      // Format: spendx_session_<base64payload>_<sig>
+      if (parts.length >= 3) {
+        try {
+          const payloadJson = Buffer.from(parts[2], 'base64url').toString('utf-8');
+          const parsed = JSON.parse(payloadJson);
+          if (parsed.id && parsed.email) {
+            resolvedId = parsed.id;
+            resolvedEmail = parsed.email;
+          }
+        } catch {
+          // keep fallback
+        }
+      }
+
       req.user = {
-        id: 'usr_dev_local_spendx',
-        email: 'developer@spendx.local',
+        id: resolvedId,
+        email: resolvedEmail,
         role: 'authenticated',
       };
       return next();
