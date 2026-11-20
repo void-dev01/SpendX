@@ -11,6 +11,7 @@ import { savingsService } from './savingsService';
 import { accountService } from './accountService';
 import { recurringService } from './recurringService';
 import { getUserScopedKey } from '../lib/userStorage';
+import { env } from '../config/env';
 
 export interface AnswerCardData {
   type: 'SPENDING' | 'BUDGET' | 'SAVINGS' | 'CATEGORY';
@@ -545,11 +546,94 @@ export const aiAssistantService = {
         throw errorObj;
       }
 
+      // If backend is offline or unreachable, try direct OpenRouter AI inference if configured
+      if (env.openRouterApiKey && import.meta.env.MODE !== 'test') {
+        try {
+          const directRes = await this.queryDirectOpenRouter(query, history, context);
+          if (directRes) {
+            this.incrementLocalUsage();
+            return directRes;
+          }
+        } catch (directErr) {
+          console.warn('Direct OpenRouter query failed, falling back to local intelligence', directErr);
+        }
+      }
+
       console.warn('Backend /ai/coach call failed, using client-side fallback intelligence', err);
       this.incrementLocalUsage();
       // Fallback deterministic grounded answer if backend server isn't running
       return this.generateFallbackResponse(query, context);
     }
+  },
+
+  /**
+   * Direct high-accuracy OpenRouter AI client query for universal ChatGPT-grade responses
+   */
+  async queryDirectOpenRouter(
+    query: string,
+    history: Array<{ role: 'user' | 'assistant'; content: string }>,
+    context: any
+  ): Promise<{ answer: string; card?: AnswerCardData; modelUsed: string } | null> {
+    const apiKey = env.openRouterApiKey;
+    if (!apiKey) return null;
+
+    const todayDate = context?.currentDateFormatted || new Date().toLocaleDateString('en-IN');
+    const systemPrompt = `You are SPENDX AI, a versatile, ultra-capable AI assistant and personal financial coach (like ChatGPT).
+Today is ${todayDate}. You are friendly, articulate, and direct.
+
+CORE GUIDELINES:
+1. ANSWER ANY QUESTION:
+   - Answer ANY user query — whether financial or non-financial (technology, coding, general knowledge, math, science, daily life, writing, or casual conversation).
+   - If the query is outside personal finance: Answer directly, accurately, and brilliantly like ChatGPT. NEVER refuse or force financial terms into general queries.
+2. GROUNDED FINANCIAL ACCURACY:
+   - When asked about the user's money, spending, budgets, savings, or accounts: Use the verified personal financial data below.
+   - Cite specific numbers with ₹ formatting.
+3. CONCISE & BEST QUALITY:
+   - Keep answers crisp, impactful, well-structured, and helpful ("jayda bada nahi, bas best aur complete").
+4. NATURAL LANGUAGE MATCH:
+   - If asked in Hindi or Hinglish, reply naturally in Hinglish/Hindi!
+   - If asked in English, reply in clean, articulate English.
+
+USER'S VERIFIED FINANCIAL DATA (AS OF TODAY):
+${JSON.stringify(context || {}, null, 2)}`;
+
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
+      { role: 'user', content: query },
+    ];
+
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'X-Title': 'SPENDX AI Coach',
+      },
+      body: JSON.stringify({
+        model: 'nvidia/nemotron-3.5-lightning:free',
+        messages,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`OpenRouter HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    let answer = data?.choices?.[0]?.message?.content || '';
+    if (answer) {
+      answer = answer
+        .replace(/<think>[\s\S]*?<\/think>/gi, '')
+        .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
+        .replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '')
+        .trim();
+      return {
+        answer,
+        modelUsed: 'SPENDX AI (Nemotron 3.5 Lightning)',
+      };
+    }
+    return null;
   },
 
   /**
@@ -801,24 +885,35 @@ Transactions are synced and categorized in your SPENDX ledger.`,
       };
     }
 
-    // 9. General Financial Intelligence Context
+    // 9. Intelligent General Question & Conversational Response
     const accounts = context?.accounts || [];
     const totalBalance = Number(ov?.totalLiquidBalance !== undefined ? ov.totalLiquidBalance : accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0));
 
+    // If query looks like a general greeting, question, or inquiry
+    if (q.includes('?') || q.split(' ').length > 2 || q.includes('kya') || q.includes('kaise') || q.includes('batao') || q.includes('what') || q.includes('how') || q.includes('why')) {
+      return {
+        answer: `Maine aapka sawal samjha: **"${query.trim()}"**.
+        
+Aapke sawal ka seedha aur best uttar:
+Main **SPENDX AI** hoon — main aapke accounts, kharche, aur budgets ko track karne ke sath-sath kisi bhi sawal (coding, general knowledge, money management, ya daily guidance) par aapki poori madad kar sakta hoon.
+
+💡 **Financial Snapshot (Aaj ka)**:
+- Total Liquid Balance: **₹${totalBalance.toLocaleString('en-IN')}**
+- This Month Cashflow: **₹${netCashFlow.toLocaleString('en-IN')}**
+- Top Outflow Category: **${topCat?.category || 'None'}**
+
+Aap mujhse koi bhi detailed sawal Hindi ya English me pooch sakte hain!`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
     return {
-      answer: `Here is your live financial snapshot as of **${context?.currentDateFormatted || 'today'}**:
+      answer: `Main aapki har tarah se madad karne ke liye ready hoon! Aap mujhse finance (balance, kharcha, budget, savings) ya koi bhi general topic par sawal pooch sakte hain.
 
-- 💰 **Liquid Net Worth**: **₹${totalBalance.toLocaleString('en-IN')}** across ${accounts.length} account(s)
-- 📊 **This Month Cash Flow**: **₹${netCashFlow.toLocaleString('en-IN')}** (Earned: ₹${totalIncome.toLocaleString('en-IN')} | Spent: ₹${totalExpenses.toLocaleString('en-IN')})
-- 🎯 **Savings Rate**: **${savingsRate}%**
-${topCat ? `- 🛍️ **Primary Outflow**: **${topCat.category}** (₹${topCat.amount.toLocaleString('en-IN')})` : ''}
+- Current Balance: **₹${totalBalance.toLocaleString('en-IN')}** (${accounts.length} accounts)
+- Savings Velocity: **${savingsRate}%**
 
-You can ask me anything about your finances in Hindi or English:
-- *"Mera total balance kitna hai?"*
-- *"Aaj ka kharcha kitna hua?"*
-- *"Where is most of my money going?"*
-- *"Am I within my monthly budget?"*
-- *"How can I increase my monthly savings?"*`,
+Aapka sawal likhiye, main turant best response doonga!`,
       modelUsed: 'SPENDX Intelligence Core',
     };
   },

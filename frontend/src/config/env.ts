@@ -6,6 +6,7 @@ export interface AppEnvConfig {
   apiBaseUrl: string;
   supabaseUrl: string | undefined;
   supabaseAnonKey: string | undefined;
+  openRouterApiKey: string | undefined;
   isDevelopment: boolean;
   isProduction: boolean;
 }
@@ -22,6 +23,7 @@ export const env: AppEnvConfig = {
   apiBaseUrl: getEnvVar('VITE_API_BASE_URL', 'http://localhost:5000/api/v1')!,
   supabaseUrl: getEnvVar('VITE_SUPABASE_URL'),
   supabaseAnonKey: getEnvVar('VITE_SUPABASE_ANON_KEY'),
+  openRouterApiKey: getEnvVar('VITE_OPENROUTER_API_KEY'),
   isDevelopment: Boolean(import.meta.env.DEV),
   isProduction: Boolean(import.meta.env.PROD),
 };

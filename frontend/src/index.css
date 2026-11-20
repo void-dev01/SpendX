@@ -487,6 +487,7 @@ body,
 .dark textarea:focus {
   border-color: var(--primary);
   outline: none;
+  box-shadow: 0 0 0 2px rgba(165, 241, 43, 0.2);
 }
 
 .dark input::placeholder,
@@ -494,9 +495,37 @@ body,
   color: var(--muted-foreground);
 }
 
-.dark select option {
-  background-color: var(--surface);
-  color: var(--foreground);
+/* Custom Themed Select & Dropdown Styling matching SPENDX Design System */
+select {
+  cursor: pointer;
+}
+
+select option {
+  background-color: #1B211B !important;
+  color: #F3F6F0 !important;
+  padding: 8px 12px;
+}
+
+select option:checked {
+  background-color: #242C23 !important;
+  color: #A5F12B !important;
+  font-weight: 600;
+}
+
+select option:hover {
+  background-color: #242C23 !important;
+  color: #A5F12B !important;
+}
+
+:root:not(.dark) select option {
+  background-color: #FFFFFF !important;
+  color: #202420 !important;
+}
+
+:root:not(.dark) select option:checked {
+  background-color: #F0F2ED !important;
+  color: #111711 !important;
+  font-weight: 600;
 }
 
 @media print {

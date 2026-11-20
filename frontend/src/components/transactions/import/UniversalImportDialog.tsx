@@ -75,7 +75,20 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
 
   if (!isOpen) return null;
 
-  const targetAccount = accounts.find((a) => a.id === selectedAccountId) || accounts[0];
+  const defaultAccount: AccountRecord = {
+    id: 'acc-primary',
+    userId: 'default-user',
+    name: 'Primary Account',
+    institution: 'Bank',
+    type: 'BANK',
+    balance: 0,
+    currency: 'INR',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  const targetAccount = accounts.find((a) => a.id === selectedAccountId) || accounts[0] || defaultAccount;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -105,10 +118,6 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
 
   // Move from Step 1 to Step 2/3
   const handleProceedFromStep1 = async () => {
-    if (!targetAccount) {
-      toast.error('Please select a destination account');
-      return;
-    }
 
     if (source === 'SMS_TEXT') {
       if (!smsInputText.trim()) {
@@ -283,7 +292,7 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                 </span>
                 <span className="text-xs text-secondary-text">
                   {step === 1
-                    ? 'Select Source & Destination'
+                    ? 'Select Source & Upload File'
                     : step === 2
                     ? 'Verify Column Mapping'
                     : 'Preview & Reconcile'}
@@ -328,31 +337,12 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                   <ImportSourceSelector selectedSource={source} onSelectSource={setSource} />
                 </div>
 
-                {/* 2. Destination Account */}
-                <div>
-                  <label htmlFor="import-dest-acc" className="block text-xs font-medium text-foreground mb-1.5">
-                    2. Reconcile Into Account *
-                  </label>
-                  <select
-                    id="import-dest-acc"
-                    value={selectedAccountId}
-                    onChange={(e) => setSelectedAccountId(e.target.value)}
-                    className="w-full p-2.5 rounded-xl bg-surface-elevated border border-border text-xs text-foreground font-medium cursor-pointer shadow-xs focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  >
-                    {accounts.map((acc) => (
-                      <option key={acc.id} value={acc.id}>
-                        {acc.name} ({acc.type}) — Current Balance: ₹{acc.balance.toLocaleString('en-IN')}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* 3. Input Zone: File Upload or SMS Text */}
+                {/* 2. Input Zone: File Upload or SMS Text */}
                 {source === 'SMS_TEXT' ? (
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="text-xs font-medium text-foreground">
-                        3. Paste Banking SMS Alerts
+                        2. Paste Banking SMS Alerts
                       </label>
                       <button
                         type="button"
@@ -374,7 +364,7 @@ export const UniversalImportDialog: React.FC<UniversalImportDialogProps> = ({
                 ) : (
                   <div>
                     <label className="block text-xs font-medium text-foreground mb-1.5">
-                      3. Upload Statement File ({source === 'CSV' ? '.csv' : source === 'EXCEL' ? '.xlsx, .xls, .csv' : '.pdf, .txt'})
+                      2. Upload Statement Document ({source === 'CSV' ? '.csv' : source === 'EXCEL' ? '.xlsx, .xls, .csv' : '.pdf, .txt'})
                     </label>
                     <label className="border-2 border-dashed border-border rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-primary/60 transition-colors bg-surface-elevated group">
                       <input

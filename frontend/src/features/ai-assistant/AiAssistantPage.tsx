@@ -208,19 +208,9 @@ export const AiAssistantPage: React.FC = () => {
       activeConversation.messages[0].id === 'msg-welcome-ai');
 
   return (
-    <div className="space-y-4 pb-8 animate-in fade-in duration-300">
-      {/* 1. Header with Quota Pill */}
-      <AssistantHeader
-        onNewChat={handleNewChat}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isSidebarOpen={isSidebarOpen}
-        quota={quota || undefined}
-        queuedCount={queuedMessages.length}
-        onOpenQueuedModal={() => setIsQueuedModalOpen(true)}
-      />
-
-      {/* 2. Workspace: Sidebar + Chat Panel */}
-      <div className="flex gap-4 items-start min-h-[420px] sm:min-h-[540px]">
+    <div className="space-y-4 pb-4 animate-in fade-in duration-300">
+      {/* Unified AI Workspace: Sidebar + Single Unified Chat Card */}
+      <div className="flex gap-4 items-stretch h-[calc(100dvh-7.5rem)] min-h-[560px]">
         {/* Conversation History Sidebar */}
         <ConversationSidebar
           conversations={conversations}
@@ -232,10 +222,21 @@ export const AiAssistantPage: React.FC = () => {
           onClose={() => setIsSidebarOpen(false)}
         />
 
-        {/* Main Chat Panel */}
-        <div className="flex-1 rounded-[20px] bg-surface border border-border p-3 sm:p-6 flex flex-col justify-between min-h-[420px] sm:min-h-[540px] h-[calc(100dvh-13rem)] relative overflow-hidden shadow-card">
+        {/* Unified All-In-One Chat Card (Merged Header, Message Stream & Composer) */}
+        <div className="flex-1 rounded-[22px] bg-surface border border-border flex flex-col justify-between h-full relative overflow-hidden shadow-card">
+          {/* Integrated Header Toolbar */}
+          <AssistantHeader
+            onNewChat={handleNewChat}
+            onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            isSidebarOpen={isSidebarOpen}
+            quota={quota || undefined}
+            queuedCount={queuedMessages.length}
+            onOpenQueuedModal={() => setIsQueuedModalOpen(true)}
+            className="px-4 py-3 shrink-0"
+          />
+
           {/* Scrollable Messages Stream */}
-          <div className="flex-1 overflow-y-auto pr-1 space-y-2 no-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 no-scrollbar">
             {isWelcomeScreen ? (
               <ChatWelcome onSelectPrompt={handleSendMessage} />
             ) : (
@@ -252,8 +253,8 @@ export const AiAssistantPage: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Sticky Composer */}
-          <div className="pt-3 border-t border-border">
+          {/* Integrated Composer */}
+          <div className="p-3 sm:p-4 border-t border-border bg-surface-elevated/20 shrink-0">
             <MessageComposer
               onSend={handleSendMessage}
               isLoading={isLoading}

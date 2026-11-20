@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, History, Bot, Clock, Sparkles } from 'lucide-react';
 import { DailyQuotaInfo } from '@/services/aiAssistantService';
+import { cn } from '@/lib/utils';
 
 interface AssistantHeaderProps {
   onNewChat: () => void;
@@ -9,6 +10,7 @@ interface AssistantHeaderProps {
   quota?: DailyQuotaInfo;
   queuedCount?: number;
   onOpenQueuedModal?: () => void;
+  className?: string;
 }
 
 export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
@@ -18,11 +20,17 @@ export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
   quota,
   queuedCount = 0,
   onOpenQueuedModal,
+  className,
 }) => {
   const remaining = quota ? quota.remaining : 200;
 
   return (
-    <div className="rounded-2xl bg-surface border border-border p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-card">
+    <div
+      className={cn(
+        'p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border bg-surface-elevated/40',
+        className
+      )}
+    >
       {/* Title & Status Indicator */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">

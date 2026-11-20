@@ -70,7 +70,11 @@ export class AIRouter {
           );
 
           // Strip internal reasoning tags if emitted by reasoning models
-          let cleanContent = answer.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+          let cleanContent = answer
+            .replace(/<think>[\s\S]*?<\/think>/gi, '')
+            .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
+            .replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '')
+            .trim();
           if (!cleanContent) {
             cleanContent = answer.trim();
           }
