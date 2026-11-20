@@ -75,7 +75,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
       <form
         onSubmit={handleSubmit}
-        className="p-2 sm:p-2.5 rounded-xl bg-surface-elevated border border-border shadow-xs relative flex items-end gap-2"
+        className="p-2 sm:p-2.5 rounded-xl bg-surface-elevated border border-border focus-within:border-border focus-within:ring-0 focus-within:outline-none shadow-xs relative flex items-end gap-2"
       >
         <textarea
           ref={textareaRef}
@@ -87,9 +87,9 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
           placeholder={
             isLimitReached
               ? 'Type your inquiry to schedule/queue for tomorrow...'
-              : 'Ask about your spending, budgets, savings goals...'
+              : 'Ask anything — personal finances, accounts, or any question...'
           }
-          className="flex-1 max-h-36 resize-none bg-transparent px-3 py-2 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+          className="flex-1 max-h-36 resize-none bg-transparent px-3 py-2 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-0 border-0 outline-none ring-0 shadow-none"
           aria-label="Message input"
         />
 

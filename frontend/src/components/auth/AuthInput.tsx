@@ -37,8 +37,8 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
               Icon ? 'pl-10 pr-3.5' : 'px-3.5'
             } ${
               error
-                ? 'border-destructive bg-destructive/5 focus:ring-2 focus:ring-destructive/30'
-                : 'border-border bg-surface-elevated focus:border-primary focus:ring-2 focus:ring-primary/25'
+                ? 'border-destructive bg-destructive/5 focus:ring-1 focus:ring-destructive/30'
+                : 'border-border bg-surface-elevated focus:border-border focus:ring-0'
             } border shadow-xs text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
             {...props}
           />

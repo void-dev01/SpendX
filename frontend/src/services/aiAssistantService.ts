@@ -579,7 +579,7 @@ export const aiAssistantService = {
 
     const todayDate = context?.currentDateFormatted || new Date().toLocaleDateString('en-IN');
     const systemPrompt = `You are SPENDX AI, a versatile, ultra-capable AI assistant and personal financial coach (like ChatGPT).
-Today is ${todayDate}. You are friendly, articulate, and direct.
+Today is ${todayDate}. You are friendly, articulate, highly intelligent, and direct.
 
 CORE GUIDELINES:
 1. ANSWER ANY QUESTION:
@@ -603,36 +603,49 @@ ${JSON.stringify(context || {}, null, 2)}`;
       { role: 'user', content: query },
     ];
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'X-Title': 'SPENDX AI Coach',
-      },
-      body: JSON.stringify({
-        model: 'nvidia/nemotron-3.5-lightning:free',
-        messages,
-      }),
-    });
+    const fallbackModels = [
+      'nvidia/nemotron-3.5-lightning:free',
+      'baidu/ernie-5.5-flash-preview:free',
+      'recursive/flint-v1.0:free',
+    ];
 
-    if (!response.ok) {
-      throw new Error(`OpenRouter HTTP ${response.status}`);
+    for (const model of fallbackModels) {
+      try {
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'X-Title': 'SPENDX AI Coach',
+          },
+          body: JSON.stringify({
+            model,
+            messages,
+          }),
+        });
+
+        if (!response.ok) {
+          continue;
+        }
+
+        const data = await response.json();
+        let answer = data?.choices?.[0]?.message?.content || '';
+        if (answer && answer.trim().length > 0) {
+          answer = answer
+            .replace(/<think>[\s\S]*?<\/think>/gi, '')
+            .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
+            .replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '')
+            .trim();
+          return {
+            answer,
+            modelUsed: `SPENDX AI (${model.split('/')[1]?.replace(':free', '') || model})`,
+          };
+        }
+      } catch (e) {
+        console.warn(`Direct model ${model} failed, trying next fallback:`, e);
+      }
     }
 
-    const data = await response.json();
-    let answer = data?.choices?.[0]?.message?.content || '';
-    if (answer) {
-      answer = answer
-        .replace(/<think>[\s\S]*?<\/think>/gi, '')
-        .replace(/<thought>[\s\S]*?<\/thought>/gi, '')
-        .replace(/\[THINKING\][\s\S]*?\[\/THINKING\]/gi, '')
-        .trim();
-      return {
-        answer,
-        modelUsed: 'SPENDX AI (Nemotron 3.5 Lightning)',
-      };
-    }
     return null;
   },
 
@@ -890,19 +903,9 @@ Transactions are synced and categorized in your SPENDX ledger.`,
     const totalBalance = Number(ov?.totalLiquidBalance !== undefined ? ov.totalLiquidBalance : accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0));
 
     // If query looks like a general greeting, question, or inquiry
-    if (q.includes('?') || q.split(' ').length > 2 || q.includes('kya') || q.includes('kaise') || q.includes('batao') || q.includes('what') || q.includes('how') || q.includes('why')) {
+    if (q.includes('code') || q.includes('python') || q.includes('java') || q.includes('react') || q.includes('program') || q.includes('tech') || q.includes('software')) {
       return {
-        answer: `Maine aapka sawal samjha: **"${query.trim()}"**.
-        
-Aapke sawal ka seedha aur best uttar:
-Main **SPENDX AI** hoon — main aapke accounts, kharche, aur budgets ko track karne ke sath-sath kisi bhi sawal (coding, general knowledge, money management, ya daily guidance) par aapki poori madad kar sakta hoon.
-
-💡 **Financial Snapshot (Aaj ka)**:
-- Total Liquid Balance: **₹${totalBalance.toLocaleString('en-IN')}**
-- This Month Cashflow: **₹${netCashFlow.toLocaleString('en-IN')}**
-- Top Outflow Category: **${topCat?.category || 'None'}**
-
-Aap mujhse koi bhi detailed sawal Hindi ya English me pooch sakte hain!`,
+        answer: `Main tech aur coding related sawalon par bhi aapki poori madad kar sakta hoon! Aap apna exact sawal, code snippet, ya topic (Python, JS, React, SQL, etc.) pooch sakte hain — main detail solution aur clean explanation provide karunga.`,
         modelUsed: 'SPENDX Intelligence Core',
       };
     }

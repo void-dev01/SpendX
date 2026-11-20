@@ -35,8 +35,8 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
             aria-describedby={error ? `${id}-error` : helperText ? `${id}-helper` : undefined}
             className={`w-full h-10 sm:h-10.5 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 outline-none pl-10 pr-10 ${
               error
-                ? 'border-destructive bg-destructive/5 focus:ring-2 focus:ring-destructive/30'
-                : 'border-border bg-surface-elevated focus:border-primary focus:ring-2 focus:ring-primary/25'
+                ? 'border-destructive bg-destructive/5 focus:ring-1 focus:ring-destructive/30'
+                : 'border-border bg-surface-elevated focus:border-border focus:ring-0'
             } border shadow-xs text-foreground placeholder:text-muted-foreground disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
             {...props}
           />
