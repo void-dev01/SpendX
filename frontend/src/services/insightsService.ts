@@ -10,6 +10,7 @@ import { savingsService } from './savingsService';
 import { accountService } from './accountService';
 import { recurringService } from './recurringService';
 import { apiClient } from './api';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type InsightType =
   | 'CRITICAL_ALERT'
@@ -58,9 +59,17 @@ const STORAGE_KEY_DISMISSED = 'spendx_insights_dismissed';
 const STORAGE_KEY_BOOKMARKED = 'spendx_insights_bookmarked';
 
 export const insightsService = {
+  getDismissedKey(): string {
+    return getUserScopedKey(STORAGE_KEY_DISMISSED);
+  },
+
+  getBookmarkedKey(): string {
+    return getUserScopedKey(STORAGE_KEY_BOOKMARKED);
+  },
+
   getDismissedIds(): string[] {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY_DISMISSED);
+      const raw = localStorage.getItem(this.getDismissedKey());
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -71,7 +80,7 @@ export const insightsService = {
     const list = this.getDismissedIds();
     if (!list.includes(id)) {
       list.push(id);
-      localStorage.setItem(STORAGE_KEY_DISMISSED, JSON.stringify(list));
+      localStorage.setItem(this.getDismissedKey(), JSON.stringify(list));
     }
     try {
       apiClient.patch(`/ai/insights/${id}/dismiss`).catch(() => {});
@@ -82,7 +91,7 @@ export const insightsService = {
 
   getBookmarkedIds(): string[] {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKED);
+      const raw = localStorage.getItem(this.getBookmarkedKey());
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -100,7 +109,7 @@ export const insightsService = {
       list.push(id);
       bookmarked = true;
     }
-    localStorage.setItem(STORAGE_KEY_BOOKMARKED, JSON.stringify(list));
+    localStorage.setItem(this.getBookmarkedKey(), JSON.stringify(list));
     try {
       apiClient.patch(`/ai/insights/${id}/bookmark`, { isBookmarked: bookmarked }).catch(() => {});
     } catch {
@@ -110,7 +119,7 @@ export const insightsService = {
   },
 
   resetDismissed(): void {
-    localStorage.removeItem(STORAGE_KEY_DISMISSED);
+    localStorage.removeItem(this.getDismissedKey());
   },
 
   /**

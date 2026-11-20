@@ -80,7 +80,7 @@ export const reportsService = {
    */
   async getArchivedStatements(): Promise<MonthlyStatementRecord[]> {
     const user = authService.getUser();
-    if (user && user.id !== 'demo-user-id') {
+    if (user && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
       try {
         const now = new Date();
         await apiClient.get('/reports/monthly-statement', {
@@ -170,7 +170,7 @@ export const reportsService = {
     const user = authService.getUser();
     const currentYear = new Date().getFullYear();
 
-    if (user && user.id !== 'demo-user-id') {
+    if (user && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
       try {
         const res = await apiClient.get('/reports/tax-summary', {
           params: { taxYear: String(currentYear) },
@@ -358,7 +358,7 @@ export const reportsService = {
    */
   exportToCSV(report: GeneratedFinancialReport): void {
     const user = authService.getUser();
-    if (user && user.id !== 'demo-user-id') {
+    if (user && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
       apiClient.get('/reports/export-csv')
         .catch(() => {});
     }

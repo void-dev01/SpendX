@@ -7,6 +7,7 @@
 import { authService } from './authService';
 import { supabase } from './supabase';
 import { apiClient } from './api';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type AccountType = 'BANK' | 'SAVINGS' | 'CASH' | 'CREDIT_CARD' | 'OTHER';
 export type AccountStatus = 'ACTIVE' | 'ARCHIVED';
@@ -94,11 +95,20 @@ export const INITIAL_DEMO_ACCOUNTS: AccountRecord[] = [
 const LOCAL_STORAGE_ACCOUNTS_KEY = 'spendx_accounts_store_v1';
 
 export const accountService = {
+  getStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_ACCOUNTS_KEY);
+  },
+
   getStoredAccounts(): AccountRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_ACCOUNTS_KEY);
+      const stored = localStorage.getItem(this.getStorageKey());
       if (stored) {
-        return JSON.parse(stored);
+        const parsed: AccountRecord[] = JSON.parse(stored);
+        const user = authService.getUser();
+        if (user?.id && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
+          return parsed.filter((a) => a.userId === user.id);
+        }
+        return parsed;
       }
     } catch (e) {
       console.warn('Failed to parse cached accounts', e);
@@ -108,7 +118,7 @@ export const accountService = {
 
   saveStoredAccounts(accounts: AccountRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_ACCOUNTS_KEY, JSON.stringify(accounts));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(accounts));
     } catch (e) {
       console.warn('Failed to cache accounts', e);
     }

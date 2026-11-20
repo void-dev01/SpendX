@@ -23,7 +23,7 @@ export interface SavingsGoalRecord {
 export class SavingsService {
   public static async getGoals(userId: string): Promise<SavingsGoalRecord[]> {
     if (process.env.NODE_ENV === 'test') {
-      const rawList = localStore.getSavingsGoals().filter((g) => g.userId === userId || userId === 'usr_dev_local_spendx');
+      const rawList = localStore.getSavingsGoals().filter((g) => g.userId === userId);
 
       return rawList.map((g) => {
         const remainingAmount = Math.max(0, g.targetAmount - g.currentAmount);
@@ -173,7 +173,7 @@ export class SavingsService {
   ): Promise<SavingsGoalRecord> {
     if (process.env.NODE_ENV === 'test') {
       const goals = localStore.getSavingsGoals();
-      const idx = goals.findIndex((g) => g.id === id && (g.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = goals.findIndex((g) => g.id === id && g.userId === userId);
       if (idx === -1) throw new AppError('Savings goal not found', 404);
       goals[idx] = {
         ...goals[idx],
@@ -236,7 +236,7 @@ export class SavingsService {
   public static async deleteGoal(userId: string, id: string): Promise<void> {
     if (process.env.NODE_ENV === 'test') {
       const goals = localStore.getSavingsGoals();
-      const idx = goals.findIndex((g) => g.id === id && (g.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = goals.findIndex((g) => g.id === id && g.userId === userId);
       if (idx === -1) throw new AppError('Savings goal not found', 404);
       goals.splice(idx, 1);
       localStore.saveSavingsGoals(goals);

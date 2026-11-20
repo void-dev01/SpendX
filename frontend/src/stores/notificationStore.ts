@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export interface AppNotification {
   id: string;
@@ -54,7 +55,7 @@ const STORAGE_KEY = 'spendx_notifications_v1';
 const getInitialNotifications = (): AppNotification[] => {
   if (typeof window === 'undefined') return DEFAULT_NOTIFICATIONS;
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(getUserScopedKey(STORAGE_KEY));
     if (saved) {
       return JSON.parse(saved);
     }
@@ -67,7 +68,7 @@ const getInitialNotifications = (): AppNotification[] => {
 const saveNotifications = (items: AppNotification[]) => {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    localStorage.setItem(getUserScopedKey(STORAGE_KEY), JSON.stringify(items));
   } catch {
     // ignore
   }

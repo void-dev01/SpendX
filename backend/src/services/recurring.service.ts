@@ -28,7 +28,7 @@ export class RecurringService {
   public static async getRecurring(userId: string): Promise<RecurringRecord[]> {
     if (process.env.NODE_ENV === 'test') {
       const rec = localStore.getRecurring();
-      return rec.filter((r) => r.userId === userId || userId === 'usr_dev_local_spendx');
+      return rec.filter((r) => r.userId === userId);
     }
 
     const db = getDbClient();

@@ -10,6 +10,7 @@ import { supabase } from './supabase';
 import { apiClient } from './api';
 import { transactionService, TransactionRecord } from './transactionService';
 import { accountService } from './accountService';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type RecurringFrequency =
   | 'DAILY'
@@ -181,10 +182,21 @@ export const INITIAL_DEMO_RECURRING: RecurringRecord[] = [
 const LOCAL_STORAGE_RECURRING_KEY = 'spendx_recurring_payments_v1';
 
 export const recurringService = {
+  getStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_RECURRING_KEY);
+  },
+
   getStoredPayments(): RecurringRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_RECURRING_KEY);
-      if (stored) return JSON.parse(stored);
+      const stored = localStorage.getItem(this.getStorageKey());
+      if (stored) {
+        const parsed: RecurringRecord[] = JSON.parse(stored);
+        const user = authService.getUser();
+        if (user?.id && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
+          return parsed.filter((r) => r.userId === user.id);
+        }
+        return parsed;
+      }
     } catch (e) {
       console.warn('Failed to parse cached recurring payments', e);
     }
@@ -193,7 +205,7 @@ export const recurringService = {
 
   saveStoredPayments(records: RecurringRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_RECURRING_KEY, JSON.stringify(records));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(records));
     } catch (e) {
       console.warn('Failed to cache recurring payments', e);
     }

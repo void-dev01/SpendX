@@ -10,6 +10,7 @@ import { budgetService } from './budgetService';
 import { savingsService } from './savingsService';
 import { accountService } from './accountService';
 import { recurringService } from './recurringService';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export interface AnswerCardData {
   type: 'SPENDING' | 'BUDGET' | 'SAVINGS' | 'CATEGORY';
@@ -80,12 +81,29 @@ How can I help you optimize your money today? Pick a suggested prompt below or t
 };
 
 export const aiAssistantService = {
+  getConversationsKey(): string {
+    return getUserScopedKey(STORAGE_CONVERSATIONS_KEY);
+  },
+
+  getActiveConvKey(): string {
+    return getUserScopedKey(STORAGE_ACTIVE_CONV_KEY);
+  },
+
+  getQueuedMessagesKey(): string {
+    return getUserScopedKey('spendx_ai_queued_messages');
+  },
+
+  getUsageKey(): string {
+    const today = new Date().toISOString().slice(0, 10);
+    return getUserScopedKey(`spendx_ai_usage_${today}`);
+  },
+
   /**
    * Retrieves all user conversations from storage
    */
   getConversations(): ConversationRecord[] {
     try {
-      const stored = localStorage.getItem(STORAGE_CONVERSATIONS_KEY);
+      const stored = localStorage.getItem(this.getConversationsKey());
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
@@ -104,7 +122,7 @@ export const aiAssistantService = {
    */
   saveConversations(conversations: ConversationRecord[]): void {
     try {
-      localStorage.setItem(STORAGE_CONVERSATIONS_KEY, JSON.stringify(conversations));
+      localStorage.setItem(this.getConversationsKey(), JSON.stringify(conversations));
     } catch (e) {
       console.warn('Failed to cache conversations', e);
     }
@@ -114,7 +132,7 @@ export const aiAssistantService = {
    * Gets the active conversation ID
    */
   getActiveConversationId(): string {
-    const stored = localStorage.getItem(STORAGE_ACTIVE_CONV_KEY);
+    const stored = localStorage.getItem(this.getActiveConvKey());
     if (stored) return stored;
     return 'conv-initial-welcome';
   },
@@ -123,7 +141,7 @@ export const aiAssistantService = {
    * Sets active conversation ID
    */
   setActiveConversationId(id: string): void {
-    localStorage.setItem(STORAGE_ACTIVE_CONV_KEY, id);
+    localStorage.setItem(this.getActiveConvKey(), id);
   },
 
   /**
@@ -326,7 +344,6 @@ export const aiAssistantService = {
    * Retrieves user's daily 200 message quota
    */
   async getDailyQuota(): Promise<DailyQuotaInfo> {
-    const today = new Date().toISOString().slice(0, 10);
     const resetDate = new Date();
     resetDate.setUTCHours(24, 0, 0, 0);
     const resetAt = resetDate.toISOString();
@@ -340,8 +357,7 @@ export const aiAssistantService = {
       // Fallback to client-side offline storage
     }
 
-    const localKey = `spendx_ai_usage_${today}`;
-    const stored = parseInt(localStorage.getItem(localKey) || '0', 10);
+    const stored = parseInt(localStorage.getItem(this.getUsageKey()) || '0', 10);
     const remaining = Math.max(0, 200 - stored);
 
     return {
@@ -392,7 +408,7 @@ export const aiAssistantService = {
     try {
       const res = await apiClient.get('/ai/queue');
       if (res.data?.success && Array.isArray(res.data?.data)) {
-        localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(res.data.data));
+        localStorage.setItem(this.getQueuedMessagesKey(), JSON.stringify(res.data.data));
         return res.data.data;
       }
     } catch {
@@ -400,7 +416,7 @@ export const aiAssistantService = {
     }
 
     try {
-      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      const stored = localStorage.getItem(this.getQueuedMessagesKey());
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
@@ -425,14 +441,14 @@ export const aiAssistantService = {
     }
 
     try {
-      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      const stored = localStorage.getItem(this.getQueuedMessagesKey());
       if (stored) {
         const parsed: QueuedMessageRecord[] = JSON.parse(stored);
         const item = parsed.find((m) => m.id === id);
         if (item) {
           item.query = newQuery.trim();
           item.updatedAt = new Date().toISOString();
-          localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(parsed));
+          localStorage.setItem(this.getQueuedMessagesKey(), JSON.stringify(parsed));
         }
       }
     } catch (err) {
@@ -451,11 +467,11 @@ export const aiAssistantService = {
     }
 
     try {
-      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      const stored = localStorage.getItem(this.getQueuedMessagesKey());
       if (stored) {
         const parsed: QueuedMessageRecord[] = JSON.parse(stored);
         const filtered = parsed.filter((m) => m.id !== id);
-        localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(filtered));
+        localStorage.setItem(this.getQueuedMessagesKey(), JSON.stringify(filtered));
       }
     } catch (err) {
       void err;
@@ -464,18 +480,17 @@ export const aiAssistantService = {
 
   saveQueuedMessageLocally(record: QueuedMessageRecord): void {
     try {
-      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      const stored = localStorage.getItem(this.getQueuedMessagesKey());
       const list: QueuedMessageRecord[] = stored ? JSON.parse(stored) : [];
       list.push(record);
-      localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(list));
+      localStorage.setItem(this.getQueuedMessagesKey(), JSON.stringify(list));
     } catch (err) {
       void err;
     }
   },
 
   incrementLocalUsage(): void {
-    const today = new Date().toISOString().slice(0, 10);
-    const key = `spendx_ai_usage_${today}`;
+    const key = this.getUsageKey();
     const curr = parseInt(localStorage.getItem(key) || '0', 10);
     localStorage.setItem(key, String(curr + 1));
   },

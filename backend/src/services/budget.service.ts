@@ -25,8 +25,8 @@ export interface BudgetRecord {
 export class BudgetService {
   public static async getBudgets(userId: string): Promise<BudgetRecord[]> {
     if (process.env.NODE_ENV === 'test') {
-      const rawList = localStore.getBudgets().filter((b) => b.userId === userId || userId === 'usr_dev_local_spendx');
-      const txns = localStore.getTransactions().filter((t) => t.userId === userId || userId === 'usr_dev_local_spendx');
+      const rawList = localStore.getBudgets().filter((b) => b.userId === userId);
+      const txns = localStore.getTransactions().filter((t) => t.userId === userId);
 
       return rawList.map((b) => {
         const spent = txns
@@ -231,7 +231,7 @@ export class BudgetService {
   ): Promise<BudgetRecord> {
     if (process.env.NODE_ENV === 'test') {
       const budgets = localStore.getBudgets();
-      const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = budgets.findIndex((b) => b.id === id && b.userId === userId);
       if (idx === -1) throw new AppError('Budget not found', 404);
       budgets[idx] = {
         ...budgets[idx],
@@ -308,7 +308,7 @@ export class BudgetService {
   public static async deleteBudget(userId: string, id: string): Promise<void> {
     if (process.env.NODE_ENV === 'test') {
       const budgets = localStore.getBudgets();
-      const idx = budgets.findIndex((b) => b.id === id && (b.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = budgets.findIndex((b) => b.id === id && b.userId === userId);
       if (idx === -1) throw new AppError('Budget not found', 404);
       budgets.splice(idx, 1);
       localStore.saveBudgets(budgets);

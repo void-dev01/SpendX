@@ -71,7 +71,7 @@ export class FinancialCalculationService {
     const { start, end } = this.getDateRange(period);
 
     if (!supabaseAdminClient) {
-      const accounts = localStore.getAccounts().filter((a) => a.userId === userId || userId === 'usr_dev_local_spendx');
+      const accounts = localStore.getAccounts().filter((a) => a.userId === userId);
       let totalAssets = 0;
       let totalLiabilities = 0;
 
@@ -86,7 +86,7 @@ export class FinancialCalculationService {
       });
 
       const txns = localStore.getTransactions().filter((t) => {
-        if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+        if (t.userId !== userId) return false;
         const tDate = new Date(t.date);
         return tDate >= start && tDate <= end;
       });
@@ -203,7 +203,7 @@ export class FinancialCalculationService {
 
     if (!supabaseAdminClient) {
       const txns = localStore.getTransactions().filter((t) => {
-        if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+        if (t.userId !== userId) return false;
         if (String(t.type).toUpperCase() !== 'EXPENSE') return false;
         const tDate = new Date(t.date);
         return tDate >= start && tDate <= end;

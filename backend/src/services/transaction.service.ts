@@ -253,7 +253,7 @@ export class TransactionService {
 
     if (process.env.NODE_ENV === 'test') {
       const txns = localStore.getTransactions();
-      let filtered = txns.filter((t) => t.userId === userId || userId === 'usr_dev_local_spendx');
+      let filtered = txns.filter((t) => t.userId === userId);
       if (params.type) filtered = filtered.filter((t) => t.type === params.type);
       if (params.category) filtered = filtered.filter((t) => t.category.toLowerCase() === params.category!.toLowerCase());
       if (params.accountId) filtered = filtered.filter((t) => t.accountId === params.accountId);
@@ -334,7 +334,7 @@ export class TransactionService {
   public static async getTransactionById(userId: string, id: string): Promise<Transaction> {
     if (process.env.NODE_ENV === 'test') {
       const txns = localStore.getTransactions();
-      const txn = txns.find((t) => t.id === id && (t.userId === userId || userId === 'usr_dev_local_spendx'));
+      const txn = txns.find((t) => t.id === id && t.userId === userId);
       if (!txn) throw new AppError('Transaction not found', 404);
       return txn;
     }
@@ -382,7 +382,7 @@ export class TransactionService {
 
     if (process.env.NODE_ENV === 'test') {
       const txns = localStore.getTransactions();
-      const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = txns.findIndex((t) => t.id === id && t.userId === userId);
       if (idx === -1) throw new AppError('Transaction not found', 404);
       const oldTxn = txns[idx];
       txns[idx] = {
@@ -492,7 +492,7 @@ export class TransactionService {
 
     if (process.env.NODE_ENV === 'test') {
       const txns = localStore.getTransactions();
-      const idx = txns.findIndex((t) => t.id === id && (t.userId === userId || userId === 'usr_dev_local_spendx'));
+      const idx = txns.findIndex((t) => t.id === id && t.userId === userId);
       if (idx === -1) throw new AppError('Transaction not found', 404);
       const deletedTxn = txns[idx];
       txns.splice(idx, 1);

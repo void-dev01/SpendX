@@ -11,7 +11,7 @@ export class AccountService {
   public static async getAccounts(userId: string): Promise<AccountRecord[]> {
     if (process.env.NODE_ENV === 'test') {
       const accounts = localStore.getAccounts();
-      return accounts.filter((a) => a.userId === userId || userId === 'usr_dev_local_spendx');
+      return accounts.filter((a) => a.userId === userId);
     }
 
     const db = getDbClient();
@@ -59,7 +59,7 @@ export class AccountService {
   public static async getAccountById(userId: string, accountId: string): Promise<AccountRecord> {
     if (process.env.NODE_ENV === 'test') {
       const accounts = localStore.getAccounts();
-      const account = accounts.find((a) => a.id === accountId && (a.userId === userId || userId === 'usr_dev_local_spendx'));
+      const account = accounts.find((a) => a.id === accountId && a.userId === userId);
       if (!account) {
         throw new AppError('Account not found', 404);
       }

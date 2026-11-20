@@ -55,7 +55,7 @@ export class DashboardService {
     } else {
       const localTxns = localStore
         .getTransactions()
-        .filter((t) => t.userId === userId || userId === 'usr_dev_local_spendx')
+        .filter((t) => t.userId === userId)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, 6);
 
@@ -129,7 +129,7 @@ export class DashboardService {
       periodTxns = localStore
         .getTransactions()
         .filter((t) => {
-          if (t.userId !== userId && userId !== 'usr_dev_local_spendx') return false;
+          if (t.userId !== userId) return false;
           const d = new Date(t.date);
           return d >= start && d <= end;
         })

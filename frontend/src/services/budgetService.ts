@@ -8,6 +8,7 @@ import { authService } from './authService';
 import { supabase } from './supabase';
 import { apiClient } from './api';
 import { transactionService, TransactionRecord } from './transactionService';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type BudgetPeriod = 'THIS_MONTH' | 'PREVIOUS_MONTH' | 'ALL_TIME';
 export type BudgetStatus = 'NORMAL' | 'APPROACHING' | 'NEAR_LIMIT' | 'EXCEEDED';
@@ -123,11 +124,20 @@ export const INITIAL_DEMO_BUDGETS: BudgetRecord[] = [
 const LOCAL_STORAGE_BUDGETS_KEY = 'spendx_budgets_store_v1';
 
 export const budgetService = {
+  getStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_BUDGETS_KEY);
+  },
+
   getStoredBudgets(): BudgetRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_BUDGETS_KEY);
+      const stored = localStorage.getItem(this.getStorageKey());
       if (stored) {
-        return JSON.parse(stored);
+        const parsed: BudgetRecord[] = JSON.parse(stored);
+        const user = authService.getUser();
+        if (user?.id && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
+          return parsed.filter((b) => b.userId === user.id);
+        }
+        return parsed;
       }
     } catch (e) {
       console.warn('Failed to parse cached budgets', e);
@@ -137,7 +147,7 @@ export const budgetService = {
 
   saveStoredBudgets(budgets: BudgetRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_BUDGETS_KEY, JSON.stringify(budgets));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(budgets));
     } catch (e) {
       console.warn('Failed to cache budgets', e);
     }

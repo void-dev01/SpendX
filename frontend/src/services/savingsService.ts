@@ -9,6 +9,7 @@ import { supabase } from './supabase';
 import { apiClient } from './api';
 import { accountService } from './accountService';
 import { transactionService } from './transactionService';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type GoalCategory =
   | 'Emergency Fund'
@@ -153,10 +154,25 @@ const LOCAL_STORAGE_SAVINGS_GOALS_KEY = 'spendx_savings_goals_v1';
 const LOCAL_STORAGE_SAVINGS_CONTRIBS_KEY = 'spendx_savings_contribs_v1';
 
 export const savingsService = {
+  getGoalsStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_SAVINGS_GOALS_KEY);
+  },
+
+  getContribsStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_SAVINGS_CONTRIBS_KEY);
+  },
+
   getStoredGoals(): SavingsGoalRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_SAVINGS_GOALS_KEY);
-      if (stored) return JSON.parse(stored);
+      const stored = localStorage.getItem(this.getGoalsStorageKey());
+      if (stored) {
+        const parsed: SavingsGoalRecord[] = JSON.parse(stored);
+        const user = authService.getUser();
+        if (user?.id && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
+          return parsed.filter((g) => g.userId === user.id);
+        }
+        return parsed;
+      }
     } catch (e) {
       console.warn('Failed to parse cached savings goals', e);
     }
@@ -165,7 +181,7 @@ export const savingsService = {
 
   saveStoredGoals(goals: SavingsGoalRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_SAVINGS_GOALS_KEY, JSON.stringify(goals));
+      localStorage.setItem(this.getGoalsStorageKey(), JSON.stringify(goals));
     } catch (e) {
       console.warn('Failed to cache savings goals', e);
     }
@@ -173,7 +189,7 @@ export const savingsService = {
 
   getStoredContributions(): SavingsContributionRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_SAVINGS_CONTRIBS_KEY);
+      const stored = localStorage.getItem(this.getContribsStorageKey());
       if (stored) return JSON.parse(stored);
     } catch (e) {
       console.warn('Failed to parse cached contributions', e);
@@ -183,7 +199,7 @@ export const savingsService = {
 
   saveStoredContributions(contribs: SavingsContributionRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_SAVINGS_CONTRIBS_KEY, JSON.stringify(contribs));
+      localStorage.setItem(this.getContribsStorageKey(), JSON.stringify(contribs));
     } catch (e) {
       console.warn('Failed to cache contributions', e);
     }

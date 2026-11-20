@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { UserProfile } from '../types';
+import { clearAllQueryCaches } from '../lib/queryClient';
 
 interface AuthState {
   user: UserProfile | null;
@@ -51,6 +52,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: initialToken,
   isAuthenticated: Boolean(initialToken),
   setUser: (user) => {
+    clearAllQueryCaches();
     setStorageItem('spendx_user_profile', user ? JSON.stringify(user) : null);
     set({ user, isAuthenticated: Boolean(user) });
   },
@@ -59,6 +61,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ token, isAuthenticated: Boolean(token) });
   },
   logout: () => {
+    clearAllQueryCaches();
     setStorageItem('spendx_auth_token', null);
     setStorageItem('spendx_user_profile', null);
     set({ user: null, token: null, isAuthenticated: false });

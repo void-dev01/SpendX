@@ -8,6 +8,7 @@ import { authService } from './authService';
 import { supabase } from './supabase';
 import { apiClient } from './api';
 import { accountService } from './accountService';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type TransactionType = 'INCOME' | 'EXPENSE' | 'TRANSFER';
 export type TransactionStatus = 'COMPLETED' | 'PENDING' | 'FAILED';
@@ -266,14 +267,23 @@ export const INITIAL_DEMO_TRANSACTIONS: TransactionRecord[] = [
 const LOCAL_STORAGE_KEY = 'spendx_transactions_store_v1';
 
 export const transactionService = {
+  getStorageKey(): string {
+    return getUserScopedKey(LOCAL_STORAGE_KEY);
+  },
+
   /**
    * Helper to load stored transactions from local cache or initialize with defaults
    */
   getStoredTransactions(): TransactionRecord[] {
     try {
-      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const stored = localStorage.getItem(this.getStorageKey());
       if (stored) {
-        return JSON.parse(stored);
+        const parsed: TransactionRecord[] = JSON.parse(stored);
+        const user = authService.getUser();
+        if (user?.id && user.id !== 'demo-user-id' && import.meta.env.MODE !== 'test') {
+          return parsed.filter((t) => t.userId === user.id);
+        }
+        return parsed;
       }
     } catch (e) {
       console.warn('Failed to parse cached transactions', e);
@@ -287,7 +297,7 @@ export const transactionService = {
    */
   saveStoredTransactions(transactions: TransactionRecord[]): void {
     try {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(transactions));
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(transactions));
     } catch (e) {
       console.warn('Failed to cache transactions', e);
     }

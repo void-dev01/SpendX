@@ -11,6 +11,7 @@ import { transactionService, TransactionRecord, PaymentMethod, TransactionType }
 import { accountService, AccountRecord } from './accountService';
 import { authService } from './authService';
 import { apiClient } from './api';
+import { getUserScopedKey } from '../lib/userStorage';
 
 export type ImportSourceType = 'CSV' | 'EXCEL' | 'PDF_TEXT' | 'SMS_TEXT';
 
@@ -101,12 +102,16 @@ const MERCHANT_KNOWLEDGE_BASE: Record<string, { category: string; merchant: stri
 };
 
 export const importService = {
+  getStorageKey(): string {
+    return getUserScopedKey(STORAGE_KEY_IMPORT_HISTORY);
+  },
+
   /**
    * Retrieves import history
    */
   getImportHistory(): ImportBatchRecord[] {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY_IMPORT_HISTORY);
+      const raw = localStorage.getItem(this.getStorageKey());
       return raw ? JSON.parse(raw) : [];
     } catch {
       return [];
@@ -119,7 +124,7 @@ export const importService = {
   saveImportBatch(batch: ImportBatchRecord): void {
     const list = this.getImportHistory();
     list.unshift(batch);
-    localStorage.setItem(STORAGE_KEY_IMPORT_HISTORY, JSON.stringify(list));
+    localStorage.setItem(this.getStorageKey(), JSON.stringify(list));
   },
 
   /**

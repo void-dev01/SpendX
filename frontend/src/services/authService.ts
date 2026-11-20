@@ -84,7 +84,7 @@ export const authService = {
     const trimmedEmail = email.trim().toLowerCase();
 
     // 1. If Supabase Client is configured with live credentials, use real Supabase Auth
-    if (supabase) {
+    if (supabase && import.meta.env.MODE !== 'test') {
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: trimmedEmail,
@@ -139,47 +139,49 @@ export const authService = {
     }
 
     // 2. Attempt Backend API Auth first
-    try {
-      const res = await apiClient.post('/auth/login', { email: trimmedEmail, password });
-      if (res.data?.success && res.data?.user && res.data?.token) {
-        const userProfile = res.data.user;
-        const token = res.data.token;
-        useAuthStore.getState().setToken(token);
-        useAuthStore.getState().setUser(userProfile);
+    if (import.meta.env.MODE !== 'test') {
+      try {
+        const res = await apiClient.post('/auth/login', { email: trimmedEmail, password });
+        if (res.data?.success && res.data?.user && res.data?.token) {
+          const userProfile = res.data.user;
+          const token = res.data.token;
+          useAuthStore.getState().setToken(token);
+          useAuthStore.getState().setUser(userProfile);
 
-        // Also ensure local registered user cache is synchronized
-        const users = getLocalRegisteredUsers();
-        if (!users.some((u) => u.email.toLowerCase() === trimmedEmail)) {
-          const salt = Math.random().toString(36).substring(2, 10);
-          const passwordHash = await hashPasswordBrowser(password, salt);
-          users.push({
-            id: userProfile.id,
-            email: trimmedEmail,
-            fullName: userProfile.fullName,
-            currency: userProfile.currency || 'INR',
-            passwordHash,
-            salt,
-            createdAt: new Date().toISOString(),
-          });
-          saveLocalRegisteredUsers(users);
+          // Also ensure local registered user cache is synchronized
+          const users = getLocalRegisteredUsers();
+          if (!users.some((u) => u.email.toLowerCase() === trimmedEmail)) {
+            const salt = Math.random().toString(36).substring(2, 10);
+            const passwordHash = await hashPasswordBrowser(password, salt);
+            users.push({
+              id: userProfile.id,
+              email: trimmedEmail,
+              fullName: userProfile.fullName,
+              currency: userProfile.currency || 'INR',
+              passwordHash,
+              salt,
+              createdAt: new Date().toISOString(),
+            });
+            saveLocalRegisteredUsers(users);
+          }
+
+          return {
+            success: true,
+            user: userProfile,
+            token,
+          };
         }
-
-        return {
-          success: true,
-          user: userProfile,
-          token,
-        };
+      } catch (apiErr: any) {
+        // If backend responded with 401 or 400 (e.g. Invalid password, user not found)
+        // DO NOT BYPASS! Immediately return the rejection error!
+        if (apiErr.response?.data?.message || apiErr.response?.data?.error) {
+          return {
+            success: false,
+            error: apiErr.response.data.error || apiErr.response.data.message || 'Invalid email or password',
+          };
+        }
+        // If network error / backend offline, proceed to check local registered credentials
       }
-    } catch (apiErr: any) {
-      // If backend responded with 401 or 400 (e.g. Invalid password, user not found)
-      // DO NOT BYPASS! Immediately return the rejection error!
-      if (apiErr.response?.data?.message || apiErr.response?.data?.error) {
-        return {
-          success: false,
-          error: apiErr.response.data.error || apiErr.response.data.message || 'Invalid email or password',
-        };
-      }
-      // If network error / backend offline, proceed to check local registered credentials
     }
 
     // 3. Local Registered Credentials Validation (Offline / Local Mode)
@@ -248,7 +250,7 @@ export const authService = {
     const cleanName = fullName.trim();
 
     // 1. Live Supabase Auth Sign Up
-    if (supabase) {
+    if (supabase && import.meta.env.MODE !== 'test') {
       try {
         const { data, error } = await supabase.auth.signUp({
           email: trimmedEmail,
@@ -315,57 +317,59 @@ export const authService = {
     }
 
     // 2. Attempt Backend API Registration first
-    try {
-      const res = await apiClient.post('/auth/register', {
-        email: trimmedEmail,
-        password,
-        fullName: cleanName,
-      });
+    if (import.meta.env.MODE !== 'test') {
+      try {
+        const res = await apiClient.post('/auth/register', {
+          email: trimmedEmail,
+          password,
+          fullName: cleanName,
+        });
 
-      if (res.data?.success && res.data?.user && res.data?.token) {
-        const userProfile = res.data.user;
-        const token = res.data.token;
+        if (res.data?.success && res.data?.user && res.data?.token) {
+          const userProfile = res.data.user;
+          const token = res.data.token;
 
-        // Persist locally as well
-        const salt = Math.random().toString(36).substring(2, 10);
-        const passwordHash = await hashPasswordBrowser(password, salt);
-        const localUsers = getLocalRegisteredUsers();
-        if (!localUsers.some((u) => u.email.toLowerCase() === trimmedEmail)) {
-          localUsers.push({
-            id: userProfile.id,
-            email: trimmedEmail,
-            fullName: cleanName,
-            currency: 'INR',
-            passwordHash,
-            salt,
-            createdAt: new Date().toISOString(),
-          });
-          saveLocalRegisteredUsers(localUsers);
+          // Persist locally as well
+          const salt = Math.random().toString(36).substring(2, 10);
+          const passwordHash = await hashPasswordBrowser(password, salt);
+          const localUsers = getLocalRegisteredUsers();
+          if (!localUsers.some((u) => u.email.toLowerCase() === trimmedEmail)) {
+            localUsers.push({
+              id: userProfile.id,
+              email: trimmedEmail,
+              fullName: cleanName,
+              currency: 'INR',
+              passwordHash,
+              salt,
+              createdAt: new Date().toISOString(),
+            });
+            saveLocalRegisteredUsers(localUsers);
+          }
+
+          useAuthStore.getState().setToken(token);
+          useAuthStore.getState().setUser(userProfile);
+
+          return {
+            success: true,
+            user: userProfile,
+            token,
+          };
         }
-
-        useAuthStore.getState().setToken(token);
-        useAuthStore.getState().setUser(userProfile);
-
-        return {
-          success: true,
-          user: userProfile,
-          token,
-        };
+      } catch (apiErr: any) {
+        if (apiErr.response?.status === 409) {
+          return {
+            success: false,
+            error: apiErr.response?.data?.error || 'An account with this email already exists. Please sign in.',
+          };
+        }
+        if (apiErr.response?.data?.error) {
+          return {
+            success: false,
+            error: apiErr.response.data.error,
+          };
+        }
+        // If offline, continue to local storage registration
       }
-    } catch (apiErr: any) {
-      if (apiErr.response?.status === 409) {
-        return {
-          success: false,
-          error: apiErr.response?.data?.error || 'An account with this email already exists. Please sign in.',
-        };
-      }
-      if (apiErr.response?.data?.error) {
-        return {
-          success: false,
-          error: apiErr.response.data.error,
-        };
-      }
-      // If offline, continue to local storage registration
     }
 
     // 3. Local Registration Persistence (Offline / Local Mode)
