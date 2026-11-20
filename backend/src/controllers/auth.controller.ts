@@ -296,24 +296,45 @@ export const deleteMe = async (req: AuthenticatedRequest, res: Response, next: N
     }
 
     if (supabaseAdminClient && process.env.NODE_ENV !== 'test') {
+      // Delete in strict foreign-key order from all tables
+      await supabaseAdminClient.from('savings_contributions').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('transactions').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('budgets').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('savings_goals').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('recurring_payments').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('accounts').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('financial_insights').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('chat_messages').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('chat_sessions').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('ai_message_usage').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('ai_message_queue').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('notifications').delete().eq('user_id', userId);
+      await supabaseAdminClient.from('reports').delete().eq('user_id', userId);
       await supabaseAdminClient.from('profiles').delete().eq('id', userId);
+
+      // Permanently delete user from Supabase Auth
       const { error } = await supabaseAdminClient.auth.admin.deleteUser(userId);
-      if (error) {
+      if (error && !error.message.includes('User not found')) {
         return next(new AppError('Failed to delete account: ' + error.message, 500));
       }
-    } else {
-      const db = localStore.read();
-      db.users = db.users.filter((u) => u.id !== userId && u.email.toLowerCase() !== req.user?.email?.toLowerCase());
-      db.accounts = db.accounts.filter((a) => a.userId !== userId);
-      db.transactions = db.transactions.filter((t) => t.userId !== userId);
-      db.budgets = db.budgets.filter((b) => b.userId !== userId);
-      db.savingsGoals = db.savingsGoals.filter((s) => s.userId !== userId);
-      localStore.write(db);
     }
+
+    // Always clear localStore state for this user as well
+    const db = localStore.read();
+    db.users = (db.users || []).filter((u) => u.id !== userId && u.email.toLowerCase() !== req.user?.email?.toLowerCase());
+    db.accounts = (db.accounts || []).filter((a) => a.userId !== userId);
+    db.transactions = (db.transactions || []).filter((t) => t.userId !== userId);
+    db.budgets = (db.budgets || []).filter((b) => b.userId !== userId);
+    db.savingsGoals = (db.savingsGoals || []).filter((s) => s.userId !== userId);
+    if ((db as any).recurringPayments) (db as any).recurringPayments = (db as any).recurringPayments.filter((r: any) => r.userId !== userId);
+    if ((db as any).chatSessions) (db as any).chatSessions = (db as any).chatSessions.filter((c: any) => c.userId !== userId);
+    if ((db as any).chatMessages) (db as any).chatMessages = (db as any).chatMessages.filter((m: any) => m.userId !== userId);
+    if ((db as any).notifications) (db as any).notifications = (db as any).notifications.filter((n: any) => n.userId !== userId);
+    localStore.write(db);
 
     res.json({
       success: true,
-      message: 'Account and all associated financial records permanently deleted',
+      message: 'Account and all associated financial records permanently deleted from the database',
     });
   } catch (err) {
     next(err);

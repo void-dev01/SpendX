@@ -2,6 +2,7 @@ import { supabase } from './supabase';
 import { useAuthStore } from '../stores/authStore';
 import { UserProfile } from '../types';
 import { apiClient } from './api';
+import { clearAllQueryCaches } from '../lib/queryClient';
 
 export interface AuthResponse {
   success: boolean;
@@ -466,22 +467,32 @@ export const authService = {
   },
 
   /**
-   * Delete User Account and all associated financial records
+   * Delete User Account and all associated financial records permanently from the database
    */
   async deleteAccount(): Promise<{ success: boolean; error?: string }> {
     try {
       const currentUser = this.getUser();
+
+      // 1. Permanently delete from backend & database (cascades all tables & auth)
+      try {
+        await apiClient.delete('/auth/me');
+      } catch (apiErr: any) {
+        console.warn('Backend delete account error:', apiErr?.response?.data || apiErr?.message);
+      }
+
+      // 2. Clear local registered user list
       if (currentUser) {
         const users = getLocalRegisteredUsers().filter(
           (u) => u.id !== currentUser.id && u.email.toLowerCase() !== currentUser.email.toLowerCase()
         );
         saveLocalRegisteredUsers(users);
       }
-      try {
-        await apiClient.delete('/auth/me');
-      } catch (err) {
-        void err;
-      }
+
+      // 3. Clear all cached query state and localStorage
+      clearAllQueryCaches();
+      localStorage.clear();
+
+      // 4. Terminate active session
       await this.logout();
       return { success: true };
     } catch (err: unknown) {

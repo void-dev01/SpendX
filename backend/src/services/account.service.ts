@@ -272,11 +272,41 @@ export class AccountService {
       const accounts = localStore.getAccounts();
       const filtered = accounts.filter((a) => a.id !== accountId);
       localStore.saveAccounts(filtered);
+      const txns = localStore.getTransactions();
+      localStore.saveTransactions(txns.filter((t) => t.accountId !== accountId));
       return true;
     }
 
     if (db) {
       try {
+        // 1. Delete associated transactions to prevent foreign-key constraints
+        await db
+          .from('transactions')
+          .delete()
+          .eq('account_id', accountId)
+          .eq('user_id', userId);
+
+        await db
+          .from('transactions')
+          .delete()
+          .eq('destination_account_id', accountId)
+          .eq('user_id', userId);
+
+        // 2. Unlink or delete recurring payments associated with this account
+        await db
+          .from('recurring_payments')
+          .delete()
+          .eq('linked_account_id', accountId)
+          .eq('user_id', userId);
+
+        // 3. Delete savings contributions referencing this account
+        await db
+          .from('savings_contributions')
+          .delete()
+          .eq('account_id', accountId)
+          .eq('user_id', userId);
+
+        // 4. Delete account record from database
         const { error } = await db
           .from('accounts')
           .delete()
@@ -298,6 +328,8 @@ export class AccountService {
     const accounts = localStore.getAccounts();
     const filtered = accounts.filter((a) => a.id !== accountId);
     localStore.saveAccounts(filtered);
+    const txns = localStore.getTransactions();
+    localStore.saveTransactions(txns.filter((t) => t.accountId !== accountId));
     return true;
   }
 
