@@ -69,8 +69,14 @@ export class AIRouter {
             'AI Inference succeeded'
           );
 
+          // Strip internal reasoning tags if emitted by reasoning models
+          let cleanContent = answer.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
+          if (!cleanContent) {
+            cleanContent = answer.trim();
+          }
+
           return {
-            content: answer.trim(),
+            content: cleanContent,
             modelUsed: model.modelId,
             providerUsed: model.provider,
             fallbackUsed: attemptsCount > 1,

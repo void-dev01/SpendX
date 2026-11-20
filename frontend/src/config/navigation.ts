@@ -8,7 +8,6 @@ import {
   ArrowsClockwise,
   TrendUp,
   Sparkle,
-  Lightbulb,
   FileText,
   User,
   Gear,
@@ -110,13 +109,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     badge: 'Pro',
     isAiAccent: true,
     mobileBottomNav: true,
-  },
-  {
-    id: 'insights',
-    name: 'Insights',
-    path: '/insights',
-    icon: Lightbulb,
-    group: 'Intelligence',
   },
 
   // GROUP 4 — REPORTING

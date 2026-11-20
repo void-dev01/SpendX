@@ -18,8 +18,8 @@ export const requireAuth = async (
 
   // In test environment, handle mock tokens strictly
   if (process.env.NODE_ENV === 'test') {
-    if (token.startsWith('test-token-')) {
-      const mockUserId = token.replace('test-token-', '') || 'test-user-id';
+    if (token.startsWith('test-token-') || token === 'test-token') {
+      const mockUserId = token.startsWith('test-token-') ? token.replace('test-token-', '') || 'test-user-id' : 'test-user-id';
       req.user = {
         id: mockUserId,
         email: `${mockUserId}@spendx.local`,
@@ -31,34 +31,35 @@ export const requireAuth = async (
     }
   }
 
-  if (!supabaseClient) {
-    // In local development mode without live Supabase keys, allow explicit dev tokens or frontend demo session tokens
-    if (process.env.NODE_ENV !== 'production' && (token === 'spendx-dev-token' || token.startsWith('spendx_session_'))) {
-      let resolvedId = 'usr_dev_local_spendx';
-      let resolvedEmail = 'developer@spendx.local';
+  // In local development mode, allow explicit dev tokens or frontend demo session tokens
+  if (process.env.NODE_ENV !== 'production' && (token === 'spendx-dev-token' || token.startsWith('spendx_session_'))) {
+    let resolvedId = '00000000-0000-4000-8000-000000000001';
+    let resolvedEmail = 'developer@spendx.local';
 
-      const parts = token.split('_');
-      // Format: spendx_session_<base64payload>_<sig>
-      if (parts.length >= 3) {
-        try {
-          const payloadJson = Buffer.from(parts[2], 'base64url').toString('utf-8');
-          const parsed = JSON.parse(payloadJson);
-          if (parsed.id && parsed.email) {
-            resolvedId = parsed.id;
-            resolvedEmail = parsed.email;
-          }
-        } catch {
-          // keep fallback
+    const parts = token.split('_');
+    // Format: spendx_session_<base64payload>_<sig>
+    if (parts.length >= 3) {
+      try {
+        const payloadJson = Buffer.from(parts[2], 'base64url').toString('utf-8');
+        const parsed = JSON.parse(payloadJson);
+        if (parsed.id && parsed.email) {
+          resolvedId = parsed.id;
+          resolvedEmail = parsed.email;
         }
+      } catch {
+        // keep fallback
       }
-
-      req.user = {
-        id: resolvedId,
-        email: resolvedEmail,
-        role: 'authenticated',
-      };
-      return next();
     }
+
+    req.user = {
+      id: resolvedId,
+      email: resolvedEmail,
+      role: 'authenticated',
+    };
+    return next();
+  }
+
+  if (!supabaseClient) {
     return next(new AppError('Authentication service currently unconfigured', 503));
   }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   Sparkles,
   TrendingDown,
@@ -7,13 +8,24 @@ import {
   ArrowRightLeft,
   Scale,
   Zap,
+  Lightbulb,
+  ArrowRight,
 } from 'lucide-react';
+import { insightsService } from '@/services/insightsService';
 
 interface ChatWelcomeProps {
   onSelectPrompt: (prompt: string) => void;
 }
 
 export const ChatWelcome: React.FC<ChatWelcomeProps> = ({ onSelectPrompt }) => {
+  const { data: insights = [] } = useQuery({
+    queryKey: ['financial-insights-quick'],
+    queryFn: () => insightsService.generateInsights(),
+    staleTime: 60000,
+  });
+
+  const topInsights = insights.slice(0, 2);
+
   const suggestedPrompts = [
     {
       title: 'Analyze my spending this month',
@@ -69,6 +81,38 @@ export const ChatWelcome: React.FC<ChatWelcomeProps> = ({ onSelectPrompt }) => {
           Ask SPENDX anything about your money. Get clear insights, understand your spending, and make more confident financial decisions.
         </p>
       </div>
+
+      {/* Merged Live Insights Snapshot */}
+      {topInsights.length > 0 && (
+        <div className="w-full space-y-2 text-left pt-1">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-foreground">
+            <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+            <span>Today's Live Intelligence Highlights</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            {topInsights.map((ins) => (
+              <div
+                key={ins.id}
+                onClick={() => onSelectPrompt(`Tell me more about this insight: ${ins.title}. ${ins.description}`)}
+                className="p-3 rounded-xl bg-surface-elevated/80 border border-border hover:border-primary/50 transition-all cursor-pointer group flex flex-col justify-between text-xs"
+              >
+                <div>
+                  <span className="font-semibold text-foreground group-hover:text-primary transition-colors block">
+                    {ins.title}
+                  </span>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                    {ins.description}
+                  </p>
+                </div>
+                <div className="mt-2 flex items-center gap-1 text-[10px] font-semibold text-primary">
+                  <span>Ask Coach about this</span>
+                  <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Suggested Prompt Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full text-left pt-2">

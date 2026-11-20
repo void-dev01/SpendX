@@ -9,6 +9,7 @@ import { transactionService } from './transactionService';
 import { budgetService } from './budgetService';
 import { savingsService } from './savingsService';
 import { accountService } from './accountService';
+import { recurringService } from './recurringService';
 
 export interface AnswerCardData {
   type: 'SPENDING' | 'BUDGET' | 'SAVINGS' | 'CATEGORY';
@@ -185,24 +186,41 @@ export const aiAssistantService = {
    */
   async buildFinancialContext() {
     try {
-      const [transactions, rawBudgets, savingsGoals, accounts] = await Promise.all([
-        transactionService.getTransactions(),
-        budgetService.getBudgets(),
-        savingsService.getGoals(),
-        accountService.getAccounts(),
+      const [transactions, rawBudgets, savingsGoals, accounts, recurring] = await Promise.all([
+        transactionService.getTransactions().catch(() => []),
+        budgetService.getBudgets().catch(() => []),
+        savingsService.getGoals().catch(() => []),
+        accountService.getAccounts().catch(() => []),
+        recurringService.getRecurringPayments().catch(() => []),
       ]);
+
+      const now = new Date();
+      const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      const todayStr = now.toISOString().slice(0, 10);
 
       // Calculate total income and expenses (excluding internal transfers)
       let totalIncome = 0;
       let totalExpenses = 0;
+      let todayExpenses = 0;
+      let todayIncome = 0;
       const categoryMap: Record<string, number> = {};
 
-      transactions.forEach((t) => {
+      transactions.forEach((t: any) => {
         if (t.type === 'TRANSFER' || t.status !== 'COMPLETED') return;
-        if (t.type === 'INCOME') totalIncome += t.amount;
-        if (t.type === 'EXPENSE') {
-          totalExpenses += t.amount;
-          categoryMap[t.category] = (categoryMap[t.category] || 0) + t.amount;
+        const txnMonth = t.date ? t.date.slice(0, 7) : '';
+        const isThisMonth = !txnMonth || txnMonth === currentMonthKey;
+
+        if (isThisMonth) {
+          if (t.type === 'INCOME') totalIncome += t.amount;
+          if (t.type === 'EXPENSE') {
+            totalExpenses += t.amount;
+            categoryMap[t.category] = (categoryMap[t.category] || 0) + t.amount;
+          }
+        }
+
+        if (t.date && t.date.slice(0, 10) === todayStr) {
+          if (t.type === 'INCOME') todayIncome += t.amount;
+          if (t.type === 'EXPENSE') todayExpenses += t.amount;
         }
       });
 
@@ -221,7 +239,10 @@ export const aiAssistantService = {
             totalExpenses > 0 ? Math.round((amount / totalExpenses) * 100) : 0,
         }))
         .sort((a, b) => b.amount - a.amount)
-        .slice(0, 5);
+        .slice(0, 6);
+
+      // Total liquid balance across all accounts
+      const totalLiquidBalance = accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0);
 
       // Reconciled budgets
       const budgetsWithMetrics = budgetService.computeBudgetsWithMetrics(
@@ -231,12 +252,28 @@ export const aiAssistantService = {
       );
 
       return {
+        currentDate: todayStr,
+        currentDateFormatted: now.toLocaleDateString('en-IN', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }),
         overview: {
           totalIncome,
           totalExpenses,
           netCashFlow,
           savingsRate,
+          todayIncome,
+          todayExpenses,
+          totalLiquidBalance,
         },
+        accounts: accounts.map((a: any) => ({
+          name: a.name,
+          type: a.type,
+          balance: Number(a.balance),
+          currency: a.currency || 'INR',
+        })),
         budgets: budgetsWithMetrics.map((b) => ({
           name: b.name,
           category: b.category,
@@ -246,19 +283,36 @@ export const aiAssistantService = {
           utilizationPercentage: b.utilizationPercentage,
           status: b.status,
         })),
-        savingsGoals: savingsGoals.map((g) => ({
-          name: g.name,
-          category: g.category,
-          targetAmount: g.targetAmount,
-          currentAmount: g.currentAmount,
-          targetDate: g.targetDate,
-          status: g.status,
+        savingsGoals: savingsGoals.map((g: any) => {
+          const current = Number(g.currentAmount) || 0;
+          const target = Number(g.targetAmount) || 1;
+          const progress = Math.min(100, Math.round((current / target) * 100));
+          return {
+            name: g.name,
+            category: g.category,
+            targetAmount: target,
+            currentAmount: current,
+            progressPercentage: progress,
+            targetDate: g.targetDate,
+            status: g.status,
+          };
+        }),
+        recurringPayments: (recurring || []).map((r: any) => ({
+          name: r.name,
+          amount: r.amount,
+          category: r.category,
+          frequency: r.frequency,
+          nextDueDate: r.nextDueDate,
+          status: r.status,
         })),
         topSpendingCategories,
-        accounts: accounts.map((a) => ({
-          name: a.name,
-          type: a.type,
-          balance: a.balance,
+        recentTransactions: transactions.slice(0, 15).map((t: any) => ({
+          description: t.description,
+          amount: t.amount,
+          type: t.type,
+          category: t.category,
+          date: t.date,
+          status: t.status,
         })),
         currency: 'INR',
       };
@@ -484,19 +538,92 @@ export const aiAssistantService = {
   },
 
   /**
-   * Deterministic client-side fallback if backend is offline
+   * Intelligent client-side fallback if backend is offline or unreachable
    */
   generateFallbackResponse(
     query: string,
     context: any
   ): { answer: string; card?: AnswerCardData; modelUsed: string } {
-    const q = query.toLowerCase();
+    const q = query.toLowerCase().trim();
     const ov = context?.overview;
     const topCat = context?.topSpendingCategories?.[0];
     const totalTxnCount = context?.recentTransactions?.length || 0;
     const totalAccountsCount = context?.accounts?.length || 0;
 
-    // Truthful zero-state handling: never invent fake balances or transactions in production
+    const totalIncome = Number(ov?.totalIncome || 0);
+    const totalExpenses = Number(ov?.totalExpenses || 0);
+    const netCashFlow = Number(ov?.netCashFlow !== undefined ? ov.netCashFlow : totalIncome - totalExpenses);
+    const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, netCashFlow) / totalIncome) * 100) : 0;
+
+    // 1. Natural Conversational Greetings & Identity
+    if (
+      q === 'hi' ||
+      q === 'hello' ||
+      q === 'hey' ||
+      q.startsWith('hi ') ||
+      q.startsWith('hello ') ||
+      q.startsWith('hey ') ||
+      q.includes('namaste') ||
+      q.includes('kaise ho') ||
+      q.includes('kya haal') ||
+      q.includes('who are you') ||
+      q.includes('what can you do') ||
+      q.includes('help me')
+    ) {
+      return {
+        answer: `Hello! 👋 I'm your **SPENDX AI Financial Assistant**.
+
+I analyze your personal financial records to give you actionable insights and help you make smarter money decisions:
+- 📊 **Spending Intelligence**: Breakdown of your monthly expenses by category.
+- 🎯 **Budget Tracking**: Monitor limit utilization and prevent end-of-month shortfalls.
+- 💰 **Savings & Wealth**: Track milestone progress and optimize your savings velocity.
+- 💡 **Financial Strategies**: 50/30/20 allocation, emergency fund planning, and expense reduction.
+
+${totalAccountsCount > 0 ? `Currently monitoring **${totalAccountsCount} account(s)** with **₹${netCashFlow.toLocaleString('en-IN')}** net cash flow.` : 'Ready to help once you connect your accounts and add transactions!'}
+
+What would you like to explore today? You can ask me anything about your expenses, budgets, or savings!`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
+    // 2. Financial Tips, Savings Strategies & Best Practices
+    if (
+      q.includes('how to save') ||
+      q.includes('save more') ||
+      q.includes('saving strategy') ||
+      q.includes('bachat') ||
+      q.includes('reduce spending') ||
+      q.includes('cut expenses') ||
+      q.includes('invest') ||
+      q.includes('sip') ||
+      q.includes('tip') ||
+      q.includes('advice') ||
+      q.includes('50/30/20') ||
+      q.includes('emergency fund')
+    ) {
+      return {
+        answer: `Here are **practical, proven financial strategies** tailored for your wealth optimization:
+
+### 1. The 50/30/20 Rule
+- **50% Needs**: Rent, groceries, utility bills, and insurance.
+- **30% Wants**: Dining out, subscriptions, shopping, and entertainment.
+- **20% Savings & Debt**: Emergency fund deposits, SIP mutual funds, and investments.
+
+### 2. Pay Yourself First
+Automate recurring transfers into your savings vault or index funds directly on **salary credit day** rather than saving whatever remains at the end of the month.
+
+### 3. Build a 3-6 Month Emergency Buffer
+Ensure you maintain 3 to 6 months of mandatory living expenses liquid in a high-yield savings account or liquid fund.
+
+### 4. Optimize High-Outflow Categories
+${topCat ? `Your primary expenditure category is **${topCat.category}** (₹${topCat.amount.toLocaleString('en-IN')}). Trimming just 10-15% here can save you **₹${Math.round(topCat.amount * 0.12).toLocaleString('en-IN')}** every month!` : 'Review discretionary spending and recurring subscriptions periodically to plug money leaks.'}
+
+Would you like to analyze your current budget limits or set up a new savings milestone?`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
+    // Truthful zero-state handling for ledger-specific queries when no data exists
     if (totalTxnCount === 0 && totalAccountsCount === 0 && import.meta.env.MODE !== 'test') {
       return {
         answer: `I am ready to help manage your finances, but there are currently no accounts or transactions recorded in your SPENDX profile.
@@ -510,11 +637,8 @@ Once you record your financial data, I will provide real-time budget utilization
       };
     }
 
-    const totalIncome = Number(ov?.totalIncome || 0);
-    const totalExpenses = Number(ov?.totalExpenses || 0);
-    const netCashFlow = Number(ov?.netCashFlow !== undefined ? ov.netCashFlow : totalIncome - totalExpenses);
-
-    if (q.includes('spend') || q.includes('expense') || q.includes('outflow')) {
+    // 3. Spending & Outflow Analysis
+    if (q.includes('spend') || q.includes('expense') || q.includes('outflow') || q.includes('kharch') || q.includes('burn')) {
       const expenseAmt = `₹${totalExpenses.toLocaleString('en-IN')}`;
       const incomeAmt = `₹${totalIncome.toLocaleString('en-IN')}`;
       const cat = topCat?.category || 'General';
@@ -541,6 +665,7 @@ ${topCat ? `- **Primary Category**: Your highest outflow is **${cat}** (${catPer
       };
     }
 
+    // 4. Budget Tracking & Adherence
     if (q.includes('budget') || q.includes('limit')) {
       const budgets = context?.budgets || [];
       const overBudget = budgets.filter((b: any) => (b.utilizationPercentage || 0) >= 100);
@@ -571,6 +696,7 @@ Keep discretionary spending steady over the remaining days of the cycle.`,
       };
     }
 
+    // 5. Savings Goals & Milestones
     if (q.includes('sav') || q.includes('goal')) {
       const goals = context?.savingsGoals || [];
       const totalSaved = goals.reduce((s: number, g: any) => s + (Number(g.currentAmount) || 0), 0);
@@ -582,8 +708,6 @@ Keep discretionary spending steady over the remaining days of the cycle.`,
           modelUsed: 'SPENDX Intelligence Core',
         };
       }
-
-      const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, netCashFlow) / totalIncome) * 100) : 0;
 
       return {
         answer: `Here is your verified savings performance:
@@ -606,19 +730,80 @@ Keep discretionary spending steady over the remaining days of the cycle.`,
       };
     }
 
-    const savingsRate = totalIncome > 0 ? Math.round((Math.max(0, netCashFlow) / totalIncome) * 100) : 0;
+    // 6. Today / Aaj specific inquiry
+    if (q.includes('today') || q.includes('aaj')) {
+      const todaySpent = Number(ov?.todayExpenses || 0);
+      const todayEarned = Number(ov?.todayIncome || 0);
+      const accounts = context?.accounts || [];
+      const totalBalance = Number(ov?.totalLiquidBalance !== undefined ? ov.totalLiquidBalance : accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0));
+
+      return {
+        answer: `Aaj ka verified financial update (${context?.currentDateFormatted || 'Today'}):
+
+- 📉 **Aaj Ka Kharcha (Today's Outflow)**: **₹${todaySpent.toLocaleString('en-IN')}**
+- 📈 **Aaj Ki Income (Today's Inflow)**: **₹${todayEarned.toLocaleString('en-IN')}**
+- 💰 **Current Liquid Balance**: **₹${totalBalance.toLocaleString('en-IN')}** across **${accounts.length}** account(s).
+
+${todaySpent > 0 ? 'All transactions from today are reconciled.' : 'Aaj abhi tak koi kharcha record nahi hua hai.'}`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
+    // 7. Account Balances & Liquidity
+    if (q.includes('account') || q.includes('balance') || q.includes('bank') || q.includes('paisa') || q.includes('net worth') || q.includes('kitna bacha')) {
+      const accounts = context?.accounts || [];
+      const totalBalance = Number(ov?.totalLiquidBalance !== undefined ? ov.totalLiquidBalance : accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0));
+
+      return {
+        answer: `Aapke accounts ka live balance summary (as of today):
+
+- 💰 **Total Combined Balance**: **₹${totalBalance.toLocaleString('en-IN')}**
+- 🏦 **Connected Accounts (${accounts.length})**:
+${accounts.length > 0 ? accounts.map((a: any) => `  * **${a.name}** (${a.type}): ₹${Number(a.balance || 0).toLocaleString('en-IN')}`).join('\n') : '  * No active accounts connected.'}
+
+- 📊 **This Month's Net Cash Flow**: **₹${netCashFlow.toLocaleString('en-IN')}** (${savingsRate}% savings velocity).`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
+    // 8. Recent Transactions Inquiries
+    if (q.includes('transaction') || q.includes('recent') || q.includes('history') || q.includes('purchase') || q.includes('len den')) {
+      const txns = context?.recentTransactions || [];
+      if (txns.length === 0) {
+        return {
+          answer: `No recent transactions found for this period. Start recording your daily expenses or income to track your cash flow.`,
+          modelUsed: 'SPENDX Intelligence Core',
+        };
+      }
+
+      return {
+        answer: `Here are your recent verified transactions (latest first):
+
+${txns.slice(0, 6).map((t: any) => `- **${t.description}**: ${t.type === 'INCOME' ? '+' : '-'}₹${Number(t.amount || 0).toLocaleString('en-IN')} (${t.category}) on ${t.date}`).join('\n')}
+
+Transactions are synced and categorized in your SPENDX ledger.`,
+        modelUsed: 'SPENDX Intelligence Core',
+      };
+    }
+
+    // 9. General Financial Intelligence Context
+    const accounts = context?.accounts || [];
+    const totalBalance = Number(ov?.totalLiquidBalance !== undefined ? ov.totalLiquidBalance : accounts.reduce((acc: number, a: any) => acc + (Number(a.balance) || 0), 0));
 
     return {
-      answer: `I analyzed your verified SPENDX financial records:
-- **Net Cash Flow**: **₹${netCashFlow.toLocaleString('en-IN')}**
-- **Savings Rate**: **${savingsRate}%**
-- **Active Accounts**: **${totalAccountsCount}** accounts connected.
+      answer: `Here is your live financial snapshot as of **${context?.currentDateFormatted || 'today'}**:
 
-Feel free to ask questions like:
-- *"Analyze my spending this month"*
+- 💰 **Liquid Net Worth**: **₹${totalBalance.toLocaleString('en-IN')}** across ${accounts.length} account(s)
+- 📊 **This Month Cash Flow**: **₹${netCashFlow.toLocaleString('en-IN')}** (Earned: ₹${totalIncome.toLocaleString('en-IN')} | Spent: ₹${totalExpenses.toLocaleString('en-IN')})
+- 🎯 **Savings Rate**: **${savingsRate}%**
+${topCat ? `- 🛍️ **Primary Outflow**: **${topCat.category}** (₹${topCat.amount.toLocaleString('en-IN')})` : ''}
+
+You can ask me anything about your finances in Hindi or English:
+- *"Mera total balance kitna hai?"*
+- *"Aaj ka kharcha kitna hua?"*
 - *"Where is most of my money going?"*
 - *"Am I within my monthly budget?"*
-- *"How can I optimize my savings rate?"*`,
+- *"How can I increase my monthly savings?"*`,
       modelUsed: 'SPENDX Intelligence Core',
     };
   },

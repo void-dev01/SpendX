@@ -32,7 +32,6 @@ const RecurringPage = lazy(() => import('@/features/recurring/RecurringPage').th
 const RecurringDetailPage = lazy(() => import('@/features/recurring/RecurringDetailPage').then((m) => ({ default: m.RecurringDetailPage })));
 const AnalyticsPage = lazy(() => import('@/features/analytics/AnalyticsPage').then((m) => ({ default: m.AnalyticsPage })));
 const AiAssistantPage = lazy(() => import('@/features/ai-assistant/AiAssistantPage').then((m) => ({ default: m.AiAssistantPage })));
-const InsightsPage = lazy(() => import('@/features/insights/InsightsPage').then((m) => ({ default: m.InsightsPage })));
 const ReportsPage = lazy(() => import('@/features/reports/ReportsPage').then((m) => ({ default: m.ReportsPage })));
 const NotificationsPage = lazy(() => import('@/features/notifications/NotificationsPage').then((m) => ({ default: m.NotificationsPage })));
 const ProfilePage = lazy(() => import('@/features/profile/ProfilePage').then((m) => ({ default: m.ProfilePage })));
@@ -70,7 +69,7 @@ export const AppRoutes: React.FC = () => {
             <Route path="/analytics" element={<AnalyticsPage />} />
             <Route path="/ai-assistant" element={<AiAssistantPage />} />
             <Route path="/ai-coach" element={<AiAssistantPage />} />
-            <Route path="/insights" element={<InsightsPage />} />
+            <Route path="/insights" element={<AiAssistantPage />} />
 
             {/* GROUP 4 — REPORTING */}
             <Route path="/reports" element={<ReportsPage />} />

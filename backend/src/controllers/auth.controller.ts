@@ -26,7 +26,7 @@ export const register = async (req: Request, res: Response, next: NextFunction):
     const { email, password, fullName } = parseResult.data;
     const trimmedEmail = email.trim().toLowerCase();
 
-    if (supabaseAdminClient) {
+    if (supabaseAdminClient && process.env.NODE_ENV !== 'test') {
       const { data, error } = await supabaseAdminClient.auth.admin.createUser({
         email: trimmedEmail,
         password,
@@ -48,7 +48,7 @@ export const register = async (req: Request, res: Response, next: NextFunction):
           updated_at: new Date().toISOString(),
         });
 
-        if (supabaseClient) {
+        if (supabaseClient && process.env.NODE_ENV !== 'test') {
           const signInRes = await supabaseClient.auth.signInWithPassword({
             email: trimmedEmail,
             password,
@@ -123,7 +123,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
     const { email, password } = parseResult.data;
     const trimmedEmail = email.trim().toLowerCase();
 
-    if (supabaseClient) {
+    if (supabaseClient && process.env.NODE_ENV !== 'test') {
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: trimmedEmail,
         password,
@@ -295,7 +295,7 @@ export const deleteMe = async (req: AuthenticatedRequest, res: Response, next: N
       return next(new AppError('Unauthorized', 401));
     }
 
-    if (supabaseAdminClient) {
+    if (supabaseAdminClient && process.env.NODE_ENV !== 'test') {
       await supabaseAdminClient.from('profiles').delete().eq('id', userId);
       const { error } = await supabaseAdminClient.auth.admin.deleteUser(userId);
       if (error) {
