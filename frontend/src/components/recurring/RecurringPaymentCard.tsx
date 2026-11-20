@@ -181,7 +181,7 @@ export const RecurringPaymentCard: React.FC<RecurringPaymentCardProps> = ({
                       setShowMenu(false);
                       onDelete(payment.id);
                     }}
-                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+                    className="w-full text-left px-3 py-2 flex items-center gap-2 text-xs font-bold text-red-500 hover:text-white hover:bg-red-600 transition-colors cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Delete</span>

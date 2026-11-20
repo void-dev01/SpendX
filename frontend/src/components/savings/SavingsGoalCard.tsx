@@ -144,7 +144,7 @@ export const SavingsGoalCard: React.FC<SavingsGoalCardProps> = ({
                       setMenuOpen(false);
                       onDelete(goal);
                     }}
-                    className="w-full px-3 py-2 text-left flex items-center gap-2 text-destructive hover:bg-destructive/10 cursor-pointer"
+                    className="w-full px-3 py-2 text-left flex items-center gap-2 text-xs font-bold text-red-500 hover:text-white hover:bg-red-600 transition-colors cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Delete Goal</span>

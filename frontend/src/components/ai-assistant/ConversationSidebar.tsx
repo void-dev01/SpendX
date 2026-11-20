@@ -95,7 +95,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                     e.stopPropagation();
                     setDeletingId(conv.id);
                   }}
-                  className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-destructive transition-all cursor-pointer rounded-lg hover:bg-destructive/10 shrink-0"
+                  className="opacity-0 group-hover:opacity-100 p-1 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-all cursor-pointer rounded-lg shrink-0"
                   title="Delete conversation"
                   aria-label="Delete conversation"
                 >
@@ -196,7 +196,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
                     onDelete(deletingId);
                     setDeletingId(null);
                   }}
-                  className="px-3 py-1.5 text-[11px] font-semibold rounded-lg bg-destructive text-destructive-foreground hover:bg-destructive/90 cursor-pointer shadow-xs"
+                  className="px-3 py-1.5 text-[11px] font-bold rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 cursor-pointer shadow-xs focus:ring-2 focus:ring-red-500"
                 >
                   Delete
                 </button>

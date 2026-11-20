@@ -1,19 +1,28 @@
 import React from 'react';
-import { Plus, History, Bot } from 'lucide-react';
+import { Plus, History, Bot, Clock, Sparkles } from 'lucide-react';
+import { DailyQuotaInfo } from '@/services/aiAssistantService';
 
 interface AssistantHeaderProps {
   onNewChat: () => void;
   onToggleSidebar: () => void;
   isSidebarOpen: boolean;
+  quota?: DailyQuotaInfo;
+  queuedCount?: number;
+  onOpenQueuedModal?: () => void;
 }
 
 export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
   onNewChat,
   onToggleSidebar,
   isSidebarOpen,
+  quota,
+  queuedCount = 0,
+  onOpenQueuedModal,
 }) => {
+  const remaining = quota ? quota.remaining : 200;
+
   return (
-    <div className="rounded-2xl bg-surface border border-border p-4 flex items-center justify-between gap-3 shadow-card">
+    <div className="rounded-2xl bg-surface border border-border p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-card">
       {/* Title & Status Indicator */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -35,8 +44,45 @@ export const AssistantHeader: React.FC<AssistantHeaderProps> = ({
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center gap-2">
+      {/* Action Buttons & Quota Pill */}
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Remaining Quota Badge */}
+        <div
+          title={`Daily limit: 200 messages/day. Resets at midnight UTC.`}
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-mono font-semibold border shadow-xs ${
+            remaining <= 10
+              ? 'bg-amber-500/10 text-amber-500 border-amber-500/30'
+              : 'bg-surface-elevated text-foreground border-border'
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
+          <span>
+            {remaining}/200 left
+          </span>
+        </div>
+
+        {/* Queued Messages Modal Trigger */}
+        {onOpenQueuedModal && (
+          <button
+            type="button"
+            onClick={onOpenQueuedModal}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold rounded-xl border transition-colors cursor-pointer shadow-xs ${
+              queuedCount > 0
+                ? 'bg-amber-500/15 border-amber-500/30 text-amber-500 hover:bg-amber-500/25'
+                : 'bg-surface-elevated border-border text-secondary-text hover:text-foreground hover:bg-surface'
+            }`}
+            title="View scheduled questions for tomorrow"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Queued</span>
+            {queuedCount > 0 && (
+              <span className="w-4 h-4 rounded-full bg-amber-500 text-black text-[9px] font-bold flex items-center justify-center">
+                {queuedCount}
+              </span>
+            )}
+          </button>
+        )}
+
         <button
           type="button"
           onClick={onNewChat}

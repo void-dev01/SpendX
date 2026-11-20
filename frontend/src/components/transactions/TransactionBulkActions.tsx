@@ -30,7 +30,7 @@ export const TransactionBulkActions: React.FC<TransactionBulkActionsProps> = ({
           <button
             type="button"
             onClick={onDeleteSelected}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-expense bg-expense/10 hover:bg-expense/20 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-colors cursor-pointer shadow-xs focus:ring-2 focus:ring-red-500"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>Delete Selected</span>

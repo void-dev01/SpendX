@@ -40,6 +40,8 @@ export interface LocalDbSchema {
   savingsGoals: RawSavingsGoal[];
   recurring: RecurringRecord[];
   notifications: NotificationRecord[];
+  aiMessageUsage?: Record<string, number>;
+  queuedMessages?: any[];
 }
 
 const DEFAULT_DB: LocalDbSchema = {
@@ -50,6 +52,8 @@ const DEFAULT_DB: LocalDbSchema = {
   savingsGoals: [],
   recurring: [],
   notifications: [],
+  aiMessageUsage: {},
+  queuedMessages: [],
 };
 
 class LocalStore {

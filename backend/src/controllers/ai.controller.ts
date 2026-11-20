@@ -3,6 +3,7 @@ import { AuthenticatedRequest, ApiResponse } from '../types/index.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { AIService } from '../services/ai.service.js';
 import { AIModelRegistry } from '../services/ai/ai.registry.js';
+import { AIMessageQuotaService } from '../services/aiMessageQuota.service.js';
 import { supabaseAdminClient } from '../config/supabase.js';
 import { z } from 'zod';
 
@@ -145,6 +146,24 @@ export const askCoach = async (
       return next(new AppError('Unauthorized', 401));
     }
 
+    // Enforce 200 daily message limit
+    const quota = await AIMessageQuotaService.getQuota(userId);
+    if (quota.isLimitReached) {
+      res.status(429).json({
+        success: false,
+        message: 'Daily AI message quota reached (200/200). You can queue this message for tomorrow.',
+        data: {
+          error: 'DAILY_LIMIT_REACHED',
+          limit: quota.limit,
+          used: quota.used,
+          remaining: 0,
+          resetAt: quota.resetAt,
+          canQueue: true,
+        },
+      } as any);
+      return;
+    }
+
     const response = await AIService.askCoach(
       userId,
       validated.query,
@@ -153,9 +172,21 @@ export const askCoach = async (
       validated.sessionId
     );
 
+    // Increment message count for today
+    const updatedCount = await AIMessageQuotaService.incrementUsage(userId);
+    const remainingCount = Math.max(0, quota.limit - updatedCount);
+
     res.status(200).json({
       success: true,
-      data: response,
+      data: {
+        ...response,
+        quota: {
+          limit: quota.limit,
+          used: updatedCount,
+          remaining: remainingCount,
+          resetAt: quota.resetAt,
+        },
+      },
     });
   } catch (err) {
     next(err);

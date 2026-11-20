@@ -16,6 +16,26 @@ export interface AnswerCardData {
   data: Record<string, any>;
 }
 
+export interface DailyQuotaInfo {
+  limit: number;
+  used: number;
+  remaining: number;
+  resetAt: string;
+  isLimitReached: boolean;
+}
+
+export interface QueuedMessageRecord {
+  id: string;
+  userId?: string;
+  query: string;
+  sessionId?: string;
+  scheduledFor: string;
+  status: 'QUEUED' | 'PROCESSED' | 'CANCELLED';
+  response?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
@@ -249,12 +269,166 @@ export const aiAssistantService = {
   },
 
   /**
+   * Retrieves user's daily 200 message quota
+   */
+  async getDailyQuota(): Promise<DailyQuotaInfo> {
+    const today = new Date().toISOString().slice(0, 10);
+    const resetDate = new Date();
+    resetDate.setUTCHours(24, 0, 0, 0);
+    const resetAt = resetDate.toISOString();
+
+    try {
+      const res = await apiClient.get('/ai/quota');
+      if (res.data?.success && res.data?.data) {
+        return res.data.data;
+      }
+    } catch {
+      // Fallback to client-side offline storage
+    }
+
+    const localKey = `spendx_ai_usage_${today}`;
+    const stored = parseInt(localStorage.getItem(localKey) || '0', 10);
+    const remaining = Math.max(0, 200 - stored);
+
+    return {
+      limit: 200,
+      used: stored,
+      remaining,
+      resetAt,
+      isLimitReached: remaining <= 0,
+    };
+  },
+
+  /**
+   * Queues an AI inquiry for tomorrow when daily quota is exhausted
+   */
+  async queueMessage(query: string, sessionId?: string): Promise<QueuedMessageRecord> {
+    const resetDate = new Date();
+    resetDate.setUTCHours(24, 0, 0, 0);
+    const scheduledFor = resetDate.toISOString();
+
+    const localRecord: QueuedMessageRecord = {
+      id: `queue_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      query: query.trim(),
+      sessionId,
+      scheduledFor,
+      status: 'QUEUED',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    try {
+      const res = await apiClient.post('/ai/queue', { query, sessionId });
+      if (res.data?.success && res.data?.data) {
+        this.saveQueuedMessageLocally(res.data.data);
+        return res.data.data;
+      }
+    } catch {
+      // Save locally
+    }
+
+    this.saveQueuedMessageLocally(localRecord);
+    return localRecord;
+  },
+
+  /**
+   * Retrieves active queued messages
+   */
+  async getQueuedMessages(): Promise<QueuedMessageRecord[]> {
+    try {
+      const res = await apiClient.get('/ai/queue');
+      if (res.data?.success && Array.isArray(res.data?.data)) {
+        localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(res.data.data));
+        return res.data.data;
+      }
+    } catch {
+      // Fallback to local storage
+    }
+
+    try {
+      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          return parsed.filter((m: any) => m.status === 'QUEUED');
+        }
+      }
+    } catch {}
+
+    return [];
+  },
+
+  /**
+   * Updates a queued message
+   */
+  async updateQueuedMessage(id: string, newQuery: string): Promise<void> {
+    try {
+      await apiClient.patch(`/ai/queue/${id}`, { query: newQuery });
+    } catch {}
+
+    try {
+      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      if (stored) {
+        const parsed: QueuedMessageRecord[] = JSON.parse(stored);
+        const item = parsed.find((m) => m.id === id);
+        if (item) {
+          item.query = newQuery.trim();
+          item.updatedAt = new Date().toISOString();
+          localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(parsed));
+        }
+      }
+    } catch {}
+  },
+
+  /**
+   * Cancels a queued message
+   */
+  async cancelQueuedMessage(id: string): Promise<void> {
+    try {
+      await apiClient.delete(`/ai/queue/${id}`);
+    } catch {}
+
+    try {
+      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      if (stored) {
+        const parsed: QueuedMessageRecord[] = JSON.parse(stored);
+        const filtered = parsed.filter((m) => m.id !== id);
+        localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(filtered));
+      }
+    } catch {}
+  },
+
+  saveQueuedMessageLocally(record: QueuedMessageRecord): void {
+    try {
+      const stored = localStorage.getItem('spendx_ai_queued_messages');
+      const list: QueuedMessageRecord[] = stored ? JSON.parse(stored) : [];
+      list.push(record);
+      localStorage.setItem('spendx_ai_queued_messages', JSON.stringify(list));
+    } catch {}
+  },
+
+  incrementLocalUsage(): void {
+    const today = new Date().toISOString().slice(0, 10);
+    const key = `spendx_ai_usage_${today}`;
+    const curr = parseInt(localStorage.getItem(key) || '0', 10);
+    localStorage.setItem(key, String(curr + 1));
+  },
+
+  /**
    * Queries AI Assistant backend with verified context and history
    */
   async sendMessage(
     query: string,
     history: Array<{ role: 'user' | 'assistant'; content: string }>
-  ): Promise<{ answer: string; card?: AnswerCardData; modelUsed?: string }> {
+  ): Promise<{ answer: string; card?: AnswerCardData; modelUsed?: string; quota?: DailyQuotaInfo }> {
+    const quota = await this.getDailyQuota();
+    if (quota.isLimitReached) {
+      const err: any = new Error('Daily AI message quota reached (200/200). You can queue this message for tomorrow.');
+      err.isQuotaReached = true;
+      err.quota = quota;
+      throw err;
+    }
+
     const context = await this.buildFinancialContext();
     const activeSessionId = this.getActiveConversationId();
 
@@ -274,13 +448,24 @@ export const aiAssistantService = {
         this.setActiveConversationId(data.sessionId);
       }
 
+      this.incrementLocalUsage();
+
       return {
         answer: data?.answer || 'Response received from SPENDX AI Core.',
         card: data?.card,
         modelUsed: data?.modelUsed || 'SPENDX Intelligence Core',
+        quota: data?.quota,
       };
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.response?.status === 429 || err?.response?.data?.data?.error === 'DAILY_LIMIT_REACHED') {
+        const errorObj: any = new Error('Daily AI message quota reached (200/200). You can queue this message for tomorrow.');
+        errorObj.isQuotaReached = true;
+        errorObj.quota = { ...quota, isLimitReached: true, remaining: 0 };
+        throw errorObj;
+      }
+
       console.warn('Backend /ai/coach call failed, using client-side fallback intelligence', err);
+      this.incrementLocalUsage();
       // Fallback deterministic grounded answer if backend server isn't running
       return this.generateFallbackResponse(query, context);
     }

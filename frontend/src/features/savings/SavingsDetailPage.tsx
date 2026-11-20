@@ -174,7 +174,7 @@ export const SavingsDetailPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsDeleting(true)}
-            className="p-2 text-xs font-medium rounded-xl bg-surface-elevated border border-border hover:bg-destructive/10 text-destructive transition-colors cursor-pointer shadow-xs"
+            className="p-2 text-xs font-semibold rounded-xl bg-red-500/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/25 transition-all cursor-pointer shadow-xs focus:ring-2 focus:ring-red-500"
             aria-label="Delete Goal"
           >
             <Trash2 className="w-4 h-4" />
@@ -446,7 +446,7 @@ export const SavingsDetailPage: React.FC = () => {
                 type="button"
                 onClick={() => deleteMutation.mutate()}
                 disabled={deleteMutation.isPending}
-                className="flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-xl bg-destructive hover:bg-destructive/90 text-white shadow-xs transition-all cursor-pointer disabled:opacity-50"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-red-600 hover:bg-red-700 active:bg-red-800 text-white shadow-xs transition-all cursor-pointer disabled:opacity-50 focus:ring-2 focus:ring-red-500"
               >
                 {deleteMutation.isPending && (
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />

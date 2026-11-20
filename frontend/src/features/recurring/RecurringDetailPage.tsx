@@ -17,6 +17,7 @@ import { recurringService } from '@/services/recurringService';
 import { accountService } from '@/services/accountService';
 import { transactionService } from '@/services/transactionService';
 import { RecurringFormDialog } from '@/components/recurring/RecurringFormDialog';
+import { DeleteConfirmDialog } from '@/components/transactions/DeleteConfirmDialog';
 
 export const RecurringDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,6 +25,7 @@ export const RecurringDetailPage: React.FC = () => {
   const queryClient = useQueryClient();
 
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   // Fetch Payment Details
   const {
@@ -201,12 +203,8 @@ export const RecurringDetailPage: React.FC = () => {
 
           <button
             type="button"
-            onClick={() => {
-              if (window.confirm('Are you sure you want to delete this recurring schedule?')) {
-                deleteMutation.mutate();
-              }
-            }}
-            className="px-3.5 py-2 text-xs font-medium rounded-xl bg-destructive/10 text-destructive hover:bg-destructive/20 border border-destructive/20 transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="px-3.5 py-2 text-xs font-semibold rounded-xl bg-red-500/10 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/25 transition-all flex items-center gap-1.5 cursor-pointer shadow-xs focus:ring-2 focus:ring-red-500"
           >
             <Trash2 className="w-4 h-4" />
             <span>Delete</span>
@@ -393,6 +391,19 @@ export const RecurringDetailPage: React.FC = () => {
         }}
         editingPayment={payment}
         accounts={accounts}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <DeleteConfirmDialog
+        isOpen={isDeleteModalOpen}
+        title="Delete Recurring Schedule?"
+        description="Are you sure you want to permanently delete this recurring schedule? This action cannot be undone."
+        onConfirm={async () => {
+          await deleteMutation.mutateAsync();
+          setIsDeleteModalOpen(false);
+        }}
+        onCancel={() => setIsDeleteModalOpen(false)}
+        isDeleting={deleteMutation.isPending}
       />
     </div>
   );

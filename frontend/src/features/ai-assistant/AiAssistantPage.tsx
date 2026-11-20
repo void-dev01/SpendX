@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import {
   aiAssistantService,
   ConversationRecord,
   ChatMessage,
+  DailyQuotaInfo,
+  QueuedMessageRecord,
 } from '@/services/aiAssistantService';
 import { AssistantHeader } from '@/components/ai-assistant/AssistantHeader';
 import { ConversationSidebar } from '@/components/ai-assistant/ConversationSidebar';
@@ -10,21 +13,28 @@ import { ChatWelcome } from '@/components/ai-assistant/ChatWelcome';
 import { ChatMessageItem } from '@/components/ai-assistant/ChatMessageItem';
 import { TypingIndicator } from '@/components/ai-assistant/TypingIndicator';
 import { MessageComposer } from '@/components/ai-assistant/MessageComposer';
+import { QueuedMessagesModal } from '@/components/ai-assistant/QueuedMessagesModal';
 
 export const AiAssistantPage: React.FC = () => {
   const [conversations, setConversations] = useState<ConversationRecord[]>([]);
   const [activeId, setActiveId] = useState<string>('conv-initial-welcome');
   const [isLoading, setIsLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [quota, setQuota] = useState<DailyQuotaInfo | null>(null);
+  const [queuedMessages, setQueuedMessages] = useState<QueuedMessageRecord[]>([]);
+  const [isQueuedModalOpen, setIsQueuedModalOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Load conversations on mount
+  // Load conversations and daily quota on mount
   useEffect(() => {
     const list = aiAssistantService.getConversations();
     const active = aiAssistantService.getActiveConversationId();
     setConversations(list);
     setActiveId(active);
+
+    aiAssistantService.getDailyQuota().then(setQuota).catch(() => {});
+    aiAssistantService.getQueuedMessages().then(setQueuedMessages).catch(() => {});
   }, []);
 
   const activeConversation =
@@ -52,8 +62,40 @@ export const AiAssistantPage: React.FC = () => {
     setActiveId(aiAssistantService.getActiveConversationId());
   };
 
+  const handleQueueMessage = async (queryText: string) => {
+    if (!queryText.trim()) return;
+    try {
+      const convId = activeConversation ? activeConversation.id : activeId;
+      await aiAssistantService.queueMessage(queryText, convId);
+      const updatedList = await aiAssistantService.getQueuedMessages();
+      setQueuedMessages(updatedList);
+      toast.success('Inquiry scheduled for tomorrow (12:00 AM UTC)!');
+    } catch {
+      toast.error('Failed to schedule message.');
+    }
+  };
+
+  const handleUpdateQueued = async (id: string, newText: string) => {
+    await aiAssistantService.updateQueuedMessage(id, newText);
+    const updated = await aiAssistantService.getQueuedMessages();
+    setQueuedMessages(updated);
+    toast.success('Queued inquiry updated.');
+  };
+
+  const handleCancelQueued = async (id: string) => {
+    await aiAssistantService.cancelQueuedMessage(id);
+    const updated = await aiAssistantService.getQueuedMessages();
+    setQueuedMessages(updated);
+    toast.info('Queued inquiry cancelled.');
+  };
+
   const handleSendMessage = async (queryText: string) => {
     if (!queryText.trim() || isLoading) return;
+
+    if (quota?.isLimitReached) {
+      toast.warning('Daily 200 message quota reached. Please queue your message for tomorrow.');
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: `msg_user_${Date.now()}`,
@@ -95,6 +137,12 @@ export const AiAssistantPage: React.FC = () => {
 
       const result = await aiAssistantService.sendMessage(queryText, history);
 
+      if (result.quota) {
+        setQuota(result.quota);
+      } else {
+        aiAssistantService.getDailyQuota().then(setQuota).catch(() => {});
+      }
+
       const assistantMessage: ChatMessage = {
         id: `msg_ai_${Date.now()}`,
         role: 'assistant',
@@ -108,21 +156,38 @@ export const AiAssistantPage: React.FC = () => {
         messages: [...conv.messages, assistantMessage],
       }));
       setConversations(finalUpdated);
-    } catch {
-      const errorMessage: ChatMessage = {
-        id: `msg_err_${Date.now()}`,
-        role: 'assistant',
-        content:
-          'I encountered a communication timeout with the financial intelligence service. Please check your network and try again.',
-        timestamp: new Date().toISOString(),
-        isError: true,
-      };
+    } catch (err: any) {
+      if (err?.isQuotaReached) {
+        setQuota(err.quota || { limit: 200, used: 200, remaining: 0, resetAt: '', isLimitReached: true });
+        const quotaMessage: ChatMessage = {
+          id: `msg_quota_${Date.now()}`,
+          role: 'assistant',
+          content:
+            'You have reached your daily allowance of **200 messages**. Your limit resets automatically tonight at midnight UTC.\n\nWould you like to **Queue this message for tomorrow**? Simply enter your query below and tap **Queue for Tomorrow**.',
+          timestamp: new Date().toISOString(),
+          isError: true,
+        };
+        const finalUpdated = aiAssistantService.updateConversation(convId, (conv) => ({
+          ...conv,
+          messages: [...conv.messages, quotaMessage],
+        }));
+        setConversations(finalUpdated);
+      } else {
+        const errorMessage: ChatMessage = {
+          id: `msg_err_${Date.now()}`,
+          role: 'assistant',
+          content:
+            'I encountered a communication timeout with the financial intelligence service. Please check your network and try again.',
+          timestamp: new Date().toISOString(),
+          isError: true,
+        };
 
-      const finalUpdated = aiAssistantService.updateConversation(convId, (conv) => ({
-        ...conv,
-        messages: [...conv.messages, errorMessage],
-      }));
-      setConversations(finalUpdated);
+        const finalUpdated = aiAssistantService.updateConversation(convId, (conv) => ({
+          ...conv,
+          messages: [...conv.messages, errorMessage],
+        }));
+        setConversations(finalUpdated);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -144,11 +209,14 @@ export const AiAssistantPage: React.FC = () => {
 
   return (
     <div className="space-y-4 pb-8 animate-in fade-in duration-300">
-      {/* 1. Header */}
+      {/* 1. Header with Quota Pill */}
       <AssistantHeader
         onNewChat={handleNewChat}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
+        quota={quota || undefined}
+        queuedCount={queuedMessages.length}
+        onOpenQueuedModal={() => setIsQueuedModalOpen(true)}
       />
 
       {/* 2. Workspace: Sidebar + Chat Panel */}
@@ -189,10 +257,21 @@ export const AiAssistantPage: React.FC = () => {
             <MessageComposer
               onSend={handleSendMessage}
               isLoading={isLoading}
+              isLimitReached={quota?.isLimitReached ?? false}
+              onQueueMessage={handleQueueMessage}
             />
           </div>
         </div>
       </div>
+
+      {/* Queued Messages Modal */}
+      <QueuedMessagesModal
+        isOpen={isQueuedModalOpen}
+        onClose={() => setIsQueuedModalOpen(false)}
+        queuedMessages={queuedMessages}
+        onUpdateMessage={handleUpdateQueued}
+        onCancelMessage={handleCancelQueued}
+      />
     </div>
   );
 };

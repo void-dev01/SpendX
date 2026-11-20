@@ -8,8 +8,11 @@ import { useThemeStore } from './stores/themeStore';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
+      staleTime: 1000 * 60 * 3, // 3 minutes stale-while-revalidate
+      gcTime: 1000 * 60 * 15, // 15 minutes garbage collection cache retention
       refetchOnWindowFocus: false,
+      refetchOnReconnect: 'always',
+      retry: 1,
     },
   },
 });

@@ -28,7 +28,7 @@ export const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({
         aria-modal="true"
         aria-labelledby="delete-dialog-title"
       >
-        <div className="w-12 h-12 mx-auto rounded-2xl bg-destructive/10 text-destructive flex items-center justify-center">
+        <div className="w-12 h-12 mx-auto rounded-2xl bg-red-500/15 text-red-600 dark:text-red-400 flex items-center justify-center">
           <AlertTriangle className="w-6 h-6" />
         </div>
 
@@ -58,7 +58,7 @@ export const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({
             type="button"
             onClick={onConfirm}
             disabled={isDeleting}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-medium text-white bg-destructive hover:bg-destructive/90 shadow-xs transition-all cursor-pointer disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 shadow-xs transition-all cursor-pointer disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-red-500"
           >
             {isDeleting ? (
               <>

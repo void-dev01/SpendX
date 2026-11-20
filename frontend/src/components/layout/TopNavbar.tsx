@@ -15,6 +15,7 @@ import {
   AlertCircle,
   Info,
   CheckCheck,
+  Download,
 } from 'lucide-react';
 import { getRouteMetadata } from '@/config/navigation';
 import { useLayoutStore } from '@/stores/layoutStore';
@@ -22,6 +23,8 @@ import { useThemeStore } from '@/stores/themeStore';
 import { useAuthStore } from '@/stores/authStore';
 import { useNotificationStore } from '@/stores/notificationStore';
 import { authService } from '@/services/authService';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { IOSInstallModal } from '@/components/common/IOSInstallModal';
 
 export const TopNavbar: React.FC = () => {
   const location = useLocation();
@@ -29,6 +32,7 @@ export const TopNavbar: React.FC = () => {
   const { openMobileDrawer, setGlobalSearchOpen } = useLayoutStore();
   const { theme, toggleTheme } = useThemeStore();
   const { user } = useAuthStore();
+  const { isInstallable, isInstalled, isIOSModalOpen, setIsIOSModalOpen, promptInstall } = usePWAInstall();
 
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -165,105 +169,124 @@ export const TopNavbar: React.FC = () => {
 
             <AnimatePresence>
               {isNotificationsOpen && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: -6 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -6 }}
-                  transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                  role="region"
-                  aria-label="Notifications panel"
-                  className="absolute right-0 top-full mt-2 w-[calc(100vw-1.5rem)] max-w-sm sm:w-96 rounded-2xl bg-surface border border-border shadow-elevated p-3 sm:p-4 z-50 space-y-3"
-                >
-                  {/* Header */}
-                  <div className="flex items-center justify-between pb-2.5 border-b border-border">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-display font-bold text-foreground">Notifications</h3>
+                <>
+                  <div
+                    className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-40 sm:hidden"
+                    onClick={() => setIsNotificationsOpen(false)}
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -6 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -6 }}
+                    transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+                    role="region"
+                    aria-label="Notifications panel"
+                    className="fixed inset-x-3 top-16 sm:inset-x-auto sm:top-full sm:right-0 sm:absolute mt-2 w-auto sm:w-96 max-w-none sm:max-w-sm rounded-2xl bg-surface border border-border shadow-elevated p-3 sm:p-4 z-50 space-y-3"
+                  >
+                    {/* Header */}
+                    <div className="flex items-center justify-between pb-2.5 border-b border-border">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-xs font-display font-bold text-foreground">Notifications</h3>
+                        {unreadCount > 0 && (
+                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-bold">
+                            {unreadCount} new
+                          </span>
+                        )}
+                      </div>
                       {unreadCount > 0 && (
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/20 text-primary font-bold">
-                          {unreadCount} new
-                        </span>
+                        <button
+                          onClick={markAllAsRead}
+                          className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
+                        >
+                          Mark all as read
+                        </button>
                       )}
                     </div>
-                    {unreadCount > 0 && (
-                      <button
-                        onClick={markAllAsRead}
-                        className="text-[11px] font-medium text-primary hover:underline cursor-pointer"
-                      >
-                        Mark all as read
-                      </button>
-                    )}
-                  </div>
 
-                  {/* List */}
-                  <div className="max-h-72 overflow-y-auto no-scrollbar space-y-2">
-                    {notifications.length === 0 ? (
-                      <div className="py-8 text-center text-xs text-secondary-text space-y-1">
-                        <CheckCheck className="w-7 h-7 mx-auto text-income/70" strokeWidth={1.75} />
-                        <p className="font-semibold text-foreground">All caught up!</p>
-                        <p className="text-[11px]">No active notifications</p>
-                      </div>
-                    ) : (
-                      notifications.map((item) => (
-                        <div
-                          key={item.id}
-                          onClick={() => markAsRead(item.id)}
-                          className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start gap-2.5 ${
-                            item.unread
-                              ? 'bg-primary/10 border-primary/25 hover:border-primary/40'
-                              : 'bg-surface-elevated border-border-subtle hover:border-border opacity-75'
-                          }`}
-                        >
+                    {/* List */}
+                    <div className="max-h-[60vh] sm:max-h-72 overflow-y-auto overscroll-contain no-scrollbar space-y-2">
+                      {notifications.length === 0 ? (
+                        <div className="py-8 text-center text-xs text-secondary-text space-y-1">
+                          <CheckCheck className="w-7 h-7 mx-auto text-income/70" strokeWidth={1.75} />
+                          <p className="font-semibold text-foreground">All caught up!</p>
+                          <p className="text-[11px]">No active notifications</p>
+                        </div>
+                      ) : (
+                        notifications.map((item) => (
                           <div
-                            className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
-                              item.type === 'success'
-                                ? 'bg-income/15 text-income'
-                                : item.type === 'warning'
-                                ? 'bg-warning/15 text-warning'
-                                : 'bg-primary/15 text-primary'
+                            key={item.id}
+                            onClick={() => markAsRead(item.id)}
+                            className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-start gap-2.5 ${
+                              item.unread
+                                ? 'bg-primary/10 border-primary/25 hover:border-primary/40'
+                                : 'bg-surface-elevated border-border-subtle hover:border-border opacity-75'
                             }`}
                           >
-                            {item.type === 'success' ? (
-                              <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.75} />
-                            ) : item.type === 'warning' ? (
-                              <AlertCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
-                            ) : (
-                              <Info className="w-3.5 h-3.5" strokeWidth={1.75} />
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-1">
-                              <p className={`text-xs truncate ${item.unread ? 'font-bold text-foreground' : 'font-medium text-muted-foreground'}`}>
-                                {item.title}
-                              </p>
-                              <span className="text-[10px] text-muted-foreground font-mono shrink-0">
-                                {item.time}
-                              </span>
+                            <div
+                              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 ${
+                                item.type === 'success'
+                                  ? 'bg-income/15 text-income'
+                                  : item.type === 'warning'
+                                  ? 'bg-warning/15 text-warning'
+                                  : 'bg-primary/15 text-primary'
+                              }`}
+                            >
+                              {item.type === 'success' ? (
+                                <CheckCircle2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+                              ) : item.type === 'warning' ? (
+                                <AlertCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
+                              ) : (
+                                <Info className="w-3.5 h-3.5" strokeWidth={1.75} />
+                              )}
                             </div>
-                            <p className="text-[11px] text-secondary-text line-clamp-2 mt-0.5 leading-snug">
-                              {item.description}
-                            </p>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center justify-between gap-1">
+                                <p className={`text-xs truncate ${item.unread ? 'font-bold text-foreground' : 'font-medium text-muted-foreground'}`}>
+                                  {item.title}
+                                </p>
+                                <span className="text-[10px] text-muted-foreground font-mono shrink-0">
+                                  {item.time}
+                                </span>
+                              </div>
+                              <p className="text-[11px] text-secondary-text line-clamp-2 mt-0.5 leading-snug break-words">
+                                {item.description}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
+                        ))
+                      )}
+                    </div>
 
-                  {/* Footer */}
-                  <div className="pt-2 border-t border-border flex items-center justify-between text-[11px]">
-                    <span className="text-secondary-text text-[10px]">
-                      Real-time ledger alerts
-                    </span>
-                    <button
-                      onClick={clearAllNotifications}
-                      className="text-muted-foreground hover:text-foreground cursor-pointer text-[10px]"
-                    >
-                      Clear all
-                    </button>
-                  </div>
-                </motion.div>
+                    {/* Footer */}
+                    <div className="pt-2 border-t border-border flex items-center justify-between text-[11px]">
+                      <span className="text-secondary-text text-[10px]">
+                        Real-time ledger alerts
+                      </span>
+                      <button
+                        onClick={clearAllNotifications}
+                        className="text-muted-foreground hover:text-foreground cursor-pointer text-[10px]"
+                      >
+                        Clear all
+                      </button>
+                    </div>
+                  </motion.div>
+                </>
               )}
             </AnimatePresence>
           </div>
+
+          {/* 2. PWA Native Installation Button */}
+          {isInstallable && !isInstalled && (
+            <button
+              type="button"
+              onClick={promptInstall}
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-foreground border border-primary/20 text-xs font-semibold shadow-xs transition-all cursor-pointer active:scale-95"
+              title="Install SpendX as Native App"
+            >
+              <Download className="w-3.5 h-3.5 text-primary" strokeWidth={1.75} />
+              <span>Install App</span>
+            </button>
+          )}
 
           {/* 3. Theme Toggle Button */}
           <button
@@ -347,6 +370,21 @@ export const TopNavbar: React.FC = () => {
                       <SettingsIcon className="w-4 h-4 text-muted-foreground" />
                       <span>Settings & Security</span>
                     </Link>
+
+                    {isInstallable && !isInstalled && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileMenuOpen(false);
+                          promptInstall();
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-foreground hover:bg-surface-elevated transition-colors cursor-pointer text-left"
+                        role="menuitem"
+                      >
+                        <Download className="w-4 h-4 text-primary" strokeWidth={1.75} />
+                        <span>Install SpendX App</span>
+                      </button>
+                    )}
                   </div>
 
                   <div className="pt-1 border-t border-border">
@@ -365,6 +403,12 @@ export const TopNavbar: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {/* iOS Safari Installation Instructions Modal */}
+      <IOSInstallModal
+        isOpen={isIOSModalOpen}
+        onClose={() => setIsIOSModalOpen(false)}
+      />
     </header>
   );
 };

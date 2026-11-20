@@ -11,12 +11,26 @@ import {
   getSessionMessages,
   deleteSession,
 } from '../controllers/ai.controller.js';
+import {
+  getAIQuota,
+  queueAIMessage,
+  getQueuedMessages,
+  updateQueuedMessage,
+  cancelQueuedMessage,
+} from '../controllers/aiQuota.controller.js';
 
 const router = Router();
 
 // Public telemetry
 router.get('/status', getAIStatus);
 router.get('/models', getEligibleModels);
+
+// Daily Quota & Next-Day Scheduling Queue
+router.get('/quota', requireAuth, getAIQuota);
+router.post('/queue', requireAuth, queueAIMessage);
+router.get('/queue', requireAuth, getQueuedMessages);
+router.patch('/queue/:id', requireAuth, updateQueuedMessage);
+router.delete('/queue/:id', requireAuth, cancelQueuedMessage);
 
 // Authenticated AI capabilities
 router.get('/insights', requireAuth, getInsights);

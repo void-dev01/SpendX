@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import {
   ChevronLeft,
   ChevronRight,
+  Download,
 } from 'lucide-react';
 import { Plus, SignOut } from '@phosphor-icons/react';
 import { SpendxLogo } from '../landing/SpendxLogo';
@@ -14,10 +15,12 @@ import {
 import { useLayoutStore } from '@/stores/layoutStore';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/services/authService';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
 
 export const DesktopSidebar: React.FC = () => {
   const { isSidebarCollapsed, toggleSidebarCollapse } = useLayoutStore();
   const { user } = useAuthStore();
+  const { isInstallable, isInstalled, promptInstall } = usePWAInstall();
   const navigate = useNavigate();
   const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
 
@@ -182,6 +185,23 @@ export const DesktopSidebar: React.FC = () => {
               <span className="font-medium">Local Storage Active</span>
             </div>
           </div>
+        )}
+
+        {/* PWA Install Button */}
+        {isInstallable && !isInstalled && (
+          <button
+            type="button"
+            onClick={promptInstall}
+            className={`flex items-center gap-2 rounded-xl text-xs font-semibold bg-primary/10 hover:bg-primary/20 text-foreground border border-primary/20 transition-all cursor-pointer ${
+              isSidebarCollapsed
+                ? 'w-10 h-10 justify-center mx-auto'
+                : 'w-full px-3 py-2 justify-center'
+            }`}
+            title="Install SpendX Desktop / Mobile App"
+          >
+            <Download className="w-4 h-4 text-primary shrink-0" strokeWidth={1.75} />
+            {!isSidebarCollapsed && <span>Install App</span>}
+          </button>
         )}
 
         {/* User Capsule — Navigates directly to Settings on click */}

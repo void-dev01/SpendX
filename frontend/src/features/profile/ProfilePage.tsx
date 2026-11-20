@@ -223,7 +223,7 @@ export const ProfilePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleRemovePhoto}
-                  className="p-1.5 rounded-xl text-expense bg-expense/10 hover:bg-expense/20 border border-expense/20 transition-all cursor-pointer"
+                  className="p-1.5 rounded-xl text-red-500 bg-red-500/10 hover:bg-red-600 hover:text-white border border-red-500/25 transition-all cursor-pointer focus:ring-2 focus:ring-red-500"
                   title="Remove custom photo"
                 >
                   <Trash2 className="w-4 h-4" />

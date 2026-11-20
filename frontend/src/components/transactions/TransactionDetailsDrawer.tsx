@@ -211,7 +211,7 @@ export const TransactionDetailsDrawer: React.FC<TransactionDetailsDrawerProps> =
                 onClose();
                 onDelete(transaction);
               }}
-              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-medium text-xs text-destructive bg-destructive/10 hover:bg-destructive/20 transition-all cursor-pointer"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl font-bold text-xs text-red-500 hover:text-white bg-red-500/10 hover:bg-red-600 border border-red-500/20 hover:border-red-600 transition-all cursor-pointer focus:ring-2 focus:ring-red-500 shadow-xs"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Delete</span>

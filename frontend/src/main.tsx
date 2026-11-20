@@ -7,6 +7,20 @@ import { initSentry } from './lib/sentry';
 // Initialize Sentry error monitoring (graceful no-op if VITE_SENTRY_DSN is unset)
 initSentry();
 
+// Register PWA Service Worker in production/supporting environments
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        console.log('[SPENDX PWA] Service Worker registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.warn('[SPENDX PWA] Service Worker registration failed:', error);
+      });
+  });
+}
+
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { env } from '@/config/env';
@@ -7,7 +8,9 @@ import { accountService } from '@/services/accountService';
 import { transactionService } from '@/services/transactionService';
 import { authService } from '@/services/authService';
 import { apiClient } from '@/services/api';
-import { Download, Upload, Check, User, Shield, Wallet, Trash2, AlertOctagon } from 'lucide-react';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { Download, Upload, Check, User, Shield, Wallet, Trash2, AlertOctagon, Smartphone } from 'lucide-react';
 
 const AVAILABLE_CURRENCIES = [
   { code: 'INR', symbol: '₹', label: 'INR (₹) - Indian Rupee' },
@@ -31,6 +34,10 @@ export const SettingsPage: React.FC = () => {
   const [savedSuccess, setSavedSuccess] = useState(false);
   const [backupMessage, setBackupMessage] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false);
+  const [isResetDataModalOpen, setIsResetDataModalOpen] = useState(false);
+
+  const { isInstallable, isInstalled, promptInstall } = usePWAInstall();
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,26 +59,40 @@ export const SettingsPage: React.FC = () => {
     setUser(updated);
     localStorage.setItem('spendx_monthly_income_target', incomeTarget);
     setSavedSuccess(true);
+    toast.success('System preferences saved successfully!');
     setTimeout(() => setSavedSuccess(false), 3000);
   };
 
-  const handleDeleteAccount = async () => {
-    if (window.confirm('Are you sure you want to permanently delete your SPENDX account? All your accounts, transactions, budgets, goals, and history will be permanently deleted from the database. This action is irreversible.')) {
-      setIsDeleting(true);
-      try {
-        const res = await authService.deleteAccount();
-        if (!res.success) {
-          alert(res.error || 'Failed to delete account');
-          setIsDeleting(false);
-          return;
-        }
-        localStorage.clear();
-        window.location.href = '/login';
-      } catch {
-        alert('Failed to delete account');
+  const handleConfirmDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      const res = await authService.deleteAccount();
+      if (!res.success) {
+        toast.error(res.error || 'Failed to delete account');
         setIsDeleting(false);
+        setIsDeleteAccountModalOpen(false);
+        return;
       }
+      localStorage.clear();
+      toast.success('Account deleted successfully. Redirecting...');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1000);
+    } catch {
+      toast.error('Failed to delete account');
+      setIsDeleting(false);
+      setIsDeleteAccountModalOpen(false);
     }
+  };
+
+  const handleConfirmResetAllData = () => {
+    localStorage.clear();
+    localStorage.setItem('spendx_demo_mode', 'cleared');
+    localStorage.setItem('spendx_real_mode_v1', 'true');
+    toast.success('All local ledger data reset. Reloading...');
+    setTimeout(() => {
+      window.location.reload();
+    }, 800);
   };
 
   const handleExportJsonBackup = () => {
@@ -127,12 +148,11 @@ export const SettingsPage: React.FC = () => {
   };
 
   const handleResetAllData = () => {
-    if (window.confirm('Are you sure you want to completely reset all local data? This will clear all transactions, accounts, and schedules.')) {
-      localStorage.clear();
-      localStorage.setItem('spendx_demo_mode', 'cleared');
-      localStorage.setItem('spendx_real_mode_v1', 'true');
-      window.location.reload();
-    }
+    setIsResetDataModalOpen(true);
+  };
+
+  const handleDeleteAccount = () => {
+    setIsDeleteAccountModalOpen(true);
   };
 
   return (
@@ -320,6 +340,28 @@ export const SettingsPage: React.FC = () => {
             </div>
             <Badge variant="secondary">Active</Badge>
           </div>
+
+          {/* Progressive Web App (PWA) Option */}
+          {isInstallable && !isInstalled && (
+            <div className="flex items-center justify-between py-3 pt-4 border-t border-border">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                  <Smartphone className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm font-bold text-foreground">Install SpendX App (PWA)</p>
+                  <p className="text-[11px] text-secondary-text">Install native desktop or mobile application for instant offline access.</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={promptInstall}
+                className="px-3.5 py-1.5 rounded-xl bg-primary hover:bg-primary-hover text-[#111711] text-xs font-bold shadow-xs transition-colors cursor-pointer"
+              >
+                Install App
+              </button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -345,7 +387,7 @@ export const SettingsPage: React.FC = () => {
           <button
             type="button"
             onClick={handleResetAllData}
-            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px]"
+            className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] focus:ring-2 focus:ring-red-500"
           >
             <Trash2 className="w-4 h-4" />
             <span>Reset All Local Data (Start Fresh)</span>
@@ -362,7 +404,7 @@ export const SettingsPage: React.FC = () => {
               type="button"
               disabled={isDeleting}
               onClick={handleDeleteAccount}
-              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] disabled:opacity-50"
+              className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all flex items-center gap-2 cursor-pointer shadow-xs min-h-[40px] disabled:opacity-50 focus:ring-2 focus:ring-red-500"
             >
               <AlertOctagon className="w-4 h-4" />
               <span>{isDeleting ? 'Deleting Account...' : 'Permanently Delete SPENDX Account'}</span>
@@ -370,6 +412,32 @@ export const SettingsPage: React.FC = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Theme-Matched Custom Confirmation Dialogs */}
+      <ConfirmModal
+        isOpen={isResetDataModalOpen}
+        title="Reset All Local Financial Data?"
+        description="Are you sure you want to completely reset all local data? This will clear all transactions, accounts, budgets, and schedules from this device. This cannot be undone."
+        confirmText="Reset Everything"
+        cancelText="Cancel"
+        variant="destructive"
+        onConfirm={handleConfirmResetAllData}
+        onCancel={() => setIsResetDataModalOpen(false)}
+      />
+
+      <ConfirmModal
+        isOpen={isDeleteAccountModalOpen}
+        title="Permanently Delete Account?"
+        description="Are you sure you want to permanently delete your SPENDX account? All your accounts, transactions, budgets, goals, and history will be permanently deleted from the database. This action is completely irreversible."
+        confirmText="Delete Account"
+        cancelText="Cancel"
+        variant="destructive"
+        isLoading={isDeleting}
+        onConfirm={handleConfirmDeleteAccount}
+        onCancel={() => {
+          if (!isDeleting) setIsDeleteAccountModalOpen(false);
+        }}
+      />
     </div>
   );
 };
