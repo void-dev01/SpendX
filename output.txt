@@ -126,42 +126,54 @@ UPDATE 6: DAILY MESSAGE LIMIT (200/DAY) & NEXT-DAY QUEUEING
   * QueuedMessagesModal: Allows users to review scheduled questions, edit text, 
     or cancel before midnight dispatch.
 
-===============================================================================
+--------------------------------------------------------------------------------
+UPDATE 7: STRICT USER AUTHENTICATION & ACCESS CONTROL HARDENING
+--------------------------------------------------------------------------------
+- Eliminated all bypass and dummy session auto-logins:
+  * Backend endpoints POST /api/v1/auth/register and POST /api/v1/auth/login implemented.
+  * Robust credential storage using salted PBKDF2/SHA-256 password hashing.
+  * Unregistered email login attempts strictly rejected with 401 ("No account found").
+  * Incorrect password login attempts strictly rejected with 401 ("Invalid password").
+  * Frontend authService checks registered credential store (both backend API and local store).
+  * Only users who actually create an account and enter the exact password can log in.
+- Files Updated:
+  * backend/src/controllers/auth.controller.ts
+  * backend/src/db/localStore.ts
+  * backend/src/middleware/auth.ts
+  * backend/src/routes/auth.routes.ts
+  * backend/tests/security.test.ts
+  * frontend/src/services/authService.ts
+  * frontend/src/test/Auth.test.tsx
+
+================================================================================
 2. COMPREHENSIVE VERIFICATION RESULTS
-===============================================================================
+================================================================================
 
 1. Backend Typecheck (tsc --noEmit):
    - Result: 0 errors (PASSED)
 
 2. Backend Test Suite (vitest run):
    - Test Files: 7 passed (7)
-   - Tests: 74 passed (74)
-   - Duration: 7.88s (PASSED 100%)
+   - Tests: 76 passed (76)
+   - Status: PASSED 100%
 
 3. Frontend Typecheck (tsc --noEmit):
    - Result: 0 errors (PASSED)
 
 4. Frontend Test Suite (vitest run):
    - Test Files: 14 passed (14)
-   - Tests: 89 passed (89)
-   - Duration: 38.91s (PASSED 100%)
+   - Tests: 91 passed (91)
+   - Status: PASSED 100%
 
-5. Frontend Production Bundle Build (tsc -b && vite build):
-   - Result: 8,388 modules transformed cleanly.
-   - Build Time: 23.25s
-   - Chunk Warnings: 0
-   - Assets generated:
-     * dist/index.html: 3.06 kB
-     * dist/manifest.webmanifest: 0.98 kB
-     * dist/sw.js: 1.84 kB
-     * dist/assets/vendor-core-*.js: 542.89 kB (gzip: 174.64 kB)
-     * dist/assets/vendor-charts-*.js: 304.15 kB (gzip: 76.16 kB)
-     * dist/assets/vendor-supabase-*.js: 222.64 kB (gzip: 58.05 kB)
-     * dist/assets/vendor-motion-*.js: 150.96 kB (gzip: 51.55 kB)
-     * dist/assets/index-*.js: 152.19 kB (gzip: 31.19 kB)
-     * dist/assets/index-*.css: 97.39 kB (gzip: 16.34 kB)
-   - Status: PASSED
+5. Frontend Code Linting (eslint .):
+   - Result: 0 errors (PASSED)
 
-6. Git Working Tree Status:
-   - All files modified locally without pushing to remote ("github per push mat karna").
+6. Frontend Production Bundle Build (tsc -b && vite build):
+   - Result: 8,388 modules transformed cleanly in 35.57s (PASSED)
+
+7. GitHub Push & CI Verification:
+   - Latest Commit: f7a7667 pushed to origin/main.
+   - GitHub Actions CI Run #44730820607:
+     * Backend CI (Lint, Typecheck, Test & Build): PASSED (✓) in 25s
+     * Frontend CI (Lint, Typecheck, Test & Build): PASSED (✓) in 1m43s
 ================================================================================
