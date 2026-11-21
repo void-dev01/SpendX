@@ -83,8 +83,6 @@ class LocalStore {
       return this.cache;
     }
 
-    if (this.cache !== null) return this.cache;
-
     try {
       if (fs.existsSync(this.dbPath)) {
         const raw = fs.readFileSync(this.dbPath, 'utf-8');

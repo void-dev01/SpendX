@@ -10,6 +10,7 @@ import {
   RECURRING_CATEGORIES,
 } from '@/services/recurringService';
 import { AccountRecord } from '@/services/accountService';
+import { CustomSelect } from '@/components/common/CustomSelect';
 
 const recurringSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -44,6 +45,8 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<RecurringFormData>({
@@ -101,12 +104,17 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-fadeIn">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="rec-dialog-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 animate-fadeIn"
+    >
       <div className="w-full max-w-lg rounded-2xl p-5 sm:p-7 bg-surface border border-border shadow-elevated relative max-h-[90dvh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-border">
           <div>
-            <h2 className="text-xl font-bold font-display text-foreground">
+            <h2 id="rec-dialog-title" className="text-xl font-bold font-display text-foreground">
               {editingPayment ? 'Edit Recurring Schedule' : 'New Recurring Schedule'}
             </h2>
             <p className="text-xs text-secondary-text mt-0.5">
@@ -186,40 +194,33 @@ export const RecurringFormDialog: React.FC<RecurringFormDialogProps> = ({
             </div>
 
             <div>
-              <label htmlFor="rec-freq" className="block text-xs font-semibold text-foreground mb-1.5">
-                Billing Cycle *
-              </label>
-              <select
+              <CustomSelect
                 id="rec-freq"
-                {...register('frequency')}
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
-              >
-                <option value="DAILY">Daily</option>
-                <option value="WEEKLY">Weekly</option>
-                <option value="MONTHLY">Monthly</option>
-                <option value="QUARTERLY">Quarterly</option>
-                <option value="YEARLY">Yearly</option>
-              </select>
+                label="Billing Cycle *"
+                value={watch('frequency')}
+                onChange={(val) => setValue('frequency', val as RecurringFrequency, { shouldValidate: true })}
+                options={[
+                  { label: 'Daily', value: 'DAILY' },
+                  { label: 'Weekly', value: 'WEEKLY' },
+                  { label: 'Monthly', value: 'MONTHLY' },
+                  { label: 'Quarterly', value: 'QUARTERLY' },
+                  { label: 'Yearly', value: 'YEARLY' },
+                ]}
+              />
             </div>
           </div>
 
           {/* Category & Next Due Date */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="rec-category" className="block text-xs font-semibold text-foreground mb-1.5">
-                Category *
-              </label>
-              <select
+              <CustomSelect
                 id="rec-category"
-                {...register('category')}
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 cursor-pointer"
-              >
-                {RECURRING_CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
+                label="Category *"
+                value={watch('category')}
+                onChange={(val) => setValue('category', val, { shouldValidate: true })}
+                options={RECURRING_CATEGORIES}
+                error={errors.category?.message}
+              />
             </div>
 
             <div>

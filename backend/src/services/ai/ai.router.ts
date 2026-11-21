@@ -10,6 +10,17 @@ export class AIRouter {
   private static readonly MAX_ATTEMPTS = 4;
 
   public static async executeWithFailover(request: AIRouteRequest): Promise<AIRouteResponse> {
+    if (!openRouterClient && !geminiClient) {
+      logger.info('No external LLM provider configured; using grounded financial intelligence directly');
+      return {
+        content: '',
+        modelUsed: 'spendx-grounded-engine',
+        providerUsed: 'spendx-local',
+        fallbackUsed: true,
+        attemptsCount: 0,
+      };
+    }
+
     const eligibleModels = AIModelRegistry.getEligibleModels();
     let attemptsCount = 0;
     const errorsEncountered: Array<{ modelId: string; category: string; message: string }> = [];

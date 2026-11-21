@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
 export const createBudgetSchema = z.object({
+  name: z.string().max(100).optional(),
   category: z.string().min(1, 'Category is required').max(50),
   allocatedAmount: z.number().positive('Allocated amount must be positive'),
   period: z.enum(['MONTHLY', 'WEEKLY', 'YEARLY']).default('MONTHLY'),
+  alertThreshold: z.number().optional(),
+  notes: z.string().optional(),
 });
 
 export const updateBudgetSchema = createBudgetSchema.partial();

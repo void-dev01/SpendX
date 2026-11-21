@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { X, Loader2 } from 'lucide-react';
+import { CustomSelect } from '@/components/common/CustomSelect';
 import { AccountRecord } from '@/services/accountService';
 
 const accountFormSchema = z.object({
@@ -48,6 +49,8 @@ export const AccountFormDialog: React.FC<AccountFormDialogProps> = ({
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
@@ -145,23 +148,21 @@ export const AccountFormDialog: React.FC<AccountFormDialogProps> = ({
           {/* Account Type & Institution */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label htmlFor="account-type" className="block font-medium text-foreground mb-1">
-                Account Type *
-              </label>
-              <select
+              <CustomSelect
                 id="account-type"
-                {...register('type')}
-                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
-              >
-                <option value="BANK">Bank Account (Checking)</option>
-                <option value="SAVINGS">Savings Account</option>
-                <option value="CREDIT_CARD">Credit Card</option>
-                <option value="CASH">Cash Wallet</option>
-                <option value="OTHER">Other Account</option>
-              </select>
-              {errors.type && (
-                <p className="text-[11px] text-destructive mt-1">{errors.type.message}</p>
-              )}
+                name="type"
+                label="Account Type *"
+                value={watch('type')}
+                onChange={(val) => setValue('type', val as any, { shouldValidate: true })}
+                options={[
+                  { label: 'Bank Account (Checking)', value: 'BANK' },
+                  { label: 'Savings Account', value: 'SAVINGS' },
+                  { label: 'Credit Card', value: 'CREDIT_CARD' },
+                  { label: 'Cash Wallet', value: 'CASH' },
+                  { label: 'Other Account', value: 'OTHER' },
+                ]}
+                error={errors.type?.message}
+              />
             </div>
 
             <div>
@@ -218,10 +219,11 @@ export const AccountFormDialog: React.FC<AccountFormDialogProps> = ({
             </div>
 
             <div>
-              <label className="block font-medium text-foreground mb-1">
+              <label htmlFor="account-last-four" className="block font-medium text-foreground mb-1">
                 Last 4 Digits (Masked)
               </label>
               <input
+                id="account-last-four"
                 type="text"
                 maxLength={4}
                 placeholder="e.g. 4092"

@@ -16,7 +16,13 @@ build/
 .env.*.local
 !.env.example
 
-# Operating System Files
+# Video & Media Recordings
+*.mp4
+*.webm
+demo-video/
+proof_*.png
+verification_*.png
+
 .DS_Store
 Thumbs.db
 

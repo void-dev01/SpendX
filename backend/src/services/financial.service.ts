@@ -1,6 +1,5 @@
 import { supabaseAdminClient } from '../config/supabase.js';
 import { localStore } from '../db/localStore.js';
-import { logger } from '../utils/logger.js';
 
 export interface FinancialOverview {
   totalAssets: number;
@@ -124,14 +123,17 @@ export class FinancialCalculationService {
     }
 
     // 1. Fetch live Accounts to determine Total Assets & Liabilities
-    const { data: accounts, error: accError } = await supabaseAdminClient
+    let { data: accounts, error: accError } = await supabaseAdminClient
       .from('accounts')
       .select('type, balance, status')
       .eq('user_id', userId)
       .eq('status', 'ACTIVE');
 
-    if (accError) {
-      logger.error({ accError }, 'Failed fetching accounts for financial calculation');
+    if (accError || !accounts || accounts.length === 0) {
+      const localAccs = localStore.getAccounts().filter((a) => a.userId === userId && a.status !== 'ARCHIVED');
+      if (localAccs.length > 0) {
+        accounts = localAccs.map((a) => ({ type: a.type, balance: a.balance, status: a.status })) as any;
+      }
     }
 
     let totalAssets = 0;
@@ -149,15 +151,22 @@ export class FinancialCalculationService {
     const netWorth = totalAssets - totalLiabilities;
 
     // 2. Fetch Transactions in period
-    const { data: txns, error: txnError } = await supabaseAdminClient
+    let { data: txns, error: txnError } = await supabaseAdminClient
       .from('transactions')
       .select('amount, type, category, date, status')
       .eq('user_id', userId)
       .gte('date', start.toISOString())
       .lte('date', end.toISOString());
 
-    if (txnError) {
-      logger.error({ txnError }, 'Failed fetching transactions for financial calculation');
+    if (txnError || !txns || txns.length === 0) {
+      const localTxns = localStore.getTransactions().filter((t) => {
+        if (t.userId !== userId) return false;
+        const tDate = new Date(t.date);
+        return tDate >= start && tDate <= end;
+      });
+      if (localTxns.length > 0) {
+        txns = localTxns.map((t) => ({ amount: t.amount, type: t.type, category: t.category, date: t.date, status: t.status })) as any;
+      }
     }
 
     let totalIncome = 0;
@@ -235,7 +244,7 @@ export class FinancialCalculationService {
         .sort((a, b) => b.amount - a.amount);
     }
 
-    const { data: txns, error } = await supabaseAdminClient
+    let { data: txns, error } = await supabaseAdminClient
       .from('transactions')
       .select('amount, category, type, status')
       .eq('user_id', userId)
@@ -243,7 +252,17 @@ export class FinancialCalculationService {
       .gte('date', start.toISOString())
       .lte('date', end.toISOString());
 
-    if (error || !txns) return [];
+    if (error || !txns || txns.length === 0) {
+      const localTxns = localStore.getTransactions().filter((t) => {
+        if (t.userId !== userId) return false;
+        if (String(t.type).toUpperCase() !== 'EXPENSE') return false;
+        const tDate = new Date(t.date);
+        return tDate >= start && tDate <= end;
+      });
+      txns = localTxns.map((t) => ({ amount: t.amount, category: t.category, type: t.type, status: t.status })) as any;
+    }
+
+    if (!txns || txns.length === 0) return [];
 
     const categoryMap: Record<string, { amount: number; count: number }> = {};
     let totalSpent = 0;

@@ -403,16 +403,16 @@ export const savingsService = {
           const g = res.data.data;
           const created: SavingsGoalRecord = {
             id: g.id,
-            userId: g.user_id,
+            userId: g.userId || g.user_id || user.id,
             name: g.name,
-            category: g.category,
-            targetAmount: Number(g.target_amount),
-            currentAmount: Number(g.current_amount),
-            targetDate: g.target_date,
-            status: g.status as GoalStatus,
+            category: g.category || data.category || 'General',
+            targetAmount: Number(g.targetAmount ?? g.target_amount ?? data.targetAmount) || 0,
+            currentAmount: Number(g.currentAmount ?? g.current_amount ?? data.currentAmount ?? 0) || 0,
+            targetDate: g.targetDate || g.target_date || data.targetDate,
+            status: (g.status as GoalStatus) || 'ACTIVE',
             notes: data.notes,
-            createdAt: g.created_at,
-            updatedAt: g.updated_at,
+            createdAt: g.createdAt || g.created_at || new Date().toISOString(),
+            updatedAt: g.updatedAt || g.updated_at || new Date().toISOString(),
           };
           const current = this.getStoredGoals();
           this.saveStoredGoals([...current.filter((x) => x.id !== created.id), created]);
@@ -589,22 +589,38 @@ export const savingsService = {
         });
         if (res.data?.success && res.data?.data) {
           const result = res.data.data;
+          const updatedGoal = {
+            ...goal,
+            currentAmount: Number(result.goal?.currentAmount ?? result.goal?.current_amount ?? (goal.currentAmount + data.amount)),
+            status: (result.goal?.status as GoalStatus) || (goal.currentAmount + data.amount >= goal.targetAmount ? 'COMPLETED' : 'ACTIVE'),
+          };
+          const contribRecord: SavingsContributionRecord = {
+            id: result.contribution?.id || `contrib-${Date.now()}`,
+            goalId,
+            amount: Number(result.contribution?.amount || data.amount),
+            sourceAccountId: data.sourceAccountId,
+            sourceAccountName: data.sourceAccountName,
+            date: result.contribution?.date || data.date,
+            notes: result.contribution?.notes || data.notes,
+            createdAt: result.contribution?.created_at || result.contribution?.createdAt || new Date().toISOString(),
+          };
+
+          const allGoals = this.getStoredGoals();
+          const gIdx = allGoals.findIndex((g) => g.id === goalId);
+          if (gIdx !== -1) {
+            allGoals[gIdx] = updatedGoal;
+          } else {
+            allGoals.unshift(updatedGoal);
+          }
+          this.saveStoredGoals(allGoals);
+
+          const allContribs = this.getStoredContributions();
+          allContribs.unshift(contribRecord);
+          this.saveStoredContributions(allContribs);
+
           return {
-            goal: {
-              ...goal,
-              currentAmount: result.goal.currentAmount,
-              status: result.goal.status,
-            },
-            contribution: {
-              id: result.contribution.id,
-              goalId,
-              amount: result.contribution.amount,
-              sourceAccountId: data.sourceAccountId,
-              sourceAccountName: data.sourceAccountName,
-              date: result.contribution.date,
-              notes: result.contribution.notes,
-              createdAt: result.contribution.created_at,
-            },
+            goal: updatedGoal,
+            contribution: contribRecord,
           };
         }
       } catch (err) {

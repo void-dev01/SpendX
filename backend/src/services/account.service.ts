@@ -32,7 +32,7 @@ export class AccountService {
           throw new AppError('Failed to fetch accounts', 500);
         }
 
-        return (data || []).map((row) => ({
+        const result = (data || []).map((row) => ({
           id: row.id,
           userId: row.user_id,
           name: row.name,
@@ -46,10 +46,13 @@ export class AccountService {
           createdAt: row.created_at,
           updatedAt: row.updated_at,
         }));
+        if (result.length === 0) {
+          return localStore.getAccounts().filter((a) => a.userId === userId);
+        }
+        return result;
       } catch (err) {
-        if (err instanceof AppError) throw err;
-        logger.error({ err }, 'Error querying accounts');
-        return [];
+        logger.warn({ err }, 'Error querying accounts, falling back to localStore');
+        return localStore.getAccounts().filter((a) => a.userId === userId);
       }
     }
 

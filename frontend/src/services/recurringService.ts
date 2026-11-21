@@ -401,7 +401,7 @@ export const recurringService = {
           category: data.category,
           amount: data.amount,
           frequency: data.frequency,
-          startDate: data.startDate,
+          startDate: data.startDate || new Date().toISOString(),
           nextDueDate: data.nextDueDate,
           linkedAccountId: data.linkedAccountId,
           linkedAccountName: data.linkedAccountName,

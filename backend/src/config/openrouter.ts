@@ -19,6 +19,7 @@ export class OpenRouterClient {
     const selectedModel = model || this.defaultModel;
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
+      signal: AbortSignal.timeout(4000),
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',

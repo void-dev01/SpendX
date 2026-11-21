@@ -431,6 +431,7 @@ export const budgetService = {
     data: Omit<BudgetRecord, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
   ): Promise<BudgetRecord> {
     const user = authService.getUser();
+    const userId = user?.id || 'default-user-id';
 
     if (user && user.id !== 'demo-user-id') {
       try {
@@ -444,15 +445,15 @@ export const budgetService = {
           const b = res.data.data;
           const created: BudgetRecord = {
             id: b.id,
-            userId: b.user_id,
-            name: b.name,
+            userId: b.user_id || b.userId || userId,
+            name: b.name || data.name || `${b.category} Budget`,
             category: b.category,
-            allocatedAmount: Number(b.allocated_amount),
-            period: b.period,
+            allocatedAmount: Number(b.allocatedAmount ?? b.allocated_amount ?? data.allocatedAmount) || 0,
+            period: b.period || data.period || 'MONTHLY',
             alertThreshold: data.alertThreshold || 80,
             notes: data.notes,
-            createdAt: b.created_at,
-            updatedAt: b.updated_at,
+            createdAt: b.createdAt || b.created_at || new Date().toISOString(),
+            updatedAt: b.updatedAt || b.updated_at || new Date().toISOString(),
           };
           const current = this.getStoredBudgets();
           this.saveStoredBudgets([...current.filter((x) => x.id !== created.id), created]);
@@ -465,53 +466,59 @@ export const budgetService = {
       if (supabase) {
         const now = new Date();
         const monthYear = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-        const { data: record, error } = await supabase
-          .from('budgets')
-          .insert({
-            user_id: user.id,
-            name: data.name,
-            category: data.category,
-            allocated_amount: data.allocatedAmount,
-            period: data.period || 'MONTHLY',
-            month_year: monthYear,
-          })
-          .select()
-          .single();
+        try {
+          const { data: record, error } = await supabase
+            .from('budgets')
+            .insert({
+              user_id: user.id,
+              name: data.name,
+              category: data.category,
+              allocated_amount: data.allocatedAmount,
+              period: data.period || 'MONTHLY',
+              month_year: monthYear,
+            })
+            .select()
+            .single();
 
-        if (!error && record) {
-          const created: BudgetRecord = {
-            id: record.id,
-            userId: record.user_id,
-            name: record.name,
-            category: record.category,
-            allocatedAmount: Number(record.allocated_amount),
-            period: record.period,
-            alertThreshold: data.alertThreshold || 80,
-            notes: data.notes,
-            createdAt: record.created_at,
-            updatedAt: record.updated_at,
-          };
-          const current = this.getStoredBudgets();
-          this.saveStoredBudgets([...current.filter((x) => x.id !== created.id), created]);
-          return created;
+          if (!error && record) {
+            const created: BudgetRecord = {
+              id: record.id,
+              userId: record.user_id,
+              name: record.name,
+              category: record.category,
+              allocatedAmount: Number(record.allocated_amount || record.allocatedAmount || data.allocatedAmount) || 0,
+              period: record.period,
+              alertThreshold: data.alertThreshold || 80,
+              notes: data.notes,
+              createdAt: record.created_at,
+              updatedAt: record.updated_at,
+            };
+            const current = this.getStoredBudgets();
+            this.saveStoredBudgets([...current.filter((x) => x.id !== created.id), created]);
+            return created;
+          }
+        } catch (sErr) {
+          console.warn('Supabase insert failed', sErr);
         }
       }
     }
 
-    const userId = user?.id || 'demo-user-id';
-    const newRecord: BudgetRecord = {
-      ...data,
-      id: `bgt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+    // Always fallback to locally stored budgets
+    const fallbackCreated: BudgetRecord = {
+      id: `bgt-${Date.now()}`,
       userId,
+      name: data.name || `${data.category} Budget`,
+      category: data.category,
+      allocatedAmount: Number(data.allocatedAmount) || 0,
+      period: data.period || 'MONTHLY',
+      alertThreshold: data.alertThreshold || 80,
+      notes: data.notes,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-
     const current = this.getStoredBudgets();
-    const updated = [...current, newRecord];
-    this.saveStoredBudgets(updated);
-
-    return newRecord;
+    this.saveStoredBudgets([...current.filter((x) => x.id !== fallbackCreated.id), fallbackCreated]);
+    return fallbackCreated;
   },
 
   /**

@@ -8,6 +8,7 @@ import {
   GoalCategory,
   SAVINGS_CATEGORIES,
 } from '@/services/savingsService';
+import { CustomSelect } from '@/components/common/CustomSelect';
 
 const goalFormSchema = z.object({
   name: z
@@ -55,6 +56,8 @@ export const CreateGoalDialog: React.FC<CreateGoalDialogProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<GoalFormValues>({
@@ -175,28 +178,14 @@ export const CreateGoalDialog: React.FC<CreateGoalDialogProps> = ({
 
           {/* Category */}
           <div>
-            <label
-              htmlFor="goal-category-select"
-              className="block text-xs font-medium text-foreground mb-1"
-            >
-              Category *
-            </label>
-            <select
+            <CustomSelect
               id="goal-category-select"
-              {...register('category')}
-              className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium shadow-xs"
-            >
-              {SAVINGS_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-            {errors.category && (
-              <p className="text-[11px] text-destructive mt-1 font-medium">
-                {errors.category.message}
-              </p>
-            )}
+              label="Category *"
+              value={watch('category')}
+              onChange={(val) => setValue('category', val, { shouldValidate: true })}
+              options={SAVINGS_CATEGORIES}
+              error={errors.category?.message}
+            />
           </div>
 
           {/* Target Amount & Initial Amount */}

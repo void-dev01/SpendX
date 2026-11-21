@@ -10,6 +10,7 @@ import {
   INCOME_CATEGORIES,
 } from '@/services/transactionService';
 import { AccountRecord, accountService } from '@/services/accountService';
+import { CustomSelect } from '@/components/common/CustomSelect';
 
 const transactionFormSchema = z.object({
   type: z.enum(['EXPENSE', 'INCOME', 'TRANSFER']),
@@ -291,41 +292,25 @@ export const TransactionFormDialog: React.FC<TransactionFormDialogProps> = ({
           {/* Category & Account */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block font-medium text-foreground mb-1">
-                Category *
-              </label>
-              <select
-                {...register('category')}
-                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
-              >
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              {errors.category && (
-                <p className="text-[11px] text-destructive mt-1">{errors.category.message}</p>
-              )}
+              <CustomSelect
+                id="transaction-category-select"
+                label="Category *"
+                value={watch('category')}
+                onChange={(val) => setValue('category', val, { shouldValidate: true })}
+                options={categories}
+                error={errors.category?.message}
+              />
             </div>
 
             <div>
-              <label className="block font-medium text-foreground mb-1">
-                Account *
-              </label>
-              <select
-                {...register('accountId')}
-                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
-              >
-                {availableAccounts.map((acc) => (
-                  <option key={acc.id} value={acc.id}>
-                    {acc.name}
-                  </option>
-                ))}
-              </select>
-              {errors.accountId && (
-                <p className="text-[11px] text-destructive mt-1">{errors.accountId.message}</p>
-              )}
+              <CustomSelect
+                id="transaction-account-select"
+                label="Account *"
+                value={watch('accountId')}
+                onChange={(val) => setValue('accountId', val, { shouldValidate: true })}
+                options={availableAccounts.map((acc) => ({ label: acc.name, value: acc.id }))}
+                error={errors.accountId?.message}
+              />
             </div>
           </div>
 

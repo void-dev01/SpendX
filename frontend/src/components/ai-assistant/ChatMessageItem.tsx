@@ -207,7 +207,8 @@ export const ChatMessageItem: React.FC<ChatMessageItemProps> = ({
 
   return (
     <div
-      className={`flex items-start gap-2.5 sm:gap-3.5 my-3 ${
+      data-role={isUser ? "user" : "assistant"}
+      className={`chat-message flex items-start gap-2.5 sm:gap-3.5 my-3 ${
         isUser ? 'justify-end' : 'justify-start'
       }`}
     >

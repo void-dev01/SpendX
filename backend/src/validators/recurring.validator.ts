@@ -26,7 +26,7 @@ export const createRecurringSchema = z.object({
   category: recurringCategoryEnum.default('Subscriptions'),
   amount: z.number().positive('Amount must be positive'),
   frequency: recurringFrequencyEnum.default('MONTHLY'),
-  startDate: z.string().min(1, 'Start date is required'),
+  startDate: z.string().optional().default(() => new Date().toISOString()),
   nextDueDate: z.string().min(1, 'Next due date is required'),
   linkedAccountId: z.string().optional(),
   linkedAccountName: z.string().optional(),

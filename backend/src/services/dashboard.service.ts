@@ -224,10 +224,10 @@ export class DashboardService {
         category: b.category,
         iconName: b.category,
         limit: b.allocatedAmount,
-        spent: b.spent,
-        remaining: b.remaining,
+        spent: b.spentAmount ?? b.spent ?? 0,
+        remaining: b.remainingAmount ?? b.remaining ?? b.allocatedAmount,
         percentage: b.utilizationPercentage,
-        status: b.status,
+        status: b.status === 'CRITICAL' ? 'danger' : b.status === 'WARNING' ? 'warning' : 'normal',
       })),
       recentTransactions: formattedRecentTxns,
       savingsGoals: savingsGoals.slice(0, 3).map((g) => ({

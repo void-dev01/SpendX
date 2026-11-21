@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { X, Loader2 } from 'lucide-react';
 import { BudgetRecord } from '@/services/budgetService';
 import { EXPENSE_CATEGORIES } from '@/services/transactionService';
+import { CustomSelect } from '@/components/common/CustomSelect';
 
 const budgetFormSchema = z.object({
   name: z
@@ -43,6 +44,8 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors },
   } = useForm<BudgetFormValues>({
@@ -134,37 +137,28 @@ export const BudgetFormDialog: React.FC<BudgetFormDialogProps> = ({
           {/* Category & Period */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label htmlFor="budget-category" className="block font-medium text-foreground mb-1">
-                Category *
-              </label>
-              <select
+              <CustomSelect
                 id="budget-category"
-                {...register('category')}
-                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
-              >
-                {EXPENSE_CATEGORIES.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              {errors.category && (
-                <p className="text-[11px] text-destructive mt-1">{errors.category.message}</p>
-              )}
+                label="Category *"
+                value={watch('category')}
+                onChange={(val) => setValue('category', val, { shouldValidate: true })}
+                options={EXPENSE_CATEGORIES}
+                error={errors.category?.message}
+              />
             </div>
 
             <div>
-              <label htmlFor="budget-period" className="block font-medium text-foreground mb-1">
-                Period *
-              </label>
-              <select
+              <CustomSelect
                 id="budget-period"
-                {...register('period')}
-                className="w-full px-3 py-2.5 rounded-xl bg-surface-elevated border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary shadow-xs"
-              >
-                <option value="MONTHLY">Monthly</option>
-                <option value="YEARLY">Yearly</option>
-              </select>
+                label="Period *"
+                value={watch('period')}
+                onChange={(val) => setValue('period', val as 'MONTHLY' | 'YEARLY', { shouldValidate: true })}
+                options={[
+                  { label: 'Monthly', value: 'MONTHLY' },
+                  { label: 'Yearly', value: 'YEARLY' },
+                ]}
+                error={errors.period?.message}
+              />
             </div>
           </div>
 
