@@ -123,11 +123,13 @@ export class FinancialCalculationService {
     }
 
     // 1. Fetch live Accounts to determine Total Assets & Liabilities
-    let { data: accounts, error: accError } = await supabaseAdminClient
+    const accRes = await supabaseAdminClient
       .from('accounts')
       .select('type, balance, status')
       .eq('user_id', userId)
       .eq('status', 'ACTIVE');
+    let accounts = accRes.data;
+    const accError = accRes.error;
 
     if (accError || !accounts || accounts.length === 0) {
       const localAccs = localStore.getAccounts().filter((a) => a.userId === userId && a.status !== 'ARCHIVED');
@@ -151,12 +153,14 @@ export class FinancialCalculationService {
     const netWorth = totalAssets - totalLiabilities;
 
     // 2. Fetch Transactions in period
-    let { data: txns, error: txnError } = await supabaseAdminClient
+    const txnRes = await supabaseAdminClient
       .from('transactions')
       .select('amount, type, category, date, status')
       .eq('user_id', userId)
       .gte('date', start.toISOString())
       .lte('date', end.toISOString());
+    let txns = txnRes.data;
+    const txnError = txnRes.error;
 
     if (txnError || !txns || txns.length === 0) {
       const localTxns = localStore.getTransactions().filter((t) => {
@@ -244,13 +248,15 @@ export class FinancialCalculationService {
         .sort((a, b) => b.amount - a.amount);
     }
 
-    let { data: txns, error } = await supabaseAdminClient
+    const expRes = await supabaseAdminClient
       .from('transactions')
       .select('amount, category, type, status')
       .eq('user_id', userId)
       .eq('type', 'EXPENSE')
       .gte('date', start.toISOString())
       .lte('date', end.toISOString());
+    let txns = expRes.data;
+    const error = expRes.error;
 
     if (error || !txns || txns.length === 0) {
       const localTxns = localStore.getTransactions().filter((t) => {
